@@ -1,0 +1,9 @@
+.container {
+  background-image: linear-gradient(90deg, rgb(160, 222, 219), rgb(3, 165, 209));
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.image {
+  height: 300px;
+}
