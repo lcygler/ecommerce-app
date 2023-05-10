@@ -12,7 +12,7 @@ module.exports = (sequelize) => {
             allownull: false
         },
         size: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allownull: false
         },
         gender: {
