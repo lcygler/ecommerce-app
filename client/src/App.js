@@ -1,13 +1,15 @@
-import "./App.css";
-import logo from "./logo.svg";
+import { Route, Routes } from 'react-router-dom';
+import { Home, Landing } from './views/index';
+
+import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Grupo 22 - FT36a</p>
-      </header>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/home" element={<Home />} />
+      </Routes>
     </div>
   );
 }
