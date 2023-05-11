@@ -1,13 +1,8 @@
-import { Box, Button, Heading } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
+
+import { Box, Button, Heading, Link } from '@chakra-ui/react';
 
 function Landing() {
-  const navigate = useNavigate();
-
-  const handleClick = () => {
-    navigate('/home');
-  };
-
   return (
     <Box
       display="flex"
@@ -21,9 +16,9 @@ function Landing() {
           Bienvenido
         </Heading>
 
-        <Button colorScheme="blue" onClick={handleClick}>
-          Home
-        </Button>
+        <Link as={RouterLink} to="/home">
+          <Button colorScheme="blue">Home</Button>
+        </Link>
       </Box>
     </Box>
   );
