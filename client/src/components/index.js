@@ -1,5 +1,6 @@
-import Navbar from './Navbar/Navbar';
-import Product from './Product/Product';
-import Products from './Products/Products';
+import Navbar from './Navbar';
+import Pagination from './Pagination';
+import Product from './Product';
+import Products from './Products';
 
-export { Navbar, Product, Products };
+export { Navbar, Pagination, Product, Products };
