@@ -6,7 +6,7 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
-            unique: true
+          
         },
         state:{
             type: DataTypes.ENUM('Preparing', 'in progress', 'on the way', 'delivered'),  
