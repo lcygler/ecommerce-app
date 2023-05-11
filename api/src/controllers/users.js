@@ -1,5 +1,13 @@
 const express = require("express");
-const {Users} = require("../db.js");
+const {
+  Users,
+  Review,
+  Trolley,
+  CartDetail,
+  PurchaseDetail,
+  Product,
+  ShippingAddress,
+} = require("../db.js");
 
 /**
  *
@@ -60,7 +68,19 @@ const getUserById = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const user = await Users.findByPk(id);
+    const user = await Users.findOne(
+      { where: id },
+      {
+        include: [
+          { model: Review },
+          { model: Trolley },
+          { model: CartDetail },
+          { model: PurchaseDetail },
+          { model: Product },
+          { model: ShippingAddress },
+        ],
+      }
+    );
     res.json(user);
   } catch (err) {
     next(err);
