@@ -1,3 +1,6 @@
+import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+
 import {
   Box,
   Button,
@@ -12,7 +15,6 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import React from 'react';
 import { FaBars, FaHeart, FaList, FaShoppingCart, FaTimes, FaUser } from 'react-icons/fa';
 
 function Navbar() {
@@ -21,25 +23,25 @@ function Navbar() {
   return (
     <Box bg="gray.800" px={4} py={2}>
       <Flex alignItems="center">
-        <Link href="/" color="white" fontSize="xl" fontWeight="bold">
+        <Link as={RouterLink} to="/" color="white" fontSize="xl" fontWeight="bold">
           Khaki Store
         </Link>
         <Spacer />
 
         <Box display={{ base: 'none', md: 'flex' }}>
-          <Link href="/cart" mr={4}>
+          <Link as={RouterLink} to="/cart" mr={4}>
             <Button leftIcon={<FaShoppingCart />} colorScheme="teal" variant="outline">
               Cart
             </Button>
           </Link>
 
-          <Link href="/favorites" mr={4}>
+          <Link as={RouterLink} to="/favorites" mr={4}>
             <Button leftIcon={<FaHeart />} colorScheme="teal" variant="outline">
               Favorites
             </Button>
           </Link>
 
-          <Link href="/purchases" mr={4}>
+          <Link as={RouterLink} to="/purchases" mr={4}>
             <Button leftIcon={<FaList />} colorScheme="teal" variant="outline">
               Purchases
             </Button>
@@ -51,11 +53,11 @@ function Navbar() {
             </MenuButton>
 
             <MenuList>
-              <Link href="/login">
+              <Link as={RouterLink} to="login">
                 <MenuItem>Login</MenuItem>
               </Link>
 
-              <Link href="/register">
+              <Link as={RouterLink} to="register">
                 <MenuItem>Register</MenuItem>
               </Link>
             </MenuList>
@@ -74,33 +76,26 @@ function Navbar() {
             overflow="hidden"
           >
             <Flex direction="column" alignItems="center" p={4}>
-              <Link href="/cart" w="full" mb={4}>
+              <Link as={RouterLink} to="cart" w="full" mb={4}>
                 <Button w="full" leftIcon={<FaShoppingCart />} colorScheme="teal" variant="outline">
                   Cart
                 </Button>
               </Link>
 
-              <Link href="/favorites" w="full" mb={4}>
+              <Link as={RouterLink} to="favorites" w="full" mb={4}>
                 <Button w="full" leftIcon={<FaHeart />} colorScheme="teal" variant="outline">
                   Favorites
                 </Button>
               </Link>
 
-              <Link href="/purchases" w="full" mb={4}>
+              <Link as={RouterLink} to="purchases" w="full" mb={4}>
                 <Button w="full" leftIcon={<FaList />} colorScheme="teal" variant="outline">
                   Purchases
                 </Button>
               </Link>
 
               <Menu>
-                <MenuButton
-                  as={Button}
-                  w="full"
-                  colorScheme="teal"
-                  variant="outline"
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
+                <MenuButton as={Button} w="full" colorScheme="teal" variant="outline">
                   <Box display="flex" justifyContent="center">
                     <FaUser />
                     <Text ml={2}>Login</Text>
@@ -108,11 +103,11 @@ function Navbar() {
                 </MenuButton>
 
                 <MenuList>
-                  <Link href="/login">
+                  <Link as={RouterLink} to="login">
                     <MenuItem>Login</MenuItem>
                   </Link>
 
-                  <Link href="/register">
+                  <Link as={RouterLink} to="register">
                     <MenuItem>Register</MenuItem>
                   </Link>
                 </MenuList>
