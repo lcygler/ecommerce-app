@@ -1,7 +1,10 @@
-import Cart from './Cart/Cart';
-import Home from './Home/Home';
-import Landing from './Landing/Landing';
-import Login from './Login/Login';
-import Register from './Register/Register';
+import Cart from './Cart';
+import Dashboard from './Dashboard';
+import Detail from './Detail';
+import Favorites from './Favorites';
+import Home from './Home';
+import Landing from './Landing';
+import Login from './Login';
+import Register from './Register';
 
-export { Cart, Home, Landing, Login, Register };
+export { Cart, Dashboard, Detail, Favorites, Home, Landing, Login, Register };
