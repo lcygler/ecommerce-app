@@ -2,15 +2,16 @@ const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
   sequelize.define(
-    'Trolley',
+    'Category',
     {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      state: {
-        type: DataTypes.FLOAT,
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
       },
     },
     {

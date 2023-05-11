@@ -33,7 +33,19 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { User, Admin, CartDetail, Categories,Product, PurchaseDetail, Review, Seasons, ShippingAddress, Shopping, Trolley } = sequelize.models;
+const {
+  User,
+  Admin,
+  CartDetail,
+  Category,
+  Product,
+  PurchaseDetail,
+  Review,
+  Season,
+  ShippingAddress,
+  Shopping,
+  Trolley,
+} = sequelize.models;
 
 // Aca vendrian las relaciones
 //Relaciones de admin
@@ -48,11 +60,11 @@ Product.belongsTo(Admin);
 User.hasMany(Review);
 Review.belongsTo(User);
 
- //Relacion entre usueario y carrito
- User.hasMany(Trolley);
- Trolley.belongsTo(User);
+//Relacion entre usueario y carrito
+User.hasMany(Trolley);
+Trolley.belongsTo(User);
 
- //Relacion usuario y su carritoDetail
+//Relacion usuario y su carritoDetail
 User.hasMany(CartDetail);
 CartDetail.belongsTo(User);
 
@@ -60,30 +72,29 @@ CartDetail.belongsTo(User);
 User.hasMany(PurchaseDetail);
 PurchaseDetail.belongsTo(User);
 
+//Relacion de usuario y su favoritos
+User.belongsToMany(Product, { through: 'favorites' });
+Product.belongsToMany(User, { through: 'favorites' });
 
- //Relacion de usuario y su favoritos
- User.belongsToMany(Product, {through: "Favorites"});
- Product.belongsToMany(User, {through: "Favorites"});
+//Relacion entre Useario y Dirrecion
+User.hasMany(ShippingAddress);
+ShippingAddress.belongsTo(User);
 
- //Relacion entre Useario y Dirrecion
- User.hasMany(ShippingAddress);
- ShippingAddress.belongsTo(User);
-
- //Relacion entre producto y carrito
- Product.belongsToMany(Shopping, {through: 'Shopping_Product'});
- Shopping.belongsToMany(Product, {through: 'Shopping_Product'});
+//Relacion entre producto y carrito
+Product.belongsToMany(Shopping, { through: 'shopping_product' });
+Shopping.belongsToMany(Product, { through: 'shopping_product' });
 
 // Product uno a muchos reviews;
 Product.hasMany(Review);
 Review.belongsTo(Product);
 
 //relacion de Product a Categories M : M
-Product.belongsToMany(Categories, {through: 'product_categorie'});
-Categories.belongsToMany(Product, {through: 'product_categorie'});
+Product.belongsToMany(Category, { through: 'product_category' });
+Category.belongsToMany(Product, { through: 'product_category' });
 
 //Relacion entre Products y season M : M
-Product.belongsToMany(Seasons, {through: 'product_season'});
-Seasons.belongsToMany(Product, {through: 'product_season'});
+Product.belongsToMany(Season, { through: 'product_season' });
+Season.belongsToMany(Product, { through: 'product_season' });
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
