@@ -1,5 +1,6 @@
-import { Box } from '@chakra-ui/react';
 import { Navbar, Products } from '../components/index';
+
+import { Box } from '@chakra-ui/react';
 
 function Home() {
   return (

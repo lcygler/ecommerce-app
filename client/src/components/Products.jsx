@@ -1,6 +1,7 @@
+import { Product } from './index';
+
 import { Box, Grid, Heading, Image, Text } from '@chakra-ui/react';
 import data from '../data.json';
-import { Product } from './index';
 
 function Products() {
   return (

@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import {
   Alert,
   AlertIcon,
@@ -8,8 +11,6 @@ import {
   Input,
   Stack,
 } from '@chakra-ui/react';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const [email, setEmail] = useState('');
