@@ -1,11 +1,11 @@
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-    sequelize.define('producs', {
+    sequelize.define('Product', {
         id:{
             type: DataTypes.INTEGER,
             primaryKey: true,
-            autoIncrement: true, 
+            autoIncrement: true
         },
         name:{
             type: DataTypes.STRING,
@@ -45,7 +45,7 @@ module.exports = (sequelize) => {
         },
         disable:{
             type:DataTypes.BOOLEAN,
-            defaultValue: true
+            defaultValue: false
         }
     },{
         timestamp: true
