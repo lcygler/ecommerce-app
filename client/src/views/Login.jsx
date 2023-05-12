@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 import {
   Alert,
@@ -9,8 +9,12 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Link,
   Stack,
+  Text,
 } from '@chakra-ui/react';
+
+import backgroundImage from '../assets/images/background.jpg';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -36,15 +40,23 @@ function Login() {
   };
 
   return (
-    <Box display="flex" flexDirection="column" justifyContent="center" height="100vh">
-      <Box bg="white" boxShadow="lg" borderRadius="md" maxW="sm" mx="auto" p={6} width="100%">
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      height="100vh"
+      backgroundImage={`url(${backgroundImage})`}
+      backgroundSize="cover"
+      backgroundPosition="center"
+    >
+      <Box bg="white" boxShadow="lg" borderRadius="md" maxW="sm" mx="auto" p={6}>
         {error && (
           <Alert status="error" marginBottom={4}>
             <AlertIcon />
             {error}
           </Alert>
         )}
-        <Stack spacing={4} width="100%">
+        <Stack spacing={4}>
           <FormControl isRequired>
             <FormLabel>Email address</FormLabel>
             <Input
@@ -86,6 +98,15 @@ function Login() {
               Log in
             </Button>
           </Stack>
+
+          <Box textAlign="center" marginTop={4}>
+            <Text>
+              Not registered yet?{' '}
+              <Link as={RouterLink} to="/register" color="blue.500" textDecoration="underline">
+                Click here to register
+              </Link>
+            </Text>
+          </Box>
         </Stack>
       </Box>
     </Box>
