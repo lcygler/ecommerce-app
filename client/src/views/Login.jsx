@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 import {
   Alert,
@@ -9,29 +9,32 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Link,
   Stack,
-} from "@chakra-ui/react";
+  Text,
+} from '@chakra-ui/react';
+
+import backgroundImage from '../assets/images/background.jpg';
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-    setError("");
+    setError('');
 
     // Simulación de login, acá va la lógica
-
     setTimeout(() => {
       setIsLoading(false);
-      if (email === "user@example.com" && password === "password") {
-        console.log("Login successful");
+      if (email === 'user@example.com' && password === 'password') {
+        console.log('Login successful');
       } else {
-        setError("Invalid email or password");
+        setError('Invalid email or password');
       }
     }, 2000);
   };
@@ -42,23 +45,18 @@ function Login() {
       flexDirection="column"
       justifyContent="center"
       height="100vh"
+      backgroundImage={`url(${backgroundImage})`}
+      backgroundSize="cover"
+      backgroundPosition="center"
     >
-      <Box
-        bg="white"
-        boxShadow="lg"
-        borderRadius="md"
-        maxW="sm"
-        mx="auto"
-        p={6}
-        width="100%"
-      >
+      <Box bg="white" boxShadow="lg" borderRadius="md" width="sm" mx="auto" p={6}>
         {error && (
           <Alert status="error" marginBottom={4}>
             <AlertIcon />
             {error}
           </Alert>
         )}
-        <Stack spacing={4} width="100%">
+        <Stack spacing={4}>
           <FormControl isRequired>
             <FormLabel>Email address</FormLabel>
             <Input
@@ -83,7 +81,7 @@ function Login() {
             <Button
               width="100%"
               onClick={() => {
-                navigate("/home");
+                navigate('/home');
               }}
             >
               Go back
@@ -100,6 +98,15 @@ function Login() {
               Log in
             </Button>
           </Stack>
+
+          <Box textAlign="center" marginTop={4} fontSize="sm">
+            <Text>
+              Not registered yet?{' '}
+              <Link as={RouterLink} to="/register" color="blue.500" textDecoration="underline">
+                Click here to register
+              </Link>
+            </Text>
+          </Box>
         </Stack>
       </Box>
     </Box>
