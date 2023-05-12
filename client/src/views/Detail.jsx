@@ -68,7 +68,7 @@ function Detail() {
             </Flex>
           </Flex>
 
-          <Stack direction="row" spacing={4} mt="auto">
+          <Stack direction="row" spacing={4} mt="8">
             <Button
               onClick={() => {
                 navigate('/home');
