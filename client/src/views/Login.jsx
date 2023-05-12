@@ -49,7 +49,7 @@ function Login() {
       backgroundSize="cover"
       backgroundPosition="center"
     >
-      <Box bg="white" boxShadow="lg" borderRadius="md" maxW="sm" mx="auto" p={6}>
+      <Box bg="white" boxShadow="lg" borderRadius="md" width="sm" mx="auto" p={6}>
         {error && (
           <Alert status="error" marginBottom={4}>
             <AlertIcon />
@@ -99,7 +99,7 @@ function Login() {
             </Button>
           </Stack>
 
-          <Box textAlign="center" marginTop={4}>
+          <Box textAlign="center" marginTop={4} fontSize="sm">
             <Text>
               Not registered yet?{' '}
               <Link as={RouterLink} to="/register" color="blue.500" textDecoration="underline">
