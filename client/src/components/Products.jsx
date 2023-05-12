@@ -1,25 +1,28 @@
 import { Product } from './index';
 
-import { Box, Grid, Heading, Image, Text } from '@chakra-ui/react';
-import data from '../data.json';
+import { Grid } from '@chakra-ui/react';
+// import data from '../data.json';
 
-function Products() {
+function Products({ currentProducts }) {
   return (
-    <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(4, 1fr)' }} gap={6} p={10}>
-      {data.map((item) => (
-        // <Product key={item.id} item={item} />
-        <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden" key={item.id}>
-          <Image src={item.image} alt={item.name} />
-          <Box p="6">
-            <Heading as="h2" size="md">
-              {item.name}
-            </Heading>
-            <Text mt="2" fontSize="md">
-              {item.description}
-            </Text>
-          </Box>
-        </Box>
-      ))}
+    <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(5, 1fr)' }} gap={6} p={10}>
+      {currentProducts?.map(
+        ({ id, name, price, category, description, gender, season, size, image, discount }) => (
+          <Product
+            key={id}
+            id={id}
+            name={name}
+            price={price}
+            category={category}
+            description={description}
+            gender={gender}
+            season={season}
+            size={size}
+            image={image}
+            discount={discount}
+          />
+        )
+      )}
     </Grid>
   );
 }
