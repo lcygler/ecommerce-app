@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import cartReducer from './slices/cartSlice';
-import catalogReducer from './slices/catalogSlice';
+import { cartReducer, catalogReducer, filterReducer } from './slices/index';
 
 const rootReducer = combineReducers({
-  catalog: catalogReducer,
   cart: cartReducer,
+  catalog: catalogReducer,
+  filters: filterReducer,
 });
 
 export default rootReducer;

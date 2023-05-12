@@ -51,50 +51,39 @@ const {
 //Relaciones de admin
 Admin.hasMany(User);
 User.belongsTo(Admin);
-
 //Relacion de admin y produc
 Admin.hasMany(Product);
 Product.belongsTo(Admin);
-
 //Relacion entre user y review
 User.hasMany(Review);
 Review.belongsTo(User);
-
-//Relacion entre usueario y carrito
-User.hasMany(Trolley);
-Trolley.belongsTo(User);
-
-//Relacion usuario y su carritoDetail
+ //Relacion entre usueario y carrito
+ User.hasMany(Trolley);
+ Trolley.belongsTo(User);
+ //Relacion usuario y su carritoDetail
 User.hasMany(CartDetail);
 CartDetail.belongsTo(User);
-
 // detalle de la compra
 User.hasMany(PurchaseDetail);
 PurchaseDetail.belongsTo(User);
-
-//Relacion de usuario y su favoritos
-User.belongsToMany(Product, { through: 'favorites' });
-Product.belongsToMany(User, { through: 'favorites' });
-
-//Relacion entre Useario y Dirrecion
-User.hasMany(ShippingAddress);
-ShippingAddress.belongsTo(User);
-
-//Relacion entre producto y carrito
-Product.belongsToMany(Shopping, { through: 'shopping_product' });
-Shopping.belongsToMany(Product, { through: 'shopping_product' });
-
+ //Relacion de usuario y su favoritos
+ User.belongsToMany(Product, {through: "Favorites"});
+ Product.belongsToMany(User, {through: "Favorites"});
+ //Relacion entre Useario y Dirrecion
+ User.hasMany(ShippingAddress);
+ ShippingAddress.belongsTo(User);
+ //Relacion entre producto y carrito
+ Product.belongsToMany(Shopping, {through: 'Shopping_Product'});
+ Shopping.belongsToMany(Product, {through: 'Shopping_Product'});
 // Product uno a muchos reviews;
 Product.hasMany(Review);
 Review.belongsTo(Product);
-
-//relacion de Product a Categories M : M
-Product.belongsToMany(Category, { through: 'product_category' });
-Category.belongsToMany(Product, { through: 'product_category' });
-
+//Relacion de Product a Categories M : M
+Product.belongsToMany(Category, {through: 'Product_Categorie'});
+Category.belongsToMany(Product, {through: 'Product_Categorie'});
 //Relacion entre Products y season M : M
-Product.belongsToMany(Season, { through: 'product_season' });
-Season.belongsToMany(Product, { through: 'product_season' });
+Product.belongsToMany(Season, {through: 'Product_Season'});
+Season.belongsToMany(Product, {through: 'Product_Season'});
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
