@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
   Alert,
@@ -10,34 +10,48 @@ import {
   FormLabel,
   Input,
   Stack,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-    setError('');
+    setError("");
 
     // Simulación de login, acá va la lógica
+
     setTimeout(() => {
       setIsLoading(false);
-      if (email === 'user@example.com' && password === 'password') {
-        console.log('Login successful');
+      if (email === "user@example.com" && password === "password") {
+        console.log("Login successful");
       } else {
-        setError('Invalid email or password');
+        setError("Invalid email or password");
       }
     }, 2000);
   };
 
   return (
-    <Box display="flex" flexDirection="column" justifyContent="center" height="100vh">
-      <Box bg="white" boxShadow="lg" borderRadius="md" maxW="sm" mx="auto" p={6} width="100%">
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      height="100vh"
+    >
+      <Box
+        bg="white"
+        boxShadow="lg"
+        borderRadius="md"
+        maxW="sm"
+        mx="auto"
+        p={6}
+        width="100%"
+      >
         {error && (
           <Alert status="error" marginBottom={4}>
             <AlertIcon />
@@ -69,7 +83,7 @@ function Login() {
             <Button
               width="100%"
               onClick={() => {
-                navigate('/home');
+                navigate("/home");
               }}
             >
               Go back
