@@ -2,8 +2,6 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const session = require('express-session');
-const passport = require("passport")
 
 const routes = require('./routes/index.js');
 
@@ -24,14 +22,6 @@ server.use((req, res, next) => {
 server.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 server.use(bodyParser.json({ limit: '50mb' }));
 server.use(cookieParser());
-server.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: false,
-  // TODO investigar y agregar propiedad store para almacenar sesiones
-  // store: 
-}));
-server.use(passport.authenticate('session'));
 
 server.use('/', routes);
 
