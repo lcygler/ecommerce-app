@@ -1,5 +1,5 @@
 const express = require("express");
-const {Users} = require("../db.js");
+const { User } = require("../db.js");
 
 /**
  *
@@ -20,16 +20,16 @@ const getUsers = async (req, res, next) => {
  * @param {express.Request} req
  * @param {express.Response} res
  */
-const createUser = async (req, res, next) => {
-  try {
-    // TODO Hashear password antes de crear usuario
-    const user = req.body;
-    const newUser = await Users.create(user);
-    res.status(201).json(newUser);
-  } catch (err) {
-    next(err);
-  }
-};
+// const createUser = async (req, res, next) => {
+//   try {
+//     // TODO Hashear password antes de crear usuario
+//     const user = req.body;
+//     const newUser = await Users.create(user);
+//     res.status(201).json(newUser);
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
 /**
  *
@@ -85,6 +85,7 @@ const deleteUser = async (req, res, next) => {
 };
 
 module.exports = {
+  registerCtrl,
   getUsers,
   createUser,
   updateUser,
