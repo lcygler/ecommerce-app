@@ -56,23 +56,23 @@ function Detail() {
                     </Text>
 
                     {discount > 0 && (
-                      <Text
-                        fontWeight="bold"
-                        fontSize="md"
-                        color="gray.500"
-                        textDecoration="line-through"
-                        mr="2"
-                      >
-                        ${(price * 1.2).toFixed(2)}
-                      </Text>
-                    )}
-
-                    {discount > 0 && (
                       <Text fontWeight="bold" fontSize="md" color="green.400">
                         {discount * 100}% OFF
                       </Text>
                     )}
                   </Flex>
+
+                  {discount > 0 && (
+                    <Text
+                      fontWeight="bold"
+                      fontSize="md"
+                      color="gray.500"
+                      textDecoration="line-through"
+                      mr="2"
+                    >
+                      ${(price * (1 + discount)).toFixed(2)}
+                    </Text>
+                  )}
                 </Box>
 
                 <Box mt="4" d="flex" alignItems="center">
