@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
 import {
   Box,
@@ -21,7 +21,6 @@ import logo from '../assets/icons/logo.png';
 
 function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const location = useLocation();
 
   return (
     <Box bg="transparent" px={4} py={2} pt="15px">
@@ -33,56 +32,31 @@ function Navbar() {
 
         <Box display={{ base: 'none', md: 'flex' }}>
           <Link as={RouterLink} to="/home" mr={4}>
-            <Button
-              leftIcon={<FaHome />}
-              colorScheme="blue"
-              variant={location.pathname === '/home' ? 'solid' : 'outline'}
-            >
+            <Button leftIcon={<FaHome />} colorScheme="blue" variant="outline">
               Home
             </Button>
           </Link>
 
           <Link as={RouterLink} to="/cart" mr={4}>
-            <Button
-              leftIcon={<FaShoppingCart />}
-              colorScheme="blue"
-              variant={location.pathname === '/cart' ? 'solid' : 'outline'}
-            >
+            <Button leftIcon={<FaShoppingCart />} colorScheme="blue" variant="outline">
               Cart
             </Button>
           </Link>
 
           <Link as={RouterLink} to="/favorites" mr={4}>
-            <Button
-              leftIcon={<FaHeart />}
-              colorScheme="blue"
-              variant={location.pathname === '/favorites' ? 'solid' : 'outline'}
-            >
+            <Button leftIcon={<FaHeart />} colorScheme="blue" variant="outline">
               Favorites
             </Button>
           </Link>
 
           <Link as={RouterLink} to="/purchases" mr={4}>
-            <Button
-              leftIcon={<FaList />}
-              colorScheme="blue"
-              variant={location.pathname === '/purchases' ? 'solid' : 'outline'}
-            >
+            <Button leftIcon={<FaList />} colorScheme="blue" variant="outline">
               Purchases
             </Button>
           </Link>
 
           <Menu>
-            <MenuButton
-              as={Button}
-              leftIcon={<FaUser />}
-              colorScheme="blue"
-              variant={
-                location.pathname === '/login' || location.pathname === '/register'
-                  ? 'solid'
-                  : 'outline'
-              }
-            >
+            <MenuButton as={Button} leftIcon={<FaUser />} colorScheme="blue" variant="outline">
               Login
             </MenuButton>
 
@@ -112,60 +86,31 @@ function Navbar() {
           >
             <Flex direction="column" alignItems="center" p={4}>
               <Link as={RouterLink} to="/home" w="full" mb={4}>
-                <Button
-                  w="full"
-                  leftIcon={<FaHome />}
-                  colorScheme="blue"
-                  variant={location.pathname === '/home' ? 'solid' : 'outline'}
-                >
+                <Button w="full" leftIcon={<FaHome />} colorScheme="blue" variant="outline">
                   Home
                 </Button>
               </Link>
 
               <Link as={RouterLink} to="/cart" w="full" mb={4}>
-                <Button
-                  w="full"
-                  leftIcon={<FaShoppingCart />}
-                  colorScheme="blue"
-                  variant={location.pathname === '/cart' ? 'solid' : 'outline'}
-                >
+                <Button w="full" leftIcon={<FaShoppingCart />} colorScheme="blue" variant="outline">
                   Cart
                 </Button>
               </Link>
 
               <Link as={RouterLink} to="/favorites" w="full" mb={4}>
-                <Button
-                  w="full"
-                  leftIcon={<FaHeart />}
-                  colorScheme="blue"
-                  variant={location.pathname === '/favorites' ? 'solid' : 'outline'}
-                >
+                <Button w="full" leftIcon={<FaHeart />} colorScheme="blue" variant="outline">
                   Favorites
                 </Button>
               </Link>
 
               <Link as={RouterLink} to="/purchases" w="full" mb={4}>
-                <Button
-                  w="full"
-                  leftIcon={<FaList />}
-                  colorScheme="blue"
-                  variant={location.pathname === '/purchases' ? 'solid' : 'outline'}
-                >
+                <Button w="full" leftIcon={<FaList />} colorScheme="blue" variant="outline">
                   Purchases
                 </Button>
               </Link>
 
               <Menu>
-                <MenuButton
-                  as={Button}
-                  w="full"
-                  colorScheme="blue"
-                  variant={
-                    location.pathname === '/login' || location.pathname === '/register'
-                      ? 'solid'
-                      : 'outline'
-                  }
-                >
+                <MenuButton as={Button} w="full" colorScheme="blue" variant="outline">
                   <Box display="flex" justifyContent="center">
                     <FaUser />
                     <Text ml={2}>Login</Text>
