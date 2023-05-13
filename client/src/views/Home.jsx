@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { filterProducts, getProducts, setCurrentPage } from '../redux/slice';
+import { filterProducts, getAllProducts, setCurrentPage } from '../redux/slice';
 
 import { Filters, Navbar, Pagination, Products } from '../components/index';
 
@@ -15,7 +15,7 @@ function Home() {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      await dispatch(getProducts());
+      await dispatch(getAllProducts());
       dispatch(filterProducts());
     };
     fetchProducts();
@@ -34,19 +34,19 @@ function Home() {
   return (
     <Box flexDirection="column">
       <Navbar width="100%" />
-      {!allProducts.length ? (
+      <Filters changePage={changePage} allProducts={allProducts} />
+      {!allProducts?.length ? (
         <>
           <Box display="grid" placeItems="center" height="50vh">
             <Spinner size="xl" color="blue.500" />
           </Box>
         </>
-      ) : !filteredProducts.length ? (
+      ) : !filteredProducts?.length ? (
         <Box display="grid" placeItems="center" height="50vh">
           <Text>No results found for the selected filters</Text>
         </Box>
       ) : (
         <>
-          <Filters changePage={changePage} allProducts={allProducts} />
           <Products currentProducts={currentProducts} />
           <Box display="flex" justifyContent="center">
             <Pagination totalPages={totalPages} currentPage={currentPage} changePage={changePage} />
