@@ -4,7 +4,7 @@ import { filterProducts, getProducts, setCurrentPage } from '../redux/slice';
 
 import { Filters, Navbar, Pagination, Products } from '../components/index';
 
-import { Box, Spinner } from '@chakra-ui/react';
+import { Box, Spinner, Text } from '@chakra-ui/react';
 
 function Home() {
   const dispatch = useDispatch();
@@ -36,10 +36,14 @@ function Home() {
       <Navbar width="100%" />
       {!allProducts.length ? (
         <>
-          <Box display="grid" placeItems="center" height="700px">
+          <Box display="grid" placeItems="center" height="50vh">
             <Spinner size="xl" color="blue.500" />
           </Box>
         </>
+      ) : !filteredProducts.length ? (
+        <Box display="grid" placeItems="center" height="50vh">
+          <Text>No results found for the selected filters</Text>
+        </Box>
       ) : (
         <>
           <Filters changePage={changePage} allProducts={allProducts} />
