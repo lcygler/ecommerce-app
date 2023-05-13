@@ -1,5 +1,11 @@
-import { Badge, Box, Button, Flex, Heading, Image, Link, Text } from '@chakra-ui/react';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
+import { addFavorite, deleteFavorite } from '../redux/slice';
+
+import { Badge, Box, Button, Flex, Heading, IconButton, Image, Link, Text } from '@chakra-ui/react';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import { FaHeart } from 'react-icons/fa';
 
 function Product({
   id,
@@ -13,6 +19,34 @@ function Product({
   image,
   discount,
 }) {
+  const dispatch = useDispatch();
+  const [isFav, setIsFav] = useState(false);
+
+  const handleFavorite = () => {
+    if (isFav) {
+      setIsFav(false);
+      dispatch(deleteFavorite(id));
+    } else {
+      setIsFav(true);
+      dispatch(
+        addFavorite({
+          id,
+          name,
+          price,
+          category,
+          description,
+          gender,
+          season,
+          size,
+          image,
+          discount,
+          addFavorite,
+          deleteFavorite,
+        })
+      );
+    }
+  };
+
   return (
     <Link
       as={RouterLink}
@@ -25,13 +59,35 @@ function Product({
     >
       <Box borderWidth="1px" borderRadius="lg" overflow="hidden" maxW="sm" height="auto">
         <Box h="300px" overflow="hidden" position="relative">
-          <Image src={image} alt={name} h="100%" w="100%" objectFit="contain" />
-
           {discount > 0 && (
-            <Badge colorScheme="green" position="absolute" top="0" right="0" m="2" fontSize="sm">
+            <Badge colorScheme="green" position="absolute" top="2" left="2" m="2" fontSize="sm">
               Sale
             </Badge>
           )}
+
+          <Box position="absolute" top="0" right="0" m="2">
+            {isFav ? (
+              <IconButton
+                aria-label="add to favorites"
+                variant="ghost"
+                colorScheme="red"
+                icon={<AiFillHeart />}
+                size="md"
+                onClick={handleFavorite}
+              />
+            ) : (
+              <IconButton
+                aria-label="add to favorites"
+                variant="ghost"
+                colorScheme="red"
+                icon={<AiOutlineHeart />}
+                size="md"
+                onClick={handleFavorite}
+              />
+            )}
+          </Box>
+
+          <Image src={image} alt={name} h="100%" w="100%" objectFit="contain" />
         </Box>
 
         <Box p="6">
