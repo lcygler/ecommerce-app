@@ -7,7 +7,7 @@ import backgroundImage from '../assets/images/background.jpg';
 function Detail() {
   const { productId } = useParams();
   const navigate = useNavigate();
-  const allProducts = useSelector((state) => state.products.allProducts);
+  const allProducts = useSelector((state) => state.allProducts);
   const product = allProducts?.find((product) => product.id === parseInt(productId));
   const { name, image, categories, discount, price, seasons, size, gender, description } = product;
 
