@@ -4,7 +4,7 @@ import { filterProducts, getProducts, setCurrentPage } from '../redux/slice';
 
 import { Filters, Navbar, Pagination, Products } from '../components/index';
 
-import { Box } from '@chakra-ui/react';
+import { Box, Spinner } from '@chakra-ui/react';
 
 function Home() {
   const dispatch = useDispatch();
@@ -34,11 +34,21 @@ function Home() {
   return (
     <Box flexDirection="column">
       <Navbar width="100%" />
-      <Filters changePage={changePage} allProducts={allProducts} />
-      <Products currentProducts={currentProducts} />
-      <Box display="flex" justifyContent="center">
-        <Pagination totalPages={totalPages} currentPage={currentPage} changePage={changePage} />
-      </Box>
+      {!allProducts.length ? (
+        <>
+          <Box display="grid" placeItems="center" height="700px">
+            <Spinner size="xl" color="blue.500" />
+          </Box>
+        </>
+      ) : (
+        <>
+          <Filters changePage={changePage} allProducts={allProducts} />
+          <Products currentProducts={currentProducts} />
+          <Box display="flex" justifyContent="center">
+            <Pagination totalPages={totalPages} currentPage={currentPage} changePage={changePage} />
+          </Box>
+        </>
+      )}
     </Box>
   );
 }
