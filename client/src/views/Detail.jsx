@@ -1,13 +1,15 @@
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { Box, Button, Flex, Heading, Image, Stack, Text } from '@chakra-ui/react';
+import { Badge, Box, Button, Flex, Heading, Image, Stack, Text } from '@chakra-ui/react';
+import backgroundImage from '../assets/images/background.jpg';
 
 function Detail() {
   const { productId } = useParams();
   const navigate = useNavigate();
-  const catalogProducts = useSelector((state) => state.catalog.catalog);
-  const product = catalogProducts?.find((product) => product.id === parseInt(productId));
+  const allProducts = useSelector((state) => state.products.allProducts);
+  const product = allProducts?.find((product) => product.id === parseInt(productId));
+  const { name, image, categories, discount, price, seasons, size, gender, description } = product;
 
   if (!product) {
     return (
@@ -18,50 +20,102 @@ function Detail() {
   }
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-      <Box maxW="800px">
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      height="100vh"
+      backgroundImage={`url(${backgroundImage})`}
+      backgroundSize="cover"
+      backgroundPosition="center"
+    >
+      <Box maxW="800px" bg="white" borderRadius="lg" p="10">
         <Flex flexDirection="column" alignItems="center">
           <Flex flexDirection="row">
             <Image
-              src={product.image}
-              alt={product.name}
+              src={image}
+              alt={name}
               objectFit="contain"
               h="500px"
               w="auto"
               mr="4"
+              transition="transform 0.2s ease-in-out"
+              _hover={{ transform: 'scale(1.05)' }}
             />
 
-            <Flex flexDirection="column" justifyContent="space-between">
+            <Flex flexDirection="column" justifyContent="space-between" ml="5">
               <Box>
                 <Box mt="4" d="flex" justifyContent="space-between" alignItems="baseline">
                   <Heading as="h2" size="lg">
-                    {product.name}
+                    {name}
                   </Heading>
 
-                  <Text fontWeight="bold" fontSize="2xl">
-                    ${product.price.toFixed(2)}
-                  </Text>
+                  <Flex alignItems="baseline">
+                    <Text fontWeight="bold" fontSize="2xl" mt="2" mr="2">
+                      ${discount === 0 ? price.toFixed(2) : (price * (1 - discount)).toFixed(2)}
+                    </Text>
+
+                    {discount > 0 && (
+                      <Text
+                        fontWeight="bold"
+                        fontSize="md"
+                        color="gray.500"
+                        textDecoration="line-through"
+                        mr="2"
+                      >
+                        ${(price * 1.2).toFixed(2)}
+                      </Text>
+                    )}
+
+                    {discount > 0 && (
+                      <Text fontWeight="bold" fontSize="md" color="green.400">
+                        {discount * 100}% OFF
+                      </Text>
+                    )}
+                  </Flex>
                 </Box>
 
                 <Box mt="4" d="flex" alignItems="center">
-                  <Text fontSize="md">{product.description}</Text>
+                  <Text fontSize="md">{description}</Text>
                 </Box>
 
                 <Box mt="4" d="flex" justifyContent="space-between" alignItems="center">
-                  <Text fontWeight="bold" fontSize="md">
-                    Size: {product.size}
+                  <Text fontWeight="normal" fontSize="md">
+                    Size: {size}
                   </Text>
 
-                  <Text fontWeight="bold" fontSize="md">
-                    Gender: {product.gender}
+                  <Text fontWeight="normal" fontSize="md">
+                    Gender: {gender}
                   </Text>
 
-                  <Text fontWeight="bold" fontSize="md">
-                    Season: {product.seasons.map((season) => season.name).join(', ')}
+                  <Text fontWeight="normal" fontSize="md">
+                    Category:{' '}
+                    {categories.map((category) => (
+                      <Badge key={category.id} colorScheme="purple" mr="1">
+                        {category.name}
+                      </Badge>
+                    ))}
                   </Text>
 
-                  <Text fontWeight="bold" fontSize="md">
-                    Category: {product.categories.map((category) => category.name).join(', ')}
+                  <Text fontWeight="normal" fontSize="md">
+                    Season:{' '}
+                    {seasons.map((season) => (
+                      <Badge
+                        key={season.id}
+                        colorScheme={
+                          season.name.toLowerCase() === 'verano'
+                            ? 'yellow'
+                            : season.name.toLowerCase() === 'invierno'
+                            ? 'blue'
+                            : season.name.toLowerCase() === 'otoño'
+                            ? 'orange'
+                            : 'green'
+                        }
+                        mr="1"
+                      >
+                        {season.name}
+                      </Badge>
+                    ))}
                   </Text>
                 </Box>
               </Box>
@@ -73,6 +127,7 @@ function Detail() {
               onClick={() => {
                 navigate('/home');
               }}
+              colorScheme="gray"
               width="150px"
             >
               Go back

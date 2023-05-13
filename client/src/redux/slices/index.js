@@ -1,5 +1,5 @@
 import cartReducer from './cartSlice';
-import catalogReducer from './catalogSlice';
 import filterReducer from './filterSlice';
+import productReducer from './productSlice';
 
-export { cartReducer, catalogReducer, filterReducer };
+export { cartReducer, filterReducer, productReducer };
