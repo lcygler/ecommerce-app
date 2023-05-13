@@ -609,6 +609,8 @@ export const {
   updateOrder,
   resetFilters,
   setCurrentPage,
+  clearSelectedOrder,
+  clearSelectedProduct,
 } = slice.actions;
 
 //* EXPORT REDUCER
