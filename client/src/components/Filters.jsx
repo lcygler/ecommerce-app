@@ -28,16 +28,6 @@ function Filters({ changePage, allProducts }) {
   const genderSelect = useRef(null);
   const orderSelect = useRef(null);
 
-  // const categories = allProducts.reduce((acc, product) => {
-  //   product.categories.forEach((category) => {
-  //     if (!acc.includes(category)) {
-  //       acc.push(category);
-  //     }
-  //   });
-  //   return acc;
-  // }, []);
-  // .sort((a, b) => a - b);
-
   const categories = allProducts
     .reduce((acc, product) => {
       product.categories.forEach((category) => {
@@ -49,6 +39,27 @@ function Filters({ changePage, allProducts }) {
       return acc;
     }, [])
     .sort((a, b) => a.name.localeCompare(b.name));
+
+  const seasons = allProducts
+    .reduce((acc, product) => {
+      product.seasons.forEach((season) => {
+        const index = acc.findIndex((s) => s.id === season.id && s.name === season.name);
+        if (index === -1) {
+          acc.push({ id: season.id, name: season.name });
+        }
+      });
+      return acc;
+    }, [])
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  const genders = allProducts
+    .reduce((acc, product) => {
+      if (!acc.includes(product.gender)) {
+        acc.push(product.gender);
+      }
+      return acc;
+    }, [])
+    .sort((a, b) => a.localeCompare(b));
 
   const discounts = allProducts
     .reduce((acc, product) => {
@@ -111,19 +122,22 @@ function Filters({ changePage, allProducts }) {
       <Box display="flex" alignItems="center" justifyContent="center" ml="4">
         <Select defaultValue="All" name="genderSelect" ref={genderSelect} onChange={handleFilters}>
           <option value="All">All Genders</option>
-          <option value="Hombre">Male</option>
-          <option value="Mujer">Female</option>
-          <option value="Other">Other</option>
+          {genders.map((gender, index) => (
+            <option key={index} value={gender}>
+              {gender}
+            </option>
+          ))}
         </Select>
       </Box>
 
       <Box display="flex" alignItems="center" justifyContent="center" ml="4">
         <Select defaultValue="All" name="seasonSelect" ref={seasonSelect} onChange={handleFilters}>
           <option value="All">All Seasons</option>
-          <option value="Otoño">Autumn</option>
-          <option value="Primavera">Spring</option>
-          <option value="Verano">Summer</option>
-          <option value="Invierno">Winter</option>
+          {seasons.map((season, index) => (
+            <option key={index} value={season.name}>
+              {season.name}
+            </option>
+          ))}
         </Select>
       </Box>
 
