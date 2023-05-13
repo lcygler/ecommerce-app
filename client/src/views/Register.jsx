@@ -10,7 +10,6 @@ import {
   FormLabel,
   Input,
   Link,
-  Select,
   Stack,
   Text,
 } from '@chakra-ui/react';
@@ -221,7 +220,7 @@ function Register() {
             </Button>
           </Stack>
 
-          <Box textAlign="center" marginTop={4}>
+          <Box textAlign="center" marginTop={4} fontSize="sm">
             <Text>
               Already registered?{' '}
               <Link as={RouterLink} to="/login" color="blue.500" textDecoration="underline">
