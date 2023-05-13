@@ -50,11 +50,6 @@ export const deleteFavorite = createAsyncThunk('slice/deleteFavorite', async (fa
 });
 
 //* ORDERS
-export const createOrder = createAsyncThunk('slice/createOrder', async (order) => {
-  const response = await axios.post(`${API_URL}/orders`, order);
-  return response.data;
-});
-
 export const getClientOrders = createAsyncThunk('slice/getClientOrders', async (clientId) => {
   const response = await axios.get(`${API_URL}/orders/client/${clientId}`);
   return response.data;
@@ -65,13 +60,18 @@ export const getOrderById = createAsyncThunk('slice/getOrderById', async (orderI
   return response.data;
 });
 
-export const deleteOrderById = createAsyncThunk('slice/deleteOrderById', async (orderId) => {
-  const response = await axios.delete(`${API_URL}/orders/${orderId}`);
+export const createOrder = createAsyncThunk('slice/createOrder', async (order) => {
+  const response = await axios.post(`${API_URL}/orders`, order);
   return response.data;
 });
 
 export const updateOrderById = createAsyncThunk('slice/updateOrderById', async (orderId, order) => {
   const response = await axios.patch(`${API_URL}/orders/${orderId}`, order);
+  return response.data;
+});
+
+export const deleteOrderById = createAsyncThunk('slice/deleteOrderById', async (orderId) => {
+  const response = await axios.delete(`${API_URL}/orders/${orderId}`);
   return response.data;
 });
 
@@ -81,13 +81,13 @@ export const getUserById = createAsyncThunk('slice/getUserById', async (userId) 
   return response.data;
 });
 
-export const createUser = createAsyncThunk('slice/createUser', async (userData) => {
-  const response = await axios.post(`${API_URL}/users`, userData);
+export const updateUserById = createAsyncThunk('slice/updateUserById', async (userId, userData) => {
+  const response = await axios.patch(`${API_URL}/users/${userId}`, userData);
   return response.data;
 });
 
-export const updateUserById = createAsyncThunk('slice/updateUserById', async (userId, userData) => {
-  const response = await axios.patch(`${API_URL}/users/${userId}`, userData);
+export const createUser = createAsyncThunk('slice/createUser', async (userData) => {
+  const response = await axios.post(`${API_URL}/users`, userData);
   return response.data;
 });
 
@@ -102,13 +102,13 @@ export const validateLogin = createAsyncThunk('slice/validateLogin', async (user
 });
 
 //* REVIEWS
-export const getReviewById = createAsyncThunk('slice/getReviewById', async (reviewId) => {
-  const response = await axios.get(`${API_URL}/reviews/${reviewId}`);
+export const getClientReviews = createAsyncThunk('slice/getClientReviews', async (userId) => {
+  const response = await axios.get(`${API_URL}/reviews/users/${userId}`);
   return response.data;
 });
 
-export const getClientReviews = createAsyncThunk('slice/getClientReviews', async (userId) => {
-  const response = await axios.get(`${API_URL}/reviews/users/${userId}`);
+export const getReviewById = createAsyncThunk('slice/getReviewById', async (reviewId) => {
+  const response = await axios.get(`${API_URL}/reviews/${reviewId}`);
   return response.data;
 });
 
