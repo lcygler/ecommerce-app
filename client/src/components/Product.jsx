@@ -56,7 +56,7 @@ function Product({
 
             {discount > 0 && (
               <Text fontWeight="bold" fontSize="md" color="gray.500" textDecoration="line-through">
-                ${(price * 1.2).toFixed(2)}
+                ${(price * (1 + discount)).toFixed(2)}
               </Text>
             )}
           </Box>
