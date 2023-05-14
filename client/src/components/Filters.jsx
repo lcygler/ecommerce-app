@@ -22,7 +22,7 @@ function Filters({ changePage, allProducts }) {
 
   const categories = allProducts
     .reduce((acc, product) => {
-      product.categories.forEach((category) => {
+      product.Categories.forEach((category) => {
         const index = acc.findIndex((c) => c.id === category.id && c.name === category.name);
         if (index === -1) {
           acc.push({ id: category.id, name: category.name });
@@ -34,7 +34,7 @@ function Filters({ changePage, allProducts }) {
 
   const seasons = allProducts
     .reduce((acc, product) => {
-      product.seasons.forEach((season) => {
+      product.Seasons.forEach((season) => {
         const index = acc.findIndex((s) => s.id === season.id && s.name === season.name);
         if (index === -1) {
           acc.push({ id: season.id, name: season.name });

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import { addFavorite, deleteFavorite } from '../redux/asyncActions';
 
@@ -10,15 +10,16 @@ function Product({
   id,
   name,
   price,
-  category,
+  Categories,
   description,
   gender,
-  season,
+  Seasons,
   size,
   image,
-  discount,
+  discounts,
 }) {
   const dispatch = useDispatch();
+  const loginStatus = useSelector((state) => state.loginStatus);
   const [isFav, setIsFav] = useState(false);
 
   const handleFavorite = () => {
@@ -32,13 +33,13 @@ function Product({
           id,
           name,
           price,
-          category,
+          Categories,
           description,
           gender,
-          season,
+          Seasons,
           size,
           image,
-          discount,
+          discounts,
           addFavorite,
           deleteFavorite,
         })
@@ -58,33 +59,35 @@ function Product({
     >
       <Box borderWidth="1px" borderRadius="lg" overflow="hidden" maxW="sm" height="auto">
         <Box h="300px" overflow="hidden" position="relative">
-          {discount > 0 && (
+          {discounts > 0 && (
             <Badge colorScheme="green" position="absolute" top="2" left="2" m="2" fontSize="sm">
               Sale
             </Badge>
           )}
 
-          <Box position="absolute" top="0" right="0" m="2">
-            {isFav ? (
-              <IconButton
-                aria-label="add to favorites"
-                variant="ghost"
-                colorScheme="red"
-                icon={<AiFillHeart />}
-                size="md"
-                onClick={handleFavorite}
-              />
-            ) : (
-              <IconButton
-                aria-label="add to favorites"
-                variant="ghost"
-                colorScheme="red"
-                icon={<AiOutlineHeart />}
-                size="md"
-                onClick={handleFavorite}
-              />
-            )}
-          </Box>
+          {loginStatus === 'Logged in' && (
+            <Box position="absolute" top="0" right="0" m="2">
+              {isFav ? (
+                <IconButton
+                  aria-label="add to favorites"
+                  variant="ghost"
+                  colorScheme="red"
+                  icon={<AiFillHeart />}
+                  size="md"
+                  onClick={handleFavorite}
+                />
+              ) : (
+                <IconButton
+                  aria-label="add to favorites"
+                  variant="ghost"
+                  colorScheme="red"
+                  icon={<AiOutlineHeart />}
+                  size="md"
+                  onClick={handleFavorite}
+                />
+              )}
+            </Box>
+          )}
 
           <Image src={image} alt={name} h="100%" w="100%" objectFit="contain" />
         </Box>
@@ -99,19 +102,19 @@ function Product({
           <Box d="flex" alignItems="baseline">
             <Flex alignItems="baseline">
               <Text fontWeight="bold" fontSize="2xl" mt="2" mr="2">
-                ${discount === 0 ? price.toFixed(2) : (price * (1 - discount)).toFixed(2)}
+                ${discounts === 0 ? price.toFixed(2) : (price * (1 - discounts)).toFixed(2)}
               </Text>
 
-              {discount > 0 && (
+              {discounts > 0 && (
                 <Text fontWeight="bold" color="green.400">
-                  {discount * 100}% OFF
+                  {discounts * 100}% OFF
                 </Text>
               )}
             </Flex>
 
-            {discount > 0 && (
+            {discounts > 0 && (
               <Text fontWeight="bold" fontSize="md" color="gray.500" textDecoration="line-through">
-                ${(price * (1 + discount)).toFixed(2)}
+                ${(price * (1 + discounts)).toFixed(2)}
               </Text>
             )}
           </Box>
