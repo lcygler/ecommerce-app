@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllProducts } from '../redux/asyncActions';
+import { getAllProducts, getCategories } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
 import { Filters, Navbar, Pagination, Products } from '../components/index';
