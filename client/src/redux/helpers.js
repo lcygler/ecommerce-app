@@ -1,7 +1,7 @@
 export const filterByCategory = (products, category) => {
   if (category !== 'All') {
     return (products = products.filter((product) =>
-      product.categories.map((e) => e.name).includes(category)
+      product.Categories.map((e) => e.name).includes(category)
     ));
   } else {
     return products;
@@ -19,7 +19,7 @@ export const filterByGender = (products, gender) => {
 export const filterBySeason = (products, season) => {
   if (season !== 'All') {
     return (products = products.filter((product) =>
-      product.seasons.map((e) => e.name).includes(season)
+      product.Seasons.map((e) => e.name).includes(season)
     ));
   } else {
     return products;
