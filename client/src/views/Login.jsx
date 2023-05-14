@@ -1,5 +1,9 @@
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+
+import { getUserFavorites, getUserOrders, validateLogin } from '../redux/asyncActions';
+import { validateForm } from '../utils/validateForm';
 
 import {
   Alert,
@@ -17,18 +21,34 @@ import {
 import backgroundImage from '../assets/images/background.jpg';
 
 function Login() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const loginValidation = useSelector((state) => state.loginValidation);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const user = { email: email, password: password };
+    dispatch(validateLogin(user));
+    if (loginValidation) {
+      dispatch(getUserFavorites);
+      dispatch(getUserOrders);
+      // cargar usuario en estado
+      navigate('/home');
+    } else {
+      setError('Invalid email or password');
+    }
+  };
 
   const handleLogin = async (event) => {
     event.preventDefault();
     setIsLoading(true);
     setError('');
 
-    // Simulación de login, acá va la lógica
     setTimeout(() => {
       setIsLoading(false);
       if (email === 'user@example.com' && password === 'password') {
