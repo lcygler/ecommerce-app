@@ -1,15 +1,27 @@
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+
+import { getProductById } from '../redux/asyncActions';
+import { actions } from '../redux/slice';
 
 import { Badge, Box, Button, Flex, Heading, Image, Stack, Text } from '@chakra-ui/react';
 import backgroundImage from '../assets/images/background.jpg';
 
 function Detail() {
-  const { productId } = useParams();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { productId } = useParams();
   const allProducts = useSelector((state) => state.allProducts);
   const product = allProducts?.find((product) => product.id === parseInt(productId));
   const { name, image, Categories, discounts, price, Seasons, size, gender, description } = product;
+
+  useEffect(() => {
+    dispatch(getProductById(productId));
+    return () => {
+      dispatch(actions.clearSelectedProduct());
+    };
+  }, [dispatch, productId]);
 
   if (!product) {
     return (
