@@ -79,11 +79,11 @@ PurchaseDetail.belongsTo(User);
 Product.hasMany(Review);
 Review.belongsTo(Product);
 //Relacion de Product a Categories M : M
-Product.belongsToMany(Category, {through: 'Product_Categorie'});
-Category.belongsToMany(Product, {through: 'Product_Categorie'});
+Product.belongsToMany(Category, {through: 'ProductCategory'});
+Category.belongsToMany(Product, {through: 'ProductCategory'});
 //Relacion entre Products y season M : M
-Product.belongsToMany(Season, {through: 'Product_Season'});
-Season.belongsToMany(Product, {through: 'Product_Season'});
+Product.belongsToMany(Season, {through: 'ProductSeason'});
+Season.belongsToMany(Product, {through: 'ProductSeason'});
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');

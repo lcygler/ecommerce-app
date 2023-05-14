@@ -20,7 +20,7 @@
           "name": "Primavera"
         }
       ],
-      "categories": [
+      "Category": [
         {
           "id": 1,
           "name": "Remeras"
@@ -59,7 +59,7 @@
           "name": "Primavera"
         }
       ],
-      "categories": [
+      "Category": [
         {
           "id": 1,
           "name": "Camisas"
@@ -98,7 +98,7 @@
           "name": "Otoño"
         }
       ],
-      "categories": [
+      "Category": [
         {
           "id": 2,
           "name": "Pantalones"
@@ -141,7 +141,7 @@
           "name": "Primavera"
         }
       ],
-      "categories": [
+      "Category": [
         {
           "id": 1,
           "name": "Camisas"
@@ -180,7 +180,7 @@
           "name": "Primavera"
         }
       ],
-      "categories": [
+      "Category": [
         {
           "id": 1,
           "name": "Camisas"
@@ -219,7 +219,7 @@
           "name": "Primavera"
         }
       ],
-      "categories": [
+      "Category": [
         {
           "id": 1,
           "name": "Camisas"
@@ -258,7 +258,7 @@
           "name": "Primavera"
         }
       ],
-      "categories": [
+      "Category": [
         {
           "id": 1,
           "name": "Camisas"
@@ -297,7 +297,7 @@
           "name": "Primavera"
         }
       ],
-      "categories": [
+      "Category": [
         {
           "id": 1,
           "name": "Camisas"
@@ -336,7 +336,7 @@
           "name": "Primavera"
         }
       ],
-      "categories": [
+      "Category": [
         {
           "id": 1,
           "name": "Camisas"
@@ -375,7 +375,7 @@
           "name": "Primavera"
         }
       ],
-      "categories": [
+      "Category": [
         {
           "id": 1,
           "name": "Camisas"
@@ -414,7 +414,7 @@
           "name": "Primavera"
         }
       ],
-      "categories": [
+      "Category": [
         {
           "id": 1,
           "name": "Camisas"
@@ -453,7 +453,7 @@
           "name": "Primavera"
         }
       ],
-      "categories": [
+      "Category": [
         {
           "id": 1,
           "name": "Camisas"
@@ -492,7 +492,7 @@
           "name": "Primavera"
         }
       ],
-      "categories": [
+      "Category": [
         {
           "id": 1,
           "name": "Camisas"
@@ -531,7 +531,7 @@
           "name": "Primavera"
         }
       ],
-      "categories": [
+      "Category": [
         {
           "id": 1,
           "name": "Camisas"
@@ -570,7 +570,7 @@
           "name": "Primavera"
         }
       ],
-      "categories": [
+      "Category": [
         {
           "id": 1,
           "name": "Camisas"
