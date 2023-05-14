@@ -85,7 +85,6 @@ function Register() {
         username: formData.username.trim(),
         email: formData.email.trim(),
         password: formData.password.trim(),
-        passwordCheck: formData.passwordCheck.trim(),
         birthdate: formData.birthdate,
         phone: formData.phone.trim(),
         address: formData.address.trim(),
