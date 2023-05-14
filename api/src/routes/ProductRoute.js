@@ -1,4 +1,11 @@
-const { getAllProducts, createProduct, updateProduct, deleteProduct } = require('../controllers/ProductController');
+const { 
+  getAllProducts,
+  createProduct,
+  updateProduct, 
+  deleteProduct
+} = require('../controllers/ProductController');
+const { Op } = require('sequelize');
+const { Product, Season, Category, Review } = require('../db');
 const { Router } = require('express');
 
 const router = Router();
@@ -14,19 +21,77 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/', async(req, res) => {
-  const {name, size, gender, description, price, discounts, stock, image, Category, Season} = req.body;
-try {
-  if (!name || !description || !price || !stock || !image || !Category || !Season) {
-    throw new Error('Missing required fields');
+router.patch('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findByPk(id);
+  
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+  
+    const updatedProduct = await product.update(req.body);
+  
+    return res.json(updatedProduct);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' });
   }
-  const addProduct = await createProduct(name, size, gender, description, price, discounts, stock, image, Category.name, Season.name);
-res.status(201).json( addProduct);
-} catch (error) {
-  res.status(501).send({error: error.message});
-}
-
 });
+
+
+router.get('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findOne({
+      where: {
+        id: {
+          [Op.eq]: id
+        },
+        disable: false
+      },
+      include: [
+        {
+          model: Season
+        },
+        {
+          model: Category
+        },
+        {
+          model: Review
+        }
+      ]
+    });
+
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    return res.json(product);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+router.post('/', async (req, res) => {
+  try {
+    const { name , size, gender, description, price, discounts, stock, image} = req.body;
+    
+    if (!name || !description || !price || !stock || !image || !size || !gender) {
+      throw new Error('Missing required fields');
+    }
+    
+    const addProduct = await createProduct(name, size, gender, description, price, discounts, stock, image);
+    res.status(201).json(addProduct);
+  } catch (error) {
+    res.status(501).send({ error: error.message });
+  }
+});
+
+
+
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
