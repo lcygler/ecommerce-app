@@ -9,7 +9,7 @@ function Detail() {
   const navigate = useNavigate();
   const allProducts = useSelector((state) => state.allProducts);
   const product = allProducts?.find((product) => product.id === parseInt(productId));
-  const { name, image, categories, discount, price, seasons, size, gender, description } = product;
+  const { name, image, Categories, discounts, price, Seasons, size, gender, description } = product;
 
   if (!product) {
     return (
@@ -52,17 +52,17 @@ function Detail() {
 
                   <Flex alignItems="baseline">
                     <Text fontWeight="bold" fontSize="2xl" mt="2" mr="2">
-                      ${discount === 0 ? price.toFixed(2) : (price * (1 - discount)).toFixed(2)}
+                      ${discounts === 0 ? price.toFixed(2) : (price * (1 - discounts)).toFixed(2)}
                     </Text>
 
-                    {discount > 0 && (
+                    {discounts > 0 && (
                       <Text fontWeight="bold" fontSize="md" color="green.400">
-                        {discount * 100}% OFF
+                        {discounts * 100}% OFF
                       </Text>
                     )}
                   </Flex>
 
-                  {discount > 0 && (
+                  {discounts > 0 && (
                     <Text
                       fontWeight="bold"
                       fontSize="md"
@@ -70,7 +70,7 @@ function Detail() {
                       textDecoration="line-through"
                       mr="2"
                     >
-                      ${(price * (1 + discount)).toFixed(2)}
+                      ${(price * (1 + discounts)).toFixed(2)}
                     </Text>
                   )}
                 </Box>
@@ -90,7 +90,7 @@ function Detail() {
 
                   <Text fontWeight="normal" fontSize="md">
                     Category:{' '}
-                    {categories.map((category) => (
+                    {Categories.map((category) => (
                       <Badge key={category.id} colorScheme="purple" mr="1">
                         {category.name}
                       </Badge>
@@ -99,7 +99,7 @@ function Detail() {
 
                   <Text fontWeight="normal" fontSize="md">
                     Season:{' '}
-                    {seasons.map((season) => (
+                    {Seasons.map((season) => (
                       <Badge
                         key={season.id}
                         colorScheme={
