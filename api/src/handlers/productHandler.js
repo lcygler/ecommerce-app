@@ -27,10 +27,15 @@ const getProductByIdHandler = async (req, res, next) => {
 
 const createProductHandler = async (req, res, next) => {
   try {
-    const { name, description, price, stock, categories, seasons } = req.body;
-    const imagePath = req.file.path;
+    const { name, size, gender, description, price, stock, categories, seasons } = req.body;
+    let imagePath;
+    if (req.file) {
+      imagePath = req.file.path;
+    }
     const product = await createProduct(
       name,
+      size,
+      gender,
       description,
       price,
       stock,

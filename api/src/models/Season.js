@@ -8,7 +8,7 @@ module.exports = (sequelize) => {
       autoIncrement: true,
     },
     name: {
-      type: DataTypes.ENUM('Autumn', 'Winter', 'Spring', 'Summer'),
+      type: DataTypes.STRING,
       allowNull: false,
     },
   });
