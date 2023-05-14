@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
-import { addFavorite, deleteFavorite } from '../redux/slice';
+import { addFavorite, deleteFavorite } from '../redux/asyncActions';
 
 import { Badge, Box, Button, Flex, Heading, IconButton, Image, Link, Text } from '@chakra-ui/react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
-import { FaHeart } from 'react-icons/fa';
 
 function Product({
   id,

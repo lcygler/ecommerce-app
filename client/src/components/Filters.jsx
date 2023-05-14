@@ -1,14 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  filterProducts,
-  resetFilters,
-  updateCategoryFilter,
-  updateDiscountFilter,
-  updateGenderFilter,
-  updateOrder,
-  updateSeasonFilter,
-} from '../redux/slice';
+import { actions } from '../redux/slice';
 
 import { Box, Button, Flex, Select } from '@chakra-ui/react';
 
@@ -81,23 +73,23 @@ function Filters({ changePage, allProducts }) {
   const handleFilters = (e) => {
     const { name: selectName, value: selectValue } = e.target;
     if (selectName === 'categorySelect') {
-      dispatch(updateCategoryFilter(selectValue));
+      dispatch(actions.updateCategoryFilter(selectValue));
     } else if (selectName === 'discountSelect') {
-      dispatch(updateDiscountFilter(selectValue));
+      dispatch(actions.updateDiscountFilter(selectValue));
     } else if (selectName === 'seasonSelect') {
-      dispatch(updateSeasonFilter(selectValue));
+      dispatch(actions.updateSeasonFilter(selectValue));
     } else if (selectName === 'genderSelect') {
-      dispatch(updateGenderFilter(selectValue));
+      dispatch(actions.updateGenderFilter(selectValue));
     } else if (selectName === 'orderSelect') {
-      dispatch(updateOrder(selectValue));
+      dispatch(actions.updateOrder(selectValue));
     }
-    dispatch(filterProducts());
+    dispatch(actions.filterProducts());
     changePage(1);
   };
 
   const handleReset = () => {
-    dispatch(resetFilters());
-    dispatch(filterProducts());
+    dispatch(actions.resetFilters());
+    dispatch(actions.filterProducts());
     changePage(1);
   };
 
