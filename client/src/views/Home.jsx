@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { filterProducts, getProducts, setCurrentPage } from '../redux/slice';
+import { getAllProducts } from '../redux/asyncActions';
+import { actions } from '../redux/slice';
 
 import { Filters, Navbar, Pagination, Products } from '../components/index';
 
-import { Box } from '@chakra-ui/react';
+import { Box, Spinner, Text } from '@chakra-ui/react';
 
 function Home() {
   const dispatch = useDispatch();
@@ -15,8 +16,8 @@ function Home() {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      await dispatch(getProducts());
-      dispatch(filterProducts());
+      await dispatch(getAllProducts());
+      dispatch(actions.filterProducts());
     };
     fetchProducts();
     // dispatch(getCategories());
@@ -28,17 +29,31 @@ function Home() {
   const currentProducts = filteredProducts?.slice(startIndex, endIndex);
 
   const changePage = (pageNumber) => {
-    dispatch(setCurrentPage(pageNumber));
+    dispatch(actions.setCurrentPage(pageNumber));
   };
 
   return (
     <Box flexDirection="column">
       <Navbar width="100%" />
       <Filters changePage={changePage} allProducts={allProducts} />
-      <Products currentProducts={currentProducts} />
-      <Box display="flex" justifyContent="center">
-        <Pagination totalPages={totalPages} currentPage={currentPage} changePage={changePage} />
-      </Box>
+      {!allProducts?.length ? (
+        <>
+          <Box display="grid" placeItems="center" height="50vh">
+            <Spinner size="xl" color="blue.500" />
+          </Box>
+        </>
+      ) : !filteredProducts?.length ? (
+        <Box display="grid" placeItems="center" height="50vh">
+          <Text>No results found for the selected filters</Text>
+        </Box>
+      ) : (
+        <>
+          <Products currentProducts={currentProducts} />
+          <Box display="flex" justifyContent="center">
+            <Pagination totalPages={totalPages} currentPage={currentPage} changePage={changePage} />
+          </Box>
+        </>
+      )}
     </Box>
   );
 }
