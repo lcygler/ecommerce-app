@@ -55,8 +55,8 @@ function Filters({ changePage, allProducts }) {
 
   const discounts = allProducts
     .reduce((acc, product) => {
-      if (product.discount > 0 && !acc.includes(product.discount)) {
-        acc.push(product.discount);
+      if (product.discounts > 0 && !acc.includes(product.discounts)) {
+        acc.push(product.discounts);
       }
       return acc;
     }, [])
@@ -141,6 +141,7 @@ function Filters({ changePage, allProducts }) {
           onChange={handleFilters}
         >
           <option value="All">All Offers</option>
+          <option value="Discounts">Discounts</option>
           {discounts.map((discount) => (
             <option key={discount} value={discount}>
               {`${discount * 100}% OFF`}
