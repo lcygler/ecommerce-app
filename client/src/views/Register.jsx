@@ -1,5 +1,8 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { createUser } from '../redux/asyncActions';
+import { validateForm } from '../utils/validateForm';
 
 import {
   Alert,
@@ -17,28 +20,104 @@ import {
 import backgroundImage from '../assets/images/background.jpg';
 
 function Register() {
-  const [name, setName] = useState('');
-  const [lastname, setLastname] = useState('');
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordCheck, setPasswordCheck] = useState('');
-  const [birthdate, setBirthdate] = useState('');
-  const [address, setAddress] = useState('');
-  const [postalCode, setPostalCode] = useState('');
-  const [state, setState] = useState('');
-  const [country, setCountry] = useState('');
-  const [phone, setPhone] = useState('');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    name: '',
+    lastname: '',
+    username: '',
+    email: '',
+    password: '',
+    passwordCheck: '',
+    birthdate: '',
+    phone: '',
+    address: '',
+    postalCode: '',
+    state: '',
+    country: '',
+  });
+
+  const [errors, setErrors] = useState({
+    name: '',
+    lastname: '',
+    username: '',
+    email: '',
+    password: '',
+    passwordCheck: '',
+    birthdate: '',
+    phone: '',
+    address: '',
+    postalCode: '',
+    state: '',
+    country: '',
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleForm = (e) => {
+    const { form } = e.target;
+
+    const formFields = {};
+    for (const element of form.elements) {
+      if (element.name) {
+        formFields[element.name] = element.value;
+      }
+    }
+
+    validateForm(formFields, errors, setErrors);
+    // validateForm(formFields, errors, setErrors, AllProducts);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (formData.name && Object.values(errors).every((error) => error === '')) {
+      const newUser = {
+        name: formData.name.trim().charAt(0).toUpperCase() + formData.name.trim().slice(1),
+        lastname:
+          formData.lastname.trim().charAt(0).toUpperCase() + formData.lastname.trim().slice(1),
+        username: formData.username.trim(),
+        email: formData.email.trim(),
+        password: formData.password.trim(),
+        passwordCheck: formData.passwordCheck.trim(),
+        birthdate: formData.birthdate,
+        phone: formData.phone.trim(),
+        address: formData.address.trim(),
+        postalCode: Math.floor(formData.postalCode),
+        state: formData.state.trim(),
+        country: formData.country.trim(),
+      };
+
+      dispatch(createUser(newUser));
+
+      setFormData({
+        name: '',
+        lastname: '',
+        username: '',
+        email: '',
+        password: '',
+        passwordCheck: '',
+        birthdate: '',
+        phone: '',
+        address: '',
+        postalCode: '',
+        state: '',
+        country: '',
+      });
+    }
+  };
 
   const handleRegister = async (event) => {
     event.preventDefault();
     setIsLoading(true);
     setError('');
 
-    // Simulación de registro, acá va la lógica
     setTimeout(() => {
       setIsLoading(false);
       console.log('Registration successful');
@@ -70,8 +149,8 @@ function Register() {
               <Input
                 type="text"
                 placeholder="Enter your first name"
-                value={name}
-                onChange={(event) => setName(event.target.value)}
+                value={formData.name}
+                onChange={handleChange}
               />
             </FormControl>
 
@@ -80,8 +159,8 @@ function Register() {
               <Input
                 type="text"
                 placeholder="Enter your last name"
-                value={lastname}
-                onChange={(event) => setLastname(event.target.value)}
+                value={formData.lastname}
+                onChange={handleChange}
               />
             </FormControl>
           </Stack>
@@ -92,8 +171,8 @@ function Register() {
               <Input
                 type="text"
                 placeholder="Enter your username"
-                value={username}
-                onChange={(event) => setUsername(event.target.value)}
+                value={formData.username}
+                onChange={handleChange}
               />
             </FormControl>
 
@@ -102,8 +181,8 @@ function Register() {
               <Input
                 type="email"
                 placeholder="Enter your email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
+                value={formData.email}
+                onChange={handleChange}
               />
             </FormControl>
           </Stack>
@@ -114,8 +193,8 @@ function Register() {
               <Input
                 type="password"
                 placeholder="Enter your password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
+                value={formData.password}
+                onChange={handleChange}
               />
             </FormControl>
 
@@ -124,8 +203,8 @@ function Register() {
               <Input
                 type="password"
                 placeholder="Confirm your password"
-                value={passwordCheck}
-                onChange={(event) => setPasswordCheck(event.target.value)}
+                value={formData.passwordCheck}
+                onChange={handleChange}
               />
             </FormControl>
           </Stack>
@@ -136,8 +215,8 @@ function Register() {
               <Input
                 type="date"
                 placeholder="Enter your birthdate"
-                value={birthdate}
-                onChange={(event) => setBirthdate(event.target.value)}
+                value={formData.birthdate}
+                onChange={handleChange}
               />
             </FormControl>
 
@@ -146,8 +225,8 @@ function Register() {
               <Input
                 type="tel"
                 placeholder="Enter your phone number"
-                value={phone}
-                onChange={(event) => setPhone(event.target.value)}
+                value={formData.phone}
+                onChange={handleChange}
               />
             </FormControl>
           </Stack>
@@ -158,8 +237,8 @@ function Register() {
               <Input
                 type="text"
                 placeholder="Enter your address"
-                value={address}
-                onChange={(event) => setAddress(event.target.value)}
+                value={formData.address}
+                onChange={handleChange}
               />
             </FormControl>
 
@@ -168,8 +247,8 @@ function Register() {
               <Input
                 type="number"
                 placeholder="Enter your postal code"
-                value={postalCode}
-                onChange={(event) => setPostalCode(event.target.value)}
+                value={formData.postalCode}
+                onChange={handleChange}
               />
             </FormControl>
           </Stack>
@@ -180,8 +259,8 @@ function Register() {
               <Input
                 type="text"
                 placeholder="Enter your state"
-                value={state}
-                onChange={(event) => setState(event.target.value)}
+                value={formData.state}
+                onChange={handleChange}
               />
             </FormControl>
 
@@ -190,8 +269,8 @@ function Register() {
               <Input
                 type="text"
                 placeholder="Enter your country"
-                value={country}
-                onChange={(event) => setCountry(event.target.value)}
+                value={formData.country}
+                onChange={handleChange}
               />
             </FormControl>
           </Stack>

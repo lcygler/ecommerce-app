@@ -4,6 +4,7 @@ export const initialState = {
   filteredProducts: [],
   selectedProduct: {},
   categories: [],
+  seasons: [],
 
   // Filters
   category: 'All',
@@ -27,8 +28,8 @@ export const initialState = {
 
   // Users
   selectedUser: {},
+  isAuthenticated: false,
   loginValidation: '',
-  loginStatus: 'Logged out',
 
   // Reviews
   userReviews: [],
@@ -43,6 +44,7 @@ export const initialState = {
   updateProductByIdStatus: 'idle',
   deleteProductStatus: 'idle',
   getCategoriesStatus: 'idle',
+  getSeasonsStatus: 'idle',
 
   // Favorites
   getUserFavoritesStatus: 'idle',
@@ -79,6 +81,7 @@ export const initialState = {
   updateProductByIdError: null,
   deleteProductError: null,
   getCategoriesError: null,
+  getSeasonsError: null,
 
   // Favorites
   getUserFavoritesError: null,

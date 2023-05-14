@@ -109,3 +109,14 @@ export const clearCart = (state, action) => {
   state.items = [];
   state.totalPrice = 0;
 };
+
+//* AUTH
+export const login = (state, action) => {
+  state.selectedUser = action.payload;
+  state.isAuthenticated = true;
+};
+
+export const logout = (state, action) => {
+  state.selectedUser = {};
+  state.isAuthenticated = false;
+};

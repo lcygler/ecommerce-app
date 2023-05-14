@@ -15,6 +15,7 @@ import {
   getProductById,
   getProductByName,
   getReviewById,
+  getSeasons,
   getUserById,
   getUserFavorites,
   getUserOrders,
@@ -111,6 +112,19 @@ export const extraReducers = (builder) => {
     .addCase(getCategories.rejected, (state, action) => {
       state.getCategoriesStatus = 'failed';
       state.getCategoriesError = action.error.message;
+    })
+
+    //* SEASONS
+    .addCase(getSeasons.pending, (state) => {
+      state.getSeasonsStatus = 'loading';
+    })
+    .addCase(getSeasons.fulfilled, (state, action) => {
+      state.getSeasonsStatus = 'succeeded';
+      state.seasons = action.payload;
+    })
+    .addCase(getSeasons.rejected, (state, action) => {
+      state.getSeasonsStatus = 'failed';
+      state.getSeasonsError = action.error.message;
     })
 
     //* FAVORITES
