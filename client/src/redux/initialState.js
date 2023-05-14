@@ -27,6 +27,7 @@ export const initialState = {
 
   // Users
   selectedUser: {},
+  loginStatus: 'Logged out',
 
   // Reviews
   clientReviews: [],
@@ -37,6 +38,9 @@ export const initialState = {
   getAllProductsStatus: 'idle',
   getProductByIdStatus: 'idle',
   getProductByNameStatus: 'idle',
+  createProductStatus: 'idle',
+  updateProductByIdStatus: 'idle',
+  deleteProductStatus: 'idle',
   getCategoriesStatus: 'idle',
 
   // Favorites
@@ -70,6 +74,9 @@ export const initialState = {
   getAllProductsError: null,
   getProductByIdError: null,
   getProductByNameError: null,
+  createProductError: null,
+  updateProductByIdError: null,
+  deleteProductError: null,
   getCategoriesError: null,
 
   // Favorites

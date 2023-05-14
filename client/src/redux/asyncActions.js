@@ -8,6 +8,9 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
 getAllProducts
 getProductById
 getProductByName
+createProduct
+updateProductById
+deleteProductById
 getCategories
 
 //* FAVORITES
@@ -39,8 +42,7 @@ deleteReviewById
 
 //* PRODUCTS
 export const getAllProducts = createAsyncThunk('slice/getAllProducts', async () => {
-  // const response = await axios.get(`${API_URL}/products`);
-  const response = await axios.get(`${API_URL}/catalog`);
+  const response = await axios.get(`${API_URL}/products`);
   return response.data;
 });
 
@@ -54,6 +56,25 @@ export const getProductByName = createAsyncThunk('slice/getProductByName', async
   return response.data;
 });
 
+export const createProduct = createAsyncThunk('slice/createProduct', async (product) => {
+  const response = await axios.post(`${API_URL}/products`, product);
+  return response.data;
+});
+
+export const updateProductById = createAsyncThunk(
+  'slice/updateProductById',
+  async (productId, product) => {
+    const response = await axios.patch(`${API_URL}/products/${productId}`, product);
+    return response.data;
+  }
+);
+
+export const deleteProductById = createAsyncThunk('slice/deleteProductById', async (productId) => {
+  const response = await axios.delete(`${API_URL}/products/${productId}`);
+  return response.data;
+});
+
+//* CATEGORIES
 export const getCategories = createAsyncThunk('slice/getCategories', async () => {
   const response = await axios.get(`${API_URL}/categories`);
   return response.data;

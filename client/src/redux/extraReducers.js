@@ -1,10 +1,12 @@
 import {
   addFavorite,
   createOrder,
+  createProduct,
   createReview,
   createUser,
   deleteFavorite,
   deleteOrderById,
+  deleteProductById,
   deleteReviewById,
   deleteUserById,
   getAllProducts,
@@ -18,6 +20,7 @@ import {
   getReviewById,
   getUserById,
   updateOrderById,
+  updateProductById,
   updateReviewById,
   updateUserById,
   validateLogin,
@@ -62,6 +65,42 @@ export const extraReducers = (builder) => {
       state.getProductByNameError = action.error.message;
     })
 
+    .addCase(createProduct.pending, (state) => {
+      state.createProductStatus = 'loading';
+    })
+    .addCase(createProduct.fulfilled, (state, action) => {
+      state.createProductStatus = 'succeeded';
+      state.selectedProduct = action.payload;
+    })
+    .addCase(createProduct.rejected, (state, action) => {
+      state.createProductStatus = 'failed';
+      state.createProductError = action.error.message;
+    })
+
+    .addCase(updateProductById.pending, (state) => {
+      state.updateProductByIdStatus = 'loading';
+    })
+    .addCase(updateProductById.fulfilled, (state, action) => {
+      state.updateProductByIdStatus = 'succeeded';
+      state.selectedProduct = action.payload;
+    })
+    .addCase(updateProductById.rejected, (state, action) => {
+      state.updateProductByIdStatus = 'failed';
+      state.updateProductByIdError = action.error.message;
+    })
+
+    .addCase(deleteProductById.pending, (state) => {
+      state.deleteProductByIdStatus = 'loading';
+    })
+    .addCase(deleteProductById.fulfilled, (state, action) => {
+      state.deleteProductByIdStatus = 'succeeded';
+    })
+    .addCase(deleteProductById.rejected, (state, action) => {
+      state.deleteProductByIdStatus = 'failed';
+      state.deleteProductByIdError = action.error.message;
+    })
+
+    //* CATEGORIES
     .addCase(getCategories.pending, (state) => {
       state.getCategoriesStatus = 'loading';
     })
