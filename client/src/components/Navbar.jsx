@@ -1,5 +1,7 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
+import { actions } from '../redux/slice';
 
 import {
   Box,
@@ -20,7 +22,13 @@ import { FaBars, FaHeart, FaHome, FaList, FaShoppingCart, FaTimes, FaUser } from
 import logo from '../assets/icons/logo.png';
 
 function Navbar() {
+  const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const isAuthenticated = useSelector((state) => state.isAuthenticated);
+
+  const handleLogout = () => {
+    dispatch(actions.logout());
+  };
 
   return (
     <Box bg="transparent" px={4} py={2} pt="15px">
@@ -55,21 +63,34 @@ function Navbar() {
             </Button>
           </Link>
 
-          <Menu>
-            <MenuButton as={Button} leftIcon={<FaUser />} colorScheme="blue" variant="outline">
-              Login
-            </MenuButton>
+          {!isAuthenticated ? (
+            <Menu>
+              <MenuButton as={Button} leftIcon={<FaUser />} colorScheme="blue" variant="outline">
+                Login
+              </MenuButton>
 
-            <MenuList>
-              <Link as={RouterLink} to="/login">
-                <MenuItem>Login</MenuItem>
-              </Link>
+              <MenuList>
+                <Link as={RouterLink} to="/login">
+                  <MenuItem>Login</MenuItem>
+                </Link>
 
-              <Link as={RouterLink} to="/register">
-                <MenuItem>Register</MenuItem>
-              </Link>
-            </MenuList>
-          </Menu>
+                <Link as={RouterLink} to="/register">
+                  <MenuItem>Register</MenuItem>
+                </Link>
+              </MenuList>
+            </Menu>
+          ) : (
+            <Link as={RouterLink} to="/" mr={4}>
+              <Button
+                leftIcon={<FaUser />}
+                colorScheme="blue"
+                variant="outline"
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>
+            </Link>
+          )}
         </Box>
 
         <Box display={{ base: 'flex', md: 'none' }}>
