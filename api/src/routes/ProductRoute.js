@@ -1,8 +1,5 @@
 const { 
   getAllProducts,
-  createProduct,
-  updateProduct, 
-  deleteProduct
 } = require('../controllers/ProductController');
 const { Op } = require('sequelize');
 const { Product, Season, Category, Review } = require('../db');
@@ -76,45 +73,35 @@ router.get('/:id', async (req, res) => {
 
 
 router.post('/', async (req, res) => {
-  try {
-    const { name , size, gender, description, price, discounts, stock, image} = req.body;
-    
-    if (!name || !description || !price || !stock || !image || !size || !gender) {
-      throw new Error('Missing required fields');
-    }
-    
-    const addProduct = await createProduct(name, size, gender, description, price, discounts, stock, image);
-    res.status(201).json(addProduct);
-  } catch (error) {
-    res.status(501).send({ error: error.message });
-  }
-});
-
-
-
-
-router.put('/:id', async (req, res) => {
-  const { id } = req.params;
-  const productData = req.body;
+  const { name, size, gender, description, price, discounts, stock, image, Seasons, Categories } = req.body;
 
   try {
-    const updatedProduct = await updateProduct(id, productData);
-    res.status(200).json(updatedProduct);
+    // Se crean las instancias de los modelos de Season y Category
+    const seasons = await Season.findAll({ where: { name: Seasons.name } });
+    const categories = await Category.findAll({ where: { name: Categories.name } });
+  
+    // Se crea la instancia del modelo de Producto y se asignan los valores correspondientes
+    const newProduct = await Product.create({
+      name: name,
+      size: size,
+      gender: gender,
+      description: description,
+      price: price,
+      discounts: discounts,
+      stock: stock,
+      image: image
+    });
+  
+    // Se relacionan los modelos de Season y Category con el modelo de Producto
+    await newProduct.setSeasons(seasons);
+    await newProduct.setCategories(categories);
+  
+    res.status(201).json(newProduct);
   } catch (error) {
     console.error(error);
     res.status(500).send('Server Error');
   }
 });
 
-router.put('/products/:id/disable', async (req, res) => {
-  try {
-    const { id } = req.params;
-   await deleteProduct(id);
-    res.status(200).json({ message: "successful embroidery"});
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: 'Server error' });
-  }
-});
 
 module.exports = router;

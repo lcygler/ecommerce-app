@@ -43,7 +43,7 @@ for (let i = 0; i < api.products.length; i++) {
     gender: product.gender,
     description: product.description,
     price: product.price,
-    discounts: product.discount,
+    discounts: product.discounts || 0.00,
     views: product.views,
     stock: product.stock,
     image: product.image
@@ -100,73 +100,7 @@ const getAllProducts = async () => {
 };
 
 
-
-
-
-
-const createProduct = async (name, size, gender, description, price, discounts, stock, image ) => {
-  try {
-    const [product, created] = await Product.create({
-      where: {
-        name: name,
-        size: size,
-        gender: gender,
-        description: description,
-        price: price,
-        discounts: discounts,
-        stock: stock,
-        image: image
-      }
-    });
-
-    return product;
-  } catch (error) {
-    console.error(error);
-    throw new Error('Error creating product');
-  }
-};
-
-
-
-
-  const updateProduct = async (productId, productData) => {
-    try {
-      const product = await Product.findByPk(productId);
-  
-      if (!product) {
-        throw new Error('Product not found');
-      }
-  
-      const updatedProduct = await product.update(productData);
-  
-      return updatedProduct;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  const deleteProduct = async (productId) => {
-    try {
-      const product = await Product.findByPk(productId);
-  
-      if (!product) {
-        throw new Error('Product not found');
-      }
-  
-      const disabledProduct = await product.update({ disable: true });
-  
-      return disabledProduct;
-    } catch (error) {
-      throw error;
-    }
-  }
-
 module.exports = {
   getAllProducts,
-  createProduct,
-  updateProduct,
-  AddProducts,
-
-  deleteProduct
-
+  AddProducts
 };
