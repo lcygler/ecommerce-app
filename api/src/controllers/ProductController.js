@@ -43,7 +43,7 @@ for (let i = 0; i < api.products.length; i++) {
     gender: product.gender,
     description: product.description,
     price: product.price,
-    discount: product.discount,
+    discounts: product.discount,
     views: product.views,
     stock: product.stock,
     image: product.image
