@@ -14,12 +14,12 @@ deleteProductById
 getCategories
 
 //* FAVORITES
-getClientFavorites
+getUserFavorites
 addFavorite
 deleteFavorite
 
 //* ORDERS
-getClientOrders
+getUserOrders
 getOrderById
 createOrder
 updateOrderById
@@ -33,7 +33,7 @@ deleteUserById
 validateLogin
 
 //* REVIEWS
-getClientReviews
+getUserReviews
 getReviewById
 createReview
 updateReviewById
@@ -81,13 +81,13 @@ export const getCategories = createAsyncThunk('slice/getCategories', async () =>
 });
 
 //* FAVORITES
-export const getClientFavorites = createAsyncThunk('slice/getClientFavorites', async (clientId) => {
-  const response = await axios.get(`${API_URL}/favorites/client/${clientId}`);
+export const getUserFavorites = createAsyncThunk('slice/getUserFavorites', async (userId) => {
+  const response = await axios.get(`${API_URL}/favorites/users/${userId}`);
   return response.data;
 });
 
-export const addFavorite = createAsyncThunk('slice/addFavorite', async (clientId, favorite) => {
-  const response = await axios.post(`${API_URL}/favorites/client/${clientId}`, favorite);
+export const addFavorite = createAsyncThunk('slice/addFavorite', async (userId, favorite) => {
+  const response = await axios.post(`${API_URL}/favorites/users/${userId}`, favorite);
   return response.data;
 });
 
@@ -97,8 +97,8 @@ export const deleteFavorite = createAsyncThunk('slice/deleteFavorite', async (fa
 });
 
 //* ORDERS
-export const getClientOrders = createAsyncThunk('slice/getClientOrders', async (clientId) => {
-  const response = await axios.get(`${API_URL}/orders/client/${clientId}`);
+export const getUserOrders = createAsyncThunk('slice/getUserOrders', async (userId) => {
+  const response = await axios.get(`${API_URL}/orders/users/${userId}`);
   return response.data;
 });
 
@@ -149,7 +149,7 @@ export const validateLogin = createAsyncThunk('slice/validateLogin', async (user
 });
 
 //* REVIEWS
-export const getClientReviews = createAsyncThunk('slice/getClientReviews', async (userId) => {
+export const getUserReviews = createAsyncThunk('slice/getUserReviews', async (userId) => {
   const response = await axios.get(`${API_URL}/reviews/users/${userId}`);
   return response.data;
 });
