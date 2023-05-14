@@ -1,6 +1,5 @@
-const { Product, Review, Categories, Seasons, ProductCategory, ProductSeason } = require("../db"); // Importamos los modelos que vamos a utilizar
 const {uploadImage} = require("../utils/cloudinary.js");
-
+const { Product, Review, Category, Season } = require('../db');
 
 const AddProducts = async (api) => {
   const productos = [];
@@ -62,8 +61,7 @@ const AddProducts = async (api) => {
       const season = await Season.findOne({ where: { name: seasonName } });
       await newProduct.addSeason(season);
     }
-
-     // Crear registros para las reviews y establecer relación con el producto
+    // Crear registros para las reviews y establecer relación con el producto
   for (let j = 0; j < product.reviews.length; j++) {
     const reviewData = product.reviews[j];
     const newReview = await Review.create({
@@ -73,9 +71,6 @@ const AddProducts = async (api) => {
     await newProduct.addReview(newReview);
   }
   }
-  
-  // const dataInfo = await Category.findAll();
-  // console.log(dataInfo);
 };
 
 const getAllProducts = async () => {
@@ -86,13 +81,13 @@ const getAllProducts = async () => {
     include: [
       {
 
-        model: Review
+        model: Season
       },
       {
         model: Category
       },
       {
-        model: Season
+        model: Review
       }
     ]
   });
@@ -101,29 +96,9 @@ const getAllProducts = async () => {
 
 
 
-const createProduct = async (
-  name,
-  description,
-  price,
-  stock,
-  image,
-  categories,
-  seasons
-) => {
-  try {
-    const upload = await uploadImage(image);
-    const product = await Product.create({
-      name,
-      description,
-      price,
-      stock,
-      image: upload.url,
-    });
-
-
-const createProduct = async (name, description, price, stock, image, Category, Season) => {
+const createProduct = async (name, description, price, discounts, stock, image, Category, Season) => {
     try {
-      const product = await Product.create({ name, description, price, stock, image });
+      const product = await Product.create({ name, description, price, discounts, stock, image });
   
       // Asociamos las categorías al producto
       await product.setCategories(Category);
@@ -139,31 +114,43 @@ const createProduct = async (name, description, price, stock, image, Category, S
   };
 
 
-// Función para actualizar un producto
-async function updateProduct(productId, productData) {
-  try {
-    // Buscamos el producto en la base de datos
-    const product = await Product.findByPk(productId);
-
-    // Si el producto no existe, lanzamos un error
-    if (!product) {
-      throw new Error("El producto no existe");
+  const updateProduct = async (productId, productData) => {
+    try {
+      const product = await Product.findByPk(productId);
+  
+      if (!product) {
+        throw new Error('Product not found');
+      }
+  
+      const updatedProduct = await product.update(productData);
+  
+      return updatedProduct;
+    } catch (error) {
+      throw error;
     }
-
-    // Actualizamos los datos del producto
-    await product.update(productData);
-
-    // Devolvemos el producto actualizado
-    return product;
-  } catch (error) {
-    throw error;
   }
-}
+
+  const deleteProduct = async (productId) => {
+    try {
+      const product = await Product.findByPk(productId);
+  
+      if (!product) {
+        throw new Error('Product not found');
+      }
+  
+      const disabledProduct = await product.update({ disable: true });
+  
+      return disabledProduct;
+    } catch (error) {
+      throw error;
+    }
+  }
 
 module.exports = {
   getAllProducts,
   createProduct,
   updateProduct,
-  AddProducts
+  AddProducts,
+  deleteProduct
 
 };
