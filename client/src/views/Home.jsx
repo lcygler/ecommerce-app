@@ -5,7 +5,7 @@ import { actions } from '../redux/slice';
 
 import { Filters, Navbar, Pagination, Products } from '../components/index';
 
-import { Box, Spinner, Text } from '@chakra-ui/react';
+import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, Spinner } from '@chakra-ui/react';
 
 function Home() {
   const dispatch = useDispatch();
@@ -43,8 +43,14 @@ function Home() {
           </Box>
         </>
       ) : !filteredProducts?.length ? (
-        <Box display="grid" placeItems="center" height="50vh">
-          <Text>No results found for the selected filters</Text>
+        <Box display="grid" placeItems="center" width="100" mt="10">
+          <Alert status="warning" textAlign="center" maxWidth="xl" mx="auto">
+            <AlertIcon />
+            <AlertTitle>No results found</AlertTitle>
+            <AlertDescription>
+              There are no results that match your selected filters.
+            </AlertDescription>
+          </Alert>
         </Box>
       ) : (
         <>
