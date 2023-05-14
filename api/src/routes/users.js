@@ -2,16 +2,18 @@ const { Router } = require("express");
 const {
   getUsers,
   getUserById,
-  createUser,
   updateUser,
   deleteUser,
 } = require("../controllers/users");
+
+const { postRegister, postLogin } = require("../handlers/usersHandler");
 
 const router = Router();
 
 router.get("/", getUsers);
 router.get("/:id", getUserById);
-router.post("/", createUser);
+router.post("/register", postRegister);
+router.post("/login", postLogin);
 router.put("/:id", updateUser);
 router.delete("/:id", deleteUser);
 

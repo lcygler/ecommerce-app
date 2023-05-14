@@ -1,5 +1,13 @@
 const express = require("express");
-const {Users} = require("../db.js");
+const {
+  Users,
+  Review,
+  Trolley,
+  CartDetail,
+  PurchaseDetail,
+  Product,
+  ShippingAddress,
+} = require("../db.js");
 
 /**
  *
@@ -20,16 +28,16 @@ const getUsers = async (req, res, next) => {
  * @param {express.Request} req
  * @param {express.Response} res
  */
-const createUser = async (req, res, next) => {
-  try {
-    // TODO Hashear password antes de crear usuario
-    const user = req.body;
-    const newUser = await Users.create(user);
-    res.status(201).json(newUser);
-  } catch (err) {
-    next(err);
-  }
-};
+// const createUser = async (req, res, next) => {
+//   try {
+//     // TODO Hashear password antes de crear usuario
+//     const user = req.body;
+//     const newUser = await Users.create(user);
+//     res.status(201).json(newUser);
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
 /**
  *
@@ -60,7 +68,19 @@ const getUserById = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const user = await Users.findByPk(id);
+    const user = await Users.findOne(
+      { where: id },
+      {
+        include: [
+          { model: Review },
+          { model: Trolley },
+          { model: CartDetail },
+          { model: PurchaseDetail },
+          { model: Product },
+          { model: ShippingAddress },
+        ],
+      }
+    );
     res.json(user);
   } catch (err) {
     next(err);
@@ -85,8 +105,9 @@ const deleteUser = async (req, res, next) => {
 };
 
 module.exports = {
+  //registerCtrl,
   getUsers,
-  createUser,
+  //createUser,
   updateUser,
   getUserById,
   deleteUser,

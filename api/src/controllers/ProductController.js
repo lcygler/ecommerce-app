@@ -1,4 +1,6 @@
-const { Product, Review, Category, Season, ProductCategory, ProductSeason } = require('../db');
+const { Product, Review, Categories, Seasons, ProductCategory, ProductSeason } = require("../db"); // Importamos los modelos que vamos a utilizar
+const {uploadImage} = require("../utils/cloudinary.js");
+
 
 const AddProducts = async (api) => {
   const productos = [];
@@ -83,6 +85,7 @@ const getAllProducts = async () => {
     },
     include: [
       {
+
         model: Review
       },
       {
@@ -96,6 +99,26 @@ const getAllProducts = async () => {
   return products;
 }
 
+
+
+const createProduct = async (
+  name,
+  description,
+  price,
+  stock,
+  image,
+  categories,
+  seasons
+) => {
+  try {
+    const upload = await uploadImage(image);
+    const product = await Product.create({
+      name,
+      description,
+      price,
+      stock,
+      image: upload.url,
+    });
 
 
 const createProduct = async (name, description, price, stock, image, Category, Season) => {
@@ -115,31 +138,32 @@ const createProduct = async (name, description, price, stock, image, Category, S
     }
   };
 
-  // Función para actualizar un producto
+
+// Función para actualizar un producto
 async function updateProduct(productId, productData) {
-    try {
-      // Buscamos el producto en la base de datos
-      const product = await Product.findByPk(productId);
-  
-      // Si el producto no existe, lanzamos un error
-      if (!product) {
-        throw new Error('El producto no existe');
-      }
-  
-      // Actualizamos los datos del producto
-      await product.update(productData);
-  
-      // Devolvemos el producto actualizado
-      return product;
-    } catch (error) {
-      throw error;
+  try {
+    // Buscamos el producto en la base de datos
+    const product = await Product.findByPk(productId);
+
+    // Si el producto no existe, lanzamos un error
+    if (!product) {
+      throw new Error("El producto no existe");
     }
+
+    // Actualizamos los datos del producto
+    await product.update(productData);
+
+    // Devolvemos el producto actualizado
+    return product;
+  } catch (error) {
+    throw error;
   }
-  
+}
 
 module.exports = {
   getAllProducts,
   createProduct,
   updateProduct,
   AddProducts
+
 };
