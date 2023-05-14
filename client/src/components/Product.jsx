@@ -19,7 +19,7 @@ function Product({
   discounts,
 }) {
   const dispatch = useDispatch();
-  const loginStatus = useSelector((state) => state.loginStatus);
+  const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const [isFav, setIsFav] = useState(false);
 
   const handleFavorite = () => {
@@ -65,7 +65,7 @@ function Product({
             </Badge>
           )}
 
-          {loginStatus === 'Logged in' && (
+          {isAuthenticated && (
             <Box position="absolute" top="0" right="0" m="2">
               {isFav ? (
                 <IconButton

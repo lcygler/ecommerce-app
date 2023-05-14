@@ -27,8 +27,10 @@ export const filterBySeason = (products, season) => {
 };
 
 export const filterByDiscount = (products, discount) => {
-  if (discount !== 'All') {
-    return (products = products.filter((product) => product.discount === Number(discount)));
+  if (discount === 'Discounts') {
+    return (products = products.filter((product) => product.discounts > 0));
+  } else if (discount !== 'All') {
+    return (products = products.filter((product) => product.discounts === Number(discount)));
   } else {
     return products;
   }
