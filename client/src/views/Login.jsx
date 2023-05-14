@@ -23,21 +23,21 @@ import backgroundImage from '../assets/images/background.jpg';
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const loginValidation = useSelector((state) => state.loginValidation);
+  const isAuthenticated = useSelector((state) => state.loginValidation);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const user = { email: email, password: password };
-    dispatch(validateLogin(user));
-    if (loginValidation) {
+    const response = await dispatch(validateLogin(user));
+
+    if (typeof response === 'object') {
       dispatch(getUserFavorites);
       dispatch(getUserOrders);
-      // cargar usuario en estado
       navigate('/home');
     } else {
       setError('Invalid email or password');
