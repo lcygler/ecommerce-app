@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { filterProducts, getAllProducts, setCurrentPage } from '../redux/slice';
+import { getAllProducts } from '../redux/asyncActions';
+import { actions } from '../redux/slice';
 
 import { Filters, Navbar, Pagination, Products } from '../components/index';
 
@@ -16,7 +17,7 @@ function Home() {
   useEffect(() => {
     const fetchProducts = async () => {
       await dispatch(getAllProducts());
-      dispatch(filterProducts());
+      dispatch(actions.filterProducts());
     };
     fetchProducts();
     // dispatch(getCategories());
@@ -28,7 +29,7 @@ function Home() {
   const currentProducts = filteredProducts?.slice(startIndex, endIndex);
 
   const changePage = (pageNumber) => {
-    dispatch(setCurrentPage(pageNumber));
+    dispatch(actions.setCurrentPage(pageNumber));
   };
 
   return (
