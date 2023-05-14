@@ -22,15 +22,16 @@ export const initialState = {
   cartTotal: 0,
 
   // Orders
-  clientOrders: [],
+  userOrders: [],
   selectedOrder: {},
 
   // Users
   selectedUser: {},
+  loginValidation: '',
   loginStatus: 'Logged out',
 
   // Reviews
-  clientReviews: [],
+  userReviews: [],
   selectedReview: {},
 
   //* Async Status
@@ -44,12 +45,12 @@ export const initialState = {
   getCategoriesStatus: 'idle',
 
   // Favorites
-  getClientFavoritesStatus: 'idle',
+  getUserFavoritesStatus: 'idle',
   addFavoriteStatus: 'idle',
   deleteFavoriteStatus: 'idle',
 
   // Orders
-  getClientOrdersStatus: 'idle',
+  getUserOrdersStatus: 'idle',
   getOrderByIdStatus: 'idle',
   createOrderStatus: 'idle',
   updateOrderByIdStatus: 'idle',
@@ -63,7 +64,7 @@ export const initialState = {
   validateLoginStatus: 'idle',
 
   // Reviews
-  getClientReviewsStatus: 'idle',
+  getUserReviewsStatus: 'idle',
   getReviewByIdStatus: 'idle',
   createReviewStatus: 'idle',
   updateReviewByIdStatus: 'idle',
@@ -80,12 +81,12 @@ export const initialState = {
   getCategoriesError: null,
 
   // Favorites
-  getClientFavoritesError: null,
+  getUserFavoritesError: null,
   addFavoriteError: null,
   deleteFavoriteError: null,
 
   // Orders
-  getClientOrdersError: null,
+  getUserOrdersError: null,
   getOrderByIdError: null,
   createOrderError: null,
   updateOrderByIdError: null,
@@ -99,7 +100,7 @@ export const initialState = {
   validateLoginError: null,
 
   // Reviews
-  getClientReviewsError: null,
+  getUserReviewsError: null,
   getReviewByIdError: null,
   createReviewError: null,
   updateReviewByIdError: null,

@@ -11,14 +11,14 @@ import {
   deleteUserById,
   getAllProducts,
   getCategories,
-  getClientFavorites,
-  getClientOrders,
-  getClientReviews,
   getOrderById,
   getProductById,
   getProductByName,
   getReviewById,
   getUserById,
+  getUserFavorites,
+  getUserOrders,
+  getUserReviews,
   updateOrderById,
   updateProductById,
   updateReviewById,
@@ -114,16 +114,16 @@ export const extraReducers = (builder) => {
     })
 
     //* FAVORITES
-    .addCase(getClientFavorites.pending, (state) => {
-      state.getClientFavoritesStatus = 'loading';
+    .addCase(getUserFavorites.pending, (state) => {
+      state.getUserFavoritesStatus = 'loading';
     })
-    .addCase(getClientFavorites.fulfilled, (state, action) => {
-      state.getClientFavoritesStatus = 'succeeded';
+    .addCase(getUserFavorites.fulfilled, (state, action) => {
+      state.getUserFavoritesStatus = 'succeeded';
       state.favorites = action.payload;
     })
-    .addCase(getClientFavorites.rejected, (state, action) => {
-      state.getClientFavoritesStatus = 'failed';
-      state.getClientFavoritesError = action.error.message;
+    .addCase(getUserFavorites.rejected, (state, action) => {
+      state.getUserFavoritesStatus = 'failed';
+      state.getUserFavoritesError = action.error.message;
     })
 
     .addCase(addFavorite.pending, (state) => {
@@ -149,16 +149,16 @@ export const extraReducers = (builder) => {
     })
 
     //* ORDERS
-    .addCase(getClientOrders.pending, (state) => {
-      state.getClientOrdersStatus = 'loading';
+    .addCase(getUserOrders.pending, (state) => {
+      state.getUserOrdersStatus = 'loading';
     })
-    .addCase(getClientOrders.fulfilled, (state, action) => {
-      state.getClientOrdersStatus = 'succeeded';
-      state.clientOrders = action.payload;
+    .addCase(getUserOrders.fulfilled, (state, action) => {
+      state.getUserOrdersStatus = 'succeeded';
+      state.userOrders = action.payload;
     })
-    .addCase(getClientOrders.rejected, (state, action) => {
-      state.getClientOrdersStatus = 'failed';
-      state.getClientOrdersError = action.error.message;
+    .addCase(getUserOrders.rejected, (state, action) => {
+      state.getUserOrdersStatus = 'failed';
+      state.getUserOrdersError = action.error.message;
     })
 
     .addCase(getOrderById.pending, (state) => {
@@ -261,6 +261,7 @@ export const extraReducers = (builder) => {
     })
     .addCase(validateLogin.fulfilled, (state, action) => {
       state.validateLoginByIdStatus = 'succeeded';
+      state.loginValidation = action.payload;
     })
     .addCase(validateLogin.rejected, (state, action) => {
       state.validateLoginByIdStatus = 'failed';
@@ -268,16 +269,16 @@ export const extraReducers = (builder) => {
     })
 
     //* REVIEWS
-    .addCase(getClientReviews.pending, (state) => {
-      state.getClientReviewsStatus = 'loading';
+    .addCase(getUserReviews.pending, (state) => {
+      state.getUserReviewsStatus = 'loading';
     })
-    .addCase(getClientReviews.fulfilled, (state, action) => {
-      state.getClientReviewsStatus = 'succeeded';
-      state.clientReviews = action.payload;
+    .addCase(getUserReviews.fulfilled, (state, action) => {
+      state.getUserReviewsStatus = 'succeeded';
+      state.userReviews = action.payload;
     })
-    .addCase(getClientReviews.rejected, (state, action) => {
-      state.getClientReviewsStatus = 'failed';
-      state.getClientReviewsError = action.error.message;
+    .addCase(getUserReviews.rejected, (state, action) => {
+      state.getUserReviewsStatus = 'failed';
+      state.getUserReviewsError = action.error.message;
     })
 
     .addCase(getReviewById.pending, (state) => {
