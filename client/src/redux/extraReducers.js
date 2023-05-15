@@ -1,15 +1,18 @@
 import {
   addFavorite,
+  createCart,
   createOrder,
   createProduct,
   createReview,
   createUser,
+  deleteCartById,
   deleteFavorite,
   deleteOrderById,
   deleteProductById,
   deleteReviewById,
   deleteUserById,
   getAllProducts,
+  getCartById,
   getCategories,
   getOrderById,
   getProductById,
@@ -17,14 +20,16 @@ import {
   getReviewById,
   getSeasons,
   getUserById,
+  getUserCart,
   getUserFavorites,
   getUserOrders,
   getUserReviews,
+  loginUser,
+  updateCartById,
   updateOrderById,
   updateProductById,
   updateReviewById,
   updateUserById,
-  validateLogin,
 } from './asyncActions';
 
 export const extraReducers = (builder) => {
@@ -162,6 +167,66 @@ export const extraReducers = (builder) => {
       state.deleteFavoriteError = action.error.message;
     })
 
+    //* CART
+    .addCase(getUserCart.pending, (state) => {
+      state.getUserCartStatus = 'loading';
+    })
+    .addCase(getUserCart.fulfilled, (state, action) => {
+      state.getUserCartStatus = 'succeeded';
+      state.userCart = action.payload;
+    })
+    .addCase(getUserCart.rejected, (state, action) => {
+      state.getUserCartStatus = 'failed';
+      state.getUserCartError = action.error.message;
+    })
+
+    .addCase(getCartById.pending, (state) => {
+      state.getCartByIdStatus = 'loading';
+    })
+    .addCase(getCartById.fulfilled, (state, action) => {
+      state.getCartByIdStatus = 'succeeded';
+      state.selectedCart = action.payload;
+    })
+    .addCase(getCartById.rejected, (state, action) => {
+      state.getCartByIdStatus = 'failed';
+      state.getCartByIdError = action.error.message;
+    })
+
+    .addCase(createCart.pending, (state) => {
+      state.createCartStatus = 'loading';
+    })
+    .addCase(createCart.fulfilled, (state, action) => {
+      state.createCartStatus = 'succeeded';
+      state.selectedCart = action.payload;
+    })
+    .addCase(createCart.rejected, (state, action) => {
+      state.createCartStatus = 'failed';
+      state.createCartError = action.error.message;
+    })
+
+    .addCase(updateCartById.pending, (state) => {
+      state.updateCartByIdStatus = 'loading';
+    })
+    .addCase(updateCartById.fulfilled, (state, action) => {
+      state.updateCartByIdStatus = 'succeeded';
+      state.selectedCart = action.payload;
+    })
+    .addCase(updateCartById.rejected, (state, action) => {
+      state.updateCartByIdStatus = 'failed';
+      state.updateCartByIdError = action.error.message;
+    })
+
+    .addCase(deleteCartById.pending, (state) => {
+      state.deleteCartByIdStatus = 'loading';
+    })
+    .addCase(deleteCartById.fulfilled, (state, action) => {
+      state.deleteCartByIdStatus = 'succeeded';
+    })
+    .addCase(deleteCartById.rejected, (state, action) => {
+      state.deleteCartByIdStatus = 'failed';
+      state.deleteCartByIdError = action.error.message;
+    })
+
     //* ORDERS
     .addCase(getUserOrders.pending, (state) => {
       state.getUserOrdersStatus = 'loading';
@@ -270,16 +335,20 @@ export const extraReducers = (builder) => {
       state.deleteUserByIdError = action.error.message;
     })
 
-    .addCase(validateLogin.pending, (state) => {
-      state.validateLoginByIdStatus = 'loading';
+    .addCase(loginUser.pending, (state) => {
+      state.loginUserByIdStatus = 'loading';
     })
-    .addCase(validateLogin.fulfilled, (state, action) => {
-      state.validateLoginByIdStatus = 'succeeded';
+    .addCase(loginUser.fulfilled, (state, action) => {
+      state.loginUserByIdStatus = 'succeeded';
       state.selectedUser = action.payload;
+      state.isAuthenticated = true;
+      state.isAdmin = action.payload.isAdmin;
+      localStorage.setItem('selectedUser', JSON.stringify(action.payload));
+      localStorage.setItem('isAuthenticated', 'true');
     })
-    .addCase(validateLogin.rejected, (state, action) => {
-      state.validateLoginByIdStatus = 'failed';
-      state.validateLoginByIdError = action.error.message;
+    .addCase(loginUser.rejected, (state, action) => {
+      state.loginUserByIdStatus = 'failed';
+      state.loginUserByIdError = action.error.message;
     })
 
     //* REVIEWS
