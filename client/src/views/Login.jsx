@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
-import { getUserFavorites, getUserOrders, validateLogin } from '../redux/asyncActions';
-import { validateLoginData } from '../utils/validateForm';
+import { getUserFavorites, getUserOrders, loginUser } from '../redux/asyncActions';
+import { validateLogin } from '../utils/validateForm';
 
 import {
   Alert,
@@ -17,6 +17,7 @@ import {
   Link,
   Stack,
   Text,
+  Tooltip,
 } from '@chakra-ui/react';
 
 import backgroundImage from '../assets/images/background.jpg';
@@ -55,7 +56,7 @@ function Login() {
       }
     }
 
-    validateLoginData(formFields, errors, setErrors);
+    validateLogin(formFields, errors, setErrors);
   };
 
   const handleSubmit = async (e) => {
@@ -63,7 +64,7 @@ function Login() {
     setIsLoading(true);
 
     const user = { email: formData.email, password: formData.password };
-    const response = await dispatch(validateLogin(user));
+    const response = await dispatch(loginUser(user));
 
     timeoutId = setTimeout(() => {
       setIsLoading(false);
@@ -109,6 +110,7 @@ function Login() {
           <Stack spacing={4}>
             <FormControl isRequired isInvalid={errors.email !== ''}>
               <FormLabel htmlFor="email">Email address</FormLabel>
+              {/* <Tooltip label={errors.email} isOpen={errors.email !== ''} placement="bottom"> */}
               <Input
                 id="email"
                 name="email"
@@ -116,12 +118,16 @@ function Login() {
                 placeholder="Enter your email"
                 value={formData.email}
                 onChange={handleChange}
+                _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
               />
-              <FormErrorMessage>{errors.email}</FormErrorMessage>
+              {/* </Tooltip> */}
+              {/* <FormErrorMessage>{errors.email}</FormErrorMessage> */}
             </FormControl>
 
             <FormControl isRequired isInvalid={errors.password !== ''}>
               <FormLabel htmlFor="password">Password</FormLabel>
+              {/* <Tooltip label={errors.password} isOpen={errors.password !== ''} placement="bottom"> */}
               <Input
                 id="password"
                 name="password"
@@ -129,8 +135,11 @@ function Login() {
                 placeholder="Enter your password"
                 value={formData.password}
                 onChange={handleChange}
+                _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
               />
-              <FormErrorMessage>{errors.password}</FormErrorMessage>
+              {/* </Tooltip> */}
+              {/* <FormErrorMessage>{errors.password}</FormErrorMessage> */}
             </FormControl>
 
             <Stack direction="row" spacing={4}>
