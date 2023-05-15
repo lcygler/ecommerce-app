@@ -95,13 +95,16 @@ function Register() {
         state: formData.state.trim(),
         country: formData.country.trim(),
       };
-      console.log('USUARIO:');
-      console.log(newUser);
+
       const response = await dispatch(createUser(newUser));
+      console.log('response');
+      console.log(response);
+      console.log('response DATA');
+      console.log(response);
 
       timeoutId = setTimeout(() => {
         setIsLoading(false);
-        if (response.data) {
+        if (response) {
           setFormData({
             name: '',
             lastname: '',
@@ -132,18 +135,6 @@ function Register() {
       clearTimeout(timeoutId);
     };
   }, []);
-
-  const handleRegister = async (event) => {
-    event.preventDefault();
-    setIsLoading(true);
-    setError('');
-
-    setTimeout(() => {
-      setIsLoading(false);
-      console.log('Registration successful');
-      navigate('/home');
-    }, 2000);
-  };
 
   return (
     <Box

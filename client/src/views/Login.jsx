@@ -67,7 +67,7 @@ function Login() {
 
     timeoutId = setTimeout(() => {
       setIsLoading(false);
-      if (response.data) {
+      if (response) {
         // dispatch(getUserFavorites());
         // dispatch(getUserOrders());
         setFormData({
