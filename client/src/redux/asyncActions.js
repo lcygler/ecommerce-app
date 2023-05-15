@@ -139,7 +139,7 @@ export const updateUserById = createAsyncThunk('slice/updateUserById', async (us
 });
 
 export const createUser = createAsyncThunk('slice/createUser', async (userData) => {
-  const response = await axios.post(`/users`, userData);
+  const response = await axios.post(`/users/register`, userData);
   return response.data;
 });
 
@@ -149,7 +149,7 @@ export const deleteUserById = createAsyncThunk('slice/deleteUserById', async (us
 });
 
 export const validateLogin = createAsyncThunk('slice/validateLogin', async (userData) => {
-  const response = await axios.post(`/users/check`, userData);
+  const response = await axios.post(`/users/login`, userData);
   return response.data;
 });
 
