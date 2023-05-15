@@ -297,7 +297,7 @@ function Register() {
             </Stack>
 
             <Stack direction="row" spacing={4}>
-              <FormControl isRequiisRequired isInvalid={errors.state !== ''} red>
+              <FormControl isRequired isInvalid={errors.state !== ''}>
                 <FormLabel htmlFor="state">State</FormLabel>
                 <Input
                   id="state"
