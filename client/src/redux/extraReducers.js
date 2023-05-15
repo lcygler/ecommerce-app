@@ -275,7 +275,7 @@ export const extraReducers = (builder) => {
     })
     .addCase(validateLogin.fulfilled, (state, action) => {
       state.validateLoginByIdStatus = 'succeeded';
-      state.loginValidation = action.payload;
+      state.selectedUser = action.payload;
     })
     .addCase(validateLogin.rejected, (state, action) => {
       state.validateLoginByIdStatus = 'failed';

@@ -29,7 +29,6 @@ export const initialState = {
   // Users
   selectedUser: {},
   isAuthenticated: false,
-  loginValidation: '',
 
   // Reviews
   userReviews: [],
