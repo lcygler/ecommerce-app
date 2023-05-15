@@ -1,6 +1,6 @@
 import { emailRegex } from '../utils/consts';
 
-export function validateLoginData(formData, errors, setErrors) {
+export function validateLogin(formData, errors, setErrors) {
   let newErrors = { ...errors };
   const { email, password } = formData;
 
@@ -18,7 +18,7 @@ export function validateLoginData(formData, errors, setErrors) {
   setErrors(newErrors);
 }
 
-export function validateRegisterData(formData, errors, setErrors) {
+export function validateRegister(formData, errors, setErrors) {
   let newErrors = { ...errors };
   const {
     name,
