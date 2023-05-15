@@ -19,6 +19,8 @@ export const initialState = {
   favorites: [],
 
   // Cart
+  userCart: {},
+  selectedCart: {},
   cartItems: [],
   cartTotal: 0,
 
@@ -27,8 +29,9 @@ export const initialState = {
   selectedOrder: {},
 
   // Users
-  selectedUser: {},
-  isAuthenticated: false,
+  selectedUser: JSON.parse(localStorage.getItem('selectedUser')) || {},
+  isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
+  isAdmin: false,
 
   // Reviews
   userReviews: [],
@@ -50,6 +53,13 @@ export const initialState = {
   addFavoriteStatus: 'idle',
   deleteFavoriteStatus: 'idle',
 
+  // Cart
+  getUserCartStatus: 'idle',
+  getCartByIdStatus: 'idle',
+  createCartStatus: 'idle',
+  updateCartByIdStatus: 'idle',
+  deleteCartByIdStatus: 'idle',
+
   // Orders
   getUserOrdersStatus: 'idle',
   getOrderByIdStatus: 'idle',
@@ -62,7 +72,7 @@ export const initialState = {
   createUserStatus: 'idle',
   updateUserByIdStatus: 'idle',
   deleteUserByIdStatus: 'idle',
-  validateLoginStatus: 'idle',
+  loginUserStatus: 'idle',
 
   // Reviews
   getUserReviewsStatus: 'idle',
@@ -87,6 +97,13 @@ export const initialState = {
   addFavoriteError: null,
   deleteFavoriteError: null,
 
+  // Cart
+  getUserCartError: null,
+  getCartByIdError: null,
+  createCartError: null,
+  updateCartByIdError: null,
+  deleteCartByIdError: null,
+
   // Orders
   getUserOrdersError: null,
   getOrderByIdError: null,
@@ -99,7 +116,7 @@ export const initialState = {
   createUserError: null,
   updateUserByIdError: null,
   deleteUserByIdError: null,
-  validateLoginError: null,
+  loginUserError: null,
 
   // Reviews
   getUserReviewsError: null,
