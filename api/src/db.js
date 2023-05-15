@@ -12,7 +12,7 @@ const sequelize = new Sequelize(dbUrl, {
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
   dialectModule: pg,
   dialectOptions: {
-    ssl: true
+    ssl: NODE_ENV === "production",
   }
 });
 
