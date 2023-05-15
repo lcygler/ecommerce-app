@@ -1,11 +1,14 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
+import { actions } from '../redux/slice';
 
 import {
   Box,
   Button,
   Flex,
   IconButton,
+  Image,
   Link,
   Menu,
   MenuButton,
@@ -15,87 +18,120 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import { FaBars, FaHeart, FaList, FaShoppingCart, FaTimes, FaUser } from 'react-icons/fa';
+import { FaBars, FaHeart, FaHome, FaList, FaShoppingCart, FaTimes, FaUser } from 'react-icons/fa';
+import logo from '../assets/icons/logo.png';
 
 function Navbar() {
+  const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const isAuthenticated = useSelector((state) => state.isAuthenticated);
+
+  const handleLogout = () => {
+    dispatch(actions.logout());
+  };
 
   return (
-    <Box bg="gray.800" px={4} py={2}>
+    <Box bg="transparent" px={4} py={2} pt="15px">
       <Flex alignItems="center">
-        <Link as={RouterLink} to="/" color="white" fontSize="xl" fontWeight="bold">
-          Khaki Store
+        <Link as={RouterLink} to="/" display="flex" alignItems="center">
+          <Image src={logo} alt="Logo" w={100} h={10} mr={2} />
         </Link>
         <Spacer />
 
         <Box display={{ base: 'none', md: 'flex' }}>
+          <Link as={RouterLink} to="/home" mr={4}>
+            <Button leftIcon={<FaHome />} colorScheme="blue" variant="outline">
+              Home
+            </Button>
+          </Link>
+
           <Link as={RouterLink} to="/cart" mr={4}>
-            <Button leftIcon={<FaShoppingCart />} colorScheme="teal" variant="outline">
+            <Button leftIcon={<FaShoppingCart />} colorScheme="blue" variant="outline">
               Cart
             </Button>
           </Link>
 
           <Link as={RouterLink} to="/favorites" mr={4}>
-            <Button leftIcon={<FaHeart />} colorScheme="teal" variant="outline">
+            <Button leftIcon={<FaHeart />} colorScheme="blue" variant="outline">
               Favorites
             </Button>
           </Link>
 
           <Link as={RouterLink} to="/purchases" mr={4}>
-            <Button leftIcon={<FaList />} colorScheme="teal" variant="outline">
+            <Button leftIcon={<FaList />} colorScheme="blue" variant="outline">
               Purchases
             </Button>
           </Link>
 
-          <Menu>
-            <MenuButton as={Button} leftIcon={<FaUser />} colorScheme="teal" variant="outline">
-              Login
-            </MenuButton>
+          {!isAuthenticated ? (
+            <Menu>
+              <MenuButton as={Button} leftIcon={<FaUser />} colorScheme="blue" variant="outline">
+                Login
+              </MenuButton>
 
-            <MenuList>
-              <Link as={RouterLink} to="login">
-                <MenuItem>Login</MenuItem>
-              </Link>
+              <MenuList>
+                <Link as={RouterLink} to="/login">
+                  <MenuItem>Login</MenuItem>
+                </Link>
 
-              <Link as={RouterLink} to="register">
-                <MenuItem>Register</MenuItem>
-              </Link>
-            </MenuList>
-          </Menu>
+                <Link as={RouterLink} to="/register">
+                  <MenuItem>Register</MenuItem>
+                </Link>
+              </MenuList>
+            </Menu>
+          ) : (
+            <Link as={RouterLink} to="/" mr={4}>
+              <Button
+                leftIcon={<FaUser />}
+                colorScheme="blue"
+                variant="outline"
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>
+            </Link>
+          )}
         </Box>
 
         <Box display={{ base: 'flex', md: 'none' }}>
-          <IconButton icon={<FaBars />} variant="outline" onClick={onOpen} colorScheme="teal" />
+          <IconButton icon={<FaBars />} variant="outline" onClick={onOpen} colorScheme="blue" />
           <Box
             pos="absolute"
             top="0"
             right="0"
             w={isOpen ? 'full' : '0'}
-            bg="gray.800"
+            bg="white"
             transition="width 0.3s ease"
             overflow="hidden"
+            zIndex="1"
           >
             <Flex direction="column" alignItems="center" p={4}>
-              <Link as={RouterLink} to="cart" w="full" mb={4}>
-                <Button w="full" leftIcon={<FaShoppingCart />} colorScheme="teal" variant="outline">
+              <Link as={RouterLink} to="/home" w="full" mb={4}>
+                <Button w="full" leftIcon={<FaHome />} colorScheme="blue" variant="outline">
+                  Home
+                </Button>
+              </Link>
+
+              <Link as={RouterLink} to="/cart" w="full" mb={4}>
+                <Button w="full" leftIcon={<FaShoppingCart />} colorScheme="blue" variant="outline">
                   Cart
                 </Button>
               </Link>
 
-              <Link as={RouterLink} to="favorites" w="full" mb={4}>
-                <Button w="full" leftIcon={<FaHeart />} colorScheme="teal" variant="outline">
+              <Link as={RouterLink} to="/favorites" w="full" mb={4}>
+                <Button w="full" leftIcon={<FaHeart />} colorScheme="blue" variant="outline">
                   Favorites
                 </Button>
               </Link>
 
-              <Link as={RouterLink} to="purchases" w="full" mb={4}>
-                <Button w="full" leftIcon={<FaList />} colorScheme="teal" variant="outline">
+              <Link as={RouterLink} to="/purchases" w="full" mb={4}>
+                <Button w="full" leftIcon={<FaList />} colorScheme="blue" variant="outline">
                   Purchases
                 </Button>
               </Link>
 
               <Menu>
-                <MenuButton as={Button} w="full" colorScheme="teal" variant="outline">
+                <MenuButton as={Button} w="full" colorScheme="blue" variant="outline">
                   <Box display="flex" justifyContent="center">
                     <FaUser />
                     <Text ml={2}>Login</Text>
@@ -103,11 +139,11 @@ function Navbar() {
                 </MenuButton>
 
                 <MenuList>
-                  <Link as={RouterLink} to="login">
+                  <Link as={RouterLink} to="/login">
                     <MenuItem>Login</MenuItem>
                   </Link>
 
-                  <Link as={RouterLink} to="register">
+                  <Link as={RouterLink} to="/register">
                     <MenuItem>Register</MenuItem>
                   </Link>
                 </MenuList>
@@ -118,7 +154,7 @@ function Navbar() {
                   icon={<FaTimes />}
                   variant="outline"
                   onClick={onClose}
-                  colorScheme="teal"
+                  colorScheme="blue"
                   mt={4}
                   isRound
                   w="1"
