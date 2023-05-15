@@ -29,7 +29,9 @@ const registerCtrl = async (
     return "La fecha de nacimiento es requerida";
   }
   if (!phoneNumber) {
-    return "El número de teléfono es requerido";
+    return res
+      .status(400)
+      .send({ error: "El numero de telefono es requerido" });
   }
 
   const passwordHash = await encrypt(password);
