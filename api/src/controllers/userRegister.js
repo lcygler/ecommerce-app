@@ -10,13 +10,27 @@ const registerCtrl = async (
   birthdate,
   phoneNumber
 ) => {
-  if (!name) throw error("El nombre es requerido");
-  if (!lastname) throw error("El apellido es requerido");
-  if (!username) throw error("El nombre de usuario es requerido");
-  if (!email) throw error("El email es requerido");
-  if (!password) throw error("La contraseña es requerida");
-  if (!birthdate) throw error("La fecha de nacimiento es requerida");
-  if (!phoneNumber) throw error("El numero de telefono es requerido");
+  if (!name) {
+    return "El nombre es requerido";
+  }
+  if (!lastname) {
+    return "El apellido es requerido";
+  }
+  if (!username) {
+    return "El nombre de usuario es requerido";
+  }
+  if (!email) {
+    return "El email es requerido";
+  }
+  if (!password) {
+    return "La contraseña es requerida";
+  }
+  if (!birthdate) {
+    return "La fecha de nacimiento es requerida";
+  }
+  if (!phoneNumber) {
+    return "El número de teléfono es requerido";
+  }
 
   const passwordHash = await encrypt(password);
   const createUser = await User.create({

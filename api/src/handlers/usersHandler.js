@@ -11,6 +11,7 @@ const postRegister = async (req, res) => {
       birthdate,
       phoneNumber,
     } = req.body;
+
     const response = await registerCtrl(
       name,
       lastname,
@@ -30,7 +31,7 @@ const postLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
     const response = await loginCtrl(email, password);
-    res.status(200).send(response);
+    res.status(201).send(response);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
