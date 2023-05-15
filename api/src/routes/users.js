@@ -7,6 +7,7 @@ const {
 } = require("../controllers/users");
 
 const { postRegister, postLogin } = require("../handlers/usersHandler");
+// const { checkAuth } = require("../middlewares/auth");
 
 const router = Router();
 

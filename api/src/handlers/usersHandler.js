@@ -1,5 +1,8 @@
 const { registerCtrl } = require("../controllers/userRegister");
-const { loginCtrl } = require("../controllers/userLogin");
+const { tokenSing } = require("../utils/generateToken");
+const { User } = require("../db.js");
+const { compare } = require("../utils/HashPassword.js");
+
 const postRegister = async (req, res) => {
   try {
     const {
@@ -59,8 +62,26 @@ const postRegister = async (req, res) => {
 const postLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const response = await loginCtrl(email, password);
-    res.status(201).send(response);
+    const user = await User.findOne({ where: { email: email } });
+    if (!user) {
+      res.status(400);
+      res.send({ error: "Email invalido" });
+    }
+    const checkPassword = await compare(password, user.password);
+
+    const tokenSession = await tokenSing(user);
+
+    if (checkPassword) {
+      res.status(201).send({
+        data: user,
+        tokenSession,
+      });
+      return;
+    }
+    if (!checkPassword) {
+      res.status(400);
+      res.send({ error: "Contraseña incorrecta" });
+    }
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

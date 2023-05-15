@@ -10,30 +10,6 @@ const registerCtrl = async (
   birthdate,
   phoneNumber
 ) => {
-  if (!name) {
-    return "El nombre es requerido";
-  }
-  if (!lastname) {
-    return "El apellido es requerido";
-  }
-  if (!username) {
-    return "El nombre de usuario es requerido";
-  }
-  if (!email) {
-    return "El email es requerido";
-  }
-  if (!password) {
-    return "La contraseña es requerida";
-  }
-  if (!birthdate) {
-    return "La fecha de nacimiento es requerida";
-  }
-  if (!phoneNumber) {
-    return res
-      .status(400)
-      .send({ error: "El numero de telefono es requerido" });
-  }
-
   const passwordHash = await encrypt(password);
   const createUser = await User.create({
     name,
