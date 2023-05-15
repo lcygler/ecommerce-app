@@ -1,8 +1,7 @@
-require('dotenv').config();
-const pg = require('pg');
 const { Sequelize } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
+const pg = require('pg');
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME, DB_DEPLOY, NODE_ENV } = process.env;
 
 const dbUrl = DB_DEPLOY || `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`;
@@ -12,8 +11,8 @@ const sequelize = new Sequelize(dbUrl, {
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
   dialectModule: pg,
   dialectOptions: {
-    ssl: NODE_ENV === "production",
-  }
+    ssl: NODE_ENV === 'production',
+  },
 });
 
 const basename = path.basename(__filename);
@@ -54,39 +53,50 @@ const {
 //Relaciones de admin
 Admin.hasMany(User);
 User.belongsTo(Admin);
+
 //Relacion de admin y produc
 Admin.hasMany(Product);
 Product.belongsTo(Admin);
+
 //Relacion entre user y review
 User.hasMany(Review);
 Review.belongsTo(User);
- //Relacion entre usueario y carrito
- User.hasMany(Trolley);
- Trolley.belongsTo(User);
- //Relacion usuario y su carritoDetail
+
+//Relacion entre usueario y carrito
+User.hasMany(Trolley);
+Trolley.belongsTo(User);
+
+//Relacion usuario y su carritoDetail
 User.hasMany(CartDetail);
 CartDetail.belongsTo(User);
+
 // detalle de la compra
 User.hasMany(PurchaseDetail);
 PurchaseDetail.belongsTo(User);
- //Relacion de usuario y su favoritos
- User.belongsToMany(Product, {through: "Favorites"});
- Product.belongsToMany(User, {through: "Favorites"});
- //Relacion entre Useario y Dirrecion
- User.hasMany(ShippingAddress);
- ShippingAddress.belongsTo(User);
- //Relacion entre producto y carrito
- Product.belongsToMany(Shopping, {through: 'Shopping_Product'});
- Shopping.belongsToMany(Product, {through: 'Shopping_Product'});
-// Product uno a muchos reviews;
+
+//Relacion de usuario y su favoritos
+User.belongsToMany(Product, { through: 'Favorites' });
+Product.belongsToMany(User, { through: 'Favorites' });
+
+//Relacion entre Useario y Dirrecion
+User.hasMany(ShippingAddress);
+ShippingAddress.belongsTo(User);
+
+//Relacion entre producto y carrito
+Product.belongsToMany(Shopping, { through: 'Shopping_Product' });
+Shopping.belongsToMany(Product, { through: 'Shopping_Product' });
+
+// Product uno a muchos reviews
 Product.hasMany(Review);
 Review.belongsTo(Product);
-//Relacion de Product a Categories M : M
-Product.belongsToMany(Category, {through: 'ProductCategory'});
-Category.belongsToMany(Product, {through: 'ProductCategory'});
-//Relacion entre Products y season M : M
-Product.belongsToMany(Season, {through: 'ProductSeason'});
-Season.belongsToMany(Product, {through: 'ProductSeason'});
+
+//Relacion de Product a Categories N : M
+Product.belongsToMany(Category, { through: 'ProductCategory' });
+Category.belongsToMany(Product, { through: 'ProductCategory' });
+
+//Relacion entre Products y season N : M
+Product.belongsToMany(Season, { through: 'ProductSeason' });
+Season.belongsToMany(Product, { through: 'ProductSeason' });
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
