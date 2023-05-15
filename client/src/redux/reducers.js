@@ -111,12 +111,7 @@ export const clearCart = (state, action) => {
 };
 
 //* AUTH
-export const login = (state, action) => {
-  state.selectedUser = action.payload;
-  state.isAuthenticated = true;
-};
-
-export const logout = (state, action) => {
+export const logoutUser = (state, action) => {
   state.selectedUser = {};
   state.isAuthenticated = false;
 };
