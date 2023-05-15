@@ -72,6 +72,11 @@ router.get('/:id', async (req, res) => {
 });
 
 
+
+
+
+
+
 router.post('/', async (req, res) => {
   const { name, size, gender, description, price, discounts, stock, image, Seasons, Categories } = req.body;
 
