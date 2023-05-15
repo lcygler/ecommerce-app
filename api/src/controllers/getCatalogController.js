@@ -1,4 +1,4 @@
-const data = require('../utils/Product.json');
+const data = require('../utils/catalogFront.json');
 
 const getCatalogController = async () => {
   return data;

@@ -41,7 +41,8 @@ deleteReviewById
 
 //* PRODUCTS
 export const getAllProducts = createAsyncThunk('slice/getAllProducts', async () => {
-  const response = await axios.get(`/products`);
+  // const response = await axios.get(`/products`);
+  const response = await axios.get(`/catalog`); //! temporalmente
   return response.data;
 });
 
