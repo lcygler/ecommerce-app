@@ -10,6 +10,7 @@ import {
   Box,
   Button,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Input,
   Link,
@@ -166,6 +167,7 @@ function Register() {
                   value={formData.name}
                   onChange={handleChange}
                 />
+                <FormErrorMessage>{errors.name}</FormErrorMessage>
               </FormControl>
 
               <FormControl isRequired isInvalid={errors.lastname !== ''}>
@@ -178,6 +180,7 @@ function Register() {
                   value={formData.lastname}
                   onChange={handleChange}
                 />
+                <FormErrorMessage>{errors.lastname}</FormErrorMessage>
               </FormControl>
             </Stack>
 
@@ -192,6 +195,7 @@ function Register() {
                   value={formData.username}
                   onChange={handleChange}
                 />
+                <FormErrorMessage>{errors.username}</FormErrorMessage>
               </FormControl>
 
               <FormControl isRequired isInvalid={errors.email !== ''}>
@@ -204,6 +208,7 @@ function Register() {
                   value={formData.email}
                   onChange={handleChange}
                 />
+                <FormErrorMessage>{errors.email}</FormErrorMessage>
               </FormControl>
             </Stack>
 
@@ -218,6 +223,7 @@ function Register() {
                   value={formData.password}
                   onChange={handleChange}
                 />
+                <FormErrorMessage>{errors.password}</FormErrorMessage>
               </FormControl>
 
               <FormControl isRequired isInvalid={errors.passwordCheck !== ''}>
@@ -230,6 +236,7 @@ function Register() {
                   value={formData.passwordCheck}
                   onChange={handleChange}
                 />
+                <FormErrorMessage>{errors.passwordCheck}</FormErrorMessage>
               </FormControl>
             </Stack>
 
@@ -244,6 +251,7 @@ function Register() {
                   value={formData.birthdate}
                   onChange={handleChange}
                 />
+                <FormErrorMessage>{errors.birthdate}</FormErrorMessage>
               </FormControl>
 
               <FormControl isRequired isInvalid={errors.phoneNumber !== ''}>
@@ -256,6 +264,7 @@ function Register() {
                   value={formData.phoneNumber}
                   onChange={handleChange}
                 />
+                <FormErrorMessage>{errors.phoneNumber}</FormErrorMessage>
               </FormControl>
             </Stack>
 
@@ -270,6 +279,7 @@ function Register() {
                   value={formData.address}
                   onChange={handleChange}
                 />
+                <FormErrorMessage>{errors.address}</FormErrorMessage>
               </FormControl>
 
               <FormControl isRequired isInvalid={errors.postalCode !== ''}>
@@ -282,6 +292,7 @@ function Register() {
                   value={formData.postalCode}
                   onChange={handleChange}
                 />
+                <FormErrorMessage>{errors.postalCode}</FormErrorMessage>
               </FormControl>
             </Stack>
 
@@ -296,6 +307,7 @@ function Register() {
                   value={formData.state}
                   onChange={handleChange}
                 />
+                <FormErrorMessage>{errors.state}</FormErrorMessage>
               </FormControl>
 
               <FormControl isRequired isInvalid={errors.country !== ''}>
@@ -308,6 +320,7 @@ function Register() {
                   value={formData.country}
                   onChange={handleChange}
                 />
+                <FormErrorMessage>{errors.country}</FormErrorMessage>
               </FormControl>
             </Stack>
           </Stack>
