@@ -23,13 +23,15 @@ import {
 import backgroundImage from '../assets/images/background.jpg';
 
 let timeoutId = null;
+let navigateTimeoutId = null;
 
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -69,14 +71,16 @@ function Login() {
     timeoutId = setTimeout(() => {
       setIsLoading(false);
       if (response) {
+        setSuccess('Login successful!');
         // dispatch(getUserFavorites());
         // dispatch(getUserOrders());
         setFormData({
           email: '',
           password: '',
         });
-        navigate('/home');
-        console.log('Login successful');
+        navigateTimeoutId = setTimeout(() => {
+          navigate('/home');
+        }, 1000);
       } else {
         setError('Invalid email or password');
       }
@@ -86,6 +90,7 @@ function Login() {
   useEffect(() => {
     return () => {
       clearTimeout(timeoutId);
+      clearTimeout(navigateTimeoutId);
     };
   }, []);
 
@@ -105,6 +110,12 @@ function Login() {
             <Alert status="error" marginBottom={4}>
               <AlertIcon />
               {error}
+            </Alert>
+          )}
+          {success && (
+            <Alert status="success" marginBottom={4}>
+              <AlertIcon />
+              {success}
             </Alert>
           )}
           <Stack spacing={4}>

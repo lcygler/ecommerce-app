@@ -21,13 +21,15 @@ import {
 import backgroundImage from '../assets/images/background.jpg';
 
 let timeoutId = null;
+let navigateTimeoutId = null;
 
 function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -102,6 +104,7 @@ function Register() {
       timeoutId = setTimeout(() => {
         setIsLoading(false);
         if (response) {
+          setSuccess('Registration successful!');
           setFormData({
             name: '',
             lastname: '',
@@ -116,10 +119,11 @@ function Register() {
             state: '',
             country: '',
           });
-          navigate('/home');
-          console.log('Register successful');
+          navigateTimeoutId = setTimeout(() => {
+            navigate('/home');
+          }, 1000);
         } else {
-          setError('Invalid user data');
+          setError('Incomplete or incorrect data');
         }
       }, 2000);
     }
@@ -130,6 +134,7 @@ function Register() {
   useEffect(() => {
     return () => {
       clearTimeout(timeoutId);
+      clearTimeout(navigateTimeoutId);
     };
   }, []);
 
@@ -149,6 +154,12 @@ function Register() {
             <Alert status="error" marginBottom={4}>
               <AlertIcon />
               {error}
+            </Alert>
+          )}
+          {success && (
+            <Alert status="success" marginBottom={4}>
+              <AlertIcon />
+              {success}
             </Alert>
           )}
           <Stack direction="column" spacing={4}>
