@@ -3,40 +3,51 @@ import axios from 'axios';
 
 /* 
 //* PRODUCTS
-getAllProducts
-getProductById
-getProductByName
-createProduct
-updateProductById
-deleteProductById
-getCategories
-getSeasons
+getAllProducts (Front OK - Back OK) 
+getProductById (Front OK - Back OK) 
+getProductByName (Front OK - Back NOK) 
+createProduct (Front OK - Back OK) 
+updateProductById (Front OK - Back OK) 
+deleteProductById (Front OK - Back NOK) 
+
+//* DETAIL
+getCategories (Front OK - Back NOK) 
+getSeasons (Front OK - Back NOK) 
+getSize (Front NOK - Back NOK) 
+getColor (Front NOK - Back NOK) 
 
 //* FAVORITES
-getUserFavorites
-addFavorite
-deleteFavorite
+getUserFavorites (Front OK - Back NOK)
+addFavorite (Front OK - Back NOK)
+deleteFavorite (Front OK - Back NOK)
+
+//* CART
+getUserCart (Front OK - Back NOK)
+getCartById (Front OK - Back NOK)
+createCart (Front OK - Back NOK)
+updateCartById (Front OK - Back NOK)
+deleteCartById (Front OK - Back NOK)
 
 //* ORDERS
-getUserOrders
-getOrderById
-createOrder
-updateOrderById
-deleteOrderById
+getUserOrders (Front OK - Back NOK)
+getOrderById (Front OK - Back NOK)
+createOrder (Front OK - Back NOK)
+updateOrderById (Front OK - Back NOK)
+deleteOrderById  (Front OK - Back NOK)
 
 //* USERS
-getUserById
-updateUserById
-createUser
-deleteUserById
-validateLogin
+getUserById (Front OK - Back NOK)
+updateUserById (Front OK - Back NOK)
+createUser (Front OK - Back OK)
+deleteUserById (Front OK - Back NOK)
+loginUser (Front OK - Back OK)
 
 //* REVIEWS
-getUserReviews
-getReviewById
-createReview
-updateReviewById
-deleteReviewById
+getUserReviews (Front OK - Back NOK)
+getReviewById (Front OK - Back NOK)
+createReview (Front OK - Back NOK)
+updateReviewById (Front OK - Back NOK)
+deleteReviewById (Front OK - Back NOK)
 */
 
 //* PRODUCTS
@@ -101,6 +112,32 @@ export const deleteFavorite = createAsyncThunk('slice/deleteFavorite', async (fa
   return response.data;
 });
 
+//* CART
+export const getUserCart = createAsyncThunk('slice/getCartOrders', async (userId) => {
+  const response = await axios.get(`/cart/users/${userId}`);
+  return response.data;
+});
+
+export const getCartById = createAsyncThunk('slice/getCartById', async (cartId) => {
+  const response = await axios.get(`/cart/${cartId}`);
+  return response.data;
+});
+
+export const createCart = createAsyncThunk('slice/createCart', async (cart) => {
+  const response = await axios.post(`/cart`, cart);
+  return response.data;
+});
+
+export const updateCartById = createAsyncThunk('slice/updateCartById', async (cartId, cart) => {
+  const response = await axios.patch(`/cart/${cartId}`, cart);
+  return response.data;
+});
+
+export const deleteCartById = createAsyncThunk('slice/deleteCartById', async (cartId) => {
+  const response = await axios.delete(`/cart/${cartId}`);
+  return response.data;
+});
+
 //* ORDERS
 export const getUserOrders = createAsyncThunk('slice/getUserOrders', async (userId) => {
   const response = await axios.get(`/orders/users/${userId}`);
@@ -148,7 +185,7 @@ export const deleteUserById = createAsyncThunk('slice/deleteUserById', async (us
   return response.data;
 });
 
-export const validateLogin = createAsyncThunk('slice/validateLogin', async (userData) => {
+export const loginUser = createAsyncThunk('slice/loginUser', async (userData) => {
   const response = await axios.post(`/users/login`, userData);
   return response.data;
 });
