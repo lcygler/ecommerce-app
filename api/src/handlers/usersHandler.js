@@ -1,49 +1,8 @@
-const { registerCtrl } = require("../controllers/userRegister");
-const { tokenSing } = require("../utils/generateToken");
-const { User } = require("../db.js");
-const { compare } = require("../utils/HashPassword.js");
-
+const { registerCtrl } = require('../controllers/userRegister');
+const { loginCtrl } = require('../controllers/userLogin');
 const postRegister = async (req, res) => {
   try {
-    const {
-      name,
-      lastname,
-      username,
-      email,
-      password,
-      birthdate,
-      phoneNumber,
-    } = req.body;
-
-    if (!name) {
-      res.status(400);
-      res.send({ error: "El nombre es requerido" });
-    }
-    if (!lastname) {
-      res.status(400);
-      res.send({ error: "El apellido es requerido" });
-    }
-    if (!username) {
-      res.status(400);
-      res.send({ error: "El nombre de usuario es requerido" });
-    }
-    if (!email) {
-      res.status(400);
-      res.send({ error: "El email es requerido" });
-    }
-    if (!password) {
-      res.status(400);
-      res.send({ error: "La contraseña es requerida" });
-    }
-    if (!birthdate) {
-      res.status(400);
-      res.send({ error: "La fecha de nacimiento es requerida" });
-    }
-    if (!phoneNumber) {
-      res.status(400);
-      res.send({ error: "El numero de telefono es requerido" });
-    }
-
+    const { name, lastname, username, email, password, birthdate, phoneNumber, isAdmin } = req.body;
     const response = await registerCtrl(
       name,
       lastname,
@@ -51,9 +10,10 @@ const postRegister = async (req, res) => {
       email,
       password,
       birthdate,
-      phoneNumber
+      phoneNumber,
+      isAdmin
     );
-    res.status(201).send(response);
+    res.status(201).json(response.dataValues);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -62,10 +22,11 @@ const postRegister = async (req, res) => {
 const postLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
+
     const user = await User.findOne({ where: { email: email } });
     if (!user) {
       res.status(400);
-      res.send({ error: "Email invalido" });
+      res.send({ error: 'Email invalido' });
     }
     const checkPassword = await compare(password, user.password);
 
@@ -80,8 +41,11 @@ const postLogin = async (req, res) => {
     }
     if (!checkPassword) {
       res.status(400);
-      res.send({ error: "Contraseña incorrecta" });
+      res.send({ error: 'Contraseña incorrecta' });
     }
+
+    const response = await loginCtrl(email, password);
+    res.status(200).json(response.dataValues);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

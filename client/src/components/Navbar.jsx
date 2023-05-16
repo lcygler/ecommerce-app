@@ -27,7 +27,7 @@ function Navbar() {
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
 
   const handleLogout = () => {
-    dispatch(actions.logout());
+    dispatch(actions.logoutUser());
   };
 
   return (
@@ -130,24 +130,38 @@ function Navbar() {
                 </Button>
               </Link>
 
-              <Menu>
-                <MenuButton as={Button} w="full" colorScheme="blue" variant="outline">
-                  <Box display="flex" justifyContent="center">
-                    <FaUser />
-                    <Text ml={2}>Login</Text>
-                  </Box>
-                </MenuButton>
+              {!isAuthenticated ? (
+                <Menu>
+                  <MenuButton as={Button} w="full" colorScheme="blue" variant="outline">
+                    <Box display="flex" justifyContent="center">
+                      <FaUser />
+                      <Text ml={2}>Login</Text>
+                    </Box>
+                  </MenuButton>
 
-                <MenuList>
-                  <Link as={RouterLink} to="/login">
-                    <MenuItem>Login</MenuItem>
-                  </Link>
+                  <MenuList>
+                    <Link as={RouterLink} to="/login">
+                      <MenuItem>Login</MenuItem>
+                    </Link>
 
-                  <Link as={RouterLink} to="/register">
-                    <MenuItem>Register</MenuItem>
-                  </Link>
-                </MenuList>
-              </Menu>
+                    <Link as={RouterLink} to="/register">
+                      <MenuItem>Register</MenuItem>
+                    </Link>
+                  </MenuList>
+                </Menu>
+              ) : (
+                <Link as={RouterLink} to="/" w="full" mb={4}>
+                  <Button
+                    w="full"
+                    leftIcon={<FaUser />}
+                    colorScheme="blue"
+                    variant="outline"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </Button>
+                </Link>
+              )}
 
               {isOpen && (
                 <IconButton
