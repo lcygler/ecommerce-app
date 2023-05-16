@@ -13,7 +13,8 @@ const postRegister = async (req, res) => {
       phoneNumber,
       isAdmin
     );
-    res.status(201).json(response.dataValues);
+    console.log(response);
+    res.status(201).json(response);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -23,7 +24,7 @@ const postLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
     const response = await loginCtrl(email, password);
-    res.status(200).json(response.dataValues);
+    res.status(200).json(response);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
