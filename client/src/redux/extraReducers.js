@@ -108,6 +108,7 @@ export const extraReducers = (builder) => {
 
     //* CATEGORIES
     .addCase(getCategories.pending, (state) => {
+      Catalog;
       state.getCategoriesStatus = 'loading';
     })
     .addCase(getCategories.fulfilled, (state, action) => {
@@ -130,6 +131,19 @@ export const extraReducers = (builder) => {
     .addCase(getSeasons.rejected, (state, action) => {
       state.getSeasonsStatus = 'failed';
       state.getSeasonsError = action.error.message;
+    })
+
+    //* GENDERS
+    .addCase(getGenders.pending, (state) => {
+      state.getGendersStatus = 'loading';
+    })
+    .addCase(getGenders.fulfilled, (state, action) => {
+      state.getGendersStatus = 'succeeded';
+      state.genders = action.payload;
+    })
+    .addCase(getGenders.rejected, (state, action) => {
+      state.getGendersStatus = 'failed';
+      state.getGendersError = action.error.message;
     })
 
     //* FAVORITES
