@@ -31,7 +31,7 @@ export const initialState = {
   // Users
   selectedUser: JSON.parse(localStorage.getItem('selectedUser')) || {},
   isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
-  isAdmin: false,
+  isAdmin: localStorage.getItem('isAdmin') === 'true',
 
   // Reviews
   userReviews: [],

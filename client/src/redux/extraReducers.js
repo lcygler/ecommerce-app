@@ -345,6 +345,7 @@ export const extraReducers = (builder) => {
       state.isAdmin = action.payload.isAdmin;
       localStorage.setItem('selectedUser', JSON.stringify(action.payload));
       localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('isAdmin', action.payload.isAdmin);
     })
     .addCase(loginUser.rejected, (state, action) => {
       state.loginUserByIdStatus = 'failed';
