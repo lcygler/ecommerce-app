@@ -5,6 +5,7 @@ const categoriesRouter = require('./CategoryRoute.js');
 const productRouter = require('./ProductRoute.js');
 const catalogRouter = require('./catalog.js');
 const seasonsRouter = require('./seasons.js');
+const gendersRouter = require('./genders.js');
 
 const router = Router();
 
@@ -14,6 +15,7 @@ router.use('/products', productRouter);
 router.use('/catalog', catalogRouter); // temporal
 router.use('/categories', categoriesRouter);
 router.use('/seasons', seasonsRouter);
+router.use('/genders', gendersRouter);
 // router.use('/favorites', categoryRouter);
 // router.use('/cart', cartRouter);
 // router.use('/orders', ordersRouter);
