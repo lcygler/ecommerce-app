@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const { User } = require('../db.js');
 const { encrypt } = require('../utils/HashPassword.js');
 
@@ -30,7 +31,11 @@ const registerCtrl = async (
     phoneNumber,
     isAdmin,
   });
-  return createUser;
+
+  // Generar JWT token
+  const token = jwt.sign({ id: createUser.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+  return { user: createUser, token };
 };
 
 module.exports = { registerCtrl };
