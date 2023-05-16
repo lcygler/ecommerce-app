@@ -14,6 +14,7 @@ import {
   getAllProducts,
   getCartById,
   getCategories,
+  getGenders,
   getOrderById,
   getProductById,
   getProductByName,
@@ -108,7 +109,6 @@ export const extraReducers = (builder) => {
 
     //* CATEGORIES
     .addCase(getCategories.pending, (state) => {
-      Catalog;
       state.getCategoriesStatus = 'loading';
     })
     .addCase(getCategories.fulfilled, (state, action) => {
