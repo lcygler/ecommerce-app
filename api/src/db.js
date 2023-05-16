@@ -46,7 +46,7 @@ const {
   Season,
   ShippingAddress,
   Shopping,
-  Trolley,
+  Cart,
 } = sequelize.models;
 
 // Aca vendrian las relaciones
@@ -63,8 +63,8 @@ User.hasMany(Review);
 Review.belongsTo(User);
 
 //Relacion entre usueario y carrito
-User.hasMany(Trolley);
-Trolley.belongsTo(User);
+User.hasMany(Cart);
+Cart.belongsTo(User);
 
 //Relacion usuario y su carritoDetail
 User.hasMany(CartDetail);
