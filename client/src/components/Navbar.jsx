@@ -18,13 +18,23 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import { FaBars, FaHeart, FaHome, FaList, FaShoppingCart, FaTimes, FaUser } from 'react-icons/fa';
+import {
+  FaBars,
+  FaHeart,
+  FaHome,
+  FaList,
+  FaShoppingCart,
+  FaTimes,
+  FaUser,
+  FaUserCog,
+} from 'react-icons/fa';
 import logo from '../assets/icons/logo.png';
 
 function Navbar() {
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
+  const isAdmin = useSelector((state) => state.isAdmin);
 
   const handleLogout = () => {
     dispatch(actions.logoutUser());
@@ -62,6 +72,14 @@ function Navbar() {
               Purchases
             </Button>
           </Link>
+
+          {isAuthenticated && isAdmin && (
+            <Link as={RouterLink} to="/dashboard" mr={4}>
+              <Button leftIcon={<FaUserCog />} colorScheme="blue" variant="outline">
+                Dashboard
+              </Button>
+            </Link>
+          )}
 
           {!isAuthenticated ? (
             <Menu>
@@ -129,6 +147,14 @@ function Navbar() {
                   Purchases
                 </Button>
               </Link>
+
+              {isAuthenticated && isAdmin && (
+                <Link as={RouterLink} to="/dashboard" w="full" mb={4}>
+                  <Button w="full" leftIcon={<FaUserCog />} colorScheme="blue" variant="outline">
+                    Dashboard
+                  </Button>
+                </Link>
+              )}
 
               {!isAuthenticated ? (
                 <Menu>
