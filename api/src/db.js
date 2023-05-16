@@ -45,8 +45,8 @@ const {
   Review,
   Season,
   ShippingAddress,
-  Shopping,
-  Trolley,
+  Purchase,
+  Cart,
 } = sequelize.models;
 
 // Aca vendrian las relaciones
@@ -63,8 +63,8 @@ User.hasMany(Review);
 Review.belongsTo(User);
 
 //Relacion entre usueario y carrito
-User.hasMany(Trolley);
-Trolley.belongsTo(User);
+User.hasMany(Cart);
+Cart.belongsTo(User);
 
 //Relacion usuario y su carritoDetail
 User.hasMany(CartDetail);
@@ -83,8 +83,8 @@ User.hasMany(ShippingAddress);
 ShippingAddress.belongsTo(User);
 
 //Relacion entre producto y carrito
-Product.belongsToMany(Shopping, { through: 'Shopping_Product' });
-Shopping.belongsToMany(Product, { through: 'Shopping_Product' });
+Product.belongsToMany(Purchase, { through: 'Purchase_Product' });
+Purchase.belongsToMany(Product, { through: 'Purchase_Product' });
 
 // Product uno a muchos reviews
 Product.hasMany(Review);

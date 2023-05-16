@@ -71,7 +71,7 @@ function Product({
                 <IconButton
                   aria-label="add to favorites"
                   variant="ghost"
-                  colorScheme="red"
+                  colorScheme="blue"
                   icon={<AiFillHeart />}
                   size="md"
                   onClick={handleFavorite}
@@ -80,7 +80,7 @@ function Product({
                 <IconButton
                   aria-label="add to favorites"
                   variant="ghost"
-                  colorScheme="red"
+                  colorScheme="blue"
                   icon={<AiOutlineHeart />}
                   size="md"
                   onClick={handleFavorite}
