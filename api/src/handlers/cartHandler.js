@@ -7,7 +7,6 @@ const getCartHandler = async (req, res) => {
 };
 
 const createCartHandler = async (req, res) => {
-  await cartController.removeFromCart(req);
 
   const cartItems = await cartController.getCartItems(req);
 
