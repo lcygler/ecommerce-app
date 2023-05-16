@@ -45,7 +45,7 @@ const {
   Review,
   Season,
   ShippingAddress,
-  Shopping,
+  Purchase,
   Cart,
 } = sequelize.models;
 
@@ -83,8 +83,8 @@ User.hasMany(ShippingAddress);
 ShippingAddress.belongsTo(User);
 
 //Relacion entre producto y carrito
-Product.belongsToMany(Shopping, { through: 'Shopping_Product' });
-Shopping.belongsToMany(Product, { through: 'Shopping_Product' });
+Product.belongsToMany(Purchase, { through: 'Purchase_Product' });
+Purchase.belongsToMany(Product, { through: 'Purchase_Product' });
 
 // Product uno a muchos reviews
 Product.hasMany(Review);
