@@ -84,6 +84,11 @@ Category.belongsToMany(Product, {through: 'Product_Categorie'});
 //Relacion entre Products y season M : M
 Product.belongsToMany(Season, {through: 'Product_Season'});
 Season.belongsToMany(Product, {through: 'Product_Season'});
+// Relación carrito y detalle del carrito
+Trolley.hasMany(CartDetail)
+CartDetail.belongsTo(Trolley);
+// Relación detalle del carrito y producto
+    CartDetail.belongsTo(Product);
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
