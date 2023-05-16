@@ -1,4 +1,4 @@
-import { emailRegex } from '../utils/consts';
+import { emailRegex, imageRegex, urlRegex } from '../utils/consts';
 
 export function validateLogin(formData, errors, setErrors) {
   let newErrors = { ...errors };
@@ -59,6 +59,8 @@ export function validateRegister(formData, errors, setErrors) {
   //* Password
   if (!password) newErrors.password = 'Password cannot be empty';
   else if (typeof password !== 'string') newErrors.password = 'Password must be string';
+  else if (password.length < 6) newErrors.password = 'Password is too short';
+  else if (password.length > 20) newErrors.password = 'Password is too long';
   else newErrors.password = '';
 
   //* Confirm password
@@ -97,6 +99,65 @@ export function validateRegister(formData, errors, setErrors) {
   if (!country) newErrors.country = 'Country cannot be empty';
   else if (typeof country !== 'string') newErrors.country = 'Country must be a string';
   else newErrors.country = '';
+
+  setErrors(newErrors);
+}
+
+export function validateProduct(formData, errors, setErrors) {
+  let newErrors = { ...errors };
+  const { name, category, season, size, gender, description, price, discounts, stock, image } =
+    formData;
+
+  //* Name
+  if (!name) newErrors.name = 'Name cannot be empty';
+  else if (typeof name !== 'string') newErrors.name = 'Name must be string';
+  else newErrors.name = '';
+
+  //* Description
+  if (!description) newErrors.description = 'Description cannot be empty';
+  else if (typeof description !== 'string') newErrors.description = 'Description must be string';
+  else newErrors.description = '';
+
+  //* Category
+  if (!category) newErrors.category = 'Category cannot be empty';
+  else if (typeof category !== 'string') newErrors.category = 'Category must be string';
+  else newErrors.category = '';
+
+  //* Season
+  if (!season) newErrors.season = 'Season cannot be empty';
+  else if (typeof season !== 'string') newErrors.season = 'Season must be string';
+  else newErrors.season = '';
+
+  //* Gender
+  if (!gender) newErrors.gender = 'Gender cannot be empty';
+  else if (typeof gender !== 'string') newErrors.gender = 'Gender must be string';
+  else newErrors.gender = '';
+
+  //* Size
+  if (!size) newErrors.size = 'Size cannot be empty';
+  else newErrors.size = '';
+
+  //* Price
+  if (!price) newErrors.price = 'Price cannot be empty';
+  else if (isNaN(Number(price))) newErrors.price = 'Price must be a number';
+  else newErrors.price = '';
+
+  //* Discounts
+  if (!discounts) newErrors.discounts = 'Discounts cannot be empty';
+  else if (isNaN(Number(discounts))) newErrors.discounts = 'Discounts must be a number';
+  else newErrors.discounts = '';
+
+  //* Stock
+  if (!stock) newErrors.stock = 'Stock cannot be empty';
+  else if (!Number.isInteger(Number(stock))) newErrors.stock = 'Stock must be integer';
+  else newErrors.stock = '';
+
+  //* Image
+  if (!image) newErrors.image = 'Image cannot be empty';
+  else if (typeof image !== 'string') newErrors.image = 'Image must be a string';
+  else if (!urlRegex.test(image)) newErrors.image = 'Image must be a valid URL';
+  else if (!imageRegex.test(image)) newErrors.image = 'URL must be a valid image';
+  else newErrors.image = '';
 
   setErrors(newErrors);
 }
