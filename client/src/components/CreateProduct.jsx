@@ -105,9 +105,7 @@ function CreateProduct() {
       };
 
       const response = await dispatch(createProduct(newProduct));
-      console.log('Esta es la respuesta a la creacion');
-      console.log(response);
-      console.log(response.payload);
+
       timeoutId = setTimeout(() => {
         setIsLoading(false);
         if (response) {
