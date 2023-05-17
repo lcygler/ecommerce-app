@@ -66,6 +66,8 @@ export function validateRegister(formData, errors, setErrors) {
   //* Confirm password
   if (!passwordCheck) newErrors.passwordCheck = 'Password cannot be empty';
   else if (typeof passwordCheck !== 'string') newErrors.passwordCheck = 'Password must be string';
+  else if (passwordCheck.length < 6) newErrors.passwordCheck = 'Password is too short';
+  else if (passwordCheck.length > 20) newErrors.passwordCheck = 'Password is too long';
   else if (passwordCheck !== password && passwordCheck)
     newErrors.passwordCheck = 'Passwords must match';
   else newErrors.passwordCheck = '';
