@@ -11,13 +11,11 @@ import {
   Box,
   Button,
   FormControl,
-  FormErrorMessage,
   FormLabel,
   Input,
   Link,
   Stack,
   Text,
-  Tooltip,
 } from '@chakra-ui/react';
 
 import backgroundImage from '../assets/images/background.jpg';
