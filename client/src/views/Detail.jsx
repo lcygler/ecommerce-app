@@ -99,7 +99,7 @@ function Detail() {
                   alt={name}
                   objectFit="contain"
                   h="500px"
-                  w="250px"
+                  maxW="350px"
                   mr="4"
                   transition="transform 0.2s ease-in-out"
                   _hover={{ transform: 'scale(1.05)' }}
