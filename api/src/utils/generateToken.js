@@ -1,14 +1,14 @@
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 
 const tokenSing = async (user) => {
   return jwt.sign(
     {
       id: user.id,
-      role: user.role,
+      isAdmin: user.isAdmin,
     },
     process.env.JWT_SECRET,
     {
-      expiresIn: "2h",
+      expiresIn: '2h',
     }
   );
 };

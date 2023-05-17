@@ -2,9 +2,12 @@ const { getAllProducts } = require('../controllers/ProductController');
 const { Op } = require('sequelize');
 const { Product, Season, Category, Review } = require('../db');
 const { Router } = require('express');
+//Middlewares:
+const { checkAuth } = require('../middlewares/auth');
+const { checkRoleAuth } = require('../middlewares/roleAuth');
 
 const router = Router();
-
+// router.get('/', checkAuth, checkRoleAuth, async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const products = await getAllProducts();
