@@ -28,8 +28,19 @@ function Detail() {
   const { productId } = useParams();
   const filteredProducts = useSelector((state) => state.filteredProducts);
   const selectedProduct = useSelector((state) => state.selectedProduct);
-  const { name, image, Categories, discounts, price, Seasons, size, gender, description, Reviews } =
-    selectedProduct || {};
+  const {
+    name,
+    image,
+    Categories,
+    discounts,
+    price,
+    Seasons,
+    size,
+    gender,
+    description,
+    Reviews,
+    stock,
+  } = selectedProduct || {};
 
   useEffect(() => {
     dispatch(getProductById(productId));
@@ -144,6 +155,20 @@ function Detail() {
                       <Text fontSize="md">{description}</Text>
                     </Box>
 
+                    {stock === 0 ? (
+                      <Badge fontWeight="normal" fontSize="md" colorScheme="gray" mr="2" mt="4">
+                        Sin stock
+                      </Badge>
+                    ) : stock < 6 ? (
+                      <Badge fontWeight="normal" fontSize="md" colorScheme="gray" mr="2" mt="4">
+                        ¡Últimas unidades!
+                      </Badge>
+                    ) : (
+                      <Badge fontWeight="normal" fontSize="md" colorScheme="gray" mr="2" mt="4">
+                        Stock: {stock}
+                      </Badge>
+                    )}
+
                     <Box mt="4" d="flex" justifyContent="space-between" alignItems="center">
                       <Badge fontWeight="normal" fontSize="md" colorScheme="gray" mr="2">
                         {size}
@@ -198,9 +223,9 @@ function Detail() {
                           mb="4"
                           boxShadow="md"
                         >
-                          <Text color="blue.500" fontWeight="bold" fontSize="lg" mb="2">
+                          <Box color="blue.500" fontWeight="bold" fontSize="lg" mb="2">
                             <StarRating value={review.punctuation} />
-                          </Text>
+                          </Box>
                           <Text color="gray.600" fontSize="sm">
                             {review.comment}
                           </Text>
