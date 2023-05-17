@@ -12,13 +12,12 @@ router.get('/', async (req, res) => {
     const products = await getAllProducts();
     res.status(200).json(products);
   } catch (error) {
-    console.error(error);
-    console.log(error);
+    
     res.status(500).send('Server Error');
   }
 });
 
-router.patch('/:id', async (req, res) => {
+router.patch('/:id',  async (req, res) => {
   try {
     const { id } = req.params;
     const product = await Product.findByPk(id);
@@ -31,7 +30,7 @@ router.patch('/:id', async (req, res) => {
   
     return res.json(updatedProduct);
   } catch (error) {
-    console.error(error);
+    
     return res.status(500).json({ message: 'Internal server error' });
   }
 });
@@ -66,7 +65,6 @@ router.get('/:id', async (req, res) => {
 
     return res.json(product);
   } catch (error) {
-    console.error(error);
     return res.status(500).json({ message: 'Internal server error' });
   }
 });
@@ -103,7 +101,6 @@ router.post('/', async (req, res) => {
   
     res.status(201).json(newProduct);
   } catch (error) {
-    console.error(error);
     res.status(500).send('Server Error');
   }
 });

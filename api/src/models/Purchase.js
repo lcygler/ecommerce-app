@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
   sequelize.define(
-    'Trolley',
+    'Purchase',
     {
       id: {
         type: DataTypes.INTEGER,
@@ -10,11 +10,15 @@ module.exports = (sequelize) => {
         autoIncrement: true,
       },
       state: {
+        type: DataTypes.ENUM('Preparing', 'In progress', 'On the way', 'Delivered'),
+      },
+      total: {
         type: DataTypes.FLOAT,
+        allowNull: false,
       },
     },
     {
-      timestamp: true,
+      timestamps: true,
     }
   );
 };
