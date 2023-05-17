@@ -14,6 +14,7 @@ import {
   getAllProducts,
   getCartById,
   getCategories,
+  getGenders,
   getOrderById,
   getProductById,
   getProductByName,
@@ -130,6 +131,19 @@ export const extraReducers = (builder) => {
     .addCase(getSeasons.rejected, (state, action) => {
       state.getSeasonsStatus = 'failed';
       state.getSeasonsError = action.error.message;
+    })
+
+    //* GENDERS
+    .addCase(getGenders.pending, (state) => {
+      state.getGendersStatus = 'loading';
+    })
+    .addCase(getGenders.fulfilled, (state, action) => {
+      state.getGendersStatus = 'succeeded';
+      state.genders = action.payload;
+    })
+    .addCase(getGenders.rejected, (state, action) => {
+      state.getGendersStatus = 'failed';
+      state.getGendersError = action.error.message;
     })
 
     //* FAVORITES
@@ -345,6 +359,7 @@ export const extraReducers = (builder) => {
       state.isAdmin = action.payload.isAdmin;
       localStorage.setItem('selectedUser', JSON.stringify(action.payload));
       localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('isAdmin', action.payload.isAdmin);
     })
     .addCase(loginUser.rejected, (state, action) => {
       state.loginUserByIdStatus = 'failed';

@@ -5,6 +5,7 @@ export const initialState = {
   selectedProduct: {},
   categories: [],
   seasons: [],
+  genders: [],
 
   // Filters
   category: 'All',
@@ -31,7 +32,7 @@ export const initialState = {
   // Users
   selectedUser: JSON.parse(localStorage.getItem('selectedUser')) || {},
   isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
-  isAdmin: false,
+  isAdmin: localStorage.getItem('isAdmin') === 'true',
 
   // Reviews
   userReviews: [],
@@ -47,6 +48,7 @@ export const initialState = {
   deleteProductStatus: 'idle',
   getCategoriesStatus: 'idle',
   getSeasonsStatus: 'idle',
+  getGendersStatus: 'idle',
 
   // Favorites
   getUserFavoritesStatus: 'idle',
@@ -91,6 +93,7 @@ export const initialState = {
   deleteProductError: null,
   getCategoriesError: null,
   getSeasonsError: null,
+  getGendersError: null,
 
   // Favorites
   getUserFavoritesError: null,

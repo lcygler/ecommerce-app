@@ -10,7 +10,7 @@ module.exports = (sequelize) => {
       },
     },
     {
-      timestamp: true,
+      timestamps: true,
     }
   );
 };

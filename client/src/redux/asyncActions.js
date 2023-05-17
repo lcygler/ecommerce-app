@@ -12,7 +12,8 @@ deleteProductById (Front OK - Back NOK)
 
 //* DETAIL
 getCategories (Front OK - Back NOK) 
-getSeasons (Front OK - Back NOK) 
+getSeasons (Front OK - Back OK) 
+getGenders (Front OK - Back OK) 
 getSize (Front NOK - Back NOK) 
 getColor (Front NOK - Back NOK) 
 
@@ -93,6 +94,12 @@ export const getCategories = createAsyncThunk('slice/getCategories', async () =>
 //* SEASONS
 export const getSeasons = createAsyncThunk('slice/getSeasons', async () => {
   const response = await axios.get(`/seasons`);
+  return response.data;
+});
+
+//* GENDER
+export const getGenders = createAsyncThunk('slice/getGenders', async () => {
+  const response = await axios.get(`/genders`);
   return response.data;
 });
 

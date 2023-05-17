@@ -2,7 +2,7 @@ const express = require("express");
 const {
   Users,
   Review,
-  Trolley,
+  Cart,
   CartDetail,
   PurchaseDetail,
   Product,
@@ -73,7 +73,7 @@ const getUserById = async (req, res, next) => {
       {
         include: [
           { model: Review },
-          { model: Trolley },
+          { model: Cart },
           { model: CartDetail },
           { model: PurchaseDetail },
           { model: Product },
