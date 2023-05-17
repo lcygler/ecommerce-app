@@ -1,5 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { createUser } from '../redux/asyncActions';
+import { validateRegister } from '../utils/validateForm';
 
 import {
   Alert,
@@ -7,45 +10,133 @@ import {
   Box,
   Button,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Input,
   Link,
-  Select,
   Stack,
   Text,
 } from '@chakra-ui/react';
 
 import backgroundImage from '../assets/images/background.jpg';
 
+let timeoutId = null;
+let navigateTimeoutId = null;
+
 function Register() {
-  const [name, setName] = useState('');
-  const [lastname, setLastname] = useState('');
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordCheck, setPasswordCheck] = useState('');
-  const [birthdate, setBirthdate] = useState('');
-  const [address, setAddress] = useState('');
-  const [postalCode, setPostalCode] = useState('');
-  const [state, setState] = useState('');
-  const [country, setCountry] = useState('');
-  const [phone, setPhone] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleRegister = async (event) => {
-    event.preventDefault();
-    setIsLoading(true);
-    setError('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-    // Simulación de registro, acá va la lógica
-    setTimeout(() => {
-      setIsLoading(false);
-      console.log('Registration successful');
-      navigate('/home');
-    }, 2000);
+  const [formData, setFormData] = useState({
+    name: '',
+    lastname: '',
+    username: '',
+    email: '',
+    password: '',
+    passwordCheck: '',
+    birthdate: '',
+    phoneNumber: '',
+    address: '',
+    postalCode: '',
+    state: '',
+    country: '',
+  });
+
+  const [errors, setErrors] = useState({
+    name: '',
+    lastname: '',
+    username: '',
+    email: '',
+    password: '',
+    passwordCheck: '',
+    birthdate: '',
+    phoneNumber: '',
+    address: '',
+    postalCode: '',
+    state: '',
+    country: '',
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
+
+  const handleForm = (e) => {
+    const { form } = e.target;
+
+    const formFields = {};
+    for (const element of form.elements) {
+      if (element.name) {
+        formFields[element.name] = element.value;
+      }
+    }
+
+    validateRegister(formFields, errors, setErrors);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    if (formData.name && Object.values(errors).every((error) => error === '')) {
+      const newUser = {
+        name: formData.name.trim().charAt(0).toUpperCase() + formData.name.trim().slice(1),
+        lastname:
+          formData.lastname.trim().charAt(0).toUpperCase() + formData.lastname.trim().slice(1),
+        username: formData.username.trim(),
+        email: formData.email.trim(),
+        password: formData.password.trim(),
+        birthdate: formData.birthdate,
+        phoneNumber: formData.phoneNumber.trim(),
+        address: formData.address.trim(),
+        postalCode: Math.floor(formData.postalCode),
+        state: formData.state.trim(),
+        country: formData.country.trim(),
+      };
+
+      const response = await dispatch(createUser(newUser));
+
+      timeoutId = setTimeout(() => {
+        setIsLoading(false);
+        if (response) {
+          setSuccess('Registration successful!');
+          setFormData({
+            name: '',
+            lastname: '',
+            username: '',
+            email: '',
+            password: '',
+            passwordCheck: '',
+            birthdate: '',
+            phoneNumber: '',
+            address: '',
+            postalCode: '',
+            state: '',
+            country: '',
+          });
+          navigateTimeoutId = setTimeout(() => {
+            navigate('/home');
+          }, 1000);
+        } else {
+          setError('Incomplete or incorrect data');
+        }
+      }, 2000);
+    }
+
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(timeoutId);
+      clearTimeout(navigateTimeoutId);
+    };
+  }, []);
 
   return (
     <Box
@@ -58,178 +149,245 @@ function Register() {
       backgroundPosition="center"
     >
       <Box bg="white" boxShadow="lg" borderRadius="md" mx="auto" p={6} maxW="lg">
-        {error && (
-          <Alert status="error" marginBottom={4}>
-            <AlertIcon />
-            {error}
-          </Alert>
-        )}
-        <Stack direction="column" spacing={4}>
-          <Stack direction="row" spacing={4}>
-            <FormControl isRequired>
-              <FormLabel>First name</FormLabel>
-              <Input
-                type="text"
-                placeholder="Enter your first name"
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-              />
-            </FormControl>
+        <form onChange={handleForm} onSubmit={handleSubmit}>
+          {error && (
+            <Alert status="error" marginBottom={4}>
+              <AlertIcon />
+              {error}
+            </Alert>
+          )}
+          {success && (
+            <Alert status="success" marginBottom={4}>
+              <AlertIcon />
+              {success}
+            </Alert>
+          )}
+          <Stack direction="column" spacing={4}>
+            <Stack direction="row" spacing={4}>
+              <FormControl isRequired isInvalid={errors.name !== ''}>
+                <FormLabel htmlFor="name">First name</FormLabel>
+                <Input
+                  id="name"
+                  name="name"
+                  type="text"
+                  placeholder="Enter your first name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
+                />
+                {/* <FormErrorMessage>{errors.name}</FormErrorMessage> */}
+              </FormControl>
 
-            <FormControl isRequired>
-              <FormLabel>Last name</FormLabel>
-              <Input
-                type="text"
-                placeholder="Enter your last name"
-                value={lastname}
-                onChange={(event) => setLastname(event.target.value)}
-              />
-            </FormControl>
+              <FormControl isRequired isInvalid={errors.lastname !== ''}>
+                <FormLabel htmlFor="lastname">Last name</FormLabel>
+                <Input
+                  id="lastname"
+                  name="lastname"
+                  type="text"
+                  placeholder="Enter your last name"
+                  value={formData.lastname}
+                  onChange={handleChange}
+                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
+                />
+                {/* <FormErrorMessage>{errors.lastname}</FormErrorMessage> */}
+              </FormControl>
+            </Stack>
+
+            <Stack direction="row" spacing={4}>
+              <FormControl isRequired isInvalid={errors.username !== ''}>
+                <FormLabel htmlFor="username">Username</FormLabel>
+                <Input
+                  id="username"
+                  name="username"
+                  type="text"
+                  placeholder="Enter your username"
+                  value={formData.username}
+                  onChange={handleChange}
+                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
+                />
+                {/* <FormErrorMessage>{errors.username}</FormErrorMessage> */}
+              </FormControl>
+
+              <FormControl isRequired isInvalid={errors.email !== ''}>
+                <FormLabel htmlFor="email">Email address</FormLabel>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
+                />
+                {/* <FormErrorMessage>{errors.email}</FormErrorMessage> */}
+              </FormControl>
+            </Stack>
+
+            <Stack direction="row" spacing={4}>
+              <FormControl isRequired isInvalid={errors.password !== ''}>
+                <FormLabel htmlFor="password">Password</FormLabel>
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="Enter your password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
+                />
+                {/* <FormErrorMessage>{errors.password}</FormErrorMessage> */}
+              </FormControl>
+
+              <FormControl isRequired isInvalid={errors.passwordCheck !== ''}>
+                <FormLabel htmlFor="passwordCheck">Confirm password</FormLabel>
+                <Input
+                  id="passwordCheck"
+                  name="passwordCheck"
+                  type="password"
+                  placeholder="Confirm your password"
+                  value={formData.passwordCheck}
+                  onChange={handleChange}
+                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
+                />
+                {/* <FormErrorMessage>{errors.passwordCheck}</FormErrorMessage> */}
+              </FormControl>
+            </Stack>
+
+            <Stack direction="row" spacing={4}>
+              <FormControl isRequired isInvalid={errors.birthdate !== ''}>
+                <FormLabel htmlFor="birthdate">Birthdate</FormLabel>
+                <Input
+                  id="birthdate"
+                  name="birthdate"
+                  type="date"
+                  placeholder="Enter your birthdate"
+                  value={formData.birthdate}
+                  onChange={handleChange}
+                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
+                />
+                {/* <FormErrorMessage>{errors.birthdate}</FormErrorMessage> */}
+              </FormControl>
+
+              <FormControl isRequired isInvalid={errors.phoneNumber !== ''}>
+                <FormLabel htmlFor="phoneNumber">Phone number</FormLabel>
+                <Input
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  type="tel"
+                  placeholder="Enter your phone number"
+                  value={formData.phoneNumber}
+                  onChange={handleChange}
+                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
+                />
+                {/* <FormErrorMessage>{errors.phoneNumber}</FormErrorMessage> */}
+              </FormControl>
+            </Stack>
+
+            <Stack direction="row" spacing={4}>
+              <FormControl isRequired isInvalid={errors.address !== ''}>
+                <FormLabel htmlFor="address">Address</FormLabel>
+                <Input
+                  id="address"
+                  name="address"
+                  type="text"
+                  placeholder="Enter your address"
+                  value={formData.address}
+                  onChange={handleChange}
+                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
+                />
+                {/* <FormErrorMessage>{errors.address}</FormErrorMessage> */}
+              </FormControl>
+
+              <FormControl isRequired isInvalid={errors.postalCode !== ''}>
+                <FormLabel htmlFor="postalCode">Postal code</FormLabel>
+                <Input
+                  id="postalCode"
+                  name="postalCode"
+                  type="number"
+                  placeholder="Enter your postal code"
+                  value={formData.postalCode}
+                  onChange={handleChange}
+                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
+                />
+                {/* <FormErrorMessage>{errors.postalCode}</FormErrorMessage> */}
+              </FormControl>
+            </Stack>
+
+            <Stack direction="row" spacing={4}>
+              <FormControl isRequired isInvalid={errors.state !== ''}>
+                <FormLabel htmlFor="state">State</FormLabel>
+                <Input
+                  id="state"
+                  name="state"
+                  type="text"
+                  placeholder="Enter your state"
+                  value={formData.state}
+                  onChange={handleChange}
+                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
+                />
+                {/* <FormErrorMessage>{errors.state}</FormErrorMessage> */}
+              </FormControl>
+
+              <FormControl isRequired isInvalid={errors.country !== ''}>
+                <FormLabel htmlFor="country">Country</FormLabel>
+                <Input
+                  id="country"
+                  name="country"
+                  type="text"
+                  placeholder="Enter your country"
+                  value={formData.country}
+                  onChange={handleChange}
+                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
+                />
+                {/* <FormErrorMessage>{errors.country}</FormErrorMessage> */}
+              </FormControl>
+            </Stack>
           </Stack>
 
-          <Stack direction="row" spacing={4}>
-            <FormControl isRequired>
-              <FormLabel>Username</FormLabel>
-              <Input
-                type="text"
-                placeholder="Enter your username"
-                value={username}
-                onChange={(event) => setUsername(event.target.value)}
-              />
-            </FormControl>
+          <Stack direction="column" spacing={4} mt="20px">
+            <Stack direction="row" spacing={4}>
+              <Button
+                width="100%"
+                onClick={() => {
+                  navigate('/home');
+                }}
+              >
+                Go back
+              </Button>
 
-            <FormControl isRequired>
-              <FormLabel>Email address</FormLabel>
-              <Input
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-              />
-            </FormControl>
+              <Button
+                type="submit"
+                colorScheme="blue"
+                isLoading={isLoading}
+                loadingText="Registering..."
+                width="100%"
+              >
+                Register
+              </Button>
+            </Stack>
+
+            <Box textAlign="center" marginTop={4} fontSize="sm">
+              <Text>
+                Already registered?{' '}
+                <Link as={RouterLink} to="/login" color="blue.500" textDecoration="underline">
+                  Click here to log in
+                </Link>
+              </Text>
+            </Box>
           </Stack>
-
-          <Stack direction="row" spacing={4}>
-            <FormControl isRequired>
-              <FormLabel>Password</FormLabel>
-              <Input
-                type="password"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-              />
-            </FormControl>
-
-            <FormControl isRequired>
-              <FormLabel>Confirm password</FormLabel>
-              <Input
-                type="password"
-                placeholder="Confirm your password"
-                value={passwordCheck}
-                onChange={(event) => setPasswordCheck(event.target.value)}
-              />
-            </FormControl>
-          </Stack>
-
-          <Stack direction="row" spacing={4}>
-            <FormControl isRequired>
-              <FormLabel>Birthdate</FormLabel>
-              <Input
-                type="date"
-                placeholder="Enter your birthdate"
-                value={birthdate}
-                onChange={(event) => setBirthdate(event.target.value)}
-              />
-            </FormControl>
-
-            <FormControl isRequired>
-              <FormLabel>Phone number</FormLabel>
-              <Input
-                type="tel"
-                placeholder="Enter your phone number"
-                value={phone}
-                onChange={(event) => setPhone(event.target.value)}
-              />
-            </FormControl>
-          </Stack>
-
-          <Stack direction="row" spacing={4}>
-            <FormControl isRequired>
-              <FormLabel>Address</FormLabel>
-              <Input
-                type="text"
-                placeholder="Enter your address"
-                value={address}
-                onChange={(event) => setAddress(event.target.value)}
-              />
-            </FormControl>
-
-            <FormControl isRequired>
-              <FormLabel>Postal code</FormLabel>
-              <Input
-                type="number"
-                placeholder="Enter your postal code"
-                value={postalCode}
-                onChange={(event) => setPostalCode(event.target.value)}
-              />
-            </FormControl>
-          </Stack>
-
-          <Stack direction="row" spacing={4}>
-            <FormControl isRequired>
-              <FormLabel>State</FormLabel>
-              <Input
-                type="text"
-                placeholder="Enter your state"
-                value={state}
-                onChange={(event) => setState(event.target.value)}
-              />
-            </FormControl>
-
-            <FormControl isRequired>
-              <FormLabel>Country</FormLabel>
-              <Input
-                type="text"
-                placeholder="Enter your country"
-                value={country}
-                onChange={(event) => setCountry(event.target.value)}
-              />
-            </FormControl>
-          </Stack>
-        </Stack>
-
-        <Stack direction="column" spacing={4} mt="20px">
-          <Stack direction="row" spacing={4}>
-            <Button
-              width="100%"
-              onClick={() => {
-                navigate('/home');
-              }}
-            >
-              Go back
-            </Button>
-
-            <Button
-              type="submit"
-              colorScheme="blue"
-              isLoading={isLoading}
-              loadingText="Registering..."
-              width="100%"
-              onClick={handleRegister}
-            >
-              Register
-            </Button>
-          </Stack>
-
-          <Box textAlign="center" marginTop={4}>
-            <Text>
-              Already registered?{' '}
-              <Link as={RouterLink} to="/login" color="blue.500" textDecoration="underline">
-                Click here to log in
-              </Link>
-            </Text>
-          </Box>
-        </Stack>
+        </form>
       </Box>
     </Box>
   );

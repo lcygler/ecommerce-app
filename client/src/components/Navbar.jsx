@@ -1,5 +1,7 @@
 import React from 'react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link as RouterLink } from 'react-router-dom';
+import { actions } from '../redux/slice';
 
 import {
   Box,
@@ -16,12 +18,27 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import { FaBars, FaHeart, FaHome, FaList, FaShoppingCart, FaTimes, FaUser } from 'react-icons/fa';
+import {
+  FaBars,
+  FaHeart,
+  FaHome,
+  FaList,
+  FaShoppingCart,
+  FaTimes,
+  FaUser,
+  FaUserCog,
+} from 'react-icons/fa';
 import logo from '../assets/icons/logo.png';
 
 function Navbar() {
+  const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const location = useLocation();
+  const isAuthenticated = useSelector((state) => state.isAuthenticated);
+  const isAdmin = useSelector((state) => state.isAdmin);
+
+  const handleLogout = () => {
+    dispatch(actions.logoutUser());
+  };
 
   return (
     <Box bg="transparent" px={4} py={2} pt="15px">
@@ -33,69 +50,65 @@ function Navbar() {
 
         <Box display={{ base: 'none', md: 'flex' }}>
           <Link as={RouterLink} to="/home" mr={4}>
-            <Button
-              leftIcon={<FaHome />}
-              colorScheme="blue"
-              variant={location.pathname === '/home' ? 'solid' : 'outline'}
-            >
+            <Button leftIcon={<FaHome />} colorScheme="blue" variant="outline">
               Home
             </Button>
           </Link>
 
           <Link as={RouterLink} to="/cart" mr={4}>
-            <Button
-              leftIcon={<FaShoppingCart />}
-              colorScheme="blue"
-              variant={location.pathname === '/cart' ? 'solid' : 'outline'}
-            >
+            <Button leftIcon={<FaShoppingCart />} colorScheme="blue" variant="outline">
               Cart
             </Button>
           </Link>
 
           <Link as={RouterLink} to="/favorites" mr={4}>
-            <Button
-              leftIcon={<FaHeart />}
-              colorScheme="blue"
-              variant={location.pathname === '/favorites' ? 'solid' : 'outline'}
-            >
+            <Button leftIcon={<FaHeart />} colorScheme="blue" variant="outline">
               Favorites
             </Button>
           </Link>
 
           <Link as={RouterLink} to="/purchases" mr={4}>
-            <Button
-              leftIcon={<FaList />}
-              colorScheme="blue"
-              variant={location.pathname === '/purchases' ? 'solid' : 'outline'}
-            >
+            <Button leftIcon={<FaList />} colorScheme="blue" variant="outline">
               Purchases
             </Button>
           </Link>
 
-          <Menu>
-            <MenuButton
-              as={Button}
-              leftIcon={<FaUser />}
-              colorScheme="blue"
-              variant={
-                location.pathname === '/login' || location.pathname === '/register'
-                  ? 'solid'
-                  : 'outline'
-              }
-            >
-              Login
-            </MenuButton>
+          {isAuthenticated && isAdmin && (
+            <Link as={RouterLink} to="/dashboard" mr={4}>
+              <Button leftIcon={<FaUserCog />} colorScheme="blue" variant="outline">
+                Dashboard
+              </Button>
+            </Link>
+          )}
 
-            <MenuList>
-              <Link as={RouterLink} to="/login">
-                <MenuItem>Login</MenuItem>
-              </Link>
+          {!isAuthenticated ? (
+            <Menu>
+              <MenuButton as={Button} leftIcon={<FaUser />} colorScheme="blue" variant="outline">
+                Login
+              </MenuButton>
 
-              <Link as={RouterLink} to="/register">
-                <MenuItem>Register</MenuItem>
-              </Link>
-            </MenuList>
-          </Menu>
+              <MenuList>
+                <Link as={RouterLink} to="/login">
+                  <MenuItem>Login</MenuItem>
+                </Link>
+
+                <Link as={RouterLink} to="/register">
+                  <MenuItem>Register</MenuItem>
+                </Link>
+              </MenuList>
+            </Menu>
+          ) : (
+            <Link as={RouterLink} to="/" mr={4}>
+              <Button
+                leftIcon={<FaUser />}
+                colorScheme="blue"
+                variant="outline"
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>
+            </Link>
+          )}
         </Box>
 
         <Box display={{ base: 'flex', md: 'none' }}>
@@ -112,76 +125,69 @@ function Navbar() {
           >
             <Flex direction="column" alignItems="center" p={4}>
               <Link as={RouterLink} to="/home" w="full" mb={4}>
-                <Button
-                  w="full"
-                  leftIcon={<FaHome />}
-                  colorScheme="blue"
-                  variant={location.pathname === '/home' ? 'solid' : 'outline'}
-                >
+                <Button w="full" leftIcon={<FaHome />} colorScheme="blue" variant="outline">
                   Home
                 </Button>
               </Link>
 
               <Link as={RouterLink} to="/cart" w="full" mb={4}>
-                <Button
-                  w="full"
-                  leftIcon={<FaShoppingCart />}
-                  colorScheme="blue"
-                  variant={location.pathname === '/cart' ? 'solid' : 'outline'}
-                >
+                <Button w="full" leftIcon={<FaShoppingCart />} colorScheme="blue" variant="outline">
                   Cart
                 </Button>
               </Link>
 
               <Link as={RouterLink} to="/favorites" w="full" mb={4}>
-                <Button
-                  w="full"
-                  leftIcon={<FaHeart />}
-                  colorScheme="blue"
-                  variant={location.pathname === '/favorites' ? 'solid' : 'outline'}
-                >
+                <Button w="full" leftIcon={<FaHeart />} colorScheme="blue" variant="outline">
                   Favorites
                 </Button>
               </Link>
 
               <Link as={RouterLink} to="/purchases" w="full" mb={4}>
-                <Button
-                  w="full"
-                  leftIcon={<FaList />}
-                  colorScheme="blue"
-                  variant={location.pathname === '/purchases' ? 'solid' : 'outline'}
-                >
+                <Button w="full" leftIcon={<FaList />} colorScheme="blue" variant="outline">
                   Purchases
                 </Button>
               </Link>
 
-              <Menu>
-                <MenuButton
-                  as={Button}
-                  w="full"
-                  colorScheme="blue"
-                  variant={
-                    location.pathname === '/login' || location.pathname === '/register'
-                      ? 'solid'
-                      : 'outline'
-                  }
-                >
-                  <Box display="flex" justifyContent="center">
-                    <FaUser />
-                    <Text ml={2}>Login</Text>
-                  </Box>
-                </MenuButton>
+              {isAuthenticated && isAdmin && (
+                <Link as={RouterLink} to="/dashboard" w="full" mb={4}>
+                  <Button w="full" leftIcon={<FaUserCog />} colorScheme="blue" variant="outline">
+                    Dashboard
+                  </Button>
+                </Link>
+              )}
 
-                <MenuList>
-                  <Link as={RouterLink} to="/login">
-                    <MenuItem>Login</MenuItem>
-                  </Link>
+              {!isAuthenticated ? (
+                <Menu>
+                  <MenuButton as={Button} w="full" colorScheme="blue" variant="outline">
+                    <Box display="flex" justifyContent="center">
+                      <FaUser />
+                      <Text ml={2}>Login</Text>
+                    </Box>
+                  </MenuButton>
 
-                  <Link as={RouterLink} to="/register">
-                    <MenuItem>Register</MenuItem>
-                  </Link>
-                </MenuList>
-              </Menu>
+                  <MenuList>
+                    <Link as={RouterLink} to="/login">
+                      <MenuItem>Login</MenuItem>
+                    </Link>
+
+                    <Link as={RouterLink} to="/register">
+                      <MenuItem>Register</MenuItem>
+                    </Link>
+                  </MenuList>
+                </Menu>
+              ) : (
+                <Link as={RouterLink} to="/" w="full" mb={4}>
+                  <Button
+                    w="full"
+                    leftIcon={<FaUser />}
+                    colorScheme="blue"
+                    variant="outline"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </Button>
+                </Link>
+              )}
 
               {isOpen && (
                 <IconButton

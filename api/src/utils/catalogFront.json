@@ -1,0 +1,606 @@
+[
+  {
+    "id": 1,
+    "name": "Remera De Algodón Broocklyn",
+    "size": "XL",
+    "gender": "Hombre",
+    "description": "De la nueva colección de remeras Brickton, temporada 2023",
+    "price": 3.799,
+    "discounts": 0.1,
+    "views": 56,
+    "stock": 10,
+    "image": "https://http2.mlstatic.com/D_NQ_NP_988044-MLA53782412313_022023-O.webp",
+    "Seasons": [
+      {
+        "id": 1,
+        "name": "Verano"
+      },
+      {
+        "id": 2,
+        "name": "Primavera"
+      }
+    ],
+    "Categories": [
+      {
+        "id": 1,
+        "name": "Remeras"
+      }
+    ],
+    "Reviews": [
+      {
+        "id": 1,
+        "text": "La camisa es muy cómoda y tiene una excelente calidad.",
+        "rating": 4.5
+      },
+      {
+        "id": 2,
+        "text": "Muy buena camisa, la recomiendo.",
+        "rating": 5
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Camisa de algodón",
+    "size": "M",
+    "gender": "Hombre",
+    "description": "Camisa de algodón con corte clásico y botones.",
+    "price": 3.999,
+    "discounts": false,
+    "views": 40,
+    "stock": 20,
+    "image": "https://http2.mlstatic.com/D_NQ_NP_780776-MLA32226874603_092019-O.webp",
+    "Seasons": [
+      {
+        "id": 1,
+        "name": "Verano"
+      },
+      {
+        "id": 2,
+        "name": "Primavera"
+      }
+    ],
+    "Categories": [
+      {
+        "id": 1,
+        "name": "Camisas"
+      }
+    ],
+    "Reviews": [
+      {
+        "id": 3,
+        "text": "La camisa es muy cómoda y tiene una excelente calidad.",
+        "rating": 4.5
+      },
+      {
+        "id": 4,
+        "text": "Muy buena camisa, la recomiendo.",
+        "rating": 5
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Pantalones cortos deportivos",
+    "size": "L",
+    "gender": "Mujer",
+    "description": "Pantalones cortos deportivos con tecnología de secado rápido.",
+    "price": 4.499,
+    "discounts": 0.0,
+    "views": 34,
+    "stock": 5,
+    "image": "https://http2.mlstatic.com/D_NQ_NP_693102-MLA31750393167_082019-O.webp",
+    "Seasons": [
+      {
+        "id": 1,
+        "name": "Verano"
+      },
+      {
+        "id": 3,
+        "name": "Otoño"
+      }
+    ],
+    "Categories": [
+      {
+        "id": 2,
+        "name": "Pantalones"
+      },
+      {
+        "id": 3,
+        "name": "Deportes"
+      }
+    ],
+    "Reviews": [
+      {
+        "id": 5,
+        "text": "Excelentes pantalones, muy cómodos y livianos.",
+        "rating": 4
+      },
+      {
+        "id": 6,
+        "text": "Me encantaron los pantalones, los uso para salir a correr.",
+        "rating": 4.5
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Buzo oversize",
+    "size": "XL",
+    "gender": "Hombre",
+    "description": "Buzo oversize frisado con capucha y cordon al tono panama",
+    "price": 7.479,
+    "discounts": 0.2,
+    "views": 156,
+    "stock": 30,
+    "image": "https://http2.mlstatic.com/D_NQ_NP_706849-MLA49509043139_032022-O.webp",
+    "Seasons": [
+      {
+        "id": 1,
+        "name": "Verano"
+      },
+      {
+        "id": 2,
+        "name": "Primavera"
+      }
+    ],
+    "Categories": [
+      {
+        "id": 1,
+        "name": "Camisas"
+      }
+    ],
+    "Reviews": [
+      {
+        "id": 7,
+        "text": "La camisa es muy cómoda y tiene una excelente calidad.",
+        "rating": 4.5
+      },
+      {
+        "id": 8,
+        "text": "Muy buena camisa, la recomiendo.",
+        "rating": 5
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Buzo canguro capucha",
+    "size": "S",
+    "gender": "Hombre",
+    "description": "Material: Algodón rústico 100%",
+    "price": 6.999,
+    "discounts": 0.05,
+    "views": 16,
+    "stock": 5,
+    "image": "https://http2.mlstatic.com/D_NQ_NP_951774-MLA32134905937_092019-O.webp",
+    "Seasons": [
+      {
+        "id": 1,
+        "name": "Verano"
+      },
+      {
+        "id": 2,
+        "name": "Primavera"
+      }
+    ],
+    "Categories": [
+      {
+        "id": 1,
+        "name": "Camisas"
+      }
+    ],
+    "Reviews": [
+      {
+        "id": 9,
+        "text": "La camisa es muy cómoda y tiene una excelente calidad.",
+        "rating": 4.5
+      },
+      {
+        "id": 10,
+        "text": "Muy buena camisa, la recomiendo.",
+        "rating": 5
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Remera De Algodón Broocklyn",
+    "size": "XL",
+    "gender": "Hombre",
+    "description": "Modelo Broockyn",
+    "price": 3.799,
+    "discounts": 0.0,
+    "views": 56,
+    "stock": 10,
+    "image": "https://http2.mlstatic.com/D_NQ_NP_880360-MLA54012552262_022023-O.webp",
+    "Seasons": [
+      {
+        "id": 1,
+        "name": "Verano"
+      },
+      {
+        "id": 2,
+        "name": "Primavera"
+      }
+    ],
+    "Categories": [
+      {
+        "id": 1,
+        "name": "Camisas"
+      }
+    ],
+    "Reviews": [
+      {
+        "id": 11,
+        "text": "La camisa es muy cómoda y tiene una excelente calidad.",
+        "rating": 4.5
+      },
+      {
+        "id": 12,
+        "text": "Muy buena camisa, la recomiendo.",
+        "rating": 5
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Campera Deportiva Maorí All Blacks",
+    "size": "XXL",
+    "gender": "Hombre",
+    "description": "Ideal para utilizar después de cada entrenamiento y abrigarte",
+    "price": 12.799,
+    "discounts": 0.1,
+    "views": 156,
+    "stock": 40,
+    "image": "https://http2.mlstatic.com/D_NQ_NP_937922-MLA54247775378_032023-O.webp",
+    "Seasons": [
+      {
+        "id": 1,
+        "name": "Verano"
+      },
+      {
+        "id": 2,
+        "name": "Primavera"
+      }
+    ],
+    "Categories": [
+      {
+        "id": 1,
+        "name": "Camisas"
+      }
+    ],
+    "Reviews": [
+      {
+        "id": 13,
+        "text": "La camisa es muy cómoda y tiene una excelente calidad.",
+        "rating": 4.5
+      },
+      {
+        "id": 14,
+        "text": "Muy buena camisa, la recomiendo.",
+        "rating": 5
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Remera Lisa Manga Corta",
+    "size": "M",
+    "gender": "Mujer",
+    "description": "Remera mujer 100% algodon, calidad premium",
+    "price": 2.299,
+    "discounts": 0.2,
+    "views": 67,
+    "stock": 14,
+    "image": "https://http2.mlstatic.com/D_NQ_NP_744556-MLA45767027988_042021-O.webp",
+    "Seasons": [
+      {
+        "id": 1,
+        "name": "Verano"
+      },
+      {
+        "id": 2,
+        "name": "Primavera"
+      }
+    ],
+    "Categories": [
+      {
+        "id": 1,
+        "name": "Camisas"
+      }
+    ],
+    "Reviews": [
+      {
+        "id": 15,
+        "text": "La camisa es muy cómoda y tiene una excelente calidad.",
+        "rating": 4.5
+      },
+      {
+        "id": 16,
+        "text": "Muy buena camisa, la recomiendo.",
+        "rating": 5
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Pantalón Jogger Elastizado",
+    "size": "40",
+    "gender": "Hombre",
+    "description": "Joggers elastizados con puños y cordon en la cintura",
+    "price": 3.799,
+    "discounts": 0.0,
+    "views": 46,
+    "stock": 5,
+    "image": "https://http2.mlstatic.com/D_NQ_NP_982965-MLA51249629126_082022-O.webp",
+    "Seasons": [
+      {
+        "id": 1,
+        "name": "Verano"
+      },
+      {
+        "id": 2,
+        "name": "Primavera"
+      }
+    ],
+    "Categories": [
+      {
+        "id": 1,
+        "name": "Camisas"
+      }
+    ],
+    "Reviews": [
+      {
+        "id": 17,
+        "text": "La camisa es muy cómoda y tiene una excelente calidad.",
+        "rating": 4.5
+      },
+      {
+        "id": 18,
+        "text": "Muy buena camisa, la recomiendo.",
+        "rating": 5
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Jeans Gabardina",
+    "size": "50",
+    "gender": "Hombre",
+    "description": "Jeans calidad premium, corte perfecto, suavizado",
+    "price": 11.79,
+    "discounts": 0.1,
+    "views": 51,
+    "stock": 20,
+    "image": "https://http2.mlstatic.com/D_NQ_NP_918268-MLA31039886844_062019-O.webp",
+    "Seasons": [
+      {
+        "id": 1,
+        "name": "Verano"
+      },
+      {
+        "id": 2,
+        "name": "Primavera"
+      }
+    ],
+    "Categories": [
+      {
+        "id": 1,
+        "name": "Camisas"
+      }
+    ],
+    "Reviews": [
+      {
+        "id": 19,
+        "text": "La camisa es muy cómoda y tiene una excelente calidad.",
+        "rating": 4.5
+      },
+      {
+        "id": 20,
+        "text": "Muy buena camisa, la recomiendo.",
+        "rating": 5
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "name": "Jean Tiro Alto",
+    "size": "40",
+    "gender": "Mujer",
+    "description": "Pantalon ancho recto tiro alto de jean, super comodos y de exelente calidad",
+    "price": 9.999,
+    "discounts": 0.0,
+    "views": 84,
+    "stock": 23,
+    "image": "https://http2.mlstatic.com/D_NQ_NP_851698-MLA52750352751_122022-O.webp",
+    "Seasons": [
+      {
+        "id": 1,
+        "name": "Verano"
+      },
+      {
+        "id": 2,
+        "name": "Primavera"
+      }
+    ],
+    "Categories": [
+      {
+        "id": 1,
+        "name": "Camisas"
+      }
+    ],
+    "Reviews": [
+      {
+        "id": 21,
+        "text": "La camisa es muy cómoda y tiene una excelente calidad.",
+        "rating": 4.5
+      },
+      {
+        "id": 22,
+        "text": "Muy buena camisa, la recomiendo.",
+        "rating": 5
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "name": "Pantalon Floyd De Gabardina",
+    "size": "26",
+    "gender": "Mujer",
+    "description": "Pantalón 5 bolsillos de gabardina 100% algodón. Tiro alto relajado, piernas rectas.",
+    "price": 19.999,
+    "discounts": 0.0,
+    "views": 127,
+    "stock": 26,
+    "image": "https://http2.mlstatic.com/D_NQ_NP_873941-MLA54783858550_032023-O.webp",
+    "Seasons": [
+      {
+        "id": 1,
+        "name": "Verano"
+      },
+      {
+        "id": 2,
+        "name": "Primavera"
+      }
+    ],
+    "Categories": [
+      {
+        "id": 1,
+        "name": "Camisas"
+      }
+    ],
+    "Reviews": [
+      {
+        "id": 23,
+        "text": "La camisa es muy cómoda y tiene una excelente calidad.",
+        "rating": 4.5
+      },
+      {
+        "id": 24,
+        "text": "Muy buena camisa, la recomiendo.",
+        "rating": 5
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "name": "Polera Drapping",
+    "size": "M",
+    "gender": "Mujer",
+    "description": "Polera de modal gamuzado con drapeados irregulares en frente",
+    "price": 11.799,
+    "discounts": 0.1,
+    "views": 45,
+    "stock": 12,
+    "image": "https://http2.mlstatic.com/D_NQ_NP_770230-MLA54519032122_032023-O.webp",
+    "Seasons": [
+      {
+        "id": 1,
+        "name": "Verano"
+      },
+      {
+        "id": 2,
+        "name": "Primavera"
+      }
+    ],
+    "Categories": [
+      {
+        "id": 1,
+        "name": "Camisas"
+      }
+    ],
+    "Reviews": [
+      {
+        "id": 25,
+        "text": "La camisa es muy cómoda y tiene una excelente calidad.",
+        "rating": 4.5
+      },
+      {
+        "id": 26,
+        "text": "Muy buena camisa, la recomiendo.",
+        "rating": 5
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "name": "Remera Manga Corta Estampada Motorcycles",
+    "size": "XXL",
+    "gender": "Hombre",
+    "description": "Manga sin borde elástico",
+    "price": 12.084,
+    "discounts": 0.0,
+    "views": 46,
+    "stock": 12,
+    "image": "https://http2.mlstatic.com/D_NQ_NP_890905-MLA54292046832_032023-O.webp",
+    "Seasons": [
+      {
+        "id": 1,
+        "name": "Verano"
+      },
+      {
+        "id": 2,
+        "name": "Primavera"
+      }
+    ],
+    "Categories": [
+      {
+        "id": 1,
+        "name": "Camisas"
+      }
+    ],
+    "Reviews": [
+      {
+        "id": 27,
+        "text": "La camisa es muy cómoda y tiene una excelente calidad.",
+        "rating": 4.5
+      },
+      {
+        "id": 28,
+        "text": "Muy buena camisa, la recomiendo.",
+        "rating": 5
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "name": "Buzo Canguro Line Rever Pass",
+    "size": "L",
+    "gender": "Hombre",
+    "description": "Buzo con bolsillo canguro y capucha. Algodón 50% poliester 50%.",
+    "price": 17.199,
+    "discounts": 0.0,
+    "views": 16,
+    "stock": 10,
+    "image": "https://http2.mlstatic.com/D_NQ_NP_974002-MLA49265093777_032022-O.webp",
+    "Seasons": [
+      {
+        "id": 1,
+        "name": "Verano"
+      },
+      {
+        "id": 2,
+        "name": "Primavera"
+      }
+    ],
+    "Categories": [
+      {
+        "id": 1,
+        "name": "Camisas"
+      }
+    ],
+    "Reviews": [
+      {
+        "id": 29,
+        "text": "La camisa es muy cómoda y tiene una excelente calidad.",
+        "rating": 4.5
+      },
+      {
+        "id": 30,
+        "text": "Muy buena camisa, la recomiendo.",
+        "rating": 5
+      }
+    ]
+  }
+]
