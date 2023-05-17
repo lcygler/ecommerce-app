@@ -156,11 +156,11 @@ function Detail() {
                     </Box>
 
                     {stock === 0 ? (
-                      <Badge fontWeight="normal" fontSize="md" colorScheme="gray" mr="2" mt="4">
+                      <Badge fontWeight="normal" fontSize="md" colorScheme="red" mr="2" mt="4">
                         Sin stock
                       </Badge>
                     ) : stock < 6 ? (
-                      <Badge fontWeight="normal" fontSize="md" colorScheme="gray" mr="2" mt="4">
+                      <Badge fontWeight="normal" fontSize="md" colorScheme="red" mr="2" mt="4">
                         ¡Últimas unidades!
                       </Badge>
                     ) : (
