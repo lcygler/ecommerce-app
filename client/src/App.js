@@ -10,6 +10,7 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<Landing />} />
+        // eliminar ruta create cuando este la dash
         <Route path='/create' element={<CreateProduct/>}/>
         <Route path="/cart" element={<Cart />} />
         <Route path="/favorites" element={<Favorites />} />
