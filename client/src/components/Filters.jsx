@@ -7,11 +7,14 @@ import { Box, Button, Flex, Select } from '@chakra-ui/react';
 function Filters({ changePage, allProducts }) {
   const dispatch = useDispatch();
 
-  // const categories = useSelector((state) => state.categories);
-  const discount = useSelector((state) => state.discount);
+  const categories = useSelector((state) => state.categories);
+  const seasons = useSelector((state) => state.seasons);
+  const genders = useSelector((state) => state.genders);
+
+  const category = useSelector((state) => state.category);
   const gender = useSelector((state) => state.gender);
   const season = useSelector((state) => state.season);
-  const category = useSelector((state) => state.category);
+  const discount = useSelector((state) => state.discount);
   const order = useSelector((state) => state.order);
 
   const categorySelect = useRef(null);
@@ -19,39 +22,6 @@ function Filters({ changePage, allProducts }) {
   const seasonSelect = useRef(null);
   const genderSelect = useRef(null);
   const orderSelect = useRef(null);
-
-  const categories = allProducts
-    .reduce((acc, product) => {
-      product.Categories.forEach((category) => {
-        const index = acc.findIndex((c) => c.id === category.id && c.name === category.name);
-        if (index === -1) {
-          acc.push({ id: category.id, name: category.name });
-        }
-      });
-      return acc;
-    }, [])
-    .sort((a, b) => a.name.localeCompare(b.name));
-
-  const seasons = allProducts
-    .reduce((acc, product) => {
-      product.Seasons.forEach((season) => {
-        const index = acc.findIndex((s) => s.id === season.id && s.name === season.name);
-        if (index === -1) {
-          acc.push({ id: season.id, name: season.name });
-        }
-      });
-      return acc;
-    }, [])
-    .sort((a, b) => a.name.localeCompare(b.name));
-
-  const genders = allProducts
-    .reduce((acc, product) => {
-      if (!acc.includes(product.gender)) {
-        acc.push(product.gender);
-      }
-      return acc;
-    }, [])
-    .sort((a, b) => a.localeCompare(b));
 
   const discounts = allProducts
     .reduce((acc, product) => {
@@ -103,8 +73,8 @@ function Filters({ changePage, allProducts }) {
           onChange={handleFilters}
         >
           <option value="All">All Categories</option>
-          {categories.map((category, index) => (
-            <option key={index} value={category.name}>
+          {categories.map((category) => (
+            <option key={category.id} value={category.name}>
               {category.name}
             </option>
           ))}
@@ -114,9 +84,9 @@ function Filters({ changePage, allProducts }) {
       <Box display="flex" alignItems="center" justifyContent="center" ml="4">
         <Select defaultValue="All" name="genderSelect" ref={genderSelect} onChange={handleFilters}>
           <option value="All">All Genders</option>
-          {genders.map((gender, index) => (
-            <option key={index} value={gender}>
-              {gender}
+          {genders.map((gender) => (
+            <option key={gender.id} value={gender.name}>
+              {gender.name}
             </option>
           ))}
         </Select>
@@ -125,8 +95,8 @@ function Filters({ changePage, allProducts }) {
       <Box display="flex" alignItems="center" justifyContent="center" ml="4">
         <Select defaultValue="All" name="seasonSelect" ref={seasonSelect} onChange={handleFilters}>
           <option value="All">All Seasons</option>
-          {seasons.map((season, index) => (
-            <option key={index} value={season.name}>
+          {seasons.map((season) => (
+            <option key={season.id} value={season.name}>
               {season.name}
             </option>
           ))}
