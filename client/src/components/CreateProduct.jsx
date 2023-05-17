@@ -1,11 +1,10 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Container, FormGroup, /*Input as InputStraps*/ } from 'reactstrap';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+
 import { createProduct } from '../redux/asyncActions';
 import { validateProduct } from '../utils/validateForm';
-
-
 
 import {
   Alert,
@@ -18,7 +17,6 @@ import {
   Select,
   Stack,
 } from '@chakra-ui/react';
-
 import backgroundImage from '../assets/images/background.jpg';
 
 let timeoutId = null;
@@ -44,8 +42,6 @@ function CreateProduct() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [upload, setUpload] = useState("");
-    const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -90,28 +86,23 @@ function CreateProduct() {
 
     validateProduct(formFields, errors, setErrors);
   };
-  let Cloudinary = '';
+
   const uploadImage = async (e) => {
-    
     const files = e.target.files;
     const data = new FormData();
-    data.append("file", files[0]);
-    data.append("upload_preset", "modernFashion");
-    setLoading(true);
-    const res = await fetch(
-        "https://api.cloudinary.com/v1_1/dmitoclts/upload",
-        {
-            method: "POST",
-            body: data,
-        }
-    )
-    const file = await res.json();
-    
-    setUpload(file.secure_url);
-    Cloudinary = file.secure_url;
-    setLoading(false);
-    return Cloudinary
-}
+    data.append('file', files[0]);
+    data.append('upload_preset', 'modernFashion');
+
+    try {
+      const response = await axios.post('https://api.cloudinary.com/v1_1/dmitoclts/upload', data);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        image: response.data.secure_url,
+      }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -126,7 +117,7 @@ function CreateProduct() {
         price: formData.price,
         discounts: formData.discounts,
         stock: Math.floor(formData.stock),
-        image: upload ,
+        image: formData.image.trim(),
         Seasons: { name: formData.season.trim() },
         Categories: { name: formData.category.trim() },
       };
@@ -249,7 +240,6 @@ function CreateProduct() {
                   placeholder="Choose season"
                   value={formData.season}
                   onChange={handleChange}
-                  // isMulti
                   _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
                   _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
                 >
@@ -272,7 +262,6 @@ function CreateProduct() {
                   placeholder="Choose gender"
                   value={formData.gender}
                   onChange={handleChange}
-                  // isMulti
                   _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
                   _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
                 >
@@ -349,26 +338,20 @@ function CreateProduct() {
                 {/* <FormErrorMessage>{errors.stock}</FormErrorMessage> */}
               </FormControl>
 
-              {/*image */}
-
-              <Container>
-              <FormControl /*isRequired*/ isInvalid={errors.image !== ''}>
+              <FormControl isRequired isInvalid={errors.image !== ''}>
                 <FormLabel htmlFor="image">Image</FormLabel>
-              <FormGroup>
-              <Input
+                <Input
                   id="image"
                   name="image"
                   type="file"
-                  placeholder="submit Image"
-                  value={formData.image}
+                  placeholder="Upload image"
                   onChange={uploadImage}
+                  style={{ padding: '3px', boxSizing: 'border-box' }}
                   _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
                   _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
                 />
                 {/* <FormErrorMessage>{errors.image}</FormErrorMessage> */}
-              </FormGroup>
               </FormControl>
-              </Container>
             </Stack>
           </Stack>
 
@@ -387,7 +370,7 @@ function CreateProduct() {
                 type="submit"
                 colorScheme="blue"
                 isLoading={isLoading}
-                loadingText="Registering..."
+                loadingText="Creating..."
                 width="100%"
               >
                 Create
