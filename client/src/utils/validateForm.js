@@ -153,11 +153,10 @@ export function validateProduct(formData, errors, setErrors) {
   else newErrors.stock = '';
 
   //* Image
-  // if (!image) newErrors.image = 'Image cannot be empty';
-  // else if (typeof image !== 'string') newErrors.image = 'Image must be a string';
-  // else if (!urlRegex.test(image)) newErrors.image = 'Image must be a valid URL';
-  // else if (!imageRegex.test(image)) newErrors.image = 'URL must be a valid image';
-  // else newErrors.image = '';
+  if (!image) newErrors.image = 'Image cannot be empty';
+  else if (typeof image !== 'string') newErrors.image = 'Image must be a string';
+  else if (!imageRegex.test(image)) newErrors.image = 'Invalid image file format';
+  else newErrors.image = '';
 
   setErrors(newErrors);
 }
