@@ -1,4 +1,4 @@
-import { emailRegex, imageRegex, urlRegex } from '../utils/consts';
+import { emailRegex, imageRegex } from '../utils/consts';
 
 export function validateLogin(formData, errors, setErrors) {
   let newErrors = { ...errors };
