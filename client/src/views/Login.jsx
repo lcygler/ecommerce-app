@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
-import { getUserFavorites, getUserOrders, validateLogin } from '../redux/asyncActions';
-import { validateLoginData } from '../utils/validateForm';
+import { getUserFavorites, getUserOrders, loginUser } from '../redux/asyncActions';
+import { validateLogin } from '../utils/validateForm';
 
 import {
   Alert,
@@ -11,7 +11,6 @@ import {
   Box,
   Button,
   FormControl,
-  FormErrorMessage,
   FormLabel,
   Input,
   Link,
@@ -22,13 +21,15 @@ import {
 import backgroundImage from '../assets/images/background.jpg';
 
 let timeoutId = null;
+let navigateTimeoutId = null;
 
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -55,7 +56,7 @@ function Login() {
       }
     }
 
-    validateLoginData(formFields, errors, setErrors);
+    validateLogin(formFields, errors, setErrors);
   };
 
   const handleSubmit = async (e) => {
@@ -63,19 +64,21 @@ function Login() {
     setIsLoading(true);
 
     const user = { email: formData.email, password: formData.password };
-    const response = await dispatch(validateLogin(user));
+    const response = await dispatch(loginUser(user));
 
     timeoutId = setTimeout(() => {
       setIsLoading(false);
       if (response) {
+        setSuccess('Login successful!');
         // dispatch(getUserFavorites());
         // dispatch(getUserOrders());
         setFormData({
           email: '',
           password: '',
         });
-        navigate('/home');
-        console.log('Login successful');
+        navigateTimeoutId = setTimeout(() => {
+          navigate('/home');
+        }, 1000);
       } else {
         setError('Invalid email or password');
       }
@@ -85,6 +88,7 @@ function Login() {
   useEffect(() => {
     return () => {
       clearTimeout(timeoutId);
+      clearTimeout(navigateTimeoutId);
     };
   }, []);
 
@@ -106,9 +110,16 @@ function Login() {
               {error}
             </Alert>
           )}
+          {success && (
+            <Alert status="success" marginBottom={4}>
+              <AlertIcon />
+              {success}
+            </Alert>
+          )}
           <Stack spacing={4}>
             <FormControl isRequired isInvalid={errors.email !== ''}>
               <FormLabel htmlFor="email">Email address</FormLabel>
+              {/* <Tooltip label={errors.email} isOpen={errors.email !== ''} placement="bottom"> */}
               <Input
                 id="email"
                 name="email"
@@ -116,12 +127,16 @@ function Login() {
                 placeholder="Enter your email"
                 value={formData.email}
                 onChange={handleChange}
+                _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
               />
-              <FormErrorMessage>{errors.email}</FormErrorMessage>
+              {/* </Tooltip> */}
+              {/* <FormErrorMessage>{errors.email}</FormErrorMessage> */}
             </FormControl>
 
             <FormControl isRequired isInvalid={errors.password !== ''}>
               <FormLabel htmlFor="password">Password</FormLabel>
+              {/* <Tooltip label={errors.password} isOpen={errors.password !== ''} placement="bottom"> */}
               <Input
                 id="password"
                 name="password"
@@ -129,8 +144,11 @@ function Login() {
                 placeholder="Enter your password"
                 value={formData.password}
                 onChange={handleChange}
+                _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
               />
-              <FormErrorMessage>{errors.password}</FormErrorMessage>
+              {/* </Tooltip> */}
+              {/* <FormErrorMessage>{errors.password}</FormErrorMessage> */}
             </FormControl>
 
             <Stack direction="row" spacing={4}>

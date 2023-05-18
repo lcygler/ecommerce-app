@@ -35,7 +35,7 @@ module.exports = (sequelize) => {
       },
       discounts: {
         type: DataTypes.FLOAT,
-        allowNull: false
+        allowNull: false,
       },
       stock: {
         type: DataTypes.INTEGER,
@@ -51,7 +51,7 @@ module.exports = (sequelize) => {
       },
     },
     {
-      timestamp: true,
+      timestamps: true,
     }
   );
 };

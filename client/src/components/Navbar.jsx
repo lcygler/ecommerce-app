@@ -18,16 +18,26 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import { FaBars, FaHeart, FaHome, FaList, FaShoppingCart, FaTimes, FaUser } from 'react-icons/fa';
+import {
+  FaBars,
+  FaHeart,
+  FaHome,
+  FaList,
+  FaShoppingCart,
+  FaTimes,
+  FaUser,
+  FaUserCog,
+} from 'react-icons/fa';
 import logo from '../assets/icons/logo.png';
 
 function Navbar() {
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
+  const isAdmin = useSelector((state) => state.isAdmin);
 
   const handleLogout = () => {
-    dispatch(actions.logout());
+    dispatch(actions.logoutUser());
   };
 
   return (
@@ -62,6 +72,14 @@ function Navbar() {
               Purchases
             </Button>
           </Link>
+
+          {isAuthenticated && isAdmin && (
+            <Link as={RouterLink} to="/dashboard" mr={4}>
+              <Button leftIcon={<FaUserCog />} colorScheme="blue" variant="outline">
+                Dashboard
+              </Button>
+            </Link>
+          )}
 
           {!isAuthenticated ? (
             <Menu>
@@ -130,24 +148,46 @@ function Navbar() {
                 </Button>
               </Link>
 
-              <Menu>
-                <MenuButton as={Button} w="full" colorScheme="blue" variant="outline">
-                  <Box display="flex" justifyContent="center">
-                    <FaUser />
-                    <Text ml={2}>Login</Text>
-                  </Box>
-                </MenuButton>
+              {isAuthenticated && isAdmin && (
+                <Link as={RouterLink} to="/dashboard" w="full" mb={4}>
+                  <Button w="full" leftIcon={<FaUserCog />} colorScheme="blue" variant="outline">
+                    Dashboard
+                  </Button>
+                </Link>
+              )}
 
-                <MenuList>
-                  <Link as={RouterLink} to="/login">
-                    <MenuItem>Login</MenuItem>
-                  </Link>
+              {!isAuthenticated ? (
+                <Menu>
+                  <MenuButton as={Button} w="full" colorScheme="blue" variant="outline">
+                    <Box display="flex" justifyContent="center">
+                      <FaUser />
+                      <Text ml={2}>Login</Text>
+                    </Box>
+                  </MenuButton>
 
-                  <Link as={RouterLink} to="/register">
-                    <MenuItem>Register</MenuItem>
-                  </Link>
-                </MenuList>
-              </Menu>
+                  <MenuList>
+                    <Link as={RouterLink} to="/login">
+                      <MenuItem>Login</MenuItem>
+                    </Link>
+
+                    <Link as={RouterLink} to="/register">
+                      <MenuItem>Register</MenuItem>
+                    </Link>
+                  </MenuList>
+                </Menu>
+              ) : (
+                <Link as={RouterLink} to="/" w="full" mb={4}>
+                  <Button
+                    w="full"
+                    leftIcon={<FaUser />}
+                    colorScheme="blue"
+                    variant="outline"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </Button>
+                </Link>
+              )}
 
               {isOpen && (
                 <IconButton

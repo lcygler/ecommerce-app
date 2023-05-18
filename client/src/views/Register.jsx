@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { createUser } from '../redux/asyncActions';
-import { validateRegisterData } from '../utils/validateForm';
+import { validateRegister } from '../utils/validateForm';
 
 import {
   Alert,
@@ -20,13 +20,15 @@ import {
 import backgroundImage from '../assets/images/background.jpg';
 
 let timeoutId = null;
+let navigateTimeoutId = null;
 
 function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -73,7 +75,7 @@ function Register() {
       }
     }
 
-    validateRegisterData(formFields, errors, setErrors);
+    validateRegister(formFields, errors, setErrors);
   };
 
   const handleSubmit = async (e) => {
@@ -97,14 +99,11 @@ function Register() {
       };
 
       const response = await dispatch(createUser(newUser));
-      console.log('response');
-      console.log(response);
-      console.log('response DATA');
-      console.log(response);
 
       timeoutId = setTimeout(() => {
         setIsLoading(false);
         if (response) {
+          setSuccess('Registration successful!');
           setFormData({
             name: '',
             lastname: '',
@@ -119,10 +118,11 @@ function Register() {
             state: '',
             country: '',
           });
-          navigate('/home');
-          console.log('Register successful');
+          navigateTimeoutId = setTimeout(() => {
+            navigate('/login');
+          }, 2000);
         } else {
-          setError('Invalid user data');
+          setError('Incomplete or incorrect data');
         }
       }, 2000);
     }
@@ -133,6 +133,7 @@ function Register() {
   useEffect(() => {
     return () => {
       clearTimeout(timeoutId);
+      clearTimeout(navigateTimeoutId);
     };
   }, []);
 
@@ -154,6 +155,12 @@ function Register() {
               {error}
             </Alert>
           )}
+          {success && (
+            <Alert status="success" marginBottom={4}>
+              <AlertIcon />
+              {success}
+            </Alert>
+          )}
           <Stack direction="column" spacing={4}>
             <Stack direction="row" spacing={4}>
               <FormControl isRequired isInvalid={errors.name !== ''}>
@@ -165,7 +172,10 @@ function Register() {
                   placeholder="Enter your first name"
                   value={formData.name}
                   onChange={handleChange}
+                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
                 />
+                {/* <FormErrorMessage>{errors.name}</FormErrorMessage> */}
               </FormControl>
 
               <FormControl isRequired isInvalid={errors.lastname !== ''}>
@@ -177,7 +187,10 @@ function Register() {
                   placeholder="Enter your last name"
                   value={formData.lastname}
                   onChange={handleChange}
+                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
                 />
+                {/* <FormErrorMessage>{errors.lastname}</FormErrorMessage> */}
               </FormControl>
             </Stack>
 
@@ -191,7 +204,10 @@ function Register() {
                   placeholder="Enter your username"
                   value={formData.username}
                   onChange={handleChange}
+                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
                 />
+                {/* <FormErrorMessage>{errors.username}</FormErrorMessage> */}
               </FormControl>
 
               <FormControl isRequired isInvalid={errors.email !== ''}>
@@ -203,7 +219,10 @@ function Register() {
                   placeholder="Enter your email"
                   value={formData.email}
                   onChange={handleChange}
+                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
                 />
+                {/* <FormErrorMessage>{errors.email}</FormErrorMessage> */}
               </FormControl>
             </Stack>
 
@@ -217,7 +236,10 @@ function Register() {
                   placeholder="Enter your password"
                   value={formData.password}
                   onChange={handleChange}
+                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
                 />
+                {/* <FormErrorMessage>{errors.password}</FormErrorMessage> */}
               </FormControl>
 
               <FormControl isRequired isInvalid={errors.passwordCheck !== ''}>
@@ -229,7 +251,10 @@ function Register() {
                   placeholder="Confirm your password"
                   value={formData.passwordCheck}
                   onChange={handleChange}
+                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
                 />
+                {/* <FormErrorMessage>{errors.passwordCheck}</FormErrorMessage> */}
               </FormControl>
             </Stack>
 
@@ -243,7 +268,10 @@ function Register() {
                   placeholder="Enter your birthdate"
                   value={formData.birthdate}
                   onChange={handleChange}
+                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
                 />
+                {/* <FormErrorMessage>{errors.birthdate}</FormErrorMessage> */}
               </FormControl>
 
               <FormControl isRequired isInvalid={errors.phoneNumber !== ''}>
@@ -255,7 +283,10 @@ function Register() {
                   placeholder="Enter your phone number"
                   value={formData.phoneNumber}
                   onChange={handleChange}
+                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
                 />
+                {/* <FormErrorMessage>{errors.phoneNumber}</FormErrorMessage> */}
               </FormControl>
             </Stack>
 
@@ -269,7 +300,10 @@ function Register() {
                   placeholder="Enter your address"
                   value={formData.address}
                   onChange={handleChange}
+                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
                 />
+                {/* <FormErrorMessage>{errors.address}</FormErrorMessage> */}
               </FormControl>
 
               <FormControl isRequired isInvalid={errors.postalCode !== ''}>
@@ -281,12 +315,15 @@ function Register() {
                   placeholder="Enter your postal code"
                   value={formData.postalCode}
                   onChange={handleChange}
+                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
                 />
+                {/* <FormErrorMessage>{errors.postalCode}</FormErrorMessage> */}
               </FormControl>
             </Stack>
 
             <Stack direction="row" spacing={4}>
-              <FormControl isRequiisRequired isInvalid={errors.state !== ''} red>
+              <FormControl isRequired isInvalid={errors.state !== ''}>
                 <FormLabel htmlFor="state">State</FormLabel>
                 <Input
                   id="state"
@@ -295,7 +332,10 @@ function Register() {
                   placeholder="Enter your state"
                   value={formData.state}
                   onChange={handleChange}
+                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
                 />
+                {/* <FormErrorMessage>{errors.state}</FormErrorMessage> */}
               </FormControl>
 
               <FormControl isRequired isInvalid={errors.country !== ''}>
@@ -307,7 +347,10 @@ function Register() {
                   placeholder="Enter your country"
                   value={formData.country}
                   onChange={handleChange}
+                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
                 />
+                {/* <FormErrorMessage>{errors.country}</FormErrorMessage> */}
               </FormControl>
             </Stack>
           </Stack>
