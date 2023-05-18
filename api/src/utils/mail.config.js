@@ -5,8 +5,6 @@ dotenv.config();
 
 const EMAIL = process.env.EMAIL;
 const EMAIL_PSSWRD = process.env.EMAIL_PSSWRD;
-const SERVER = "https://electroshop-production.up.railway.app/"
-const CLIENT_HOST = "https://electroshop-delta.vercel.app/"
 //const SERVER = process.env.SERVER
 //const CLIENT_HOST = process.env.CLIENT_HOST
 
@@ -36,7 +34,7 @@ module.exports = {
         from: `${mail.user}`,
         to: email,
         subject,
-        text: "Welcome to Electro Shop",
+        text: "Welcome to Modern Fashion",
         html,
       });
     } catch (error) {
@@ -64,7 +62,7 @@ module.exports = {
       </head>
       
       <div id="email___content">
-          <img src="https://www.flickr.com/photos/197399024@N05/52623616952/in/dateposted-public/" alt="">
+          
           <h2>Hola ${email}</h2>
           <p>Para confirmar tu cuenta, ingresa al siguiente enlace</p>
           <a
@@ -81,9 +79,9 @@ module.exports = {
           </head>
           
           <div id="email___content">
-              <img src="https://www.flickr.com/photos/197399024@N05/52623616952/in/dateposted-public/" alt="">
+              
               <h2>Hola ${email}</h2>
-              <p>Has realizado un cambio de contraseña en ElectroShop. Si tu no realizaste esta acción, ignora este mensaje.</p>
+              <p>Has realizado un cambio de contraseña en Modern Fashion. Si tu no realizaste esta acción, ignora este mensaje.</p>
               <a
                   href="${SERVER}user/confirmchange/${token}"
                   target="_blank"
@@ -98,9 +96,9 @@ module.exports = {
           </head>
           
           <div id="email___content">
-              <img src="https://www.flickr.com/photos/197399024@N05/52623616952/in/dateposted-public/" alt="">
+              
               <h2>Hola ${email}</h2>
-              <p>Has sido invitado a formar parate del equipo administrativo de Electro Shop</p>
+              <p>Has sido invitado a formar parate del equipo administrativo de Modern Fashion</p>
               <a
                   href="${CLIENT_HOST}user/login"
                   target="_blank"
@@ -115,9 +113,9 @@ module.exports = {
           </head>
           
           <div id="email___content">
-              <img src="https://www.flickr.com/photos/197399024@N05/52623616952/in/dateposted-public/" alt="">
+              
               <h2>Hola ${email}</h2>
-              <p>Te comunicamos que tu permanencia en el equipo administrativo de Electro Shop ha sido revocada. Para más información comunicate con nosotros a ${sender}</p>
+              <p>Te comunicamos que tu permanencia en el equipo administrativo de Modern Fashion ha sido revocada. Para más información comunicate con nosotros a ${sender}</p>
               <a
                   href="${CLIENT_HOST}home"
                   target="_blank"
@@ -131,9 +129,9 @@ module.exports = {
           </head>
           
           <div id="email___content">
-              <img src="https://www.flickr.com/photos/197399024@N05/52623616952/in/dateposted-public/" alt="">
+              
               <h2>Hola ${email}</h2>
-              <p>Este este email te ha sido enviado porque tu cuenta en ElectroShop ha sido suspendida.
+              <p>Este este email te ha sido enviado porque tu cuenta en Modern Fashion ha sido suspendida.
               Para más información comunicate con nosotros a ${sender}</p>
               
           </div>
@@ -146,9 +144,9 @@ module.exports = {
           </head>
           
           <div id="email___content">
-              <img src="https://www.flickr.com/photos/197399024@N05/52623616952/in/dateposted-public/" alt="">
+              
               <h2>Hola ${email}</h2>
-              <p>Este este email te ha sido enviado porque tu cuenta en ElectroShop ha sido restaurada.
+              <p>Este este email te ha sido enviado porque tu cuenta en Modern Fashion ha sido restaurada.
               Para más información comunicate con nosotros a ${sender}</p>
               
           </div>
@@ -161,7 +159,7 @@ module.exports = {
           </head>
           
           <div id="email___content">
-              <img src="https://www.flickr.com/photos/197399024@N05/52623616952/in/dateposted-public/" alt="">
+              
               <h2>Hola ${email}</h2>
               <p>Lamentamos verte partir. Si tu no has realizado esta acción o si tienes alguna sugerencia para hacernos y así tenerte de vuelta, te pedimos que nos escribas a ${sender}</p>
               
@@ -176,7 +174,7 @@ module.exports = {
           </head>
           
           <div id="email___content">
-              <img src="https://www.flickr.com/photos/197399024@N05/52623616952/in/dateposted-public/" alt="">
+              
               <h2>Hola ${email}</h2>
               <p>Para establecer una nueva contraseña has click en el siguiente enlace</p>
               <a
