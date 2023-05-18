@@ -28,8 +28,19 @@ function Detail() {
   const { productId } = useParams();
   const filteredProducts = useSelector((state) => state.filteredProducts);
   const selectedProduct = useSelector((state) => state.selectedProduct);
-  const { name, image, Categories, discounts, price, Seasons, size, gender, description, Reviews } =
-    selectedProduct || {};
+  const {
+    name,
+    image,
+    Categories,
+    discounts,
+    price,
+    Seasons,
+    size,
+    gender,
+    description,
+    Reviews,
+    stock,
+  } = selectedProduct || {};
 
   useEffect(() => {
     dispatch(getProductById(productId));
@@ -99,7 +110,7 @@ function Detail() {
                   alt={name}
                   objectFit="contain"
                   h="500px"
-                  w="250px"
+                  maxW="350px"
                   mr="4"
                   transition="transform 0.2s ease-in-out"
                   _hover={{ transform: 'scale(1.05)' }}
@@ -143,6 +154,20 @@ function Detail() {
                     <Box mt="4" d="flex" alignItems="center">
                       <Text fontSize="md">{description}</Text>
                     </Box>
+
+                    {stock === 0 ? (
+                      <Badge fontWeight="normal" fontSize="md" colorScheme="red" mr="2" mt="4">
+                        Sin stock
+                      </Badge>
+                    ) : stock < 6 ? (
+                      <Badge fontWeight="normal" fontSize="md" colorScheme="red" mr="2" mt="4">
+                        ¡Últimas unidades!
+                      </Badge>
+                    ) : (
+                      <Badge fontWeight="normal" fontSize="md" colorScheme="gray" mr="2" mt="4">
+                        Stock: {stock}
+                      </Badge>
+                    )}
 
                     <Box mt="4" d="flex" justifyContent="space-between" alignItems="center">
                       <Badge fontWeight="normal" fontSize="md" colorScheme="gray" mr="2">
@@ -198,9 +223,9 @@ function Detail() {
                           mb="4"
                           boxShadow="md"
                         >
-                          <Text color="blue.500" fontWeight="bold" fontSize="lg" mb="2">
+                          <Box color="blue.500" fontWeight="bold" fontSize="lg" mb="2">
                             <StarRating value={review.punctuation} />
-                          </Text>
+                          </Box>
                           <Text color="gray.600" fontSize="sm">
                             {review.comment}
                           </Text>

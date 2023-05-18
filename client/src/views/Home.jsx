@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllProducts, getCategories } from '../redux/asyncActions';
+import { getAllProducts, getCategories, getGenders, getSeasons } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
 import { Filters, Navbar, Pagination, Products } from '../components/index';
@@ -18,9 +18,11 @@ function Home() {
     const fetchProducts = async () => {
       await dispatch(getAllProducts());
       dispatch(actions.filterProducts());
+      dispatch(getCategories());
+      dispatch(getSeasons());
+      dispatch(getGenders());
     };
     fetchProducts();
-    // dispatch(getCategories());
   }, [dispatch]);
 
   const totalPages = Math.ceil(filteredProducts?.length / itemsPerPage);

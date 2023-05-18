@@ -10,7 +10,6 @@ import {
   Box,
   Button,
   FormControl,
-  FormErrorMessage,
   FormLabel,
   Input,
   Link,
@@ -120,8 +119,8 @@ function Register() {
             country: '',
           });
           navigateTimeoutId = setTimeout(() => {
-            navigate('/home');
-          }, 1000);
+            navigate('/login');
+          }, 2000);
         } else {
           setError('Incomplete or incorrect data');
         }
