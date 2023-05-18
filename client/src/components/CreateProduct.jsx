@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { createProduct } from '../redux/asyncActions';
+import { createProduct, getCategories, getGenders, getSeasons } from '../redux/asyncActions';
 import { validateProduct } from '../utils/validateForm';
 
 import {
@@ -22,19 +22,6 @@ import backgroundImage from '../assets/images/background.jpg';
 let timeoutId = null;
 let navigateTimeoutId = null;
 
-const genders = [
-  { id: 1, name: 'Hombre' },
-  { id: 2, name: 'Mujer' },
-  { id: 3, name: 'Otros' },
-];
-
-const seasons = [
-  { id: 1, name: 'Verano' },
-  { id: 2, name: 'Primavera' },
-  { id: 3, name: 'Invierno' },
-  { id: 4, name: 'Otoño' },
-];
-
 function CreateProduct() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -42,6 +29,16 @@ function CreateProduct() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    dispatch(getCategories());
+    dispatch(getSeasons());
+    dispatch(getGenders());
+  }, [dispatch]);
+
+  const categories = useSelector((state) => state.categories);
+  const seasons = useSelector((state) => state.seasons);
+  const genders = useSelector((state) => state.genders);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -217,7 +214,7 @@ function CreateProduct() {
             </Stack>
 
             <Stack direction="row" spacing={4}>
-              <FormControl isRequired isInvalid={errors.category !== ''}>
+              {/* <FormControl isRequired isInvalid={errors.category !== ''}>
                 <FormLabel htmlFor="category">Category</FormLabel>
                 <Input
                   id="category"
@@ -229,6 +226,26 @@ function CreateProduct() {
                   _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
                   _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
                 />
+              </FormControl> */}
+              {/* <FormErrorMessage>{errors.category}</FormErrorMessage> */}
+
+              <FormControl isRequired isInvalid={errors.category !== ''}>
+                <FormLabel htmlFor="category">Category</FormLabel>
+                <Select
+                  id="category"
+                  name="category"
+                  placeholder="Choose category"
+                  value={formData.category}
+                  onChange={handleChange}
+                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
+                >
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.name}>
+                      {category.name}
+                    </option>
+                  ))}
+                </Select>
                 {/* <FormErrorMessage>{errors.category}</FormErrorMessage> */}
               </FormControl>
 
