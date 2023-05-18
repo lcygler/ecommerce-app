@@ -33,7 +33,7 @@ const registerCtrl = async (
   });
 
   // Generar JWT token
-  const token = jwt.sign({ id: createUser.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  const token = jwt.sign({ id: createUser.id }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
   return { user: createUser, token };
 };
