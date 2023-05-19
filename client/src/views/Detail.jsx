@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { getProductById } from '../redux/asyncActions';
+import { addCartItem, getProductById } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
 import {
@@ -26,6 +26,7 @@ function Detail() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { productId } = useParams();
+  const { user } = useSelector((state) => state.selectedUser);
   const filteredProducts = useSelector((state) => state.filteredProducts);
   const selectedProduct = useSelector((state) => state.selectedProduct);
   const {
@@ -49,6 +50,10 @@ function Detail() {
     };
   }, [dispatch, productId]);
 
+  const handleAddItem = () => {
+    // dispatch(addCartItem(user.id, productId));
+  };
+
   const handlePrev = () => {
     const index = filteredProducts.findIndex((product) => product.id === selectedProduct?.id);
     if (index > 0) {
@@ -65,208 +70,210 @@ function Detail() {
     }
   };
 
-  if (!selectedProduct) {
-    return (
-      <Box display="grid" placeItems="center" height="100vh">
-        <Spinner size="xl" color="blue.500" />
-      </Box>
-    );
-  }
-
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{
-        duration: 0.5,
-        easing: 'ease-in-out',
-      }}
-    >
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="100vh"
-        backgroundImage={`url(${backgroundImage})`}
-        backgroundSize="cover"
-        backgroundPosition="center"
-      >
-        <Flex alignItems="center">
-          <Button
-            colorScheme="blue"
-            variant="ghost"
-            size="lg"
-            rounded="full"
-            mr="4"
-            onClick={handlePrev}
+    <>
+      {!selectedProduct ? (
+        <>
+          <Box display="grid" placeItems="center" height="100vh">
+            <Spinner size="xl" color="blue.500" />
+          </Box>
+        </>
+      ) : (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{
+            duration: 0.5,
+            easing: 'ease-in-out',
+          }}
+        >
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100vh"
+            backgroundImage={`url(${backgroundImage})`}
+            backgroundSize="cover"
+            backgroundPosition="center"
           >
-            <Icon as={FaChevronLeft} />
-          </Button>
-          <Box maxW="800px" bg="white" borderRadius="lg" p="10">
-            <Flex flexDirection="column" alignItems="center">
-              <Flex flexDirection="row">
-                <Image
-                  src={image}
-                  alt={name}
-                  objectFit="contain"
-                  h="500px"
-                  maxW="350px"
-                  mr="4"
-                  transition="transform 0.2s ease-in-out"
-                  _hover={{ transform: 'scale(1.05)' }}
-                />
+            <Flex alignItems="center">
+              <Button
+                colorScheme="blue"
+                variant="ghost"
+                size="lg"
+                rounded="full"
+                mr="4"
+                onClick={handlePrev}
+              >
+                <Icon as={FaChevronLeft} />
+              </Button>
+              <Box maxW="800px" bg="white" borderRadius="lg" p="10">
+                <Flex flexDirection="column" alignItems="center">
+                  <Flex flexDirection="row">
+                    <Image
+                      src={image}
+                      alt={name}
+                      objectFit="contain"
+                      h="500px"
+                      maxW="350px"
+                      mr="4"
+                      transition="transform 0.2s ease-in-out"
+                      _hover={{ transform: 'scale(1.05)' }}
+                    />
 
-                <Flex flexDirection="column" justifyContent="space-between" ml="5">
-                  <Box>
-                    <Box mt="4" d="flex" justifyContent="space-between" alignItems="baseline">
-                      <Heading as="h2" size="lg">
-                        {name}
-                      </Heading>
+                    <Flex flexDirection="column" justifyContent="space-between" ml="5">
+                      <Box>
+                        <Box mt="4" d="flex" justifyContent="space-between" alignItems="baseline">
+                          <Heading as="h2" size="lg">
+                            {name}
+                          </Heading>
 
-                      <Flex alignItems="baseline">
-                        <Text fontWeight="bold" fontSize="2xl" mt="2" mr="2">
-                          $
-                          {discounts === 0
-                            ? price.toFixed(2)
-                            : (price * (1 - discounts)).toFixed(2)}
-                        </Text>
+                          <Flex alignItems="baseline">
+                            <Text fontWeight="bold" fontSize="2xl" mt="2" mr="2">
+                              $
+                              {discounts === 0
+                                ? price.toFixed(2)
+                                : (price * (1 - discounts)).toFixed(2)}
+                            </Text>
 
-                        {discounts > 0 && (
-                          <Text fontWeight="bold" fontSize="md" color="green.400">
-                            {discounts * 100}% OFF
-                          </Text>
-                        )}
-                      </Flex>
+                            {discounts > 0 && (
+                              <Text fontWeight="bold" fontSize="md" color="green.400">
+                                {discounts * 100}% OFF
+                              </Text>
+                            )}
+                          </Flex>
 
-                      {discounts > 0 && (
-                        <Text
-                          fontWeight="bold"
-                          fontSize="md"
-                          color="gray.500"
-                          textDecoration="line-through"
-                          mr="2"
-                        >
-                          ${(price * (1 + discounts)).toFixed(2)}
-                        </Text>
-                      )}
-                    </Box>
-
-                    <Box mt="4" d="flex" alignItems="center">
-                      <Text fontSize="md">{description}</Text>
-                    </Box>
-
-                    {stock === 0 ? (
-                      <Badge fontWeight="normal" fontSize="md" colorScheme="red" mr="2" mt="4">
-                        Sin stock
-                      </Badge>
-                    ) : stock < 6 ? (
-                      <Badge fontWeight="normal" fontSize="md" colorScheme="red" mr="2" mt="4">
-                        ¡Últimas unidades!
-                      </Badge>
-                    ) : (
-                      <Badge fontWeight="normal" fontSize="md" colorScheme="gray" mr="2" mt="4">
-                        Stock: {stock}
-                      </Badge>
-                    )}
-
-                    <Box mt="4" d="flex" justifyContent="space-between" alignItems="center">
-                      <Badge fontWeight="normal" fontSize="md" colorScheme="gray" mr="2">
-                        {size}
-                      </Badge>
-
-                      <Badge fontWeight="normal" fontSize="md" colorScheme="gray" mr="2">
-                        {gender}
-                      </Badge>
-
-                      {Categories?.map((category) => (
-                        <Badge
-                          key={category.id}
-                          fontWeight="normal"
-                          fontSize="md"
-                          colorScheme="gray"
-                          mr="2"
-                        >
-                          {category.name}
-                        </Badge>
-                      ))}
-
-                      <Box fontWeight="normal" fontSize="md" mt="2">
-                        {Seasons?.map((season) => (
-                          <Badge
-                            key={season.id}
-                            fontWeight="normal"
-                            fontSize="md"
-                            colorScheme={
-                              season.name.toLowerCase() === 'verano'
-                                ? 'yellow'
-                                : season.name.toLowerCase() === 'invierno'
-                                ? 'blue'
-                                : season.name.toLowerCase() === 'otoño'
-                                ? 'orange'
-                                : 'green'
-                            }
-                            mr="2"
-                          >
-                            {season.name}
-                          </Badge>
-                        ))}
-                      </Box>
-                    </Box>
-
-                    <Box mt="4" d="flex" flexDirection="column" alignItems="center">
-                      {Reviews?.map((review) => (
-                        <Box
-                          key={review.id}
-                          bg="white"
-                          borderRadius="md"
-                          p="4"
-                          mb="4"
-                          boxShadow="md"
-                        >
-                          <Box color="blue.500" fontWeight="bold" fontSize="lg" mb="2">
-                            <StarRating value={review.punctuation} />
-                          </Box>
-                          <Text color="gray.600" fontSize="sm">
-                            {review.comment}
-                          </Text>
+                          {discounts > 0 && (
+                            <Text
+                              fontWeight="bold"
+                              fontSize="md"
+                              color="gray.500"
+                              textDecoration="line-through"
+                              mr="2"
+                            >
+                              ${(price * (1 + discounts)).toFixed(2)}
+                            </Text>
+                          )}
                         </Box>
-                      ))}
-                    </Box>
-                  </Box>
+
+                        <Box mt="4" d="flex" alignItems="center">
+                          <Text fontSize="md">{description}</Text>
+                        </Box>
+
+                        {stock === 0 ? (
+                          <Badge fontWeight="normal" fontSize="md" colorScheme="red" mr="2" mt="4">
+                            Sin stock
+                          </Badge>
+                        ) : stock < 6 ? (
+                          <Badge fontWeight="normal" fontSize="md" colorScheme="red" mr="2" mt="4">
+                            ¡Últimas unidades!
+                          </Badge>
+                        ) : (
+                          <Badge fontWeight="normal" fontSize="md" colorScheme="gray" mr="2" mt="4">
+                            Stock: {stock}
+                          </Badge>
+                        )}
+
+                        <Box mt="4" d="flex" justifyContent="space-between" alignItems="center">
+                          <Badge fontWeight="normal" fontSize="md" colorScheme="gray" mr="2">
+                            {size}
+                          </Badge>
+
+                          <Badge fontWeight="normal" fontSize="md" colorScheme="gray" mr="2">
+                            {gender}
+                          </Badge>
+
+                          {Categories?.map((category) => (
+                            <Badge
+                              key={category.id}
+                              fontWeight="normal"
+                              fontSize="md"
+                              colorScheme="gray"
+                              mr="2"
+                            >
+                              {category.name}
+                            </Badge>
+                          ))}
+
+                          <Box fontWeight="normal" fontSize="md" mt="2">
+                            {Seasons?.map((season) => (
+                              <Badge
+                                key={season.id}
+                                fontWeight="normal"
+                                fontSize="md"
+                                colorScheme={
+                                  season.name.toLowerCase() === 'verano'
+                                    ? 'yellow'
+                                    : season.name.toLowerCase() === 'invierno'
+                                    ? 'blue'
+                                    : season.name.toLowerCase() === 'otoño'
+                                    ? 'orange'
+                                    : 'green'
+                                }
+                                mr="2"
+                              >
+                                {season.name}
+                              </Badge>
+                            ))}
+                          </Box>
+                        </Box>
+
+                        <Box mt="4" d="flex" flexDirection="column" alignItems="center">
+                          {Reviews?.map((review) => (
+                            <Box
+                              key={review.id}
+                              bg="white"
+                              borderRadius="md"
+                              p="4"
+                              mb="4"
+                              boxShadow="md"
+                            >
+                              <Box color="blue.500" fontWeight="bold" fontSize="lg" mb="2">
+                                <StarRating value={review.punctuation} />
+                              </Box>
+                              <Text color="gray.600" fontSize="sm">
+                                {review.comment}
+                              </Text>
+                            </Box>
+                          ))}
+                        </Box>
+                      </Box>
+                    </Flex>
+                  </Flex>
+
+                  <Stack direction="row" spacing={4} mt="8">
+                    <Button
+                      onClick={() => {
+                        navigate('/home');
+                      }}
+                      colorScheme="gray"
+                      width="150px"
+                    >
+                      Go back
+                    </Button>
+
+                    <Button colorScheme="blue" width="150px" onClick={handleAddItem}>
+                      Add to Cart
+                    </Button>
+                  </Stack>
                 </Flex>
-              </Flex>
+              </Box>
 
-              <Stack direction="row" spacing={4} mt="8">
-                <Button
-                  onClick={() => {
-                    navigate('/home');
-                  }}
-                  colorScheme="gray"
-                  width="150px"
-                >
-                  Go back
-                </Button>
-
-                <Button colorScheme="blue" width="150px">
-                  Add to Cart
-                </Button>
-              </Stack>
+              <Button
+                colorScheme="blue"
+                variant="ghost"
+                size="lg"
+                rounded="full"
+                ml="4"
+                onClick={handleNext}
+              >
+                <Icon as={FaChevronRight} />
+              </Button>
             </Flex>
           </Box>
-
-          <Button
-            colorScheme="blue"
-            variant="ghost"
-            size="lg"
-            rounded="full"
-            ml="4"
-            onClick={handleNext}
-          >
-            <Icon as={FaChevronRight} />
-          </Button>
-        </Flex>
-      </Box>
-    </motion.div>
+        </motion.div>
+      )}
+    </>
   );
 }
 
