@@ -187,7 +187,7 @@ export const extraReducers = (builder) => {
     })
     .addCase(getUserCart.fulfilled, (state, action) => {
       state.getUserCartStatus = 'succeeded';
-      state.userCart = action.payload;
+      state.selectedCart = action.payload;
     })
     .addCase(getUserCart.rejected, (state, action) => {
       state.getUserCartStatus = 'failed';
@@ -357,9 +357,12 @@ export const extraReducers = (builder) => {
       state.selectedUser = action.payload;
       state.isAuthenticated = true;
       state.isAdmin = action.payload.user.isAdmin;
-      localStorage.setItem('selectedUser', JSON.stringify(action.payload));
-      localStorage.setItem('isAuthenticated', 'true');
-      localStorage.setItem('isAdmin', action.payload.user.isAdmin);
+
+      const userId = action.payload.user.id;
+      localStorage.setItem('userId', userId);
+      localStorage.setItem(`user_${userId}_selectedUser`, JSON.stringify(action.payload));
+      localStorage.setItem(`user_${userId}_isAuthenticated`, 'true');
+      localStorage.setItem(`user_${userId}_isAdmin`, action.payload.user.isAdmin);
     })
     .addCase(loginUser.rejected, (state, action) => {
       state.loginUserByIdStatus = 'failed';
