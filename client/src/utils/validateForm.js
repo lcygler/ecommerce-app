@@ -1,4 +1,4 @@
-import { emailRegex, imageRegex } from '../utils/consts';
+import { emailRegex, imageRegex, lettersRegex } from '../utils/consts';
 
 export function validateLogin(formData, errors, setErrors) {
   let newErrors = { ...errors };
@@ -38,11 +38,13 @@ export function validateRegister(formData, errors, setErrors) {
   //* First name
   if (!name) newErrors.name = 'First name cannot be empty';
   else if (typeof name !== 'string') newErrors.name = 'First name must be string';
+  else if (!lettersRegex.test(name)) newErrors.name = 'First name must only contain letters';
   else newErrors.name = '';
 
   //* Last name
   if (!lastname) newErrors.lastname = 'Last name cannot be empty';
   else if (typeof lastname !== 'string') newErrors.lastname = 'Last name must be string';
+  else if (!lettersRegex.test(lastname)) newErrors.lastname = 'Last name must only contain letters';
   else newErrors.lastname = '';
 
   //* Username
@@ -95,11 +97,13 @@ export function validateRegister(formData, errors, setErrors) {
   //* State
   if (!state) newErrors.state = 'State cannot be empty';
   else if (typeof state !== 'string') newErrors.state = 'State must be a string';
+  else if (!lettersRegex.test(state)) newErrors.state = 'State must only contain letters';
   else newErrors.state = '';
 
   //* Country
   if (!country) newErrors.country = 'Country cannot be empty';
   else if (typeof country !== 'string') newErrors.country = 'Country must be a string';
+  else if (!lettersRegex.test(country)) newErrors.country = 'Country must only contain letters';
   else newErrors.country = '';
 
   setErrors(newErrors);
