@@ -135,7 +135,7 @@ function Filters({ changePage, allProducts }) {
 
       <Box display="flex" alignItems="center" justifyContent="center" ml="4">
         <Button onClick={handleReset} variant="outline">
-          Reset
+          Reset filters
         </Button>
       </Box>
     </Flex>
