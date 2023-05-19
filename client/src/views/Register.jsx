@@ -381,9 +381,9 @@ function Register() {
 
             <Box textAlign="center" marginTop={4} fontSize="sm">
               <Text>
-                Already registered?{' '}
+                Have an account?{' '}
                 <Link as={RouterLink} to="/login" color="blue.500" textDecoration="underline">
-                  Click here to log in
+                  Log in here
                 </Link>
               </Text>
             </Box>
