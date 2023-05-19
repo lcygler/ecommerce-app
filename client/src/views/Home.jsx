@@ -65,11 +65,9 @@ function Home() {
             <Flex flexDirection="column" alignItems="center">
               <Flex>
                 <AlertIcon />
-                <AlertTitle>No results found</AlertTitle>
+                <AlertTitle>Oops! No results found</AlertTitle>
               </Flex>
-              <AlertDescription mt="2">
-                There are no results that match your selected filters.
-              </AlertDescription>
+              <AlertDescription mt="2">Please change your filters and try again</AlertDescription>
             </Flex>
           </Alert>
         </Box>
