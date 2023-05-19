@@ -70,7 +70,7 @@ function Filters({ changePage, allProducts }) {
       alignItems="center"
       justifyContent="center"
       position="sticky"
-      top="80px"
+      top="70px"
       zIndex={1}
     >
       <Box display="flex" alignItems="center" justifyContent="center">
