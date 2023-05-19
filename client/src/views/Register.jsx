@@ -124,7 +124,7 @@ function Register() {
           }, 2000);
         } else {
           setSuccess('');
-          setError('Incomplete or incorrect data');
+          setError('Registration error');
         }
       }, 2000);
     }
