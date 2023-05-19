@@ -23,11 +23,11 @@ function Landing() {
         boxShadow="md"
         px={8}
         py={12}
-        maxW="lg"
+        maxW="2xl"
         w="full"
       >
         <Heading as="h1" size="xl" mb="10" color="black">
-          Welcome to Khaki Store!
+          Welcome to Modern Fashion!
         </Heading>
         <Link as={RouterLink} to="/home">
           <Button colorScheme="blue" size="lg">
