@@ -102,7 +102,8 @@ function Register() {
 
       timeoutId = setTimeout(() => {
         setIsLoading(false);
-        if (response) {
+        if (response.payload) {
+          setError('');
           setSuccess('Registration successful!');
           setFormData({
             name: '',
@@ -122,6 +123,7 @@ function Register() {
             navigate('/login');
           }, 2000);
         } else {
+          setSuccess('');
           setError('Incomplete or incorrect data');
         }
       }, 2000);
