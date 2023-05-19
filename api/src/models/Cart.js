@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
   sequelize.define(
@@ -9,8 +9,12 @@ module.exports = (sequelize) => {
         primaryKey: true,
         autoIncrement: true,
       },
+      uniqueCartId: {
+        type: DataTypes.STRING,
+      },
       state: {
-        type: DataTypes.FLOAT,
+        type: DataTypes.ENUM,
+        values: ["Open", "CheckedOut"],
       },
     },
     {

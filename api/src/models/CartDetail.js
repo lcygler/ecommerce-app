@@ -13,12 +13,12 @@ module.exports = (sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      price: {
-        type: DataTypes.FLOAT,
+      cartId: {
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
-      subtotal: {
-        type: DataTypes.FLOAT,
+      productId: {
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
     },
