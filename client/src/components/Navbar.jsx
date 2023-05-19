@@ -28,7 +28,7 @@ import {
   FaUser,
   FaUserCog,
 } from 'react-icons/fa';
-import logo from '../assets/icons/logo.png';
+import logo from '../assets/icons/logo_modern.png';
 
 function Navbar() {
   const dispatch = useDispatch();
@@ -44,7 +44,7 @@ function Navbar() {
     <Box bg="transparent" px={4} py={2} pt="15px">
       <Flex alignItems="center">
         <Link as={RouterLink} to="/" display="flex" alignItems="center">
-          <Image src={logo} alt="Logo" w={100} h={10} mr={2} />
+          <Image src={logo} alt="Logo" w={150} h={10} mr={2} />
         </Link>
         <Spacer />
 
