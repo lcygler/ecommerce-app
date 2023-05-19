@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { actions } from '../redux/slice';
 
 import {
@@ -10,12 +10,7 @@ import {
   IconButton,
   Image,
   Link,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   Spacer,
-  Text,
   useDisclosure,
 } from '@chakra-ui/react';
 import {
@@ -32,6 +27,7 @@ import logo from '../assets/icons/logo_modern.png';
 
 function Navbar() {
   const dispatch = useDispatch();
+  const location = useLocation();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const isAdmin = useSelector((state) => state.isAdmin);
@@ -50,59 +46,79 @@ function Navbar() {
 
         <Box display={{ base: 'none', md: 'flex' }}>
           <Link as={RouterLink} to="/home" mr={4}>
-            <Button leftIcon={<FaHome />} colorScheme="blue" variant="outline">
-              Home
+            <Button
+              leftIcon={<FaHome />}
+              colorScheme="blue"
+              variant="ghost"
+              backgroundColor={location.pathname === '/home' ? 'blue.50' : 'white'}
+            >
+              Catalog
             </Button>
           </Link>
 
           <Link as={RouterLink} to="/cart" mr={4}>
-            <Button leftIcon={<FaShoppingCart />} colorScheme="blue" variant="outline">
+            <Button
+              leftIcon={<FaShoppingCart />}
+              colorScheme="blue"
+              variant="ghost"
+              backgroundColor={location.pathname === '/cart' ? 'blue.50' : 'white'}
+            >
               Cart
             </Button>
           </Link>
 
           <Link as={RouterLink} to="/favorites" mr={4}>
-            <Button leftIcon={<FaHeart />} colorScheme="blue" variant="outline">
+            <Button
+              leftIcon={<FaHeart />}
+              colorScheme="blue"
+              variant="ghost"
+              backgroundColor={location.pathname === '/favorites' ? 'blue.50' : 'white'}
+            >
               Favorites
             </Button>
           </Link>
 
           <Link as={RouterLink} to="/purchases" mr={4}>
-            <Button leftIcon={<FaList />} colorScheme="blue" variant="outline">
+            <Button
+              leftIcon={<FaList />}
+              colorScheme="blue"
+              variant="ghost"
+              backgroundColor={location.pathname === '/purchases' ? 'blue.50' : 'white'}
+            >
               Purchases
             </Button>
           </Link>
 
           {isAuthenticated && isAdmin && (
             <Link as={RouterLink} to="/dashboard" mr={4}>
-              <Button leftIcon={<FaUserCog />} colorScheme="blue" variant="outline">
+              <Button
+                leftIcon={<FaUserCog />}
+                colorScheme="blue"
+                variant="ghost"
+                backgroundColor={location.pathname === '/dashboard' ? 'blue.50' : 'white'}
+              >
                 Dashboard
               </Button>
             </Link>
           )}
 
           {!isAuthenticated ? (
-            <Menu>
-              <MenuButton as={Button} leftIcon={<FaUser />} colorScheme="blue" variant="outline">
+            <Link as={RouterLink} to="/login" mr={4}>
+              <Button
+                leftIcon={<FaUser />}
+                colorScheme="blue"
+                variant="ghost"
+                backgroundColor={location.pathname === '/login' ? 'blue.50' : 'white'}
+              >
                 Login
-              </MenuButton>
-
-              <MenuList>
-                <Link as={RouterLink} to="/login">
-                  <MenuItem>Login</MenuItem>
-                </Link>
-
-                <Link as={RouterLink} to="/register">
-                  <MenuItem>Register</MenuItem>
-                </Link>
-              </MenuList>
-            </Menu>
+              </Button>
+            </Link>
           ) : (
             <Link as={RouterLink} to="/" mr={4}>
               <Button
                 leftIcon={<FaUser />}
                 colorScheme="blue"
-                variant="outline"
+                variant="ghost"
                 onClick={handleLogout}
               >
                 Logout
@@ -125,63 +141,86 @@ function Navbar() {
           >
             <Flex direction="column" alignItems="center" p={4}>
               <Link as={RouterLink} to="/home" w="full" mb={4}>
-                <Button w="full" leftIcon={<FaHome />} colorScheme="blue" variant="outline">
-                  Home
+                <Button
+                  w="full"
+                  leftIcon={<FaHome />}
+                  colorScheme="blue"
+                  variant="ghost"
+                  backgroundColor={location.pathname === '/home' ? 'blue.50' : 'white'}
+                >
+                  Catalog
                 </Button>
               </Link>
 
               <Link as={RouterLink} to="/cart" w="full" mb={4}>
-                <Button w="full" leftIcon={<FaShoppingCart />} colorScheme="blue" variant="outline">
+                <Button
+                  w="full"
+                  leftIcon={<FaShoppingCart />}
+                  colorScheme="blue"
+                  variant="ghost"
+                  backgroundColor={location.pathname === '/cart' ? 'blue.50' : 'white'}
+                >
                   Cart
                 </Button>
               </Link>
 
               <Link as={RouterLink} to="/favorites" w="full" mb={4}>
-                <Button w="full" leftIcon={<FaHeart />} colorScheme="blue" variant="outline">
+                <Button
+                  w="full"
+                  leftIcon={<FaHeart />}
+                  colorScheme="blue"
+                  variant="ghost"
+                  backgroundColor={location.pathname === '/favorites' ? 'blue.50' : 'white'}
+                >
                   Favorites
                 </Button>
               </Link>
 
               <Link as={RouterLink} to="/purchases" w="full" mb={4}>
-                <Button w="full" leftIcon={<FaList />} colorScheme="blue" variant="outline">
+                <Button
+                  w="full"
+                  leftIcon={<FaList />}
+                  colorScheme="blue"
+                  variant="ghost"
+                  backgroundColor={location.pathname === '/purchases' ? 'blue.50' : 'white'}
+                >
                   Purchases
                 </Button>
               </Link>
 
               {isAuthenticated && isAdmin && (
                 <Link as={RouterLink} to="/dashboard" w="full" mb={4}>
-                  <Button w="full" leftIcon={<FaUserCog />} colorScheme="blue" variant="outline">
+                  <Button
+                    w="full"
+                    leftIcon={<FaUserCog />}
+                    colorScheme="blue"
+                    variant="ghost"
+                    backgroundColor={location.pathname === '/dashboard' ? 'blue.50' : 'white'}
+                  >
                     Dashboard
                   </Button>
                 </Link>
               )}
 
               {!isAuthenticated ? (
-                <Menu>
-                  <MenuButton as={Button} w="full" colorScheme="blue" variant="outline">
-                    <Box display="flex" justifyContent="center">
-                      <FaUser />
-                      <Text ml={2}>Login</Text>
-                    </Box>
-                  </MenuButton>
-
-                  <MenuList>
-                    <Link as={RouterLink} to="/login">
-                      <MenuItem>Login</MenuItem>
-                    </Link>
-
-                    <Link as={RouterLink} to="/register">
-                      <MenuItem>Register</MenuItem>
-                    </Link>
-                  </MenuList>
-                </Menu>
+                <Link as={RouterLink} to="/login" w="full" mb={4}>
+                  <Button
+                    w="full"
+                    leftIcon={<FaUser />}
+                    colorScheme="blue"
+                    variant="ghost"
+                    backgroundColor={location.pathname === '/login' ? 'blue.50' : 'white'}
+                  >
+                    Login
+                  </Button>
+                </Link>
               ) : (
                 <Link as={RouterLink} to="/" w="full" mb={4}>
                   <Button
                     w="full"
                     leftIcon={<FaUser />}
                     colorScheme="blue"
-                    variant="outline"
+                    variant="ghost"
                     onClick={handleLogout}
                   >
                     Logout
