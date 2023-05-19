@@ -7,7 +7,7 @@ function Products({ currentProducts }) {
     <Grid
       templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(5, 1fr)' }}
       gap={6}
-      pt={5}
+      pt={3}
       pb={10}
       px={10}
     >
