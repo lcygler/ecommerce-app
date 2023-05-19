@@ -37,7 +37,7 @@ function Navbar() {
   };
 
   return (
-    <Box bg="transparent" px={4} py={2} pt="15px">
+    <Box bg="white" h="80px" px={4} py={2} pt="15px" position="sticky" top={0} zIndex={1}>
       <Flex alignItems="center">
         <Link as={RouterLink} to="/" display="flex" alignItems="center">
           <Image src={logo} alt="Logo" w={150} h={10} mr={2} />

@@ -43,7 +43,7 @@ function Home() {
   };
 
   return (
-    <Box flexDirection="column">
+    <Box flexDirection="column" height="100vh" overflow="auto">
       <Navbar width="100%" />
       <Filters changePage={changePage} allProducts={allProducts} />
       {!allProducts?.length ? (

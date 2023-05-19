@@ -64,7 +64,15 @@ function Filters({ changePage, allProducts }) {
   };
 
   return (
-    <Flex alignItems="center" justifyContent="center" mt="8">
+    <Flex
+      bg="white"
+      h="70px"
+      alignItems="center"
+      justifyContent="center"
+      position="sticky"
+      top="80px"
+      zIndex={1}
+    >
       <Box display="flex" alignItems="center" justifyContent="center">
         <Select
           defaultValue="All"
