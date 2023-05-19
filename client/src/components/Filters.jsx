@@ -64,7 +64,15 @@ function Filters({ changePage, allProducts }) {
   };
 
   return (
-    <Flex alignItems="center" justifyContent="center" mt="8">
+    <Flex
+      bg="white"
+      h="70px"
+      alignItems="center"
+      justifyContent="center"
+      position="sticky"
+      top="70px"
+      zIndex={1}
+    >
       <Box display="flex" alignItems="center" justifyContent="center">
         <Select
           defaultValue="All"
@@ -135,7 +143,7 @@ function Filters({ changePage, allProducts }) {
 
       <Box display="flex" alignItems="center" justifyContent="center" ml="4">
         <Button onClick={handleReset} variant="outline">
-          Reset
+          Reset filters
         </Button>
       </Box>
     </Flex>

@@ -20,7 +20,6 @@ const getCategoriesController = async () => {
       { id: 13, name: 'Calcetines' },
       { id: 14, name: 'Ropa interior' },
       { id: 15, name: 'Trajes de baño' },
-      { id: 16, name: 'Accesorios de moda' },
     ];
   } catch (error) {
     throw new Error('Error retrieving categories');
