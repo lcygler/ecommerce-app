@@ -1,18 +1,17 @@
 const { Router } = require('express');
-const UserAdmin = require('./AdminRoutes');
+const adminRouter = require('./AdminRoutes');
 const usersRouter = require('./users.js');
-const categoriesRouter = require('./CategoryRoute.js');
+const categoriesRouter = require('./categories.js');
 const productRouter = require('./ProductRoute.js');
 const catalogRouter = require('./catalog.js');
 const seasonsRouter = require('./seasons.js');
 const gendersRouter = require('./genders.js');
 const paymentRouter = require('./payment.js');
 
-
 const router = Router();
 
 router.use('/users', usersRouter);
-router.use('/admin', UserAdmin);
+router.use('/admin', adminRouter);
 router.use('/products', productRouter);
 router.use('/catalog', catalogRouter); // temporal
 router.use('/categories', categoriesRouter);
