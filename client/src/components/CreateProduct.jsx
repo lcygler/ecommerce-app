@@ -13,6 +13,7 @@ import {
   Button,
   FormControl,
   FormLabel,
+  Heading,
   Input,
   Select,
   Stack,
@@ -167,6 +168,9 @@ function CreateProduct() {
       backgroundPosition="center"
     >
       <Box bg="white" boxShadow="lg" borderRadius="md" mx="auto" p={6} maxW="lg">
+        <Heading size="md" mb="6" w="100%" textAlign="center">
+          Create a product
+        </Heading>
         <form onChange={handleForm} onSubmit={handleSubmit}>
           {error && (
             <Alert status="error" marginBottom={4}>
