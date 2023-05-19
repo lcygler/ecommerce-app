@@ -68,7 +68,8 @@ function Login() {
 
     timeoutId = setTimeout(() => {
       setIsLoading(false);
-      if (response) {
+      if (response.payload) {
+        setError('');
         setSuccess('Login successful!');
         // dispatch(getUserFavorites());
         // dispatch(getUserOrders());
@@ -80,6 +81,7 @@ function Login() {
           navigate('/home');
         }, 1000);
       } else {
+        setSuccess('');
         setError('Invalid email or password');
       }
     }, 2000);

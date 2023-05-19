@@ -1,130 +1,138 @@
-export const initialState = {
-  // Products
-  allProducts: [],
-  filteredProducts: [],
-  selectedProduct: {},
-  categories: [],
-  seasons: [],
-  genders: [],
+export const getInitialState = () => {
+  const storedUserId = localStorage.getItem('userId');
+  const storedSelectedUser = JSON.parse(localStorage.getItem(`user_${storedUserId}_selectedUser`));
+  const storedIsAuthenticated =
+    localStorage.getItem(`user_${storedUserId}_isAuthenticated`) === 'true';
+  const storedIsAdmin = localStorage.getItem(`user_${storedUserId}_isAdmin`) === 'true';
 
-  // Filters
-  category: 'All',
-  gender: 'All',
-  season: 'All',
-  size: 'All',
-  discount: 'All',
-  order: 'Default',
-  currentPage: 1,
+  return {
+    // Products
+    allProducts: [],
+    filteredProducts: [],
+    selectedProduct: {},
+    categories: [],
+    seasons: [],
+    genders: [],
 
-  // Favorites
-  favorites: [],
+    // Filters
+    category: 'All',
+    gender: 'All',
+    season: 'All',
+    size: 'All',
+    discount: 'All',
+    order: 'Default',
+    currentPage: 1,
 
-  // Cart
-  userCart: {},
-  selectedCart: {},
-  cartItems: [],
-  cartTotal: 0,
+    // Favorites
+    favorites: [],
 
-  // Orders
-  userOrders: [],
-  selectedOrder: {},
+    // Cart
+    selectedCart: {},
+    cartItems: [],
+    cartTotal: 0,
 
-  // Users
-  selectedUser: JSON.parse(localStorage.getItem('selectedUser')) || {},
-  isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
-  isAdmin: localStorage.getItem('isAdmin') === 'true',
+    // Orders
+    userOrders: [],
+    selectedOrder: {},
 
-  // Reviews
-  userReviews: [],
-  selectedReview: {},
+    // Users
+    userId: storedUserId || null,
+    selectedUser: storedSelectedUser || {},
+    isAuthenticated: storedIsAuthenticated || false,
+    isAdmin: storedIsAdmin || false,
 
-  //* Async Status
-  // Products
-  getAllProductsStatus: 'idle',
-  getProductByIdStatus: 'idle',
-  getProductByNameStatus: 'idle',
-  createProductStatus: 'idle',
-  updateProductByIdStatus: 'idle',
-  deleteProductStatus: 'idle',
-  getCategoriesStatus: 'idle',
-  getSeasonsStatus: 'idle',
-  getGendersStatus: 'idle',
+    // Reviews
+    userReviews: [],
+    selectedReview: {},
 
-  // Favorites
-  getUserFavoritesStatus: 'idle',
-  addFavoriteStatus: 'idle',
-  deleteFavoriteStatus: 'idle',
+    //* Async Status
+    // Products
+    getAllProductsStatus: 'idle',
+    getProductByIdStatus: 'idle',
+    getProductByNameStatus: 'idle',
+    createProductStatus: 'idle',
+    updateProductByIdStatus: 'idle',
+    deleteProductStatus: 'idle',
+    getCategoriesStatus: 'idle',
+    getSeasonsStatus: 'idle',
+    getGendersStatus: 'idle',
 
-  // Cart
-  getUserCartStatus: 'idle',
-  getCartByIdStatus: 'idle',
-  createCartStatus: 'idle',
-  updateCartByIdStatus: 'idle',
-  deleteCartByIdStatus: 'idle',
+    // Favorites
+    getUserFavoritesStatus: 'idle',
+    addFavoriteStatus: 'idle',
+    deleteFavoriteStatus: 'idle',
 
-  // Orders
-  getUserOrdersStatus: 'idle',
-  getOrderByIdStatus: 'idle',
-  createOrderStatus: 'idle',
-  updateOrderByIdStatus: 'idle',
-  deleteOrderByIdStatus: 'idle',
+    // Cart
+    getUserCartStatus: 'idle',
+    getCartByIdStatus: 'idle',
+    createCartStatus: 'idle',
+    updateCartByIdStatus: 'idle',
+    deleteCartByIdStatus: 'idle',
 
-  // Users
-  getUserByIdStatus: 'idle',
-  createUserStatus: 'idle',
-  updateUserByIdStatus: 'idle',
-  deleteUserByIdStatus: 'idle',
-  loginUserStatus: 'idle',
+    // Orders
+    getUserOrdersStatus: 'idle',
+    getOrderByIdStatus: 'idle',
+    createOrderStatus: 'idle',
+    updateOrderByIdStatus: 'idle',
+    deleteOrderByIdStatus: 'idle',
 
-  // Reviews
-  getUserReviewsStatus: 'idle',
-  getReviewByIdStatus: 'idle',
-  createReviewStatus: 'idle',
-  updateReviewByIdStatus: 'idle',
-  deleteReviewByIdStatus: 'idle',
+    // Users
+    getUserByIdStatus: 'idle',
+    createUserStatus: 'idle',
+    updateUserByIdStatus: 'idle',
+    deleteUserByIdStatus: 'idle',
+    loginUserStatus: 'idle',
 
-  //* Async Error
-  // Products
-  getAllProductsError: null,
-  getProductByIdError: null,
-  getProductByNameError: null,
-  createProductError: null,
-  updateProductByIdError: null,
-  deleteProductError: null,
-  getCategoriesError: null,
-  getSeasonsError: null,
-  getGendersError: null,
+    // Reviews
+    getUserReviewsStatus: 'idle',
+    getReviewByIdStatus: 'idle',
+    createReviewStatus: 'idle',
+    updateReviewByIdStatus: 'idle',
+    deleteReviewByIdStatus: 'idle',
 
-  // Favorites
-  getUserFavoritesError: null,
-  addFavoriteError: null,
-  deleteFavoriteError: null,
+    //* Async Error
+    // Products
+    getAllProductsError: null,
+    getProductByIdError: null,
+    getProductByNameError: null,
+    createProductError: null,
+    updateProductByIdError: null,
+    deleteProductError: null,
+    getCategoriesError: null,
+    getSeasonsError: null,
+    getGendersError: null,
 
-  // Cart
-  getUserCartError: null,
-  getCartByIdError: null,
-  createCartError: null,
-  updateCartByIdError: null,
-  deleteCartByIdError: null,
+    // Favorites
+    getUserFavoritesError: null,
+    addFavoriteError: null,
+    deleteFavoriteError: null,
 
-  // Orders
-  getUserOrdersError: null,
-  getOrderByIdError: null,
-  createOrderError: null,
-  updateOrderByIdError: null,
-  deleteOrderByIdError: null,
+    // Cart
+    getUserCartError: null,
+    getCartByIdError: null,
+    createCartError: null,
+    updateCartByIdError: null,
+    deleteCartByIdError: null,
 
-  // Users
-  getUserByIdError: null,
-  createUserError: null,
-  updateUserByIdError: null,
-  deleteUserByIdError: null,
-  loginUserError: null,
+    // Orders
+    getUserOrdersError: null,
+    getOrderByIdError: null,
+    createOrderError: null,
+    updateOrderByIdError: null,
+    deleteOrderByIdError: null,
 
-  // Reviews
-  getUserReviewsError: null,
-  getReviewByIdError: null,
-  createReviewError: null,
-  updateReviewByIdError: null,
-  deleteReviewByIdError: null,
+    // Users
+    getUserByIdError: null,
+    createUserError: null,
+    updateUserByIdError: null,
+    deleteUserByIdError: null,
+    loginUserError: null,
+
+    // Reviews
+    getUserReviewsError: null,
+    getReviewByIdError: null,
+    createReviewError: null,
+    updateReviewByIdError: null,
+    deleteReviewByIdError: null,
+  };
 };
