@@ -72,7 +72,7 @@ function Detail() {
 
   return (
     <>
-      {!selectedProduct ? (
+      {!name ? (
         <>
           <Box display="grid" placeItems="center" height="100vh">
             <Spinner size="xl" color="blue.500" />
