@@ -16,9 +16,11 @@ import {
 import {
   FaBars,
   FaHeart,
-  FaHome,
   FaList,
   FaShoppingCart,
+  FaSignInAlt,
+  FaSignOutAlt,
+  FaTags,
   FaTimes,
   FaUser,
   FaUserCog,
@@ -47,7 +49,7 @@ function Navbar() {
         <Box display={{ base: 'none', md: 'flex' }}>
           <Link as={RouterLink} to="/home" mr={4}>
             <Button
-              leftIcon={<FaHome />}
+              leftIcon={<FaTags />}
               colorScheme="blue"
               variant="ghost"
               backgroundColor={location.pathname === '/home' ? 'blue.50' : 'white'}
@@ -105,7 +107,7 @@ function Navbar() {
           {!isAuthenticated ? (
             <Link as={RouterLink} to="/login" mr={4}>
               <Button
-                leftIcon={<FaUser />}
+                leftIcon={<FaSignInAlt />}
                 colorScheme="blue"
                 variant="ghost"
                 backgroundColor={location.pathname === '/login' ? 'blue.50' : 'white'}
@@ -114,16 +116,30 @@ function Navbar() {
               </Button>
             </Link>
           ) : (
-            <Link as={RouterLink} to="/" mr={4}>
-              <Button
-                leftIcon={<FaUser />}
-                colorScheme="blue"
-                variant="ghost"
-                onClick={handleLogout}
-              >
-                Logout
-              </Button>
-            </Link>
+            <>
+              {/* <Link as={RouterLink} to="/profile" w="full" mb={4}>
+                <Button
+                  w="full"
+                  leftIcon={<FaUser />}
+                  colorScheme="blue"
+                  variant="ghost"
+                  backgroundColor={location.pathname === '/profile' ? 'blue.50' : 'white'}
+                >
+                  Profile
+                </Button>
+              </Link> */}
+
+              <Link as={RouterLink} to="/" mr={4}>
+                <Button
+                  leftIcon={<FaSignOutAlt />}
+                  colorScheme="blue"
+                  variant="ghost"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </Button>
+              </Link>
+            </>
           )}
         </Box>
 
@@ -143,7 +159,7 @@ function Navbar() {
               <Link as={RouterLink} to="/home" w="full" mb={4}>
                 <Button
                   w="full"
-                  leftIcon={<FaHome />}
+                  leftIcon={<FaTags />}
                   colorScheme="blue"
                   variant="ghost"
                   backgroundColor={location.pathname === '/home' ? 'blue.50' : 'white'}
@@ -206,7 +222,7 @@ function Navbar() {
                 <Link as={RouterLink} to="/login" w="full" mb={4}>
                   <Button
                     w="full"
-                    leftIcon={<FaUser />}
+                    leftIcon={<FaSignInAlt />}
                     colorScheme="blue"
                     variant="ghost"
                     backgroundColor={location.pathname === '/login' ? 'blue.50' : 'white'}
@@ -215,17 +231,31 @@ function Navbar() {
                   </Button>
                 </Link>
               ) : (
-                <Link as={RouterLink} to="/" w="full" mb={4}>
-                  <Button
-                    w="full"
-                    leftIcon={<FaUser />}
-                    colorScheme="blue"
-                    variant="ghost"
-                    onClick={handleLogout}
-                  >
-                    Logout
-                  </Button>
-                </Link>
+                <>
+                  {/* <Link as={RouterLink} to="/profile" w="full" mb={4}>
+                    <Button
+                      w="full"
+                      leftIcon={<FaUser />}
+                      colorScheme="blue"
+                      variant="ghost"
+                      backgroundColor={location.pathname === '/profile' ? 'blue.50' : 'white'}
+                    >
+                      Profile
+                    </Button>
+                  </Link> */}
+
+                  <Link as={RouterLink} to="/" w="full" mb={4}>
+                    <Button
+                      w="full"
+                      leftIcon={<FaSignOutAlt />}
+                      colorScheme="blue"
+                      variant="ghost"
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </Button>
+                  </Link>
+                </>
               )}
 
               {isOpen && (
