@@ -11,6 +11,7 @@ import {
   AlertIcon,
   AlertTitle,
   Box,
+  Button,
   Flex,
   Spinner,
 } from '@chakra-ui/react';
@@ -42,6 +43,13 @@ function Home() {
     dispatch(actions.setCurrentPage(pageNumber));
   };
 
+  const handleReset = () => {
+    dispatch(actions.resetFilters());
+    dispatch(actions.filterProducts());
+    dispatch(actions.filterFavorites());
+    changePage(1);
+  };
+
   return (
     <Box flexDirection="column" height="100vh" overflow="auto">
       <Navbar width="100%" />
@@ -68,6 +76,11 @@ function Home() {
                 <AlertTitle>Oops! No results found</AlertTitle>
               </Flex>
               <AlertDescription mt="2">Please change your filters and try again</AlertDescription>
+              <Box display="flex" alignItems="center" justifyContent="center" mt="4">
+                <Button onClick={handleReset} variant="outline" colorScheme="yellow">
+                  Reset filters
+                </Button>
+              </Box>
             </Flex>
           </Alert>
         </Box>
