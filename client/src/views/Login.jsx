@@ -12,6 +12,7 @@ import {
   Button,
   FormControl,
   FormLabel,
+  Heading,
   Input,
   Link,
   Stack,
@@ -104,7 +105,18 @@ function Login() {
       backgroundSize="cover"
       backgroundPosition="center"
     >
-      <Box bg="white" boxShadow="lg" borderRadius="md" width="sm" mx="auto" p={6}>
+      <Box
+        bg="white"
+        boxShadow="lg"
+        borderRadius="md"
+        width="sm"
+        mx="auto"
+        p={8}
+        boxSizing="border-box"
+      >
+        <Heading size="lg" mb="6" w="100%" textAlign="center">
+          Log in
+        </Heading>
         <form onChange={handleForm} onSubmit={handleSubmit}>
           {error && (
             <Alert status="error" marginBottom={4}>

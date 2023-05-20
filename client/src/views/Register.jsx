@@ -11,6 +11,7 @@ import {
   Button,
   FormControl,
   FormLabel,
+  Heading,
   Input,
   Link,
   Stack,
@@ -149,7 +150,18 @@ function Register() {
       backgroundSize="cover"
       backgroundPosition="center"
     >
-      <Box bg="white" boxShadow="lg" borderRadius="md" mx="auto" p={6} maxW="lg">
+      <Box
+        bg="white"
+        boxShadow="lg"
+        borderRadius="md"
+        mx="auto"
+        p={8}
+        maxW="lg"
+        boxSizing="border-box"
+      >
+        <Heading size="lg" mb="6" w="100%" textAlign="center">
+          Register
+        </Heading>
         <form onChange={handleForm} onSubmit={handleSubmit}>
           {error && (
             <Alert status="error" marginBottom={4}>
