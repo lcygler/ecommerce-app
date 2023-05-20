@@ -115,7 +115,7 @@ function Login() {
         boxSizing="border-box"
       >
         <Heading size="lg" mb="6" w="100%" textAlign="center">
-          Log in
+          Login
         </Heading>
         <form onChange={handleForm} onSubmit={handleSubmit}>
           {error && (
@@ -182,7 +182,7 @@ function Login() {
                 loadingText="Logging in..."
                 width="100%"
               >
-                Log in
+                Login
               </Button>
             </Stack>
 
