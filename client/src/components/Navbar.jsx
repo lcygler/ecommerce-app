@@ -58,17 +58,6 @@ function Navbar() {
             </Button>
           </Link>
 
-          <Link as={RouterLink} to="/cart" mr={4}>
-            <Button
-              leftIcon={<FaShoppingCart />}
-              colorScheme="blue"
-              variant="ghost"
-              backgroundColor={location.pathname === '/cart' ? 'blue.50' : 'white'}
-            >
-              Cart
-            </Button>
-          </Link>
-
           <Link as={RouterLink} to="/favorites" mr={4}>
             <Button
               leftIcon={<FaHeart />}
@@ -77,6 +66,17 @@ function Navbar() {
               backgroundColor={location.pathname === '/favorites' ? 'blue.50' : 'white'}
             >
               Favorites
+            </Button>
+          </Link>
+
+          <Link as={RouterLink} to="/cart" mr={4}>
+            <Button
+              leftIcon={<FaShoppingCart />}
+              colorScheme="blue"
+              variant="ghost"
+              backgroundColor={location.pathname === '/cart' ? 'blue.50' : 'white'}
+            >
+              Cart
             </Button>
           </Link>
 
@@ -168,18 +168,6 @@ function Navbar() {
                 </Button>
               </Link>
 
-              <Link as={RouterLink} to="/cart" w="full" mb={4}>
-                <Button
-                  w="full"
-                  leftIcon={<FaShoppingCart />}
-                  colorScheme="blue"
-                  variant="ghost"
-                  backgroundColor={location.pathname === '/cart' ? 'blue.50' : 'white'}
-                >
-                  Cart
-                </Button>
-              </Link>
-
               <Link as={RouterLink} to="/favorites" w="full" mb={4}>
                 <Button
                   w="full"
@@ -189,6 +177,18 @@ function Navbar() {
                   backgroundColor={location.pathname === '/favorites' ? 'blue.50' : 'white'}
                 >
                   Favorites
+                </Button>
+              </Link>
+
+              <Link as={RouterLink} to="/cart" w="full" mb={4}>
+                <Button
+                  w="full"
+                  leftIcon={<FaShoppingCart />}
+                  colorScheme="blue"
+                  variant="ghost"
+                  backgroundColor={location.pathname === '/cart' ? 'blue.50' : 'white'}
+                >
+                  Cart
                 </Button>
               </Link>
 

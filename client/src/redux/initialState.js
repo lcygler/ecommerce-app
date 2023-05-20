@@ -1,10 +1,17 @@
 export const getInitialState = () => {
+  //* USER
   const storedUserId = localStorage.getItem('userId');
   const storedSelectedUser = JSON.parse(localStorage.getItem(`user_${storedUserId}_selectedUser`));
   const storedIsAuthenticated =
     localStorage.getItem(`user_${storedUserId}_isAuthenticated`) === 'true';
   const storedIsAdmin = localStorage.getItem(`user_${storedUserId}_isAdmin`) === 'true';
+
+  //* CART
   const storedCartProducts = JSON.parse(localStorage.getItem(`user_${storedUserId}_cartProducts`));
+  const storedCartTotal = JSON.parse(localStorage.getItem(`user_${storedUserId}_cartTotal`));
+
+  //* FAVORITES
+  const storedFavorites = JSON.parse(localStorage.getItem(`user_${storedUserId}_favorites`));
 
   return {
     // Products
@@ -25,12 +32,13 @@ export const getInitialState = () => {
     currentPage: 1,
 
     // Favorites
-    favorites: [],
+    favorites: storedFavorites || [],
+    filteredFavorites: [],
 
     // Cart
     selectedCart: {},
     cartProducts: storedCartProducts || [],
-    cartTotal: 0,
+    cartTotal: storedCartTotal || 0,
 
     // Orders
     userOrders: [],

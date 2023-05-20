@@ -1,11 +1,16 @@
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { actions } from '../redux/slice';
+
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { Box, Button, Flex, Select } from '@chakra-ui/react';
 
 function Filters({ changePage, allProducts }) {
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const categories = useSelector((state) => state.categories);
   const seasons = useSelector((state) => state.seasons);
@@ -54,13 +59,29 @@ function Filters({ changePage, allProducts }) {
       dispatch(actions.updateOrder(selectValue));
     }
     dispatch(actions.filterProducts());
+    dispatch(actions.filterFavorites());
     changePage(1);
   };
 
   const handleReset = () => {
     dispatch(actions.resetFilters());
     dispatch(actions.filterProducts());
+    dispatch(actions.filterFavorites());
     changePage(1);
+  };
+
+  const handleClearFavorites = () => {
+    if (allProducts.length !== 0) {
+      const confirmed = window.confirm('Are you sure you want to clear all favorites?');
+      if (confirmed) {
+        dispatch(actions.clearFavorites());
+
+        toast.success('All favorites were cleared!', {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 2000,
+        });
+      }
+    }
   };
 
   return (
@@ -146,6 +167,14 @@ function Filters({ changePage, allProducts }) {
           Reset filters
         </Button>
       </Box>
+
+      {location.pathname === '/favorites' && allProducts.length !== 0 && (
+        <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+          <Button colorScheme="red" variant="ghost" onClick={handleClearFavorites}>
+            Clear favorites
+          </Button>
+        </Box>
+      )}
     </Flex>
   );
 }

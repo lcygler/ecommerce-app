@@ -38,6 +38,7 @@ function Products({ currentProducts }) {
               size={size}
               image={image}
               discounts={discounts}
+              stock={stock}
             />
           )
       )}
