@@ -168,7 +168,7 @@ function Filters({ changePage, allProducts }) {
         </Button>
       </Box>
 
-      {location.pathname === '/favorites' && (
+      {location.pathname === '/favorites' && allProducts.length !== 0 && (
         <Box display="flex" alignItems="center" justifyContent="center" ml="4">
           <Button colorScheme="red" variant="ghost" onClick={handleClearFavorites}>
             Clear favorites
