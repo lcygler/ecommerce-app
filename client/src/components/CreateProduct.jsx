@@ -167,8 +167,16 @@ function CreateProduct() {
       backgroundSize="cover"
       backgroundPosition="center"
     >
-      <Box bg="white" boxShadow="lg" borderRadius="md" mx="auto" p={6} maxW="lg">
-        <Heading size="md" mb="6" w="100%" textAlign="center">
+      <Box
+        bg="white"
+        boxShadow="lg"
+        borderRadius="md"
+        mx="auto"
+        p={8}
+        maxW="lg"
+        boxSizing="border-box"
+      >
+        <Heading size="lg" mb="6" w="100%" textAlign="center">
           Create a product
         </Heading>
         <form onChange={handleForm} onSubmit={handleSubmit}>
