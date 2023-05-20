@@ -7,13 +7,14 @@ const catalogRouter = require('./catalog.js');
 const seasonsRouter = require('./seasons.js');
 const gendersRouter = require('./genders.js');
 const paymentRouter = require('./payment.js');
-
+const stock = require('./StockRoute.js');
 
 const router = Router();
 
 router.use('/users', usersRouter);
 router.use('/admin', UserAdmin);
 router.use('/products', productRouter);
+router.use('/stock', stock);
 router.use('/catalog', catalogRouter); // temporal
 router.use('/categories', categoriesRouter);
 router.use('/seasons', seasonsRouter);
