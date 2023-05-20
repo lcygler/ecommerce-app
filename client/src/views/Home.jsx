@@ -5,7 +5,15 @@ import { actions } from '../redux/slice';
 
 import { Filters, Navbar, Pagination, Products } from '../components/index';
 
-import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, Spinner } from '@chakra-ui/react';
+import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+  Box,
+  Flex,
+  Spinner,
+} from '@chakra-ui/react';
 
 function Home() {
   const dispatch = useDispatch();
@@ -35,23 +43,32 @@ function Home() {
   };
 
   return (
-    <Box flexDirection="column">
+    <Box flexDirection="column" height="100vh" overflow="auto">
       <Navbar width="100%" />
       <Filters changePage={changePage} allProducts={allProducts} />
       {!allProducts?.length ? (
         <>
-          <Box display="grid" placeItems="center" height="50vh">
+          <Box display="grid" placeItems="center" height="60vh">
             <Spinner size="xl" color="blue.500" />
           </Box>
         </>
       ) : !filteredProducts?.length ? (
-        <Box display="grid" placeItems="center" width="100" mt="10">
-          <Alert status="warning" textAlign="center" maxWidth="xl" mx="auto">
-            <AlertIcon />
-            <AlertTitle>No results found</AlertTitle>
-            <AlertDescription>
-              There are no results that match your selected filters.
-            </AlertDescription>
+        <Box display="grid" placeItems="center" width="auto" height="60vh">
+          <Alert
+            status="warning"
+            textAlign="center"
+            maxWidth="md"
+            mx="auto"
+            display="flex"
+            justifyContent="center"
+          >
+            <Flex flexDirection="column" alignItems="center">
+              <Flex>
+                <AlertIcon />
+                <AlertTitle>Oops! No results found</AlertTitle>
+              </Flex>
+              <AlertDescription mt="2">Please change your filters and try again</AlertDescription>
+            </Flex>
           </Alert>
         </Box>
       ) : (

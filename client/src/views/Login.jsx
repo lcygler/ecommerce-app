@@ -68,7 +68,8 @@ function Login() {
 
     timeoutId = setTimeout(() => {
       setIsLoading(false);
-      if (response) {
+      if (response.payload) {
+        setError('');
         setSuccess('Login successful!');
         // dispatch(getUserFavorites());
         // dispatch(getUserOrders());
@@ -80,6 +81,7 @@ function Login() {
           navigate('/home');
         }, 1000);
       } else {
+        setSuccess('');
         setError('Invalid email or password');
       }
     }, 2000);
@@ -174,9 +176,9 @@ function Login() {
 
             <Box textAlign="center" marginTop={4} fontSize="sm">
               <Text>
-                Not registered yet?{' '}
+                Don't have an account?{' '}
                 <Link as={RouterLink} to="/register" color="blue.500" textDecoration="underline">
-                  Click here to register
+                  Register now
                 </Link>
               </Text>
             </Box>

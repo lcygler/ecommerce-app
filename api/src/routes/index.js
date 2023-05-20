@@ -1,7 +1,7 @@
 const { Router } = require('express');
-const UserAdmin = require('./AdminRoutes');
+const adminRouter = require('./AdminRoutes');
 const usersRouter = require('./users.js');
-const categoriesRouter = require('./CategoryRoute.js');
+const categoriesRouter = require('./categories.js');
 const productRouter = require('./ProductRoute.js');
 const catalogRouter = require('./catalog.js');
 const seasonsRouter = require('./seasons.js');
@@ -12,7 +12,7 @@ const stock = require('./StockRoute.js');
 const router = Router();
 
 router.use('/users', usersRouter);
-router.use('/admin', UserAdmin);
+router.use('/admin', adminRouter);
 router.use('/products', productRouter);
 router.use('/stock', stock);
 router.use('/catalog', catalogRouter); // temporal

@@ -9,16 +9,16 @@ module.exports = (sequelize) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      amount: {
+      quantity: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      cartId: {
-        type: DataTypes.INTEGER,
+      price: {
+        type: DataTypes.FLOAT,
         allowNull: false,
       },
-      productId: {
-        type: DataTypes.INTEGER,
+      subtotal: {
+        type: DataTypes.FLOAT,
         allowNull: false,
       },
     },
