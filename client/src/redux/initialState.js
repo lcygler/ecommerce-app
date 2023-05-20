@@ -5,6 +5,7 @@ export const getInitialState = () => {
     localStorage.getItem(`user_${storedUserId}_isAuthenticated`) === 'true';
   const storedIsAdmin = localStorage.getItem(`user_${storedUserId}_isAdmin`) === 'true';
   const storedCartProducts = JSON.parse(localStorage.getItem(`user_${storedUserId}_cartProducts`));
+  const storedFavorites = JSON.parse(localStorage.getItem(`user_${storedUserId}_favorites`));
 
   return {
     // Products
@@ -25,7 +26,8 @@ export const getInitialState = () => {
     currentPage: 1,
 
     // Favorites
-    favorites: [],
+    favorites: storedFavorites || [],
+    filteredFavorites: [],
 
     // Cart
     selectedCart: {},

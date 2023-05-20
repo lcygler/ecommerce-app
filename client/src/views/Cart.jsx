@@ -30,7 +30,22 @@ function Cart() {
   };
 
   const handleDecrease = (productId) => {
-    dispatch(actions.decreaseProduct(productId));
+    const prod = cartProducts?.find((product) => product.id === productId);
+
+    if (prod.quantity === 1) {
+      const confirmed = window.confirm('Are you sure you want to remove this product?');
+
+      if (confirmed) {
+        dispatch(actions.decreaseProduct(productId));
+
+        toast.success('Product removed from cart!', {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 2000,
+        });
+      }
+    } else {
+      dispatch(actions.decreaseProduct(productId));
+    }
   };
 
   const handleUpdate = (productId, quantity) => {
@@ -88,8 +103,9 @@ function Cart() {
           borderRadius="md"
           mx="auto"
           p={8}
-          width="100%"
-          maxW="3xl"
+          w="700px"
+          // width="100%"
+          // maxW="3xl"
           boxSizing="border-box"
         >
           <Heading size="lg" mb={6} textAlign="center">
@@ -137,11 +153,11 @@ function Cart() {
 
                   <Flex flexDirection="column" justifyContent="flex-start" flex="1">
                     <Box
-                      width="90%"
                       style={{
                         whiteSpace: 'nowrap',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
+                        width: '240px',
                         // maxWidth: '200px',
                         textAlign: 'left',
                       }}
@@ -190,7 +206,9 @@ function Cart() {
                         min={1}
                         onChange={(e) => {
                           const newQuantity = parseInt(e.target.value);
-                          if (!isNaN(newQuantity)) {
+                          if (newQuantity === 0) {
+                            handleRemove(product.id);
+                          } else if (!isNaN(newQuantity) && newQuantity > 0) {
                             handleUpdate(product.id, newQuantity);
                           }
                         }}

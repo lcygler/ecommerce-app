@@ -29,6 +29,28 @@ export const filterProducts = (state, action) => {
   state.filteredProducts = filteredSorted;
 };
 
+export const filterFavorites = (state, action) => {
+  let filteredSorted = [...state.favorites];
+
+  if (state.category !== 'All') {
+    filteredSorted = filterByCategory(filteredSorted, state.category);
+  }
+  if (state.gender !== 'All') {
+    filteredSorted = filterByGender(filteredSorted, state.gender);
+  }
+  if (state.season !== 'All') {
+    filteredSorted = filterBySeason(filteredSorted, state.season);
+  }
+  if (state.discount !== 'All') {
+    filteredSorted = filterByDiscount(filteredSorted, state.discount);
+  }
+  if (state.order !== 'Default') {
+    filteredSorted = sortProducts(filteredSorted, state.order);
+  }
+
+  state.filteredFavorites = filteredSorted;
+};
+
 export const updateCategoryFilter = (state, action) => {
   state.category = action.payload;
 };
@@ -69,22 +91,35 @@ export const clearSelectedOrder = (state, action) => {
   state.selectedOrder = action.payload;
 };
 
+//* FAVORITES
+export const addFavorite = (state, action) => {
+  const newFav = action.payload;
+  state.favorites.push(newFav);
+
+  const userId = state.userId;
+  localStorage.setItem(`user_${userId}_favorites`, JSON.stringify(state.favorites));
+};
+
+export const removeFavorite = (state, action) => {
+  const favId = action.payload;
+  state.favorites = state.favorites.filter((fav) => fav.id !== favId);
+
+  const userId = state.userId;
+  localStorage.setItem(`user_${userId}_favorites`, JSON.stringify(state.favorites));
+};
+
 //* CART
 export const addProduct = (state, action) => {
   const newProduct = action.payload;
 
   const existingProduct = state.cartProducts.find((product) => product.id === newProduct.id);
 
-  if (existingProduct) {
-    existingProduct.quantity += newProduct.quantity;
-  } else {
+  if (!existingProduct) {
     state.cartProducts.push(newProduct);
+    state.cartTotal += newProduct.price * newProduct.quantity;
+    const userId = state.userId;
+    localStorage.setItem(`user_${userId}_cartProducts`, JSON.stringify(state.cartProducts));
   }
-
-  state.cartTotal += newProduct.price * newProduct.quantity;
-
-  const userId = state.userId;
-  localStorage.setItem(`user_${userId}_cartProducts`, JSON.stringify(state.cartProducts));
 };
 
 export const removeProduct = (state, action) => {

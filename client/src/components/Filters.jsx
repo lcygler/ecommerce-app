@@ -54,12 +54,14 @@ function Filters({ changePage, allProducts }) {
       dispatch(actions.updateOrder(selectValue));
     }
     dispatch(actions.filterProducts());
+    dispatch(actions.filterFavorites());
     changePage(1);
   };
 
   const handleReset = () => {
     dispatch(actions.resetFilters());
     dispatch(actions.filterProducts());
+    dispatch(actions.filterFavorites());
     changePage(1);
   };
 

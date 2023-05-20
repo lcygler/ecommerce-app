@@ -1,7 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
-import { addCartItem, addFavorite, deleteFavorite, getProductById } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
 import { toast } from 'react-toastify';
@@ -21,21 +20,42 @@ function Product({
   size,
   image,
   discounts,
+  stock,
 }) {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
-  const selectedProduct = useSelector((state) => state.selectedProduct);
-  const { user } = useSelector((state) => state.selectedUser);
+  const cartProducts = useSelector((state) => state.cartProducts);
+  const favorites = useSelector((state) => state.favorites);
   const [isFav, setIsFav] = useState(false);
 
-  const handleFavorite = () => {
+  // const selectedProduct = useSelector((state) => state.selectedProduct);
+  // const { user } = useSelector((state) => state.selectedUser);
+
+  useEffect(() => {
+    favorites?.forEach((fav) => {
+      if (fav.id === id) {
+        setIsFav(true);
+      }
+    });
+  }, [favorites, id]);
+
+  const handleFavorite = (e) => {
+    e.preventDefault();
     if (isFav) {
       setIsFav(false);
-      dispatch(deleteFavorite(id));
+
+      dispatch(actions.removeFavorite(id));
+      dispatch(actions.filterFavorites());
+
+      toast.success('Product removed from favorites!', {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
     } else {
       setIsFav(true);
+
       dispatch(
-        addFavorite({
+        actions.addFavorite({
           id,
           name,
           price,
@@ -46,21 +66,17 @@ function Product({
           size,
           image,
           discounts,
-          addFavorite,
-          deleteFavorite,
+          stock,
         })
       );
+      dispatch(actions.filterFavorites());
+
+      toast.success('Product added to favorites!', {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
     }
   };
-
-  // const handleAddToCart = (e) => {
-  //   e.preventDefault();
-  //   dispatch(getProductById(id)).then(() => {
-  //     if (selectedProduct && Object.keys(selectedProduct).length !== 0) {
-  //       dispatch(actions.addProduct({ ...selectedProduct, quantity: 1 }));
-  //     }
-  //   });
-  // };
 
   const handleAddToCart = (e) => {
     e.preventDefault();
@@ -79,11 +95,29 @@ function Product({
       })
     );
 
-    toast.success('Product added to cart!', {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: 2000,
-    });
+    const productExists = cartProducts?.find((fav) => fav.id === id);
+
+    if (productExists) {
+      toast.error('Product already exists in cart!', {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
+    } else {
+      toast.success('Product added to cart!', {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
+    }
   };
+
+  // const handleAddToCart = (e) => {
+  //   e.preventDefault();
+  //   dispatch(getProductById(id)).then(() => {
+  //     if (selectedProduct && Object.keys(selectedProduct).length !== 0) {
+  //       dispatch(actions.addProduct({ ...selectedProduct, quantity: 1 }));
+  //     }
+  //   });
+  // };
 
   return (
     <Link
