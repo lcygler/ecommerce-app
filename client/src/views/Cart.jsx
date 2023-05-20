@@ -120,7 +120,7 @@ function Cart() {
               </Box>
               <Box mt={4}>
                 <Button colorScheme="blue" onClick={() => navigate('/home')}>
-                  Continue Shopping
+                  Browse Products
                 </Button>
               </Box>
             </Box>
@@ -243,7 +243,7 @@ function Cart() {
                       navigate('/home');
                     }}
                   >
-                    Go back
+                    Go Back
                   </Button>
 
                   <Button
@@ -258,7 +258,7 @@ function Cart() {
                 </Stack>
 
                 <Button colorScheme="red" variant="ghost" onClick={handleClear} mt="6">
-                  Clear cart
+                  Empty Cart
                 </Button>
               </Flex>
             </>

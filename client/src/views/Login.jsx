@@ -2,7 +2,10 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
-import { getUserFavorites, getUserOrders, loginUser } from '../redux/asyncActions';
+import { gapi } from 'gapi-script';
+import GoogleLogin from 'react-google-login';
+
+import { getUserFavorites, getUserOrders, loginGoogle, loginUser } from '../redux/asyncActions';
 import { validateLogin } from '../utils/validateForm';
 
 import {
@@ -10,6 +13,7 @@ import {
   AlertIcon,
   Box,
   Button,
+  Flex,
   FormControl,
   FormLabel,
   Heading,
@@ -21,6 +25,7 @@ import {
 
 import backgroundImage from '../assets/images/background.jpg';
 
+const clientId = process.env.REACT_APP_CLIENT_ID;
 let timeoutId = null;
 let navigateTimeoutId = null;
 
@@ -31,6 +36,17 @@ function Login() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    const start = () => {
+      gapi.auth2.init({
+        client_id: clientId,
+      });
+    };
+
+    gapi.load('client:auth2', start);
+  }, []);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -95,6 +111,37 @@ function Login() {
     };
   }, []);
 
+  // Google Login
+  const onSuccess = async (response) => {
+    // setUser(response.profileObj);
+    // console.log(response.profileObj);
+
+    const user = {
+      id: response.profileObj.googleId,
+      email: response.profileObj.email,
+      firstname: response.profileObj.givenName,
+      lastname: response.profileObj.familyName,
+      fullname: response.profileObj.name,
+      image: response.profileObj.imageUrl,
+    };
+
+    const res = await dispatch(loginGoogle(user));
+    if (res.payload) {
+      setError('');
+      setSuccess('Login successful!');
+      navigateTimeoutId = setTimeout(() => {
+        navigate('/home');
+      }, 2000);
+    } else {
+      setSuccess('');
+      setError('Invalid email or password');
+    }
+  };
+
+  const onFailure = () => {
+    console.log('Something went wrong');
+  };
+
   return (
     <Box
       display="flex"
@@ -132,7 +179,7 @@ function Login() {
           )}
           <Stack spacing={4}>
             <FormControl isRequired isInvalid={errors.email !== ''}>
-              <FormLabel htmlFor="email">Email address</FormLabel>
+              <FormLabel htmlFor="email">Email Address</FormLabel>
               {/* <Tooltip label={errors.email} isOpen={errors.email !== ''} placement="bottom"> */}
               <Input
                 id="email"
@@ -172,7 +219,7 @@ function Login() {
                   navigate('/home');
                 }}
               >
-                Go back
+                Go Back
               </Button>
 
               <Button
@@ -185,6 +232,15 @@ function Login() {
                 Login
               </Button>
             </Stack>
+
+            <Flex justifyContent="center">
+              <GoogleLogin
+                clientId={clientId}
+                onSuccess={onSuccess}
+                onFailure={onFailure}
+                cookiePolicy={'single_host_origin'}
+              />
+            </Flex>
 
             <Box textAlign="center" marginTop={4} fontSize="sm">
               <Text>

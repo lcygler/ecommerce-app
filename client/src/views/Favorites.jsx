@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { getCategories, getGenders, getSeasons } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
@@ -17,6 +18,7 @@ import {
 
 function Favorites() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const favorites = useSelector((state) => state.favorites);
   const filteredFavorites = useSelector((state) => state.filteredFavorites);
   const currentPage = useSelector((state) => state.currentPage);
@@ -50,7 +52,14 @@ function Favorites() {
       <Navbar width="100%" />
       <Filters changePage={changePage} allProducts={favorites} />
       {!favorites?.length ? (
-        <Box display="grid" placeItems="center" width="auto" height="60vh">
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          width="auto"
+          height="60vh"
+        >
           <Alert
             status="warning"
             textAlign="center"
@@ -67,6 +76,11 @@ function Favorites() {
               <AlertDescription mt="2">Please add some favorites and try again</AlertDescription>
             </Flex>
           </Alert>
+          <Box display="flex" alignItems="center" justifyContent="center" mt="4">
+            <Button onClick={() => navigate('/home')} variant="solid" colorScheme="blue">
+              Browse Products
+            </Button>
+          </Box>
         </Box>
       ) : !filteredFavorites?.length ? (
         <Box
@@ -91,13 +105,13 @@ function Favorites() {
                 <AlertTitle>Oops! No results found</AlertTitle>
               </Flex>
               <AlertDescription mt="2">Please change your filters and try again</AlertDescription>
-              <Box display="flex" alignItems="center" justifyContent="center" mt="4">
-                <Button onClick={handleReset} variant="outline" colorScheme="yellow">
-                  Reset filters
-                </Button>
-              </Box>
             </Flex>
           </Alert>
+          <Box display="flex" alignItems="center" justifyContent="center" mt="4">
+            <Button onClick={handleReset} variant="solid" colorScheme="blue">
+              Reset Filters
+            </Button>
+          </Box>
         </Box>
       ) : (
         <>

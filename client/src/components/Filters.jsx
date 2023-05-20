@@ -164,14 +164,14 @@ function Filters({ changePage, allProducts }) {
 
       <Box display="flex" alignItems="center" justifyContent="center" ml="4">
         <Button onClick={handleReset} variant="outline">
-          Reset filters
+          Reset Filters
         </Button>
       </Box>
 
       {location.pathname === '/favorites' && allProducts.length !== 0 && (
         <Box display="flex" alignItems="center" justifyContent="center" ml="4">
           <Button colorScheme="red" variant="ghost" onClick={handleClearFavorites}>
-            Clear favorites
+            Clear Favorites
           </Button>
         </Box>
       )}

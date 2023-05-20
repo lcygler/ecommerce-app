@@ -61,7 +61,14 @@ function Home() {
           </Box>
         </>
       ) : !filteredProducts?.length ? (
-        <Box display="grid" placeItems="center" width="auto" height="60vh">
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          width="auto"
+          height="60vh"
+        >
           <Alert
             status="warning"
             textAlign="center"
@@ -76,13 +83,13 @@ function Home() {
                 <AlertTitle>Oops! No results found</AlertTitle>
               </Flex>
               <AlertDescription mt="2">Please change your filters and try again</AlertDescription>
-              <Box display="flex" alignItems="center" justifyContent="center" mt="4">
-                <Button onClick={handleReset} variant="outline" colorScheme="yellow">
-                  Reset filters
-                </Button>
-              </Box>
             </Flex>
           </Alert>
+          <Box display="flex" alignItems="center" justifyContent="center" mt="4">
+            <Button onClick={handleReset} variant="solid" colorScheme="blue">
+              Reset Filters
+            </Button>
+          </Box>
         </Box>
       ) : (
         <>
