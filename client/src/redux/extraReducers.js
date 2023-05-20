@@ -357,12 +357,14 @@ export const extraReducers = (builder) => {
       state.selectedUser = action.payload;
       state.isAuthenticated = true;
       state.isAdmin = action.payload.user.isAdmin;
+      state.userId = action.payload.user.id;
 
       const userId = action.payload.user.id;
       localStorage.setItem('userId', userId);
       localStorage.setItem(`user_${userId}_selectedUser`, JSON.stringify(action.payload));
       localStorage.setItem(`user_${userId}_isAuthenticated`, 'true');
       localStorage.setItem(`user_${userId}_isAdmin`, action.payload.user.isAdmin);
+      state.cartProducts = JSON.parse(localStorage.getItem(`user_${userId}_cartProducts`)) || [];
     })
     .addCase(loginUser.rejected, (state, action) => {
       state.loginUserByIdStatus = 'failed';
