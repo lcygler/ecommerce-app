@@ -395,7 +395,7 @@ function Register() {
               <Text>
                 Have an account?{' '}
                 <Link as={RouterLink} to="/login" color="blue.500" textDecoration="underline">
-                  Log in here
+                  Login here
                 </Link>
               </Text>
             </Box>
