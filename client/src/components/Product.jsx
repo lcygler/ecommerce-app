@@ -80,22 +80,7 @@ function Product({
 
   const handleAddToCart = (e) => {
     e.preventDefault();
-    dispatch(
-      actions.addProduct({
-        id,
-        name,
-        price,
-        Categories,
-        description,
-        gender,
-        size,
-        image,
-        discounts,
-        quantity: 1,
-      })
-    );
-
-    const productExists = cartProducts?.find((fav) => fav.id === id);
+    const productExists = cartProducts?.find((product) => product.id === id);
 
     if (productExists) {
       toast.error('Product already exists in cart!', {
@@ -103,6 +88,21 @@ function Product({
         autoClose: 2000,
       });
     } else {
+      dispatch(
+        actions.addProduct({
+          id,
+          name,
+          price,
+          Categories,
+          description,
+          gender,
+          size,
+          image,
+          discounts,
+          quantity: 1,
+        })
+      );
+
       toast.success('Product added to cart!', {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 2000,

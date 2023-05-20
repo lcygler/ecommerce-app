@@ -257,7 +257,7 @@ function Cart() {
                   </Button>
                 </Stack>
 
-                <Button colorScheme="red" variant="ghost" width="100%" onClick={handleClear} mt="6">
+                <Button colorScheme="red" variant="ghost" onClick={handleClear} mt="6">
                   Clear cart
                 </Button>
               </Flex>

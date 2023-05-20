@@ -108,36 +108,42 @@ export const removeFavorite = (state, action) => {
   localStorage.setItem(`user_${userId}_favorites`, JSON.stringify(state.favorites));
 };
 
+export const clearFavorites = (state, action) => {
+  state.favorites = [];
+
+  const userId = state.userId;
+  localStorage.removeItem(`user_${userId}_favorites`);
+};
+
 //* CART
 export const addProduct = (state, action) => {
   const newProduct = action.payload;
-
   const existingProduct = state.cartProducts.find((product) => product.id === newProduct.id);
 
   if (!existingProduct) {
     state.cartProducts.push(newProduct);
-    state.cartTotal += newProduct.price * newProduct.quantity;
+    state.cartTotal += newProduct.price * (1 - newProduct.discounts);
+
     const userId = state.userId;
     localStorage.setItem(`user_${userId}_cartProducts`, JSON.stringify(state.cartProducts));
+    localStorage.setItem(`user_${userId}_cartTotal`, JSON.stringify(state.cartTotal));
   }
 };
 
 export const removeProduct = (state, action) => {
   const productId = action.payload;
-
   const existingProduct = state.cartProducts.find((product) => product.id === productId);
 
   if (existingProduct) {
+    state.cartTotal -=
+      existingProduct.price * (1 - existingProduct.discounts) * existingProduct.quantity;
+
     state.cartProducts = state.cartProducts.filter((product) => product.id !== productId);
 
-    state.cartTotal = state.cartProducts.reduce(
-      (total, product) => total + product.price * product.quantity,
-      0
-    );
+    const userId = state.userId;
+    localStorage.setItem(`user_${userId}_cartProducts`, JSON.stringify(state.cartProducts));
+    localStorage.setItem(`user_${userId}_cartTotal`, JSON.stringify(state.cartTotal));
   }
-
-  const userId = state.userId;
-  localStorage.setItem(`user_${userId}_cartProducts`, JSON.stringify(state.cartProducts));
 };
 
 export const updateProduct = (state, action) => {
@@ -148,31 +154,28 @@ export const updateProduct = (state, action) => {
     existingProduct.quantity = quantity;
 
     state.cartTotal = state.cartProducts.reduce(
-      (total, product) => total + product.price * product.quantity,
+      (total, product) => total + product.price * (1 - product.discounts) * product.quantity,
       0
     );
   }
 
   const userId = state.userId;
   localStorage.setItem(`user_${userId}_cartProducts`, JSON.stringify(state.cartProducts));
+  localStorage.setItem(`user_${userId}_cartTotal`, JSON.stringify(state.cartTotal));
 };
 
 export const increaseProduct = (state, action) => {
   const productId = action.payload;
-
   const existingProduct = state.cartProducts.find((product) => product.id === productId);
 
   if (existingProduct) {
     existingProduct.quantity++;
-
-    state.cartTotal = state.cartProducts.reduce(
-      (total, product) => total + product.price * product.quantity,
-      0
-    );
+    state.cartTotal += existingProduct.price * (1 - existingProduct.discounts);
   }
 
   const userId = state.userId;
   localStorage.setItem(`user_${userId}_cartProducts`, JSON.stringify(state.cartProducts));
+  localStorage.setItem(`user_${userId}_cartTotal`, JSON.stringify(state.cartTotal));
 };
 
 export const decreaseProduct = (state, action) => {
@@ -182,23 +185,28 @@ export const decreaseProduct = (state, action) => {
   if (existingProduct) {
     if (existingProduct.quantity === 1) {
       state.cartProducts = state.cartProducts.filter((product) => product.id !== productId);
-    } else {
+    } else if (existingProduct.quantity > 1) {
       existingProduct.quantity--;
     }
 
     state.cartTotal = state.cartProducts.reduce(
-      (total, product) => total + product.price * product.quantity,
+      (total, product) => total + product.price * (1 - product.discounts) * product.quantity,
       0
     );
   }
 
   const userId = state.userId;
   localStorage.setItem(`user_${userId}_cartProducts`, JSON.stringify(state.cartProducts));
+  localStorage.setItem(`user_${userId}_cartTotal`, JSON.stringify(state.cartTotal));
 };
 
 export const clearCart = (state, action) => {
   state.cartProducts = [];
   state.cartTotal = 0;
+
+  const userId = state.userId;
+  localStorage.removeItem(`user_${userId}_cartProducts`);
+  localStorage.removeItem(`user_${userId}_cartTotal`);
 };
 
 //* AUTH
