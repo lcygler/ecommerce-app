@@ -4,6 +4,7 @@ export const getInitialState = () => {
   const storedIsAuthenticated =
     localStorage.getItem(`user_${storedUserId}_isAuthenticated`) === 'true';
   const storedIsAdmin = localStorage.getItem(`user_${storedUserId}_isAdmin`) === 'true';
+  const storedCartProducts = JSON.parse(localStorage.getItem(`user_${storedUserId}_cartProducts`));
 
   return {
     // Products
@@ -28,12 +29,13 @@ export const getInitialState = () => {
 
     // Cart
     selectedCart: {},
-    cartItems: [],
+    cartProducts: storedCartProducts || [],
     cartTotal: 0,
 
     // Orders
     userOrders: [],
     selectedOrder: {},
+    paymentLink: '',
 
     // Users
     userId: storedUserId || null,

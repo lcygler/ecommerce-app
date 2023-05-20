@@ -70,48 +70,108 @@ export const clearSelectedOrder = (state, action) => {
 };
 
 //* CART
-export const addItem = (state, action) => {
-  const newItem = action.payload;
-  const existingItem = state.items.find((item) => item.id === newItem.id);
+export const addProduct = (state, action) => {
+  const newProduct = action.payload;
 
-  if (existingItem) {
-    existingItem.quantity += newItem.quantity;
+  const existingProduct = state.cartProducts.find((product) => product.id === newProduct.id);
+
+  if (existingProduct) {
+    existingProduct.quantity += newProduct.quantity;
   } else {
-    state.items.push(newItem);
+    state.cartProducts.push(newProduct);
   }
 
-  state.totalPrice += newItem.price * newItem.quantity;
+  state.cartTotal += newProduct.price * newProduct.quantity;
+
+  const userId = state.userId;
+  localStorage.setItem(`user_${userId}_cartProducts`, JSON.stringify(state.cartProducts));
 };
 
-export const removeItem = (state, action) => {
-  const itemId = action.payload;
-  const existingItem = state.items.find((item) => item.id === itemId);
+export const removeProduct = (state, action) => {
+  const productId = action.payload;
 
-  if (existingItem.quantity === 1) {
-    state.items = state.items.filter((item) => item.id !== itemId);
-  } else {
-    existingItem.quantity--;
+  const existingProduct = state.cartProducts.find((product) => product.id === productId);
+
+  if (existingProduct) {
+    state.cartProducts = state.cartProducts.filter((product) => product.id !== productId);
+
+    state.cartTotal = state.cartProducts.reduce(
+      (total, product) => total + product.price * product.quantity,
+      0
+    );
   }
 
-  state.totalPrice -= existingItem.price;
+  const userId = state.userId;
+  localStorage.setItem(`user_${userId}_cartProducts`, JSON.stringify(state.cartProducts));
 };
 
-export const updateItemQuantity = (state, action) => {
-  const { itemId, quantity } = action.payload;
-  const existingItem = state.items.find((item) => item.id === itemId);
+export const updateProduct = (state, action) => {
+  const { productId, quantity } = action.payload;
+  const existingProduct = state.cartProducts.find((product) => product.id === productId);
 
-  existingItem.quantity = quantity;
+  if (existingProduct) {
+    existingProduct.quantity = quantity;
 
-  state.totalPrice = state.items.reduce((total, item) => total + item.price * item.quantity, 0);
+    state.cartTotal = state.cartProducts.reduce(
+      (total, product) => total + product.price * product.quantity,
+      0
+    );
+  }
+
+  const userId = state.userId;
+  localStorage.setItem(`user_${userId}_cartProducts`, JSON.stringify(state.cartProducts));
+};
+
+export const increaseProduct = (state, action) => {
+  const productId = action.payload;
+
+  const existingProduct = state.cartProducts.find((product) => product.id === productId);
+
+  if (existingProduct) {
+    existingProduct.quantity++;
+
+    state.cartTotal = state.cartProducts.reduce(
+      (total, product) => total + product.price * product.quantity,
+      0
+    );
+  }
+
+  const userId = state.userId;
+  localStorage.setItem(`user_${userId}_cartProducts`, JSON.stringify(state.cartProducts));
+};
+
+export const decreaseProduct = (state, action) => {
+  const productId = action.payload;
+  const existingProduct = state.cartProducts.find((product) => product.id === productId);
+
+  if (existingProduct) {
+    if (existingProduct.quantity === 1) {
+      state.cartProducts = state.cartProducts.filter((product) => product.id !== productId);
+    } else {
+      existingProduct.quantity--;
+    }
+
+    state.cartTotal = state.cartProducts.reduce(
+      (total, product) => total + product.price * product.quantity,
+      0
+    );
+  }
+
+  const userId = state.userId;
+  localStorage.setItem(`user_${userId}_cartProducts`, JSON.stringify(state.cartProducts));
 };
 
 export const clearCart = (state, action) => {
-  state.items = [];
-  state.totalPrice = 0;
+  state.cartProducts = [];
+  state.cartTotal = 0;
 };
 
 //* AUTH
 export const logoutUser = (state, action) => {
+  state.userId = '';
   state.selectedUser = {};
   state.isAuthenticated = false;
+  state.isAdmin = false;
+  state.cartProducts = [];
+  state.cartTotal = 0;
 };

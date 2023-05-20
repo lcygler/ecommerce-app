@@ -5,6 +5,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { addCartItem, getProductById } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import {
   Badge,
   Box,
@@ -50,8 +53,26 @@ function Detail() {
     };
   }, [dispatch, productId]);
 
-  const handleAddItem = () => {
-    // dispatch(addCartItem(user.id, productId));
+  const handleAddToCart = (e) => {
+    dispatch(
+      actions.addProduct({
+        id: productId,
+        name,
+        price,
+        Categories,
+        description,
+        gender,
+        size,
+        image,
+        discounts,
+        quantity: 1,
+      })
+    );
+
+    toast.success('Product added to cart!', {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 2000,
+    });
   };
 
   const handlePrev = () => {
@@ -252,7 +273,7 @@ function Detail() {
                       Go back
                     </Button>
 
-                    <Button colorScheme="blue" width="150px" onClick={handleAddItem}>
+                    <Button colorScheme="blue" width="150px" onClick={handleAddToCart}>
                       Add to Cart
                     </Button>
                   </Stack>
