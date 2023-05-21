@@ -91,9 +91,13 @@ function Landing() {
             // width="80%"
           >
             {saleProducts?.map((product) => (
-              <Link as={RouterLink} to={`/home/${product.id}`} _hover={{ textDecoration: 'none' }}>
+              <Link
+                as={RouterLink}
+                to={`/home/${product.id}`}
+                _hover={{ textDecoration: 'none' }}
+                key={product.id}
+              >
                 <Box
-                  key={product.id}
                   width="250px"
                   textAlign="center"
                   display="flex"
