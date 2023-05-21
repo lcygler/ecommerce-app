@@ -24,7 +24,7 @@ function Cart() {
 
   const handleIncrease = (productId) => {
     const product = cartProducts?.find((product) => product.id === productId);
-    console.log(product.quantity, product.stock);
+
     if (product.quantity < product.stock) {
       dispatch(actions.increaseProduct(productId));
     } else {
@@ -70,6 +70,7 @@ function Cart() {
 
   const handleRemove = (productId) => {
     const confirmed = window.confirm('Are you sure you want to remove this product?');
+
     if (confirmed) {
       dispatch(actions.removeProduct(productId));
 
@@ -82,6 +83,7 @@ function Cart() {
 
   const handleClear = () => {
     const confirmed = window.confirm('Are you sure you want to clear the cart?');
+
     if (confirmed) {
       dispatch(actions.clearCart());
 

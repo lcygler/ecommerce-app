@@ -1,106 +1,63 @@
-const {uploadImage} = require("../utils/cloudinary.js");
-const { Product, Review, Category, Season } = require('../db');
+const { uploadImage } = require('../utils/cloudinary.js');
+const { Product, Review, Category, Season } = require('../db.js');
 
 const AddProducts = async (api) => {
-  const productos = [];
-  const temporadas = [];
-  const categoria = [];
+  const products = api.products;
+  const existingProductsCount = await Product.count();
 
- const InDataDB = await Product.findAll();
- if(InDataDB < 1){
- // Crear registros para las categorías
- for (let i = 0; i < api.products.length; i++) {
-  const product = api.products[i];
-  for (let j = 0; j < product.Category.length; j++) {
-    const category = product.Category[j];
-    if (!categoria.includes(category.name)) {
-      await Category.create({ name: category.name });
-      categoria.push(category.name);
+  if (existingProductsCount < 1) {
+    for (const product of products) {
+      const {
+        Category: categoriesData,
+        seasons: seasonsData,
+        reviews: reviewsData,
+        ...productData
+      } = product;
+
+      //* Create or find categories
+      const categoryNames = categoriesData.map((category) => category.name);
+      const categories = await Promise.all(
+        categoryNames.map((name) => Category.findOrCreate({ where: { name } }))
+      );
+
+      //* Create or find seasons
+      const seasonNames = seasonsData.map((season) => season.name);
+      const seasons = await Promise.all(
+        seasonNames.map((name) => Season.findOrCreate({ where: { name } }))
+      );
+
+      //* Create product
+      const newProduct = await Product.create(productData);
+
+      //* Add categories and seasons to the product
+      await newProduct.addCategories(categories.map(([category]) => category));
+      await newProduct.addSeasons(seasons.map(([season]) => season));
+
+      //* Create reviews and associate them with the product
+      for (const review of reviewsData) {
+        const newReview = await Review.create({
+          comment: review.text,
+          punctuation: review.rating,
+        });
+        await newReview.setProduct(newProduct);
+      }
     }
+  } else {
+    console.log('La DB ya esta cargada con datos');
   }
-}
-
-// Crear registros para las temporadas
-for (let i = 0; i < api.products.length; i++) {
-  const product = api.products[i];
-  for (let j = 0; j < product.seasons.length; j++) {
-    const season = product.seasons[j];
-    if (!temporadas.includes(season.name)) {
-      await Season.create({ name: season.name });
-      temporadas.push(season.name);
-    }
-  }
-}
-
-// Crear registros para los productos y establecer relaciones con categorías y temporadas
-for (let i = 0; i < api.products.length; i++) {
-  const product = api.products[i];
-
-  // Crear registro de producto
-  const newProduct = await Product.create({
-    name: product.name,
-    size: product.size,
-    gender: product.gender,
-    description: product.description,
-    price: product.price,
-    discounts: product.discounts || 0.00,
-    views: product.views,
-    stock: product.stock,
-    image: product.image
-  });
-  productos.push(newProduct);
-
-  // Establecer relaciones con categorías
-  for (let j = 0; j < product.Category.length; j++) {
-    const categoryName = product.Category[j].name;
-    const category = await Category.findOne({ where: { name: categoryName } });
-    await newProduct.addCategory(category);
-  }
-
-  // Establecer relaciones con temporadas
-  for (let j = 0; j < product.seasons.length; j++) {
-    const seasonName = product.seasons[j].name;
-    const season = await Season.findOne({ where: { name: seasonName } });
-    await newProduct.addSeason(season);
-  }
-  // Crear registros para las reviews y establecer relación con el producto
-for (let j = 0; j < product.reviews.length; j++) {
-  const reviewData = product.reviews[j];
-  const newReview = await Review.create({
-    comment: reviewData.text,
-    punctuation: reviewData.rating,
-  });
-  await newProduct.addReview(newReview);
-}
-}
- }else{
-  console.log("La db ya esta cargada con adtos");
- }
 };
 
 const getAllProducts = async () => {
   const products = await Product.findAll({
     where: {
-      disable: false
+      disable: false,
     },
-    include: [
-      {
-
-        model: Season
-      },
-      {
-        model: Category
-      },
-      {
-        model: Review
-      }
-    ]
+    include: [Category, Season, Review],
   });
   return products;
 };
 
-
 module.exports = {
   getAllProducts,
-  AddProducts
+  AddProducts,
 };
