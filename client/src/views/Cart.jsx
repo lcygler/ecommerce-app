@@ -114,7 +114,7 @@ function Cart() {
 
           {cartProducts?.length === 0 ? (
             <Box textAlign="center" fontSize="lg" fontWeight="normal">
-              Your cart is empty.
+              Your cart is empty
               <Box mt={4} display="flex" justifyContent="center">
                 <Image src={emptyCartImage} alt="Empty Cart" width="300px" />
               </Box>
