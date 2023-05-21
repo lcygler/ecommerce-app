@@ -36,7 +36,6 @@ function Login() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [user, setUser] = useState({});
 
   useEffect(() => {
     const start = () => {
@@ -113,9 +112,6 @@ function Login() {
 
   // Google Login
   const onSuccess = async (response) => {
-    // setUser(response.profileObj);
-    // console.log(response.profileObj);
-
     const user = {
       id: response.profileObj.googleId,
       email: response.profileObj.email,
