@@ -6,7 +6,18 @@ import { actions } from '../redux/slice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { Badge, Box, Button, Flex, Heading, IconButton, Image, Link, Text } from '@chakra-ui/react';
+import {
+  Badge,
+  Box,
+  Button,
+  Fade,
+  Flex,
+  Heading,
+  IconButton,
+  Image,
+  Link,
+  Text,
+} from '@chakra-ui/react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
 function Product({
@@ -27,17 +38,15 @@ function Product({
   const cartProducts = useSelector((state) => state.cartProducts);
   const favorites = useSelector((state) => state.favorites);
   const [isFav, setIsFav] = useState(false);
-
-  // const selectedProduct = useSelector((state) => state.selectedProduct);
-  // const { user } = useSelector((state) => state.selectedUser);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    favorites?.forEach((fav) => {
-      if (fav.id === id) {
-        setIsFav(true);
-      }
-    });
+    setIsFav(favorites?.some((fav) => fav.id === id));
   }, [favorites, id]);
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
 
   const handleFavorite = (e) => {
     e.preventDefault();
@@ -99,6 +108,7 @@ function Product({
           size,
           image,
           discounts,
+          stock,
           quantity: 1,
         })
       );
@@ -138,13 +148,15 @@ function Product({
           {isAuthenticated && (
             <Box position="absolute" top="0" right="0" m="2">
               {isFav ? (
-                <IconButton
-                  variant="ghost"
-                  colorScheme="blue"
-                  icon={<AiFillHeart />}
-                  size="md"
-                  onClick={handleFavorite}
-                />
+                <Fade in={!loading}>
+                  <IconButton
+                    variant="ghost"
+                    colorScheme="blue"
+                    icon={<AiFillHeart />}
+                    size="md"
+                    onClick={handleFavorite}
+                  />
+                </Fade>
               ) : (
                 <IconButton
                   variant="ghost"

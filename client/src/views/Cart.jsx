@@ -26,7 +26,16 @@ function Cart() {
   }, [dispatch]);
 
   const handleIncrease = (productId) => {
-    dispatch(actions.increaseProduct(productId));
+    const product = cartProducts?.find((product) => product.id === productId);
+    console.log(product.quantity, product.stock);
+    if (product.quantity < product.stock) {
+      dispatch(actions.increaseProduct(productId));
+    } else {
+      toast.error('Quantity exceeds available stock!', {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
+    }
   };
 
   const handleDecrease = (productId) => {
@@ -49,7 +58,17 @@ function Cart() {
   };
 
   const handleUpdate = (productId, quantity) => {
-    dispatch(actions.updateProduct({ productId, quantity }));
+    const product = cartProducts?.find((product) => product.id === productId);
+    const newQuantity = parseInt(quantity);
+
+    if (newQuantity > product.stock) {
+      toast.error('Quantity exceeds available stock!', {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
+    } else {
+      dispatch(actions.updateProduct({ productId, quantity }));
+    }
   };
 
   const handleRemove = (productId) => {
