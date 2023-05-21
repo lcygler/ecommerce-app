@@ -110,15 +110,6 @@ function Product({
     }
   };
 
-  // const handleAddToCart = (e) => {
-  //   e.preventDefault();
-  //   dispatch(getProductById(id)).then(() => {
-  //     if (selectedProduct && Object.keys(selectedProduct).length !== 0) {
-  //       dispatch(actions.addProduct({ ...selectedProduct, quantity: 1 }));
-  //     }
-  //   });
-  // };
-
   return (
     <Link
       as={RouterLink}
