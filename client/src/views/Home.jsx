@@ -22,14 +22,16 @@ function Home() {
   const filteredProducts = useSelector((state) => state.filteredProducts);
   const currentPage = useSelector((state) => state.currentPage);
   const [itemsPerPage] = useState(10);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProducts = async () => {
       await dispatch(getAllProducts());
-      dispatch(actions.filterProducts());
+      await dispatch(actions.filterProducts());
       dispatch(getCategories());
       dispatch(getSeasons());
       dispatch(getGenders());
+      setLoading(false);
     };
     fetchProducts();
   }, [dispatch]);
@@ -60,7 +62,7 @@ function Home() {
             <Spinner size="xl" color="blue.500" />
           </Box>
         </>
-      ) : !filteredProducts?.length ? (
+      ) : !loading && !filteredProducts?.length ? (
         <Box
           display="flex"
           flexDirection="column"
