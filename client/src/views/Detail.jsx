@@ -73,6 +73,7 @@ function Detail() {
           size,
           image,
           discounts,
+          stock,
           quantity: 1,
         })
       );

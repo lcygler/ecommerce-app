@@ -108,6 +108,7 @@ function Product({
           size,
           image,
           discounts,
+          stock,
           quantity: 1,
         })
       );
