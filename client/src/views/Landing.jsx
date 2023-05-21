@@ -1,11 +1,23 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import { getAllProducts } from '../redux/asyncActions';
 
-import { Badge, Box, Button, Flex, Heading, Image, Link, Spinner, Text } from '@chakra-ui/react';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+
+import {
+  Badge,
+  Box,
+  Button,
+  Fade,
+  Flex,
+  Heading,
+  Image,
+  Link,
+  Spinner,
+  Text,
+} from '@chakra-ui/react';
 import logoImage from '../assets/icons/logo_modern_2.jpg';
 import backgroundImage from '../assets/images/background.jpg';
 
@@ -13,6 +25,7 @@ function Landing() {
   const dispatch = useDispatch();
   const allProducts = useSelector((state) => state.allProducts);
   const saleProducts = allProducts?.filter((product) => product.discounts > 0);
+  const [isLogoLoaded, setIsLogoLoaded] = useState(false);
 
   useEffect(() => {
     dispatch(getAllProducts());
@@ -48,9 +61,18 @@ function Landing() {
           textAlign="center"
           marginTop={8}
         >
-          <Box my={4} height="120px">
-            <Image src={logoImage} alt="Modern Fashion" h="100%" w="100%" objectFit="contain" />
-          </Box>
+          <Fade in={isLogoLoaded}>
+            <Box my={4} height="120px">
+              <Image
+                src={logoImage}
+                alt="Modern Fashion"
+                h="100%"
+                w="100%"
+                objectFit="contain"
+                onLoad={() => setIsLogoLoaded(true)}
+              />
+            </Box>
+          </Fade>
 
           <Carousel
             bg="white"
