@@ -69,7 +69,7 @@ function Cart() {
     if (confirmed) {
       dispatch(actions.clearCart());
 
-      toast.success('Cart was cleared!', {
+      toast.success('Your cart was cleared!', {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 2000,
       });
