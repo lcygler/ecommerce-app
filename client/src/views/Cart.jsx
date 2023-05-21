@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { AddIcon, CloseIcon, MinusIcon } from '@chakra-ui/icons';
-import { Box, Button, Flex, Heading, Image, Input, Stack, Text } from '@chakra-ui/react';
+import { Box, Button, Fade, Flex, Heading, Image, Input, Stack, Text } from '@chakra-ui/react';
 import backgroundImage from '../assets/images/background.jpg';
 import emptyCartImage from '../assets/images/empty-cart.png';
 
@@ -18,12 +18,9 @@ function Cart() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
   const cartProducts = useSelector((state) => state.cartProducts);
   const cartTotal = useSelector((state) => state.cartTotal);
-
-  useEffect(() => {
-    // dispatch(getUserCart(user.id));
-  }, [dispatch]);
 
   const handleIncrease = (productId) => {
     const product = cartProducts?.find((product) => product.id === productId);
@@ -134,9 +131,16 @@ function Cart() {
           {cartProducts?.length === 0 ? (
             <Box textAlign="center" fontSize="lg" fontWeight="normal">
               Your cart is empty
-              <Box mt={4} display="flex" justifyContent="center">
-                <Image src={emptyCartImage} alt="Empty Cart" width="300px" />
-              </Box>
+              <Fade in={isImageLoaded}>
+                <Box mt={4} display="flex" justifyContent="center">
+                  <Image
+                    src={emptyCartImage}
+                    alt="Empty Cart"
+                    width="300px"
+                    onLoad={() => setIsImageLoaded(true)}
+                  />
+                </Box>
+              </Fade>
               <Box mt={4}>
                 <Button colorScheme="blue" onClick={() => navigate('/home')}>
                   Browse Products
