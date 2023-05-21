@@ -178,7 +178,7 @@ function Register() {
           <Stack direction="column" spacing={4}>
             <Stack direction="row" spacing={4}>
               <FormControl isRequired isInvalid={errors.name !== ''}>
-                <FormLabel htmlFor="name">First name</FormLabel>
+                <FormLabel htmlFor="name">First Name</FormLabel>
                 <Input
                   id="name"
                   name="name"
@@ -193,7 +193,7 @@ function Register() {
               </FormControl>
 
               <FormControl isRequired isInvalid={errors.lastname !== ''}>
-                <FormLabel htmlFor="lastname">Last name</FormLabel>
+                <FormLabel htmlFor="lastname">Last Name</FormLabel>
                 <Input
                   id="lastname"
                   name="lastname"
@@ -225,7 +225,7 @@ function Register() {
               </FormControl>
 
               <FormControl isRequired isInvalid={errors.email !== ''}>
-                <FormLabel htmlFor="email">Email address</FormLabel>
+                <FormLabel htmlFor="email">Email Address</FormLabel>
                 <Input
                   id="email"
                   name="email"
@@ -257,7 +257,7 @@ function Register() {
               </FormControl>
 
               <FormControl isRequired isInvalid={errors.passwordCheck !== ''}>
-                <FormLabel htmlFor="passwordCheck">Confirm password</FormLabel>
+                <FormLabel htmlFor="passwordCheck">Confirm Password</FormLabel>
                 <Input
                   id="passwordCheck"
                   name="passwordCheck"
@@ -274,7 +274,7 @@ function Register() {
 
             <Stack direction="row" spacing={4}>
               <FormControl isRequired isInvalid={errors.birthdate !== ''}>
-                <FormLabel htmlFor="birthdate">Birthdate</FormLabel>
+                <FormLabel htmlFor="birthdate">Date of Birth</FormLabel>
                 <Input
                   id="birthdate"
                   name="birthdate"
@@ -289,7 +289,7 @@ function Register() {
               </FormControl>
 
               <FormControl isRequired isInvalid={errors.phoneNumber !== ''}>
-                <FormLabel htmlFor="phoneNumber">Phone number</FormLabel>
+                <FormLabel htmlFor="phoneNumber">Phone Number</FormLabel>
                 <Input
                   id="phoneNumber"
                   name="phoneNumber"
@@ -321,7 +321,7 @@ function Register() {
               </FormControl>
 
               <FormControl isRequired isInvalid={errors.postalCode !== ''}>
-                <FormLabel htmlFor="postalCode">Postal code</FormLabel>
+                <FormLabel htmlFor="postalCode">Postal Code</FormLabel>
                 <Input
                   id="postalCode"
                   name="postalCode"
@@ -377,7 +377,7 @@ function Register() {
                   navigate('/home');
                 }}
               >
-                Go back
+                Go Back
               </Button>
 
               <Button

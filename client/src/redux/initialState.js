@@ -92,6 +92,7 @@ export const getInitialState = () => {
     updateUserByIdStatus: 'idle',
     deleteUserByIdStatus: 'idle',
     loginUserStatus: 'idle',
+    loginGoogleStatus: 'idle',
 
     // Reviews
     getUserReviewsStatus: 'idle',
@@ -137,6 +138,7 @@ export const getInitialState = () => {
     updateUserByIdError: null,
     deleteUserByIdError: null,
     loginUserError: null,
+    loginGoogleError: null,
 
     // Reviews
     getUserReviewsError: null,

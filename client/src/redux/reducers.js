@@ -217,4 +217,7 @@ export const logoutUser = (state, action) => {
   state.isAdmin = false;
   state.cartProducts = [];
   state.cartTotal = 0;
+  state.favorites = [];
+
+  localStorage.removeItem(`userId`);
 };
