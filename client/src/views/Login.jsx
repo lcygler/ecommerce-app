@@ -110,7 +110,7 @@ function Login() {
     };
   }, []);
 
-  // Google Login
+  //* Google Login
   const onSuccess = async (response) => {
     const user = {
       id: response.profileObj.googleId,
@@ -124,18 +124,18 @@ function Login() {
     const res = await dispatch(loginGoogle(user));
     if (res.payload) {
       setError('');
-      setSuccess('Login successful!');
+      setSuccess('Google login successful!');
       navigateTimeoutId = setTimeout(() => {
         navigate('/home');
       }, 2000);
     } else {
       setSuccess('');
-      setError('Invalid email or password');
+      setError('Google login failed');
     }
   };
 
-  const onFailure = () => {
-    console.log('Something went wrong');
+  const onFailure = (error) => {
+    console.error('Google login failed:', error);
   };
 
   return (
