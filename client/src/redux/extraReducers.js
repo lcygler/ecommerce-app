@@ -2,6 +2,7 @@ import {
   addFavorite,
   createCart,
   createOrder,
+  createPaymentLink,
   createProduct,
   createReview,
   createUser,
@@ -242,13 +243,26 @@ export const extraReducers = (builder) => {
       state.deleteCartByIdError = action.error.message;
     })
 
+    //* PAYMENT
+    .addCase(createPaymentLink.pending, (state) => {
+      state.createPaymentLinkStatus = 'loading';
+    })
+    .addCase(createPaymentLink.fulfilled, (state, action) => {
+      state.createPaymentLinkStatus = 'succeeded';
+      state.paymentLink = action.payload;
+    })
+    .addCase(createPaymentLink.rejected, (state, action) => {
+      state.createPaymentLinkStatus = 'failed';
+      state.createPaymentLinkError = action.error.message;
+    })
+
     //* ORDERS
     .addCase(getUserOrders.pending, (state) => {
       state.getUserOrdersStatus = 'loading';
     })
     .addCase(getUserOrders.fulfilled, (state, action) => {
       state.getUserOrdersStatus = 'succeeded';
-      state.userOrders = action.payload;
+      state.orders = action.payload;
     })
     .addCase(getUserOrders.rejected, (state, action) => {
       state.getUserOrdersStatus = 'failed';
@@ -370,6 +384,7 @@ export const extraReducers = (builder) => {
       state.cartProducts = JSON.parse(localStorage.getItem(`user_${userId}_cartProducts`)) || [];
       state.cartTotal = JSON.parse(localStorage.getItem(`user_${userId}_cartTotal`)) || 0;
       state.favorites = JSON.parse(localStorage.getItem(`user_${userId}_favorites`)) || [];
+      state.orders = JSON.parse(localStorage.getItem(`user_${userId}_orders`)) || [];
     })
     .addCase(loginUser.rejected, (state, action) => {
       state.loginUserStatus = 'failed';
@@ -397,6 +412,7 @@ export const extraReducers = (builder) => {
       state.cartProducts = JSON.parse(localStorage.getItem(`user_${userId}_cartProducts`)) || [];
       state.cartTotal = JSON.parse(localStorage.getItem(`user_${userId}_cartTotal`)) || 0;
       state.favorites = JSON.parse(localStorage.getItem(`user_${userId}_favorites`)) || [];
+      state.orders = JSON.parse(localStorage.getItem(`user_${userId}_orders`)) || [];
     })
     .addCase(loginGoogle.rejected, (state, action) => {
       state.loginGoogleStatus = 'failed';

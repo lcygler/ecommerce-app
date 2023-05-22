@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { actions } from '../redux/slice';
 
 import { gapi } from 'gapi-script';
 import GoogleLogin from 'react-google-login';
@@ -121,21 +122,33 @@ function Login() {
       image: response.profileObj.imageUrl,
     };
 
-    const res = await dispatch(loginGoogle(user));
-    if (res.payload) {
-      setError('');
-      setSuccess('Google login successful!');
-      navigateTimeoutId = setTimeout(() => {
-        navigate('/home');
-      }, 2000);
-    } else {
-      setSuccess('');
-      setError('Google login failed');
-    }
+    await dispatch(actions.loginGoogle(user));
+
+    setError('');
+    setSuccess('Google login successful!');
+
+    navigateTimeoutId = setTimeout(() => {
+      navigate('/home');
+    }, 2000);
+
+    // Para cuando estén los controladores en el back
+    // const res = await dispatch(loginGoogle(user));
+    // if (res.payload) {
+    //   setError('');
+    //   setSuccess('Google login successful!');
+    //   navigateTimeoutId = setTimeout(() => {
+    //     navigate('/home');
+    //   }, 2000);
+    // } else {
+    //   setSuccess('');
+    //   setError('Google login failed');
+    // }
   };
 
   const onFailure = (error) => {
     console.error('Google login failed:', error);
+    setSuccess('');
+    setError('Google login failed');
   };
 
   return (

@@ -150,19 +150,18 @@ function Landing() {
                       {product.name}
                     </Heading>
 
-                    <Flex alignItems="baseline">
+                    <Flex alignItems="center" mt={2}>
                       <Text
                         fontSize="md"
                         fontWeight="bold"
                         color="gray.500"
                         textDecoration="line-through"
-                        mt={1}
-                        mr="2"
+                        mr="1"
                       >
                         ${product.price.toFixed(2)}
                       </Text>
 
-                      <Text fontSize="lg" fontWeight="bold" mt={2} color="black.500" mr="2">
+                      <Text fontSize="lg" fontWeight="bold" color="black.500" ml="1">
                         ${(product.price * (1 - product.discounts)).toFixed(2)}
                       </Text>
                     </Flex>

@@ -152,7 +152,7 @@ function Product({
                   <IconButton
                     variant="ghost"
                     colorScheme="blue"
-                    icon={<AiFillHeart />}
+                    icon={<AiFillHeart style={{ fontSize: '18px' }} />}
                     size="md"
                     onClick={handleFavorite}
                   />
@@ -161,7 +161,7 @@ function Product({
                 <IconButton
                   variant="ghost"
                   colorScheme="blue"
-                  icon={<AiOutlineHeart />}
+                  icon={<AiOutlineHeart style={{ fontSize: '18px' }} />}
                   size="md"
                   onClick={handleFavorite}
                 />
