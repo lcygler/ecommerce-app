@@ -1,4 +1,10 @@
 import { Button, ButtonGroup } from '@chakra-ui/react';
+import {
+  AiOutlineDoubleLeft,
+  AiOutlineDoubleRight,
+  AiOutlineLeft,
+  AiOutlineRight,
+} from 'react-icons/ai';
 
 function Pagination({ totalPages, currentPage, changePage }) {
   const maxPages = 5;
@@ -38,22 +44,15 @@ function Pagination({ totalPages, currentPage, changePage }) {
     <ButtonGroup size="sm" mb="40px">
       <Button
         onClick={() => changePage(1)}
-        className="firstPageButton"
         title="First"
         variant="ghost"
         disabled={currentPage === 1}
       >
-        First
+        <AiOutlineDoubleLeft />
       </Button>
 
-      <Button
-        onClick={handlePrevPage}
-        className="prevPageButton"
-        title="Prev"
-        variant="ghost"
-        disabled={currentPage === 1}
-      >
-        Prev
+      <Button onClick={handlePrevPage} title="Prev" variant="ghost" disabled={currentPage === 1}>
+        <AiOutlineLeft />
       </Button>
 
       {pageNumbers
@@ -62,7 +61,6 @@ function Pagination({ totalPages, currentPage, changePage }) {
           <Button
             key={pageNumber}
             onClick={() => changePage(pageNumber)}
-            className={pageNumber === currentPage ? 'activePageButton' : 'pageButton'}
             variant={pageNumber === currentPage ? 'solid' : 'ghost'}
             disabled={pageNumber === currentPage}
           >
@@ -72,22 +70,22 @@ function Pagination({ totalPages, currentPage, changePage }) {
 
       <Button
         onClick={handleNextPage}
-        className="nextPageButton"
         title="Next"
         variant="ghost"
         disabled={currentPage === totalPages}
       >
-        Next
+        <AiOutlineRight />
       </Button>
 
       <Button
         onClick={() => changePage(totalPages)}
-        className="lastPageButton"
         title="Last"
         variant="ghost"
         disabled={currentPage === totalPages}
+        display="flex"
+        justifyContent="center"
       >
-        Last
+        {<AiOutlineDoubleRight />}
       </Button>
     </ButtonGroup>
   );

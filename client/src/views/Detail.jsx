@@ -2,8 +2,11 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { addCartItem, getProductById } from '../redux/asyncActions';
+import { getProductById } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
+
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import {
   Badge,
@@ -26,7 +29,7 @@ function Detail() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { productId } = useParams();
-  const { user } = useSelector((state) => state.selectedUser);
+  const cartProducts = useSelector((state) => state.cartProducts);
   const filteredProducts = useSelector((state) => state.filteredProducts);
   const selectedProduct = useSelector((state) => state.selectedProduct);
   const {
@@ -50,8 +53,36 @@ function Detail() {
     };
   }, [dispatch, productId]);
 
-  const handleAddItem = () => {
-    // dispatch(addCartItem(user.id, productId));
+  const handleAddToCart = (e) => {
+    const productExists = cartProducts?.find((product) => product.id === parseInt(productId));
+
+    if (productExists) {
+      toast.error('Product already exists in cart!', {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
+    } else {
+      dispatch(
+        actions.addProduct({
+          id: parseInt(productId),
+          name,
+          price,
+          Categories,
+          description,
+          gender,
+          size,
+          image,
+          discounts,
+          stock,
+          quantity: 1,
+        })
+      );
+
+      toast.success('Product added to cart!', {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
+    }
   };
 
   const handlePrev = () => {
@@ -252,7 +283,7 @@ function Detail() {
                       Go back
                     </Button>
 
-                    <Button colorScheme="blue" width="150px" onClick={handleAddItem}>
+                    <Button colorScheme="blue" width="150px" onClick={handleAddToCart}>
                       Add to Cart
                     </Button>
                   </Stack>

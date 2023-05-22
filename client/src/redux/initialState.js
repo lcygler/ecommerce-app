@@ -1,9 +1,20 @@
 export const getInitialState = () => {
+  //* USER
   const storedUserId = localStorage.getItem('userId');
   const storedSelectedUser = JSON.parse(localStorage.getItem(`user_${storedUserId}_selectedUser`));
   const storedIsAuthenticated =
     localStorage.getItem(`user_${storedUserId}_isAuthenticated`) === 'true';
   const storedIsAdmin = localStorage.getItem(`user_${storedUserId}_isAdmin`) === 'true';
+
+  //* CART
+  const storedCartProducts = JSON.parse(localStorage.getItem(`user_${storedUserId}_cartProducts`));
+  const storedCartTotal = JSON.parse(localStorage.getItem(`user_${storedUserId}_cartTotal`));
+
+  //* ORDERS
+  const storedOrders = JSON.parse(localStorage.getItem(`user_${storedUserId}_orders`));
+
+  //* FAVORITES
+  const storedFavorites = JSON.parse(localStorage.getItem(`user_${storedUserId}_favorites`));
 
   return {
     // Products
@@ -24,16 +35,18 @@ export const getInitialState = () => {
     currentPage: 1,
 
     // Favorites
-    favorites: [],
+    favorites: storedFavorites || [],
+    filteredFavorites: [],
 
     // Cart
     selectedCart: {},
-    cartItems: [],
-    cartTotal: 0,
+    cartProducts: storedCartProducts || [],
+    cartTotal: storedCartTotal || 0,
 
     // Orders
-    userOrders: [],
+    orders: storedOrders || [],
     selectedOrder: {},
+    paymentLink: '',
 
     // Users
     userId: storedUserId || null,
@@ -42,7 +55,7 @@ export const getInitialState = () => {
     isAdmin: storedIsAdmin || false,
 
     // Reviews
-    userReviews: [],
+    reviews: [],
     selectedReview: {},
 
     //* Async Status
@@ -68,6 +81,7 @@ export const getInitialState = () => {
     createCartStatus: 'idle',
     updateCartByIdStatus: 'idle',
     deleteCartByIdStatus: 'idle',
+    createPaymentLinkStatus: 'idle',
 
     // Orders
     getUserOrdersStatus: 'idle',
@@ -82,6 +96,7 @@ export const getInitialState = () => {
     updateUserByIdStatus: 'idle',
     deleteUserByIdStatus: 'idle',
     loginUserStatus: 'idle',
+    loginGoogleStatus: 'idle',
 
     // Reviews
     getUserReviewsStatus: 'idle',
@@ -113,6 +128,7 @@ export const getInitialState = () => {
     createCartError: null,
     updateCartByIdError: null,
     deleteCartByIdError: null,
+    createPaymentLinkError: null,
 
     // Orders
     getUserOrdersError: null,
@@ -127,6 +143,7 @@ export const getInitialState = () => {
     updateUserByIdError: null,
     deleteUserByIdError: null,
     loginUserError: null,
+    loginGoogleError: null,
 
     // Reviews
     getUserReviewsError: null,

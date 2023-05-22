@@ -4,7 +4,13 @@ import { Grid } from '@chakra-ui/react';
 
 function Products({ currentProducts }) {
   return (
-    <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(5, 1fr)' }} gap={6} p={10}>
+    <Grid
+      templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(5, 1fr)' }}
+      gap={6}
+      pt={3}
+      pb={10}
+      px={10}
+    >
       {currentProducts?.map(
         ({
           id,
@@ -32,6 +38,7 @@ function Products({ currentProducts }) {
               size={size}
               image={image}
               discounts={discounts}
+              stock={stock}
             />
           )
       )}

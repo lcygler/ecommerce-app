@@ -5,6 +5,19 @@ import Favorites from './Favorites';
 import Home from './Home';
 import Landing from './Landing';
 import Login from './Login';
+import PurchaseDetail from './PurchaseDetail';
+import Purchases from './Purchases';
 import Register from './Register';
 
-export { Cart, Dashboard, Detail, Favorites, Home, Landing, Login, Register };
+export {
+  Cart,
+  Dashboard,
+  Detail,
+  Favorites,
+  Home,
+  Landing,
+  Login,
+  Purchases,
+  PurchaseDetail,
+  Register,
+};
