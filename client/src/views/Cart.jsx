@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { getUserCart } from '../redux/asyncActions';
+import { createPaymentLink, getUserCart } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
 import { Navbar } from '../components/index';
@@ -21,6 +21,15 @@ function Cart() {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const cartProducts = useSelector((state) => state.cartProducts);
   const cartTotal = useSelector((state) => state.cartTotal);
+  const isAuthenticated = useSelector((state) => state.isAuthenticated);
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const payment_id = searchParams.get('payment_id');
+    if (payment_id === 'null') {
+      dispatch(actions.deleteOrder());
+    }
+  }, []);
 
   const handleIncrease = (productId) => {
     const product = cartProducts?.find((product) => product.id === productId);
@@ -94,7 +103,23 @@ function Cart() {
     }
   };
 
-  const handleCheckout = () => {};
+  const handleCheckout = async () => {
+    if (isAuthenticated) {
+      if (cartProducts?.length !== 0) {
+        const response = await dispatch(createPaymentLink(cartProducts));
+        if (response.payload) {
+          dispatch(actions.createOrder(cartProducts));
+          window.location.href = response.payload;
+          // window.open(response.payload, '_blank'); // open in new tab/window
+        }
+      }
+    } else {
+      toast.error('Login required to purchase', {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
+    }
+  };
 
   return (
     <Box
@@ -192,6 +217,7 @@ function Cart() {
 
                     <Flex alignItems="center" marginTop={2}>
                       <Text fontWeight="bold" fontSize="lg" marginRight={2}>
+                        $
                         {product.discounts === 0
                           ? product.price.toFixed(2)
                           : (product.price * (1 - product.discounts)).toFixed(2)}
@@ -260,10 +286,10 @@ function Cart() {
                 </Text>
               </Box>
 
-              <Flex flexDirection="column" alignItems="center">
+              <Flex flexDirection="column" alignItems="center" width="100%">
                 <Stack direction="row" spacing={4} justifyContent="center" width="100%">
                   <Button
-                    width="100%"
+                    width="30%"
                     onClick={() => {
                       navigate('/home');
                     }}
@@ -275,14 +301,14 @@ function Cart() {
                     colorScheme="blue"
                     isLoading={isLoading}
                     loadingText="Checking out..."
-                    width="100%"
+                    width="30%"
                     onClick={handleCheckout}
                   >
                     Checkout
                   </Button>
                 </Stack>
 
-                <Button colorScheme="red" variant="ghost" onClick={handleClear} mt="6">
+                <Button colorScheme="red" variant="ghost" onClick={handleClear} width="30%" mt="6">
                   Empty Cart
                 </Button>
               </Flex>
