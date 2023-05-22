@@ -280,7 +280,7 @@ function Detail() {
                       colorScheme="gray"
                       width="150px"
                     >
-                      Go back
+                      Go Back
                     </Button>
 
                     <Button colorScheme="blue" width="150px" onClick={handleAddToCart}>
