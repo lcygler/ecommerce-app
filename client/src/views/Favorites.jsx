@@ -21,6 +21,7 @@ function Favorites() {
   const navigate = useNavigate();
   const favorites = useSelector((state) => state.favorites);
   const filteredFavorites = useSelector((state) => state.filteredFavorites);
+  const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const currentPage = useSelector((state) => state.currentPage);
   const [itemsPerPage] = useState(10);
 
@@ -51,7 +52,38 @@ function Favorites() {
     <Box flexDirection="column" height="100vh" overflow="auto">
       <Navbar width="100%" />
       <Filters changePage={changePage} allProducts={favorites} />
-      {!favorites?.length ? (
+      {!isAuthenticated ? (
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          width="auto"
+          height="60vh"
+        >
+          <Alert
+            status="warning"
+            textAlign="center"
+            maxWidth="md"
+            mx="auto"
+            display="flex"
+            justifyContent="center"
+          >
+            <Flex flexDirection="column" alignItems="center">
+              <Flex>
+                <AlertIcon />
+                <AlertTitle>Oops! No results found</AlertTitle>
+              </Flex>
+              <AlertDescription mt="2">Please login to add some favorites</AlertDescription>
+            </Flex>
+          </Alert>
+          <Box display="flex" alignItems="center" justifyContent="center" mt="4">
+            <Button onClick={() => navigate('/login')} variant="solid" colorScheme="blue">
+              Login Now
+            </Button>
+          </Box>
+        </Box>
+      ) : !favorites?.length ? (
         <Box
           display="flex"
           flexDirection="column"
