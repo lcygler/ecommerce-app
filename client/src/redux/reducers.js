@@ -110,6 +110,7 @@ export const removeFavorite = (state, action) => {
 
 export const clearFavorites = (state, action) => {
   state.favorites = [];
+  state.filteredFavorites = [];
 
   const userId = state.userId;
   localStorage.removeItem(`user_${userId}_favorites`);
@@ -209,7 +210,80 @@ export const clearCart = (state, action) => {
   localStorage.removeItem(`user_${userId}_cartTotal`);
 };
 
+//* ORDERS
+export const createOrder = (state, action) => {
+  const products = action.payload;
+
+  let id;
+  if (state.orders && state.orders.length > 0) {
+    const maxId = state.orders.reduce((maxId, order) => (order.id > maxId ? order.id : maxId), 0);
+    id = maxId + 1;
+  } else {
+    id = 1;
+  }
+
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+  const day = String(currentDate.getDate()).padStart(2, '0');
+
+  const total = products.reduce(
+    (total, product) => total + product.price * (1 - product.discounts) * product.quantity,
+    0
+  );
+
+  const order = {
+    id,
+    date: `${year}-${month}-${day}`, // YYYY-MM-DD
+    status: 'On its way',
+    total,
+    products: products,
+  };
+
+  state.orders.push(order);
+
+  console.log('Orders:', state.orders);
+
+  const userId = state.userId;
+  localStorage.setItem(`user_${userId}_orders`, JSON.stringify(state.orders));
+};
+
+export const deleteOrder = (state, action) => {
+  if (state.orders.length !== 0) {
+    state.orders.pop();
+
+    const userId = state.userId;
+    localStorage.setItem(`user_${userId}_orders`, JSON.stringify(state.orders));
+  }
+};
+
+export const clearOrders = (state, action) => {
+  state.orders = [];
+
+  const userId = state.userId;
+  localStorage.removeItem(`user_${userId}_orders`);
+};
+
 //* AUTH
+export const loginGoogle = (state, action) => {
+  const user = action.payload;
+  const userId = user.id;
+  state.userId = userId;
+  state.selectedUser = user;
+  state.isAuthenticated = true;
+  state.isAdmin = false;
+
+  localStorage.setItem('userId', userId);
+  localStorage.setItem(`user_${userId}_selectedUser`, JSON.stringify(user));
+  localStorage.setItem(`user_${userId}_isAuthenticated`, 'true');
+  localStorage.setItem(`user_${userId}_isAdmin`, 'false');
+
+  state.cartProducts = JSON.parse(localStorage.getItem(`user_${userId}_cartProducts`)) || [];
+  state.cartTotal = JSON.parse(localStorage.getItem(`user_${userId}_cartTotal`)) || 0;
+  state.favorites = JSON.parse(localStorage.getItem(`user_${userId}_favorites`)) || [];
+  state.orders = JSON.parse(localStorage.getItem(`user_${userId}_orders`)) || [];
+};
+
 export const logoutUser = (state, action) => {
   state.userId = '';
   state.selectedUser = {};
@@ -218,6 +292,7 @@ export const logoutUser = (state, action) => {
   state.cartProducts = [];
   state.cartTotal = 0;
   state.favorites = [];
+  state.orders = [];
 
   localStorage.removeItem(`userId`);
 };

@@ -146,7 +146,7 @@ export const deleteCartById = createAsyncThunk('slice/deleteCartById', async (ca
 });
 
 //* PAYMENT
-export const createPayment = createAsyncThunk('slice/createPayment', async (data) => {
+export const createPaymentLink = createAsyncThunk('slice/createPaymentLink', async (data) => {
   const response = await axios.post(`/payment`, data);
   return response.data;
 });

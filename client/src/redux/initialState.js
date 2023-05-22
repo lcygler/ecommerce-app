@@ -10,6 +10,9 @@ export const getInitialState = () => {
   const storedCartProducts = JSON.parse(localStorage.getItem(`user_${storedUserId}_cartProducts`));
   const storedCartTotal = JSON.parse(localStorage.getItem(`user_${storedUserId}_cartTotal`));
 
+  //* ORDERS
+  const storedOrders = JSON.parse(localStorage.getItem(`user_${storedUserId}_orders`));
+
   //* FAVORITES
   const storedFavorites = JSON.parse(localStorage.getItem(`user_${storedUserId}_favorites`));
 
@@ -41,7 +44,7 @@ export const getInitialState = () => {
     cartTotal: storedCartTotal || 0,
 
     // Orders
-    userOrders: [],
+    orders: storedOrders || [],
     selectedOrder: {},
     paymentLink: '',
 
@@ -52,7 +55,7 @@ export const getInitialState = () => {
     isAdmin: storedIsAdmin || false,
 
     // Reviews
-    userReviews: [],
+    reviews: [],
     selectedReview: {},
 
     //* Async Status
@@ -78,6 +81,7 @@ export const getInitialState = () => {
     createCartStatus: 'idle',
     updateCartByIdStatus: 'idle',
     deleteCartByIdStatus: 'idle',
+    createPaymentLinkStatus: 'idle',
 
     // Orders
     getUserOrdersStatus: 'idle',
@@ -124,6 +128,7 @@ export const getInitialState = () => {
     createCartError: null,
     updateCartByIdError: null,
     deleteCartByIdError: null,
+    createPaymentLinkError: null,
 
     // Orders
     getUserOrdersError: null,
