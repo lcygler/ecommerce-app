@@ -26,8 +26,19 @@ function Cart() {
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const payment_id = searchParams.get('payment_id');
-    if (payment_id === 'null') {
+
+    const storedURL = localStorage.getItem('mpErrorURL');
+    const currentURL = window.location.href;
+
+    if (payment_id && payment_id === 'null' && storedURL !== currentURL) {
       dispatch(actions.deleteOrder());
+
+      toast.error('Purchase unsuccessful', {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
+
+      localStorage.setItem('mpErrorURL', currentURL);
     }
   }, []);
 

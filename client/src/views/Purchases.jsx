@@ -6,6 +6,9 @@ import { actions } from '../redux/slice';
 import { Box, Button, Fade, Flex, Heading, Image, Stack, Text } from '@chakra-ui/react';
 import { Navbar } from '../components/index';
 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import backgroundImage from '../assets/images/background.jpg';
 import emptyCartImage from '../assets/images/empty-cart.png';
 
@@ -18,8 +21,19 @@ function Purchases() {
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const payment_id = searchParams.get('payment_id');
-    if (payment_id && payment_id !== 'null') {
+
+    const storedURL = localStorage.getItem('mpSuccessURL');
+    const currentURL = window.location.href;
+
+    if (payment_id && payment_id !== 'null' && storedURL !== currentURL) {
       dispatch(actions.clearCart());
+
+      toast.success('Your purchase was successful!', {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
+
+      localStorage.setItem('mpSuccessURL', currentURL);
     }
   }, []);
 
