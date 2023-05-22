@@ -242,8 +242,6 @@ export const createOrder = (state, action) => {
 
   state.orders.push(order);
 
-  console.log('Orders:', state.orders);
-
   const userId = state.userId;
   localStorage.setItem(`user_${userId}_orders`, JSON.stringify(state.orders));
 };
