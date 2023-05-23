@@ -151,6 +151,15 @@ export const createPaymentLink = createAsyncThunk('slice/createPaymentLink', asy
   return response.data;
 });
 
+//* STOCK
+export const updateProductsStock = createAsyncThunk(
+  'slice/updateProductsStock',
+  async (cartProducts) => {
+    const response = await axios.patch(`/stock/updateStock`, cartProducts);
+    return response.data;
+  }
+);
+
 //* ORDERS
 export const getUserOrders = createAsyncThunk('slice/getUserOrders', async (userId) => {
   const response = await axios.get(`/orders/users/${userId}`);
