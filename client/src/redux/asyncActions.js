@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-
+import Cookies from 'js-cookie';
 /* 
 //* PRODUCTS
 getAllProducts (Front OK - Back OK) 
@@ -56,6 +56,15 @@ export const getAllProducts = createAsyncThunk('slice/getAllProducts', async () 
   const response = await axios.get(`/products`);
   return response.data;
 });
+// export const getAllProducts = createAsyncThunk('slice/getAllProducts', async () => {
+//   const token = Cookies.get('token');
+//   const response = await axios.get(`/products`, {
+//     headers: {
+//       Authorization: `Bearer ${token}`,
+//     },
+//   });
+//   return response.data;
+// });
 
 export const getProductById = createAsyncThunk('slice/getProductById', async (productId) => {
   const response = await axios.get(`/products/${productId}`);
@@ -68,7 +77,8 @@ export const getProductByName = createAsyncThunk('slice/getProductByName', async
 });
 
 export const createProduct = createAsyncThunk('slice/createProduct', async (product) => {
-  const response = await axios.post(`/products`, product);
+  const response = await axios.post(`/products`);
+
   return response.data;
 });
 
@@ -194,6 +204,15 @@ export const deleteUserById = createAsyncThunk('slice/deleteUserById', async (us
 
 export const loginUser = createAsyncThunk('slice/loginUser', async (userData) => {
   const response = await axios.post(`/users/login`, userData);
+
+  // const token = response.data.token;
+
+  // Verificar el valor del token en la consola
+  // console.log('Token:', token);
+
+  // Guardar el token en una cookie llamada 'token' con una vida útil de 1 día
+  // Cookies.set('token', token, { expires: 1 });
+
   return response.data;
 });
 

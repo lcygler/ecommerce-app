@@ -3,7 +3,7 @@ const { verifyToken } = require('../utils/generateToken');
 
 const checkAuth = async (req, res, next) => {
   try {
-    const token = req.headers.authorization.split(' ').pop();
+    const token = req.headers.authorization.split(' ')[1];
     const tokenData = await verifyToken(token);
     console.log(tokenData);
     if (tokenData.id) {
