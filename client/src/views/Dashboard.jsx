@@ -1,5 +1,3 @@
-import { CreateProduct } from '../components/index';
-
 import { Navbar } from '../components/index';
 
 import { Box } from '@chakra-ui/react';
@@ -10,14 +8,13 @@ function Dashboard() {
     <Box
       display="flex"
       flexDirection="column"
-      justifyContent="center"
       height="100vh"
       backgroundImage={`url(${backgroundImage})`}
       backgroundSize="cover"
       backgroundPosition="center"
     >
       <Navbar />
-      <CreateProduct />
+      
     </Box>
   );
 }
