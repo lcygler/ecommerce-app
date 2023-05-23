@@ -1,11 +1,17 @@
-import { CreateProduct } from '../components/index';
+import { useSelector } from 'react-redux';
 
-import { Navbar } from '../components/index';
+import { CreateProduct, Navbar } from '../components/index';
 
 import { Box } from '@chakra-ui/react';
 import backgroundImage from '../assets/images/background.jpg';
 
 function Dashboard() {
+  const isAdmin = useSelector((state) => state.isAdmin);
+
+  if (!isAdmin) {
+    return <Box></Box>;
+  }
+
   return (
     <Box
       display="flex"
