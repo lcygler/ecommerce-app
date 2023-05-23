@@ -1,5 +1,16 @@
 import { Route, Routes } from 'react-router-dom';
-import { Cart, Dashboard, Detail, Favorites, Home, Landing, Login, Register } from './views/index';
+import {
+  Cart,
+  Dashboard,
+  Detail,
+  Favorites,
+  Home,
+  Landing,
+  Login,
+  PurchaseDetail,
+  Purchases,
+  Register,
+} from './views/index';
 
 import CreateProduct from './components/CreateProduct';
 
@@ -10,8 +21,7 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<Landing />} />
-        {/* Eliminar ruta '/create' cuando este el dashboard implementado */}
-        <Route path='/create' element={<CreateProduct/>}/>
+        <Route path="/create" element={<CreateProduct />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/dashboard" element={<Dashboard />} />
@@ -19,6 +29,8 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/purchases" element={<Purchases />} />
+        <Route path="/purchases/:purchaseId" element={<PurchaseDetail />} />
       </Routes>
     </div>
   );

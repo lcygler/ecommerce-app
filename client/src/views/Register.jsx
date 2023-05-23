@@ -11,6 +11,7 @@ import {
   Button,
   FormControl,
   FormLabel,
+  Heading,
   Input,
   Link,
   Stack,
@@ -102,7 +103,8 @@ function Register() {
 
       timeoutId = setTimeout(() => {
         setIsLoading(false);
-        if (response) {
+        if (response.payload) {
+          setError('');
           setSuccess('Registration successful!');
           setFormData({
             name: '',
@@ -122,7 +124,8 @@ function Register() {
             navigate('/login');
           }, 2000);
         } else {
-          setError('Incomplete or incorrect data');
+          setSuccess('');
+          setError('Registration error');
         }
       }, 2000);
     }
@@ -147,7 +150,18 @@ function Register() {
       backgroundSize="cover"
       backgroundPosition="center"
     >
-      <Box bg="white" boxShadow="lg" borderRadius="md" mx="auto" p={6} maxW="lg">
+      <Box
+        bg="white"
+        boxShadow="lg"
+        borderRadius="md"
+        mx="auto"
+        p={8}
+        maxW="lg"
+        boxSizing="border-box"
+      >
+        <Heading size="lg" mb="6" w="100%" textAlign="center">
+          Register
+        </Heading>
         <form onChange={handleForm} onSubmit={handleSubmit}>
           {error && (
             <Alert status="error" marginBottom={4}>
@@ -164,7 +178,7 @@ function Register() {
           <Stack direction="column" spacing={4}>
             <Stack direction="row" spacing={4}>
               <FormControl isRequired isInvalid={errors.name !== ''}>
-                <FormLabel htmlFor="name">First name</FormLabel>
+                <FormLabel htmlFor="name">First Name</FormLabel>
                 <Input
                   id="name"
                   name="name"
@@ -179,7 +193,7 @@ function Register() {
               </FormControl>
 
               <FormControl isRequired isInvalid={errors.lastname !== ''}>
-                <FormLabel htmlFor="lastname">Last name</FormLabel>
+                <FormLabel htmlFor="lastname">Last Name</FormLabel>
                 <Input
                   id="lastname"
                   name="lastname"
@@ -211,7 +225,7 @@ function Register() {
               </FormControl>
 
               <FormControl isRequired isInvalid={errors.email !== ''}>
-                <FormLabel htmlFor="email">Email address</FormLabel>
+                <FormLabel htmlFor="email">Email Address</FormLabel>
                 <Input
                   id="email"
                   name="email"
@@ -243,7 +257,7 @@ function Register() {
               </FormControl>
 
               <FormControl isRequired isInvalid={errors.passwordCheck !== ''}>
-                <FormLabel htmlFor="passwordCheck">Confirm password</FormLabel>
+                <FormLabel htmlFor="passwordCheck">Confirm Password</FormLabel>
                 <Input
                   id="passwordCheck"
                   name="passwordCheck"
@@ -260,7 +274,7 @@ function Register() {
 
             <Stack direction="row" spacing={4}>
               <FormControl isRequired isInvalid={errors.birthdate !== ''}>
-                <FormLabel htmlFor="birthdate">Birthdate</FormLabel>
+                <FormLabel htmlFor="birthdate">Date of Birth</FormLabel>
                 <Input
                   id="birthdate"
                   name="birthdate"
@@ -275,7 +289,7 @@ function Register() {
               </FormControl>
 
               <FormControl isRequired isInvalid={errors.phoneNumber !== ''}>
-                <FormLabel htmlFor="phoneNumber">Phone number</FormLabel>
+                <FormLabel htmlFor="phoneNumber">Phone Number</FormLabel>
                 <Input
                   id="phoneNumber"
                   name="phoneNumber"
@@ -307,7 +321,7 @@ function Register() {
               </FormControl>
 
               <FormControl isRequired isInvalid={errors.postalCode !== ''}>
-                <FormLabel htmlFor="postalCode">Postal code</FormLabel>
+                <FormLabel htmlFor="postalCode">Postal Code</FormLabel>
                 <Input
                   id="postalCode"
                   name="postalCode"
@@ -363,7 +377,7 @@ function Register() {
                   navigate('/home');
                 }}
               >
-                Go back
+                Go Back
               </Button>
 
               <Button
@@ -379,9 +393,9 @@ function Register() {
 
             <Box textAlign="center" marginTop={4} fontSize="sm">
               <Text>
-                Already registered?{' '}
+                Have an account?{' '}
                 <Link as={RouterLink} to="/login" color="blue.500" textDecoration="underline">
-                  Click here to log in
+                  Login here
                 </Link>
               </Text>
             </Box>

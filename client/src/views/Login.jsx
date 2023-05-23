@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { actions } from '../redux/slice';
 
-import { getUserFavorites, getUserOrders, loginUser } from '../redux/asyncActions';
+import { gapi } from 'gapi-script';
+import GoogleLogin from 'react-google-login';
+
+import { getUserFavorites, getUserOrders, loginGoogle, loginUser } from '../redux/asyncActions';
 import { validateLogin } from '../utils/validateForm';
 
 import {
@@ -10,8 +14,10 @@ import {
   AlertIcon,
   Box,
   Button,
+  Flex,
   FormControl,
   FormLabel,
+  Heading,
   Input,
   Link,
   Stack,
@@ -20,6 +26,7 @@ import {
 
 import backgroundImage from '../assets/images/background.jpg';
 
+const clientId = process.env.REACT_APP_CLIENT_ID;
 let timeoutId = null;
 let navigateTimeoutId = null;
 
@@ -30,6 +37,16 @@ function Login() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const start = () => {
+      gapi.auth2.init({
+        client_id: clientId,
+      });
+    };
+
+    gapi.load('client:auth2', start);
+  }, []);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -68,7 +85,8 @@ function Login() {
 
     timeoutId = setTimeout(() => {
       setIsLoading(false);
-      if (response) {
+      if (response.payload) {
+        setError('');
         setSuccess('Login successful!');
         // dispatch(getUserFavorites());
         // dispatch(getUserOrders());
@@ -80,6 +98,7 @@ function Login() {
           navigate('/home');
         }, 1000);
       } else {
+        setSuccess('');
         setError('Invalid email or password');
       }
     }, 2000);
@@ -92,6 +111,46 @@ function Login() {
     };
   }, []);
 
+  //* Google Login
+  const onSuccess = async (response) => {
+    const user = {
+      id: response.profileObj.googleId,
+      email: response.profileObj.email,
+      firstname: response.profileObj.givenName,
+      lastname: response.profileObj.familyName,
+      fullname: response.profileObj.name,
+      image: response.profileObj.imageUrl,
+    };
+
+    await dispatch(actions.loginGoogle(user));
+
+    setError('');
+    setSuccess('Google login successful!');
+
+    navigateTimeoutId = setTimeout(() => {
+      navigate('/home');
+    }, 2000);
+
+    // Para cuando estén los controladores en el back
+    // const res = await dispatch(loginGoogle(user));
+    // if (res.payload) {
+    //   setError('');
+    //   setSuccess('Google login successful!');
+    //   navigateTimeoutId = setTimeout(() => {
+    //     navigate('/home');
+    //   }, 2000);
+    // } else {
+    //   setSuccess('');
+    //   setError('Google login failed');
+    // }
+  };
+
+  const onFailure = (error) => {
+    console.error('Google login failed:', error);
+    setSuccess('');
+    setError('Google login failed');
+  };
+
   return (
     <Box
       display="flex"
@@ -102,7 +161,18 @@ function Login() {
       backgroundSize="cover"
       backgroundPosition="center"
     >
-      <Box bg="white" boxShadow="lg" borderRadius="md" width="sm" mx="auto" p={6}>
+      <Box
+        bg="white"
+        boxShadow="lg"
+        borderRadius="md"
+        width="sm"
+        mx="auto"
+        p={8}
+        boxSizing="border-box"
+      >
+        <Heading size="lg" mb="6" w="100%" textAlign="center">
+          Login
+        </Heading>
         <form onChange={handleForm} onSubmit={handleSubmit}>
           {error && (
             <Alert status="error" marginBottom={4}>
@@ -118,7 +188,7 @@ function Login() {
           )}
           <Stack spacing={4}>
             <FormControl isRequired isInvalid={errors.email !== ''}>
-              <FormLabel htmlFor="email">Email address</FormLabel>
+              <FormLabel htmlFor="email">Email Address</FormLabel>
               {/* <Tooltip label={errors.email} isOpen={errors.email !== ''} placement="bottom"> */}
               <Input
                 id="email"
@@ -158,7 +228,7 @@ function Login() {
                   navigate('/home');
                 }}
               >
-                Go back
+                Go Back
               </Button>
 
               <Button
@@ -168,15 +238,24 @@ function Login() {
                 loadingText="Logging in..."
                 width="100%"
               >
-                Log in
+                Login
               </Button>
             </Stack>
 
+            <Flex justifyContent="center">
+              <GoogleLogin
+                clientId={clientId}
+                onSuccess={onSuccess}
+                onFailure={onFailure}
+                cookiePolicy={'single_host_origin'}
+              />
+            </Flex>
+
             <Box textAlign="center" marginTop={4} fontSize="sm">
               <Text>
-                Not registered yet?{' '}
+                Don't have an account?{' '}
                 <Link as={RouterLink} to="/register" color="blue.500" textDecoration="underline">
-                  Click here to register
+                  Register now
                 </Link>
               </Text>
             </Box>

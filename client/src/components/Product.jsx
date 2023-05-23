@@ -1,9 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
-import { addFavorite, deleteFavorite } from '../redux/asyncActions';
+import { actions } from '../redux/slice';
 
-import { Badge, Box, Button, Flex, Heading, IconButton, Image, Link, Text } from '@chakra-ui/react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import {
+  Badge,
+  Box,
+  Button,
+  Fade,
+  Flex,
+  Heading,
+  IconButton,
+  Image,
+  Link,
+  Text,
+} from '@chakra-ui/react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
 function Product({
@@ -17,19 +31,40 @@ function Product({
   size,
   image,
   discounts,
+  stock,
 }) {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
+  const cartProducts = useSelector((state) => state.cartProducts);
+  const favorites = useSelector((state) => state.favorites);
   const [isFav, setIsFav] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const handleFavorite = () => {
+  useEffect(() => {
+    setIsFav(favorites?.some((fav) => fav.id === id));
+  }, [favorites, id]);
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
+
+  const handleFavorite = (e) => {
+    e.preventDefault();
     if (isFav) {
       setIsFav(false);
-      dispatch(deleteFavorite(id));
+
+      dispatch(actions.removeFavorite(id));
+      dispatch(actions.filterFavorites());
+
+      toast.success('Product removed from favorites!', {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
     } else {
       setIsFav(true);
+
       dispatch(
-        addFavorite({
+        actions.addFavorite({
           id,
           name,
           price,
@@ -40,10 +75,48 @@ function Product({
           size,
           image,
           discounts,
-          addFavorite,
-          deleteFavorite,
+          stock,
         })
       );
+      dispatch(actions.filterFavorites());
+
+      toast.success('Product added to favorites!', {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
+    }
+  };
+
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    const productExists = cartProducts?.find((product) => product.id === id);
+
+    if (productExists) {
+      toast.error('Product already exists in cart!', {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
+    } else {
+      dispatch(
+        actions.addProduct({
+          id,
+          name,
+          price,
+          Categories,
+          description,
+          gender,
+          size,
+          image,
+          discounts,
+          stock,
+          quantity: 1,
+        })
+      );
+
+      toast.success('Product added to cart!', {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
     }
   };
 
@@ -57,7 +130,14 @@ function Product({
         transition: 'transform 0.2s ease-in-out',
       }}
     >
-      <Box borderWidth="1px" borderRadius="lg" overflow="hidden" maxW="sm" height="auto">
+      <Box
+        borderWidth="1px"
+        borderRadius="lg"
+        overflow="hidden"
+        w="350px"
+        h="500px"
+        position="relative"
+      >
         <Box h="300px" overflow="hidden" position="relative">
           {discounts > 0 && (
             <Badge colorScheme="green" position="absolute" top="2" left="2" m="2" fontSize="sm">
@@ -68,20 +148,20 @@ function Product({
           {isAuthenticated && (
             <Box position="absolute" top="0" right="0" m="2">
               {isFav ? (
-                <IconButton
-                  aria-label="add to favorites"
-                  variant="ghost"
-                  colorScheme="blue"
-                  icon={<AiFillHeart />}
-                  size="md"
-                  onClick={handleFavorite}
-                />
+                <Fade in={!loading}>
+                  <IconButton
+                    variant="ghost"
+                    colorScheme="blue"
+                    icon={<AiFillHeart style={{ fontSize: '18px' }} />}
+                    size="md"
+                    onClick={handleFavorite}
+                  />
+                </Fade>
               ) : (
                 <IconButton
-                  aria-label="add to favorites"
                   variant="ghost"
                   colorScheme="blue"
-                  icon={<AiOutlineHeart />}
+                  icon={<AiOutlineHeart style={{ fontSize: '18px' }} />}
                   size="md"
                   onClick={handleFavorite}
                 />
@@ -93,7 +173,14 @@ function Product({
         </Box>
 
         <Box p="6">
-          <Heading as="h2" size="md" mb="2">
+          <Heading
+            as="h2"
+            size="md"
+            mb="2"
+            overflow="hidden"
+            whiteSpace="nowrap"
+            textOverflow="ellipsis"
+          >
             {name}
           </Heading>
 
@@ -119,9 +206,11 @@ function Product({
             )}
           </Box>
 
-          <Button colorScheme="blue" mt="4">
-            Add to Cart
-          </Button>
+          <Box position="absolute" bottom="20px" left="0" right="0" textAlign="center">
+            <Button colorScheme="blue" mt="4" onClick={handleAddToCart}>
+              Add to Cart
+            </Button>
+          </Box>
         </Box>
       </Box>
     </Link>

@@ -5,8 +5,8 @@ dotenv.config();
 
 const EMAIL = process.env.EMAIL;
 const EMAIL_PSSWRD = process.env.EMAIL_PSSWRD;
-//const SERVER = process.env.SERVER
-//const CLIENT_HOST = process.env.CLIENT_HOST
+const SERVER = process.env.SERVER
+const CLIENT_HOST = process.env.CLIENT_HOST
 
 
 const mail = {
@@ -184,4 +184,29 @@ module.exports = {
           </div>
         `;
   },
+  getCompraProduct: (user, Products, sender) => {
+    return `
+    <head>
+    <link rel="stylesheet" href="./style.css">
+    </head>
+    <div id="email___content">
+    <h2>Hola ${user}</h2>
+    <p>Este email te ha sido enviado porque tu cuenta en Modern Fashion ha realizado una compra del producto ${Products}.
+    Para más información, contantanos a ${sender}</p>
+    </div>
+    `
+  },
+  getFailCompra: (user, Products, sender, error) => {
+    return `
+    <head>
+    <link rel="stylesheet" href="./style.css">
+    </head>
+    <div id="email___content">
+    <h2>Hola ${user}</h2>
+    <p>Este email te ha sido enviado porque tu cuenta en Modern Fashion ha realizado una compra del producto ${Products} , la cual fue fallida por ${error}.
+    Para más información, contantanos a ${sender}</p>
+    </div>
+    `
+  }
+
 };

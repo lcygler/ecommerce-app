@@ -1,5 +1,7 @@
 import { CreateProduct } from '../components/index';
 
+import { Navbar } from '../components/index';
+
 import { Box } from '@chakra-ui/react';
 import backgroundImage from '../assets/images/background.jpg';
 
@@ -14,6 +16,7 @@ function Dashboard() {
       backgroundSize="cover"
       backgroundPosition="center"
     >
+      <Navbar />
       <CreateProduct />
     </Box>
   );

@@ -9,8 +9,8 @@ module.exports = (sequelize) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      state: {
-        type: DataTypes.FLOAT,
+      status: {
+        type: DataTypes.ENUM('Open', 'Close'),
       },
     },
     {

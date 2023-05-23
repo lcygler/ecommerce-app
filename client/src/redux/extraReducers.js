@@ -2,6 +2,7 @@ import {
   addFavorite,
   createCart,
   createOrder,
+  createPaymentLink,
   createProduct,
   createReview,
   createUser,
@@ -25,6 +26,7 @@ import {
   getUserFavorites,
   getUserOrders,
   getUserReviews,
+  loginGoogle,
   loginUser,
   updateCartById,
   updateOrderById,
@@ -187,7 +189,7 @@ export const extraReducers = (builder) => {
     })
     .addCase(getUserCart.fulfilled, (state, action) => {
       state.getUserCartStatus = 'succeeded';
-      state.userCart = action.payload;
+      state.selectedCart = action.payload;
     })
     .addCase(getUserCart.rejected, (state, action) => {
       state.getUserCartStatus = 'failed';
@@ -241,13 +243,26 @@ export const extraReducers = (builder) => {
       state.deleteCartByIdError = action.error.message;
     })
 
+    //* PAYMENT
+    .addCase(createPaymentLink.pending, (state) => {
+      state.createPaymentLinkStatus = 'loading';
+    })
+    .addCase(createPaymentLink.fulfilled, (state, action) => {
+      state.createPaymentLinkStatus = 'succeeded';
+      state.paymentLink = action.payload;
+    })
+    .addCase(createPaymentLink.rejected, (state, action) => {
+      state.createPaymentLinkStatus = 'failed';
+      state.createPaymentLinkError = action.error.message;
+    })
+
     //* ORDERS
     .addCase(getUserOrders.pending, (state) => {
       state.getUserOrdersStatus = 'loading';
     })
     .addCase(getUserOrders.fulfilled, (state, action) => {
       state.getUserOrdersStatus = 'succeeded';
-      state.userOrders = action.payload;
+      state.orders = action.payload;
     })
     .addCase(getUserOrders.rejected, (state, action) => {
       state.getUserOrdersStatus = 'failed';
@@ -350,20 +365,58 @@ export const extraReducers = (builder) => {
     })
 
     .addCase(loginUser.pending, (state) => {
-      state.loginUserByIdStatus = 'loading';
+      state.loginUserStatus = 'loading';
     })
     .addCase(loginUser.fulfilled, (state, action) => {
-      state.loginUserByIdStatus = 'succeeded';
+      state.loginUserStatus = 'succeeded';
       state.selectedUser = action.payload;
       state.isAuthenticated = true;
       state.isAdmin = action.payload.user.isAdmin;
-      localStorage.setItem('selectedUser', JSON.stringify(action.payload));
-      localStorage.setItem('isAuthenticated', 'true');
-      localStorage.setItem('isAdmin', action.payload.user.isAdmin);
+      state.userId = action.payload.user.id;
+
+      // localStorage
+      const userId = action.payload.user.id;
+      localStorage.setItem('userId', userId);
+      localStorage.setItem(`user_${userId}_selectedUser`, JSON.stringify(action.payload));
+      localStorage.setItem(`user_${userId}_isAuthenticated`, 'true');
+      localStorage.setItem(`user_${userId}_isAdmin`, action.payload.user.isAdmin);
+
+      state.cartProducts = JSON.parse(localStorage.getItem(`user_${userId}_cartProducts`)) || [];
+      state.cartTotal = JSON.parse(localStorage.getItem(`user_${userId}_cartTotal`)) || 0;
+      state.favorites = JSON.parse(localStorage.getItem(`user_${userId}_favorites`)) || [];
+      state.orders = JSON.parse(localStorage.getItem(`user_${userId}_orders`)) || [];
     })
     .addCase(loginUser.rejected, (state, action) => {
-      state.loginUserByIdStatus = 'failed';
-      state.loginUserByIdError = action.error.message;
+      state.loginUserStatus = 'failed';
+      state.loginUserError = action.error.message;
+    })
+
+    //* GOOGLE LOGIN
+    .addCase(loginGoogle.pending, (state) => {
+      state.loginGoogleStatus = 'loading';
+    })
+    .addCase(loginGoogle.fulfilled, (state, action) => {
+      state.loginGoogleStatus = 'succeeded';
+      state.selectedUser = action.payload;
+      state.isAuthenticated = true;
+      state.isAdmin = action.payload.user.isAdmin;
+      state.userId = action.payload.user.id;
+
+      // localStorage
+      const userId = action.payload.user.id;
+      localStorage.setItem('userId', userId);
+      localStorage.setItem(`user_${userId}_selectedUser`, JSON.stringify(action.payload));
+      localStorage.setItem(`user_${userId}_isAuthenticated`, 'true');
+      localStorage.setItem(`user_${userId}_isAdmin`, action.payload.user.isAdmin);
+
+      state.cartProducts = JSON.parse(localStorage.getItem(`user_${userId}_cartProducts`)) || [];
+      state.cartTotal = JSON.parse(localStorage.getItem(`user_${userId}_cartTotal`)) || 0;
+      state.favorites = JSON.parse(localStorage.getItem(`user_${userId}_favorites`)) || [];
+      state.orders = JSON.parse(localStorage.getItem(`user_${userId}_orders`)) || [];
+    })
+    .addCase(loginGoogle.rejected, (state, action) => {
+      state.loginGoogleStatus = 'failed';
+      state.loginGoogleError = action.error.message;
     })
 
     //* REVIEWS

@@ -77,7 +77,7 @@ export const getProductByName = createAsyncThunk('slice/getProductByName', async
 });
 
 export const createProduct = createAsyncThunk('slice/createProduct', async (product) => {
-  const response = await axios.post(`/products`);
+  const response = await axios.post(`/products`, product);
 
   return response.data;
 });
@@ -155,6 +155,12 @@ export const deleteCartById = createAsyncThunk('slice/deleteCartById', async (ca
   return response.data;
 });
 
+//* PAYMENT
+export const createPaymentLink = createAsyncThunk('slice/createPaymentLink', async (data) => {
+  const response = await axios.post(`/payment`, data);
+  return response.data;
+});
+
 //* ORDERS
 export const getUserOrders = createAsyncThunk('slice/getUserOrders', async (userId) => {
   const response = await axios.get(`/orders/users/${userId}`);
@@ -216,6 +222,11 @@ export const loginUser = createAsyncThunk('slice/loginUser', async (userData) =>
   return response.data;
 });
 
+export const loginGoogle = createAsyncThunk('slice/loginGoogle', async (userData) => {
+  const response = await axios.post(`/users/login/google`, userData);
+  return response.data;
+});
+
 //* REVIEWS
 export const getUserReviews = createAsyncThunk('slice/getUserReviews', async (userId) => {
   const response = await axios.get(`/reviews/users/${userId}`);
@@ -244,3 +255,24 @@ export const deleteReviewById = createAsyncThunk('slice/deleteReviewById', async
   const response = await axios.delete(`/users/${reviewId}`);
   return response.data;
 });
+
+//* OTHERS
+
+// export const addCartItem = createAsyncThunk('slice/addCartItem', async (userId, productId) => {
+//   const response = await axios.post(`/cart/users/${userId}`, productId);
+//   return response.data;
+// });
+
+// export const updateCartItem = createAsyncThunk('slice/updateCartItem', async (userId, product) => {
+//   const response = await axios.patch(`/cart/users/${userId}`, product);
+//   return response.data;
+// });
+
+// export const deleteCartItem = createAsyncThunk('slice/deleteCartItem', async (userId, product) => {
+//   const response = await axios.request({
+//     url: `/cart/users/${userId}`,
+//     method: 'delete',
+//     data: product,
+//   });
+//   return response.data;
+// });
