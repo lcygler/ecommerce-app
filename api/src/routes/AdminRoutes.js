@@ -8,7 +8,7 @@ const { generateToken } = require('../utils/Token');
 
 
 // Crear un nuevo administrador
-router.post('/', async (req, res) => {
+router.post('/register', async (req, res) => {
   try {
     const { name, lastname, email, password } = req.body;
 
