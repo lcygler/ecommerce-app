@@ -82,6 +82,7 @@ export const getInitialState = () => {
     updateCartByIdStatus: 'idle',
     deleteCartByIdStatus: 'idle',
     createPaymentLinkStatus: 'idle',
+    updateProductsStockStatus: 'idle',
 
     // Orders
     getUserOrdersStatus: 'idle',
@@ -129,6 +130,7 @@ export const getInitialState = () => {
     updateCartByIdError: null,
     deleteCartByIdError: null,
     createPaymentLinkError: null,
+    updateProductsStockError: null,
 
     // Orders
     getUserOrdersError: null,

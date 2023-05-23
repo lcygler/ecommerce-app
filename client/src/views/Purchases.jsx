@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+
+import { updateProductsStock } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
 import { Box, Button, Fade, Flex, Heading, Image, Stack, Text } from '@chakra-ui/react';
@@ -16,6 +18,7 @@ function Purchases() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const cartProducts = useSelector((state) => state.cartProducts);
   const orders = useSelector((state) => state.orders);
 
   useEffect(() => {
@@ -25,17 +28,18 @@ function Purchases() {
     const storedURL = localStorage.getItem('mpSuccessURL');
     const currentURL = window.location.href;
 
+    // If purchase was successful
     if (payment_id && payment_id !== 'null' && storedURL !== currentURL) {
+      dispatch(updateProductsStock(cartProducts)); // Update catalog stock
       dispatch(actions.clearCart());
+      localStorage.setItem('mpSuccessURL', currentURL);
 
       toast.success('Your purchase was successful!', {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 2000,
       });
-
-      localStorage.setItem('mpSuccessURL', currentURL);
     }
-  }, []);
+  }, [dispatch, cartProducts]);
 
   const handlePurchaseDetail = (id) => {
     navigate(`/purchases/${id}`);
