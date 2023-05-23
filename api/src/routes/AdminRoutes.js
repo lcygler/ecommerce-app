@@ -3,12 +3,12 @@ const bcrypt = require('bcrypt');
 const express = require('express');
 const router = express.Router();
 const { Admin } = require('../db');
-const { encrypt } = require('../utils/HashPassword');
+const { encrypt, compare } = require('../utils/HashPassword');
 const { generateToken } = require('../utils/Token');
 
 
 // Crear un nuevo administrador
-router.post('/admin', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const { name, lastname, email, password } = req.body;
 
@@ -75,9 +75,11 @@ router.post('/login', async (req, res) => {
     }
     
     // Verificar si la contraseña proporcionada coincide con la contraseña almacenada
-    Admin.prototype.checkPassword = async function (password) {
-      return await bcrypt.compare(password, this.password);
-    };
+    const isMatchedPassword = await compare(password, admin.password);
+    if(!isMatchedPassword) {
+      return res.status(401).send('Credenciales incorrectas');
+    }
+
 
     // Generar el token para el administrador
     const token = generateToken({ id: admin.id, email: admin.email });
