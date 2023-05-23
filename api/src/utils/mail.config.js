@@ -33,7 +33,7 @@ module.exports = {
       await transporter.sendMail({
         from: `${mail.user}`,
         to: email,
-        subject,
+        subject: "Welcome",
         text: "Welcome to Modern Fashion",
         html,
       });
