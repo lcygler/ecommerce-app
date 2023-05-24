@@ -1,8 +1,5 @@
-import { useEffect, useState } from 'react';
-
 import { SettingsIcon } from '@chakra-ui/icons';
 import {
-  Fade,
   Image,
   Menu,
   MenuButton,
@@ -20,16 +17,6 @@ import {
 } from '@chakra-ui/react';
 
 function ProductTable({ products }) {
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
-
-  useEffect(() => {
-    setIsImageLoaded(false);
-  }, [products]);
-
-  const handleImageLoad = () => {
-    setIsImageLoaded(true);
-  };
-
   return (
     <TableContainer marginTop={5} overflowY="auto">
       <Table variant="simple">
@@ -64,16 +51,13 @@ function ProductTable({ products }) {
             }) => (
               <Tr key={id} _hover={{ backgroundColor: 'whitesmoke' }}>
                 <Td>
-                  <Fade in={isImageLoaded}>
-                    <Image
-                      boxSize="100px"
-                      objectFit="contain"
-                      src={image}
-                      fallbackSrc="https://via.placeholder.com/100"
-                      alt={name}
-                      onLoad={handleImageLoad}
-                    />
-                  </Fade>
+                  <Image
+                    boxSize="100px"
+                    objectFit="contain"
+                    src={image}
+                    fallbackSrc="https://via.placeholder.com/100"
+                    alt={name}
+                  />
                 </Td>
                 <Td>{name}</Td>
                 <Td>{description}</Td>
