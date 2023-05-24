@@ -26,52 +26,70 @@ let transporter = nodemailer.createTransport({
   },
 });
 
-module.exports = {
-  sendEmail: async (email, subject, html) => {
-    try {
-      await transporter.sendMail({
-        from: `${mail.user}`,
-        to: email,
-        subject,
-        text: "Welcome to Modern Fashion",
-        html,
-      });
-      console.log("Email enviado");
-    } catch (error) {
-      console.log("Something went wrong with your email", error);
-    }
-  },
-  sendStatusEmail: async (email, subject, html) => {
-    try {
-      await transporter.sendMail({
-        from: `${mail.user}`,
-        to: email,
-        subject,
-        text: "IMPORTANT INFORMATION FOR YOU",
-        html,
-      });
-    } catch (error) {
-      console.log("Something went wrong with your email", error);
-    }
-  },
+//msj of Welcome
+const sendEmail = async (email, subject, html) => {
+  try {
+    await transporter.sendMail({
+      from: `${mail.user}`,
+      to: email,
+      subject,
+      text: "Welcome to Modern Fashion",
+      html,
+    });
+    console.log("Email enviado");
+  } catch (error) {
+    console.log("Something went wrong with your email", error);
+  }
+};
 
-  getTemplate: (email, token) => {
-    return `
+// informacion importante
+const sendStatusEmail = async(email, subject, html) => {
+  try {
+    await transporter.sendMail({
+      from: `${mail.user}`,
+      to: email,
+      subject,
+      text: "IMPORTANT INFORMATION FOR YOU",
+      html,
+    });
+  } catch (error) {
+    console.log("Something went wrong with your email", error);
+  }
+};
+
+// confimracion de email
+const getTemplate = async(email, token) => {
+  console.log("Email enviado");
+  try {
+    await transporter.sendMail({
+      from: `${mail.user}`,
+      to:email,
+      subject,
+      text:`Hola ${email} `,
+      html:`
       <head>
-          <link rel="stylesheet" href="./style.css">
+      <link rel="stylesheet" href="./style.css>
       </head>
-      
-      <div id="email___content">
-          
-          <h2>Hola ${email}</h2>
-          <p>Para confirmar tu cuenta, ingresa al siguiente enlace</p>
-          <a
-              href="${SERVER}user/confirm/${token}"
-              target="_blank"
-          >Confirmar Cuenta</a>
+      <div>
+      <h2>Hola ${email}</h2>
+      <p>Para confimrar tu cuenta, ingresa al siguiente enlace</p>
+      <a 
+      href="${SERVER}user/confirm/${token}"
+      target="_blank"
+      >Confirmar cuenta</>
       </div>
-    `;
-  },
+      `,
+    })
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+module.exports = {
+  sendEmail,
+  sendStatusEmail,
+  getTemplate,
   templateChangePassword: (email, token) => {
     return `
           <head>
@@ -185,6 +203,7 @@ module.exports = {
         `;
   },
   getCompraProduct: (user, Products, sender) => {
+    console.log("Email enviado confirmar compra");
     return `
     <head>
     <link rel="stylesheet" href="./style.css">
