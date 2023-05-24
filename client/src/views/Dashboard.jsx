@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { getAllProducts, getCategories, getGenders, getSeasons } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
@@ -21,6 +22,7 @@ import { AddIcon } from '@chakra-ui/icons';
 
 function Dashboard() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const allProducts = useSelector((state) => state.allProducts);
   const filteredProducts = useSelector((state) => state.filteredProducts);
   const currentPage = useSelector((state) => state.currentPage);
@@ -60,7 +62,7 @@ function Dashboard() {
       <Box display="flex" justifyContent="space-evenly" alignItems="center" position="relative">
         <Filters changePage={changePage} allProducts={allProducts} />
 
-        <Button leftIcon={<AddIcon />} colorScheme="blue" position="absolute" right="100px">
+        <Button leftIcon={<AddIcon />} colorScheme="blue" position="absolute" right="100px" onClick={() => navigate('/create')}>
           Create product
         </Button>
       </Box>

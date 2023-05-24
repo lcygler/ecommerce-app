@@ -389,7 +389,7 @@ function CreateProduct() {
               <Button
                 width="100%"
                 onClick={() => {
-                  navigate('/home');
+                  navigate('/dashboard');
                 }}
               >
                 Go back
