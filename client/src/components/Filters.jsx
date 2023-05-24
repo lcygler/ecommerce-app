@@ -1,16 +1,18 @@
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { actions } from '../redux/slice';
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { AddIcon } from '@chakra-ui/icons';
 import { Box, Button, Flex, Select } from '@chakra-ui/react';
 
 function Filters({ changePage, allProducts }) {
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const categories = useSelector((state) => state.categories);
   const seasons = useSelector((state) => state.seasons);
@@ -172,6 +174,20 @@ function Filters({ changePage, allProducts }) {
         <Box display="flex" alignItems="center" justifyContent="center" ml="4">
           <Button colorScheme="red" variant="ghost" onClick={handleClearFavorites}>
             Clear Favorites
+          </Button>
+        </Box>
+      )}
+
+      {location.pathname === '/dashboard' && (
+        <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+          <Button
+            leftIcon={<AddIcon />}
+            colorScheme="blue"
+            position="absolute"
+            right="100px"
+            onClick={() => navigate('/create')}
+          >
+            Create product
           </Button>
         </Box>
       )}
