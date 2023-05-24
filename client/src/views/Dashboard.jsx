@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 
 import { getAllProducts, getCategories, getGenders, getSeasons } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
@@ -18,11 +17,8 @@ import {
   Spinner,
 } from '@chakra-ui/react';
 
-import { AddIcon } from '@chakra-ui/icons';
-
 function Dashboard() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const allProducts = useSelector((state) => state.allProducts);
   const filteredProducts = useSelector((state) => state.filteredProducts);
   const currentPage = useSelector((state) => state.currentPage);
@@ -59,65 +55,53 @@ function Dashboard() {
   return (
     <Box display="flex" flexDirection="column" height="100vh">
       <Navbar />
-      <Box display="flex" justifyContent="space-evenly" alignItems="center" position="relative">
-        <Filters changePage={changePage} allProducts={allProducts} />
+      <Filters changePage={changePage} allProducts={allProducts} />
 
-        <Button leftIcon={<AddIcon />} colorScheme="blue" position="absolute" right="100px" onClick={() => navigate('/create')}>
-          Create product
-        </Button>
-      </Box>
-
-      <Box display="flex" flexDirection="column">
-        {!allProducts?.length ? (
-          <>
-            <Box display="grid" placeItems="center" height="60vh">
-              <Spinner size="xl" color="blue.500" />
-            </Box>
-          </>
-        ) : !loading && !filteredProducts?.length ? (
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
-            width="auto"
-            height="60vh"
-          >
-            <Alert
-              status="warning"
-              textAlign="center"
-              maxWidth="md"
-              mx="auto"
-              display="flex"
-              justifyContent="center"
-            >
-              <Flex flexDirection="column" alignItems="center">
-                <Flex>
-                  <AlertIcon />
-                  <AlertTitle>Oops! No results found</AlertTitle>
-                </Flex>
-                <AlertDescription mt="2">Please change your filters and try again</AlertDescription>
-              </Flex>
-            </Alert>
-            <Box display="flex" alignItems="center" justifyContent="center" mt="4">
-              <Button onClick={handleReset} variant="solid" colorScheme="blue">
-                Reset Filters
-              </Button>
-            </Box>
+      {!allProducts?.length ? (
+        <>
+          <Box display="grid" placeItems="center" height="60vh">
+            <Spinner size="xl" color="blue.500" />
           </Box>
-        ) : (
-          <>
-            <ProductsTable products={currentProducts} />
-            <Box display="flex" justifyContent="center">
-              <Pagination
-                totalPages={totalPages}
-                currentPage={currentPage}
-                changePage={changePage}
-              />
-            </Box>
-          </>
-        )}
-      </Box>
+        </>
+      ) : !loading && !filteredProducts?.length ? (
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          width="auto"
+          height="60vh"
+        >
+          <Alert
+            status="warning"
+            textAlign="center"
+            maxWidth="md"
+            mx="auto"
+            display="flex"
+            justifyContent="center"
+          >
+            <Flex flexDirection="column" alignItems="center">
+              <Flex>
+                <AlertIcon />
+                <AlertTitle>Oops! No results found</AlertTitle>
+              </Flex>
+              <AlertDescription mt="2">Please change your filters and try again</AlertDescription>
+            </Flex>
+          </Alert>
+          <Box display="flex" alignItems="center" justifyContent="center" mt="4">
+            <Button onClick={handleReset} variant="solid" colorScheme="blue">
+              Reset Filters
+            </Button>
+          </Box>
+        </Box>
+      ) : (
+        <>
+          <ProductsTable products={currentProducts} />
+          <Box display="flex" justifyContent="center" mt="4">
+            <Pagination totalPages={totalPages} currentPage={currentPage} changePage={changePage} />
+          </Box>
+        </>
+      )}
     </Box>
   );
 }

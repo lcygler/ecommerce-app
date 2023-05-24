@@ -1,5 +1,8 @@
-import { ChevronDownIcon, SettingsIcon } from "@chakra-ui/icons";
+import { useState } from 'react';
+
+import { ChevronDownIcon, SettingsIcon } from '@chakra-ui/icons';
 import {
+  Fade,
   Image,
   Menu,
   MenuButton,
@@ -14,9 +17,11 @@ import {
   Th,
   Thead,
   Tr,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
 function ProductTable({ products }) {
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
   return (
     <TableContainer marginTop={5} overflowY="auto">
       <Table variant="simple">
@@ -49,15 +54,18 @@ function ProductTable({ products }) {
               stock,
               status,
             }) => (
-              <Tr key={id} _hover={{ backgroundColor: "whitesmoke" }}>
+              <Tr key={id} _hover={{ backgroundColor: 'whitesmoke' }}>
                 <Td>
-                  <Image
-                    boxSize="100px"
-                    objectFit="cover"
-                    src={image}
-                    fallbackSrc="https://via.placeholder.com/100"
-                    alt={name}
-                  />
+                  <Fade in={isImageLoaded}>
+                    <Image
+                      boxSize="100px"
+                      objectFit="cover"
+                      src={image}
+                      fallbackSrc="https://via.placeholder.com/100"
+                      alt={name}
+                      onLoad={() => setIsImageLoaded(true)}
+                    />
+                  </Fade>
                 </Td>
                 <Td>{name}</Td>
                 <Td>{description}</Td>
