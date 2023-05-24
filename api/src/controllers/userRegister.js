@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { User } = require('../db.js');
 const { encrypt } = require('../utils/HashPassword.js');
-const { getTemplate } = require('../utils/mail.config.js')
+const { sendEmail } = require('../utils/mail.config.js')
 
 const registerCtrl = async (
   name,
@@ -35,7 +35,7 @@ const registerCtrl = async (
 
   // Generar JWT token
   const token = jwt.sign({ id: createUser.id }, process.env.JWT_SECRET, { expiresIn: '1d' });
-  getTemplate(email, token);
+  sendEmail(email);
   return { user: createUser, token };
 };
 

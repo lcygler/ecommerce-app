@@ -28,22 +28,6 @@ const getUsers = async (req, res, next) => {
  * @param {express.Request} req
  * @param {express.Response} res
  */
-// const createUser = async (req, res, next) => {
-//   try {
-//     // TODO Hashear password antes de crear usuario
-//     const user = req.body;
-//     const newUser = await Users.create(user);
-//     res.status(201).json(newUser);
-//   } catch (err) {
-//     next(err);
-//   }
-// };
-
-/**
- *
- * @param {express.Request} req
- * @param {express.Response} res
- */
 const updateUser = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -106,12 +90,6 @@ const deleteUser = async (req, res, next) => {
 
 module.exports = {
   getUsers,
-  // createUser,
-
-  //registerCtrl,
-  getUsers,
-  //createUser,
-
   updateUser,
   getUserById,
   deleteUser,
