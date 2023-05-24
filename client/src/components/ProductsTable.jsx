@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { ChevronDownIcon, SettingsIcon } from '@chakra-ui/icons';
+import { SettingsIcon } from '@chakra-ui/icons';
 import {
   Fade,
   Image,
@@ -21,6 +21,14 @@ import {
 
 function ProductTable({ products }) {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsImageLoaded(false);
+  }, [products]);
+
+  const handleImageLoad = () => {
+    setIsImageLoaded(true);
+  };
 
   return (
     <TableContainer marginTop={5} overflowY="auto">
@@ -59,11 +67,11 @@ function ProductTable({ products }) {
                   <Fade in={isImageLoaded}>
                     <Image
                       boxSize="100px"
-                      objectFit="cover"
+                      objectFit="contain"
                       src={image}
                       fallbackSrc="https://via.placeholder.com/100"
                       alt={name}
-                      onLoad={() => setIsImageLoaded(true)}
+                      onLoad={handleImageLoad}
                     />
                   </Fade>
                 </Td>
@@ -76,7 +84,7 @@ function ProductTable({ products }) {
                 <Td>{status ? <Switch isChecked /> : <Switch />}</Td>
                 <Td>
                   <Menu>
-                    <MenuButton as="button" rightIcon={<ChevronDownIcon />}>
+                    <MenuButton as="button">
                       <SettingsIcon />
                     </MenuButton>
                     <MenuList>
