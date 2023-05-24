@@ -37,7 +37,6 @@ function CreateProduct() {
     dispatch(getGenders());
   }, [dispatch]);
 
-  const isAdmin = useSelector((state) => state.isAdmin);
   const categories = useSelector((state) => state.categories);
   const seasons = useSelector((state) => state.seasons);
   const genders = useSelector((state) => state.genders);
@@ -157,10 +156,6 @@ function CreateProduct() {
       clearTimeout(navigateTimeoutId);
     };
   }, []);
-
-  if (!isAdmin) {
-    return <Box></Box>;
-  }
 
   return (
     <Box
