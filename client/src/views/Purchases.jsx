@@ -20,6 +20,7 @@ function Purchases() {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const cartProducts = useSelector((state) => state.cartProducts);
   const orders = useSelector((state) => state.orders);
+  const isAuthenticated = useSelector((state) => state.isAuthenticated);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -77,7 +78,26 @@ function Purchases() {
             Purchases
           </Heading>
 
-          {orders?.length === 0 ? (
+          {!isAuthenticated ? (
+            <Box textAlign="center" fontSize="lg" fontWeight="normal">
+              Login to view your purchases
+              <Fade in={isImageLoaded}>
+                <Box mt={4} display="flex" justifyContent="center">
+                  <Image
+                    src={emptyCartImage}
+                    alt="Empty Purchases"
+                    width="300px"
+                    onLoad={() => setIsImageLoaded(true)}
+                  />
+                </Box>
+              </Fade>
+              <Box mt={4}>
+                <Button colorScheme="blue" onClick={() => navigate('/login')}>
+                  Login Now
+                </Button>
+              </Box>
+            </Box>
+          ) : orders?.length === 0 ? (
             <Box textAlign="center" fontSize="lg" fontWeight="normal">
               No purchases found
               <Fade in={isImageLoaded}>
