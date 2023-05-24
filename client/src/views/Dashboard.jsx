@@ -1,19 +1,10 @@
-import {
-  Navbar,
-  Filters,
-  ProductsTable,
-  Pagination,
-} from "../components/index";
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  getAllProducts,
-  getCategories,
-  getGenders,
-  getSeasons,
-} from "../redux/asyncActions";
-import { actions } from "../redux/slice";
+import { getAllProducts, getCategories, getGenders, getSeasons } from '../redux/asyncActions';
+import { actions } from '../redux/slice';
+
+import { Filters, Navbar, Pagination, ProductsTable } from '../components/index';
 
 import {
   Alert,
@@ -24,9 +15,9 @@ import {
   Button,
   Flex,
   Spinner,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
-import { AddIcon } from "@chakra-ui/icons";
+import { AddIcon } from '@chakra-ui/icons';
 
 function Dashboard() {
   const dispatch = useDispatch();
@@ -60,22 +51,16 @@ function Dashboard() {
   const handleReset = () => {
     dispatch(actions.resetFilters());
     dispatch(actions.filterProducts());
-    dispatch(actions.filterFavorites());
     changePage(1);
   };
-  const isAdmin = useSelector((state) => state.isAdmin);
-
-  if (!isAdmin) {
-    return <Box></Box>;
-  }
 
   return (
     <Box display="flex" flexDirection="column" height="100vh">
       <Navbar />
-      <Box display="flex" justifyContent="space-evenly" alignItems="center">
+      <Box display="flex" justifyContent="space-evenly" alignItems="center" position="relative">
         <Filters changePage={changePage} allProducts={allProducts} />
 
-        <Button leftIcon={<AddIcon />} colorScheme="blue">
+        <Button leftIcon={<AddIcon />} colorScheme="blue" position="absolute" right="100px">
           Create product
         </Button>
       </Box>
@@ -109,17 +94,10 @@ function Dashboard() {
                   <AlertIcon />
                   <AlertTitle>Oops! No results found</AlertTitle>
                 </Flex>
-                <AlertDescription mt="2">
-                  Please change your filters and try again
-                </AlertDescription>
+                <AlertDescription mt="2">Please change your filters and try again</AlertDescription>
               </Flex>
             </Alert>
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              mt="4"
-            >
+            <Box display="flex" alignItems="center" justifyContent="center" mt="4">
               <Button onClick={handleReset} variant="solid" colorScheme="blue">
                 Reset Filters
               </Button>

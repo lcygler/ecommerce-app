@@ -1,34 +1,35 @@
+import { ChevronDownIcon, SettingsIcon } from "@chakra-ui/icons";
 import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
   Image,
   Menu,
   MenuButton,
-  MenuList,
   MenuItem,
+  MenuList,
   Switch,
+  Table,
+  TableCaption,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
 } from "@chakra-ui/react";
-import { ChevronDownIcon, SettingsIcon } from "@chakra-ui/icons";
 
 function ProductTable({ products }) {
   return (
     <TableContainer marginTop={5} overflowY="auto">
       <Table variant="simple">
-        <TableCaption>Products table</TableCaption>
+        <TableCaption marginBottom="4">Products table</TableCaption>
         <Thead>
           <Tr>
             <Th>Image</Th>
             <Th>Name</Th>
             <Th>Description</Th>
             <Th>Size</Th>
-            <Th isNumeric>Price</Th>
             <Th>Stock</Th>
+            <Th isNumeric>Price</Th>
+            <Th>Discount</Th>
             <Th>Status</Th>
           </Tr>
         </Thead>
@@ -61,8 +62,9 @@ function ProductTable({ products }) {
                 <Td>{name}</Td>
                 <Td>{description}</Td>
                 <Td>{size}</Td>
-                <Td isNumeric>{price}</Td>
                 <Td>{stock}</Td>
+                <Td isNumeric>${price.toFixed(2)}</Td>
+                <Td>{discounts * 100}%</Td>
                 <Td>{status ? <Switch isChecked /> : <Switch />}</Td>
                 <Td>
                   <Menu>
