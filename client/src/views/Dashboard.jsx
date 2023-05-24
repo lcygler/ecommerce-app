@@ -63,6 +63,12 @@ function Dashboard() {
     dispatch(actions.filterFavorites());
     changePage(1);
   };
+  const isAdmin = useSelector((state) => state.isAdmin);
+
+  if (!isAdmin) {
+    return <Box></Box>;
+  }
+
   return (
     <Box display="flex" flexDirection="column" height="100vh">
       <Navbar />
