@@ -32,199 +32,272 @@ const sendEmail = async (email, subject, html) => {
     await transporter.sendMail({
       from: `${mail.user}`,
       to: email,
-      subject,
-      text: "Welcome to Modern Fashion",
-      html,
+      subject: "Welcome, a pleasure to have here",
+      text: ` ¡Bienvenidos a la Moda Moderna!
+
+      Estamos encantados de tenerte como nuevo miembro de nuestra comunidad de moda. Como miembro valioso, ahora tiene acceso a las últimas tendencias, ofertas exclusivas y una experiencia de compra sin igual.
+      
+      En Modern Fashion, nos esforzamos por ofrecerte lo mejor en ropa, accesorios y más, modernos y con estilo. Ya sea que esté buscando un atuendo elegante para una ocasión especial o simplemente desee actualizar su guardarropa diario, tenemos una amplia gama de opciones que se adaptan a su estilo personal.
+      
+      Como miembro registrado, puede crear su propio perfil personalizado, guardar sus artículos favoritos para más tarde y disfrutar de un viaje de compras sin inconvenientes. Manténgase al día con nuestras novedades, promociones y consejos de moda a través de nuestros boletines regulares.
+      
+      Si tiene alguna pregunta o necesita ayuda, nuestro amable equipo de atención al cliente está aquí para ayudarlo. No dude en comunicarse con nosotros a través de nuestra página de contacto y estaremos encantados de ayudarle.
+      
+      Gracias por elegir Moda Moderna. Esperamos brindarle opciones de moda excepcionales y una experiencia de compra encantadora.
+      
+      Atentamente,
+      
+      El equipo de moda moderna`,
+      html : `<head>
+      <style>
+          body {
+              font-family: Arial, sans-serif;
+              background-color: #f9f9f9;
+              color: #333333;
+              text-align: center;
+          }
+  
+          .container {
+              max-width: 500px;
+              margin: 0 auto;
+              padding: 30px;
+              background-color: #ffffff;
+              border-radius: 5px;
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          }
+  
+          h1 {
+              font-size: 24px;
+              margin-bottom: 20px;
+          }
+  
+          p {
+              font-size: 16px;
+              line-height: 1.5;
+              margin-bottom: 20px;
+          }
+  
+          .button {
+              display: inline-block;
+              padding: 10px 20px;
+              background-color: #3366cc;
+              color: #ffffff;
+              text-decoration: none;
+              border-radius: 4px;
+              transition: background-color 0.3s ease;
+          }
+  
+          .button:hover {
+              background-color: #254b99;
+          }
+      </style>
+  </head>
+  <body>
+      <div class="container">
+          <h1>Welcome to Modern Fashion!</h1>
+          <p>We are thrilled to have you as a new member of our fashion community. As a valued member, you now have access to the latest trends, exclusive offers, and an unparalleled shopping experience.</p>
+          <p>At Modern Fashion, we strive to bring you the best in modern and stylish clothing, accessories, and more. Whether you're looking for a chic outfit for a special occasion or simply want to upgrade your everyday wardrobe, we have a wide range of options to suit your personal style.</p>
+          <p>As a registered member, you can create your own personalized profile, save your favorite items for later, and enjoy a seamless shopping journey. Stay up to date with our new arrivals, promotions, and fashion tips through our regular newsletters.</p>
+          <p>If you have any questions or need assistance, our friendly customer support team is here to help. Feel free to reach out to us through our contact page, and we'll be delighted to assist you.</p>
+          <p>Thank you for choosing Modern Fashion. We look forward to providing you with exceptional fashion choices and a delightful shopping experience.</p>
+          <a class="button" href="mailto:${mail.user}">Contact Us</a>
+      </div>
+  </body>`,
     });
     console.log("Email enviado");
   } catch (error) {
     console.log("Something went wrong with your email", error);
   }
 };
-
-// informacion importante
-const sendStatusEmail = async(email, subject, html) => {
+ 
+const getCompraProduct = async (email, subject, products, html) => {
   try {
     await transporter.sendMail({
       from: `${mail.user}`,
       to: email,
-      subject,
-      text: "IMPORTANT INFORMATION FOR YOU",
-      html,
-    });
-  } catch (error) {
-    console.log("Something went wrong with your email", error);
-  }
-};
+      subject: "successful purchase",
+      text:`
+      En nombre de Modern Fashion, nos complace informarle que su compra ha sido realizada con éxito.
 
-// confimracion de email
-const getTemplate = async(email, token) => {
-  console.log("Email enviado");
-  try {
-    await transporter.sendMail({
-      from: `${mail.user}`,
-      to:email,
-      subject,
-      text:`Hola ${email} `,
-      html:`
-      <head>
-      <link rel="stylesheet" href="./style.css>
-      </head>
-      <div>
-      <h2>Hola ${email}</h2>
-      <p>Para confimrar tu cuenta, ingresa al siguiente enlace</p>
-      <a 
-      href="${SERVER}user/confirm/${token}"
-      target="_blank"
-      >Confirmar cuenta</>
+      Queremos expresar nuestro más sincero agradecimiento por elegirnos como su destino de comprasNos complace confirmar que su pedido ha sido procesado y enviado según lo acordado. 
+
+      Nuestro equipo de expertos ha trabajado diligentemente para garantizar que su experiencia de compra sea satisfactoria y que sus productos seleccionados cumplan con los más altos estándares de calidad. 
+      Le recordamos que estamos comprometidos con su satisfacción y que nuestro servicio al cliente está disponible para ayudarlo en caso de que tenga alguna consulta o inquietud adicional.
+
+      No dude en ponerse en contacto con nosotros a través de los canales de comunicación proporcionados.
+      Una vez más, le agradecemos por confiar en Modern Fashion. 
+      Esperamos que disfrute de sus nuevas adquisiciones y que nuestra relación comercial continúe en el futuro. 
+
+      Atentamente, 
+
+      El equipo de Modern Fashion`,
+      html: `<head>
+      <style>
+          body {
+              font-family: Arial, sans-serif;
+              background-color: #f9f9f9;
+              color: #333333;
+              text-align: center;
+          }
+  
+          .container {
+              max-width: 500px;
+              margin: 0 auto;
+              padding: 30px;
+              background-color: #ffffff;
+              border-radius: 5px;
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          }
+  
+          h1 {
+              font-size: 24px;
+              margin-bottom: 20px;
+          }
+  
+          p {
+              font-size: 16px;
+              line-height: 1.5;
+              margin-bottom: 20px;
+          }
+  
+          .product-list {
+              list-style: none;
+              padding: 0;
+              margin-bottom: 20px;
+          }
+  
+          .product-list li {
+              display: flex;
+              align-items: center;
+              margin-bottom: 10px;
+          }
+  
+          .product-list img {
+              width: 80px;
+              height: 80px;
+              object-fit: cover;
+              margin-right: 10px;
+          }
+  
+          .product-list .product-details {
+              flex: 1;
+          }
+  
+          .button {
+              display: inline-block;
+              padding: 10px 20px;
+              background-color: #3366cc;
+              color: #ffffff;
+              text-decoration: none;
+              border-radius: 4px;
+              transition: background-color 0.3s ease;
+          }
+  
+          .button:hover {
+              background-color: #254b99;
+          }
+      </style>
+  </head>
+  <body>
+      <div class="container">
+          <h1>En nombre de Modern Fashion, nos complace informarle que su compra ha sido realizada con éxito.</h1>
+          <p>Queremos expresar nuestro más sincero agradecimiento por elegirnos como su destino de compras. Nos complace confirmar que su pedido ha sido procesado y enviado según lo acordado.</p>
+          <p>Nuestro equipo de expertos ha trabajado diligentemente para garantizar que su experiencia de compra sea satisfactoria y que sus productos seleccionados cumplan con los más altos estándares de calidad. Le recordamos que estamos comprometidos con su satisfacción y que nuestro servicio al cliente está disponible para ayudarlo en caso de que tenga alguna consulta o inquietud adicional.</p>
+          <p>No dude en ponerse en contacto con nosotros a través de los canales de comunicación proporcionados. Una vez más, le agradecemos por confiar en Modern Fashion. Esperamos que disfrute de sus nuevas adquisiciones y que nuestra relación comercial continúe en el futuro.</p>
+          <p>Atentamente,</p>
+          <p>El equipo de Modern Fashion</p>
       </div>
-      `,
-    })
+  </body>`,
+    });
+    console.log("Email enviado"); 
   } catch (error) {
     console.log(error);
   }
 };
 
+const getFailCompra =  async(user, Products, sender, error) => {
+  try {
+    await transporter.sendMail({
+      from: `${mail.user}`,
+      to: email,
+      subject: "Error de compora",
+      text:`
+      Estimado/a cliente,
+
+      Lamentamos informarle que su compra ha experimentado un inconveniente y no se ha podido completar satisfactoriamente. Entendemos lo importante que es para usted recibir los productos que ha seleccionado, y nos disculpamos por cualquier inconveniente que esto haya causado.
+
+      Para obtener información adicional sobre el problema que ha surgido, le recomendamos que se comunique con nuestro equipo de atención al cliente. Puede enviar un correo electrónico a ${mail.user} y uno de nuestros representantes estará encantado de ayudarlo a resolver cualquier duda o inquietud que pueda tener.
+
+      Nuevamente, le pedimos disculpas por los inconvenientes causados por este incidente y agradecemos su comprensión. Valoramos su confianza en nosotros y esperamos poder atenderle mejor en el futuro.
+
+      Atentamente,
+
+      El equipo de Modern Fashion `,
+      html: `
+      <html>
+      <head>
+          <style>
+              body {
+                  font-family: Arial, sans-serif;
+                  background-color: #f9f9f9;
+                  color: #333333;
+                  text-align: center;
+              }
+      
+              .container {
+                  max-width: 500px;
+                  margin: 0 auto;
+                  padding: 30px;
+                  background-color: #ffffff;
+                  border-radius: 5px;
+                  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+              }
+      
+              h1 {
+                  font-size: 24px;
+                  margin-bottom: 20px;
+              }
+      
+              p {
+                  font-size: 16px;
+                  line-height: 1.5;
+                  margin-bottom: 20px;
+              }
+      
+              .button {
+                  display: inline-block;
+                  padding: 10px 20px;
+                  background-color: #3366cc;
+                  color: #ffffff;
+                  text-decoration: none;
+                  border-radius: 4px;
+                  transition: background-color 0.3s ease;
+              }
+      
+              .button:hover {
+                  background-color: #254b99;
+              }
+          </style>
+      </head>
+      <body>
+          <div class="container">
+              <h1>Estimado/a cliente,</h1>
+              <p>Lamentamos informarle que su compra ha experimentado un inconveniente y no se ha podido completar satisfactoriamente. Entendemos lo importante que es para usted recibir los productos que ha seleccionado, y nos disculpamos por cualquier inconveniente que esto haya causado.</p>
+              <p>Para obtener información adicional sobre el problema que ha surgido, le recomendamos que se comunique con nuestro equipo de atención al cliente. Puede enviar un correo electrónico a <a href="mailto:${mail.user}">${mail.user}</a> y uno de nuestros representantes estará encantado de ayudarlo a resolver cualquier duda o inquietud que pueda tener.</p>
+              <p>Nuevamente, le pedimos disculpas por los inconvenientes causados por este incidente y agradecemos su comprensión. Valoramos su confianza en nosotros y esperamos poder atenderle mejor en el futuro.</p>
+              <p>Atentamente,</p>
+              <p>El equipo de Modern Fashion</p>
+          </div>
+      </body>`,
+    });
+    console.log("Email enviado");
+  } catch (error) {
+    
+  }
+}
 
 module.exports = {
   sendEmail,
-  sendStatusEmail,
-  getTemplate,
-  templateChangePassword: (email, token) => {
-    return `
-          <head>
-              <link rel="stylesheet" href="./style.css">
-          </head>
-          
-          <div id="email___content">
-              
-              <h2>Hola ${email}</h2>
-              <p>Has realizado un cambio de contraseña en Modern Fashion. Si tú no realizaste esta acción, ignora este mensaje.</p>
-              <a
-                  href="${SERVER}user/confirmchange/${token}"
-                  target="_blank"
-              >Confirma el cambio de tu contraseña</a>
-          </div>
-        `;
-  },
-  templateAdminInvitation: (email, token) => {
-    return `
-          <head>
-              <link rel="stylesheet" href="./style.css">
-          </head>
-          
-          <div id="email___content">
-              
-              <h2>Hola ${email}</h2>
-              <p>Has sido invitado a formar parte del equipo administrativo de Modern Fashion</p>
-              <a
-                  href="${CLIENT_HOST}user/login"
-                  target="_blank"
-              >Te invitamos a iniciar sesión</a>
-          </div>
-        `;
-  },
-  templateAdminSuspension: (email, sender) => {
-    return `
-          <head>
-              <link rel="stylesheet" href="./style.css">
-          </head>
-          
-          <div id="email___content">
-              
-              <h2>Hola ${email}</h2>
-              <p>Te comunicamos que tu permanencia en el equipo administrativo de Modern Fashion ha sido revocada. Para más información, comunícate con nosotros a ${sender}</p>
-              <a
-                  href="${CLIENT_HOST}home"
-                  target="_blank"
-              >Volver a la página principal</a>
-          </div>
-        `;
-  },
-  templateSuspensiónDeCuenta: (email, sender) => {
-    return `
-          <head>
-              <link rel="stylesheet" href="./style.css">
-          </head>
-          
-          <div id="email___content">
-              
-              <h2>Hola ${email}</h2>
-              <p>Este correo electrónico te ha sido enviado porque tu cuenta en Modern Fashion ha sido suspendida.
-              Para más información, comunícate con nosotros a ${sender}</p>
-              
-          </div>
-        `;
-  },
-  templateRehabilitacionDeCuenta: (email, sender) => {
-    return `
-          <head>
-              <link rel="stylesheet" href="./style.css">
-          </head>
-          
-          <div id="email___content">
-              
-              <h2>Hola ${email}</h2>
-              <p>Este correo electrónico te ha sido enviado porque tu cuenta en Modern Fashion ha sido restaurada.
-              Para más información, comunícate con nosotros a ${sender}</p>
-              
-          </div>
-        `;
-  },
-  templateEliminacionDeCuenta: (email, sender) => {
-    return `
-          <head>
-              <link rel="stylesheet" href="./style.css">
-          </head>
-          
-          <div id="email___content">
-              
-              <h2>Hola ${email}</h2>
-              <p>Lamentamos verte partir. Si tú no has realizado esta acción o si tienes alguna sugerencia para hacernos y así tenerte de vuelta, te pedimos que nos escribas a ${sender}</p>
-              
-          </div>
-        `;
-  },
-  getForgotPassTemplate: (email, token) => {
-    return `
-          <head>
-              <link rel="stylesheet" href="./style.css">
-          </head>
-          
-          <div id="email___content">
-              
-              <h2>Hola ${email}</h2>
-              <p>Para establecer una nueva contraseña haz clic en el siguiente enlace</p>
-              <a
-                  href="${CLIENT_HOST}password/reset/${token}"
-                  target="_blank"
-              >Establecer nueva contraseña</a>
-          </div>
-        `;
-  },
-  getCompraProduct: (user, Products, sender) => {
-    console.log("Email enviado confirmar compra");
-    return `
-    <head>
-    <link rel="stylesheet" href="./style.css">
-    </head>
-    <div id="email___content">
-    <h2>Hola ${user}</h2>
-    <p>Este correo electrónico te ha sido enviado porque tu cuenta en Modern Fashion ha realizado una compra del producto ${Products}.
-    Para más información, contáctanos a ${sender}</p>
-    </div>
-    `;
-  },
-  getFailCompra: (user, Products, sender, error) => {
-    return `
-    <head>
-    <link rel="stylesheet" href="./style.css">
-    </head>
-    <div id="email___content">
-    <h2>Hola ${user}</h2>
-    <p>Este correo electrónico te ha sido enviado porque tu cuenta en Modern Fashion ha realizado una compra del producto ${Products}, la cual ha fallado por ${error}.
-    Para más información, contáctanos a ${sender}</p>
-    </div>
-    `;
-  },
+  getCompraProduct,
+  getFailCompra
 };
