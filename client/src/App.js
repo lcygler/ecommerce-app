@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
+import { AdminRoute, UserRoute } from './components/index';
 import {
   Cart,
   Dashboard,
@@ -21,16 +22,16 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<Landing />} />
-        <Route path="/create" element={<CreateProduct />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/favorites" element={<Favorites />} />
-        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/home/:productId" element={<Detail />} />
         <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/purchases" element={<Purchases />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/favorites" element={<Favorites />} />
         <Route path="/purchases/:purchaseId" element={<PurchaseDetail />} />
+        <Route path="/purchases" element={<Purchases />} />
+        <Route path="/dashboard" element={<AdminRoute element={Dashboard} />} />
+        <Route path="/create" element={<AdminRoute element={CreateProduct} />} />
       </Routes>
     </div>
   );
