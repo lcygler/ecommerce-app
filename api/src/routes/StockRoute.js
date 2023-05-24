@@ -53,18 +53,18 @@ stock.patch('/updateStock', async (req, res) => {
     const  products  = req.body;
     try {
         for (const product of products) {
-          const { id, stock } = product;
+          const { id, quantity } = product;
           const existingProduct = await Product.findByPk(id);
     
           if (!existingProduct) {
             return res.status(404).json({ error: `Producto no encontrado: ${id}` });
-          }
+          } 
     
-          if (stock < 0) {
+          if ((existingProduct.stock - quantity) < 0) {
             return res.status(400).json({ error: `No se puede establecer un stock negativo para el producto: ${existingProduct.name}` });
           }
-    
-          existingProduct.stock = stock;
+
+          existingProduct.stock -= quantity;
           await existingProduct.save();
         }
     
@@ -74,10 +74,4 @@ stock.patch('/updateStock', async (req, res) => {
       }
   });
   
-
-
-
-
-
-
 module.exports = stock;

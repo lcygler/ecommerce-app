@@ -31,6 +31,7 @@ import {
   updateCartById,
   updateOrderById,
   updateProductById,
+  updateProductsStock,
   updateReviewById,
   updateUserById,
 } from './asyncActions';
@@ -254,6 +255,18 @@ export const extraReducers = (builder) => {
     .addCase(createPaymentLink.rejected, (state, action) => {
       state.createPaymentLinkStatus = 'failed';
       state.createPaymentLinkError = action.error.message;
+    })
+
+    //* STOCK
+    .addCase(updateProductsStock.pending, (state) => {
+      state.updateProductsStockStatus = 'loading';
+    })
+    .addCase(updateProductsStock.fulfilled, (state, action) => {
+      state.updateProductsStockStatus = 'succeeded';
+    })
+    .addCase(updateProductsStock.rejected, (state, action) => {
+      state.updateProductsStockStatus = 'failed';
+      state.updateProductsStockError = action.error.message;
     })
 
     //* ORDERS

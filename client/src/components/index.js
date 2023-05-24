@@ -1,3 +1,4 @@
+import AdminRoute from './AdminRoute';
 import CreateProduct from './CreateProduct';
 import Filters from './Filters';
 import Footer from './Footer';
@@ -5,8 +6,10 @@ import Navbar from './Navbar';
 import Pagination from './Pagination';
 import Product from './Product';
 import Products from './Products';
+import ProductsTable from './ProductsTable';
 import SearchBar from './SearchBar';
 import StarRating from './StarRating';
+import UserRoute from './UserRoute';
 
 export {
   CreateProduct,
@@ -18,4 +21,7 @@ export {
   Products,
   SearchBar,
   StarRating,
+  ProductsTable,
+  AdminRoute,
+  UserRoute,
 };
