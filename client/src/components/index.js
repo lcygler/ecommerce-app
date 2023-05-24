@@ -7,6 +7,7 @@ import Product from './Product';
 import Products from './Products';
 import SearchBar from './SearchBar';
 import StarRating from './StarRating';
+import ProductsTable from './ProductsTable';
 
 export {
   CreateProduct,
@@ -18,4 +19,5 @@ export {
   Products,
   SearchBar,
   StarRating,
+  ProductsTable,
 };
