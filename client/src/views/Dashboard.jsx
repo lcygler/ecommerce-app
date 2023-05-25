@@ -1,29 +1,31 @@
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useLocation } from 'react-router-dom';
+import {
+  Box,
+  Flex,
+  Spinner,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  Button,
+} from '@chakra-ui/react';
 
 import { getAllProducts, getCategories, getGenders, getSeasons } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
-
-import { Filters, Navbar, Pagination, ProductsTable } from '../components/index';
-
-import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
-  Box,
-  Button,
-  Flex,
-  Spinner,
-} from '@chakra-ui/react';
+import { Filters, Navbar, Pagination, ProductsTable, Charts, Sidebar } from '../components/index';
 
 function Dashboard() {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
   const allProducts = useSelector((state) => state.allProducts);
   const filteredProducts = useSelector((state) => state.filteredProducts);
   const currentPage = useSelector((state) => state.currentPage);
   const [itemsPerPage] = useState(10);
   const [loading, setLoading] = useState(true);
+  const [selectedOption, setSelectedOption] = useState('products');
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -52,56 +54,76 @@ function Dashboard() {
     changePage(1);
   };
 
-  return (
-    <Box display="flex" flexDirection="column" height="100vh">
-      <Navbar />
-      <Filters changePage={changePage} allProducts={allProducts} />
+  const handleSidebarOption = (option) => {
+    setSelectedOption(option);
+  };
 
-      {!allProducts?.length ? (
-        <>
-          <Box display="grid" placeItems="center" height="60vh">
-            <Spinner size="xl" color="blue.500" />
+  return (
+    <Box display="flex" flexDirection="column" minHeight="100vh">
+      <Navbar />
+      <Flex flex="1">
+        <Sidebar handleSidebarOption={handleSidebarOption} selectedOption={selectedOption} />
+        <Box flex="1" overflow="auto">
+          <Box padding="4">
+            <Filters changePage={changePage} allProducts={allProducts} />
           </Box>
-        </>
-      ) : !loading && !filteredProducts?.length ? (
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-          width="auto"
-          height="60vh"
-        >
-          <Alert
-            status="warning"
-            textAlign="center"
-            maxWidth="md"
-            mx="auto"
-            display="flex"
-            justifyContent="center"
-          >
-            <Flex flexDirection="column" alignItems="center">
-              <Flex>
-                <AlertIcon />
-                <AlertTitle>Oops! No results found</AlertTitle>
-              </Flex>
-              <AlertDescription mt="2">Please change your filters and try again</AlertDescription>
-            </Flex>
-          </Alert>
-          <Box display="flex" alignItems="center" justifyContent="center" mt="4">
-            <Button onClick={handleReset} variant="solid" colorScheme="blue">
-              Reset Filters
-            </Button>
-          </Box>
+
+          {!allProducts?.length ? (
+            <>
+              <Box display="grid" placeItems="center" height="60vh">
+                <Spinner size="xl" color="blue.500" />
+              </Box>
+            </>
+          ) : !loading && !filteredProducts?.length ? (
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              justifyContent="center"
+              width="auto"
+              height="60vh"
+            >
+              <Alert
+                status="warning"
+                textAlign="center"
+                maxWidth="md"
+                mx="auto"
+                display="flex"
+                justifyContent="center"
+              >
+                <Flex flexDirection="column" alignItems="center">
+                  <Flex>
+                    <AlertIcon />
+                    <AlertTitle>Oops! No results found</AlertTitle>
+                  </Flex>
+                  <AlertDescription mt="2">
+                    Please change your filters and try again
+                  </AlertDescription>
+                </Flex>
+              </Alert>
+              <Box display="flex" alignItems="center" justifyContent="center" mt="4">
+                <Button onClick={handleReset} variant="solid" colorScheme="blue">
+                  Reset Filters
+                </Button>
+              </Box>
+            </Box>
+          ) : (
+            <>
+              {selectedOption === 'products' && <ProductsTable products={currentProducts} />}
+              {selectedOption === 'charts' && <Charts />}
+              {selectedOption === 'products' && (
+                <Box display="flex" justifyContent="center" mt="4">
+                  <Pagination
+                    totalPages={totalPages}
+                    currentPage={currentPage}
+                    changePage={changePage}
+                  />
+                </Box>
+              )}
+            </>
+          )}
         </Box>
-      ) : (
-        <>
-          <ProductsTable products={currentProducts} />
-          <Box display="flex" justifyContent="center" mt="4">
-            <Pagination totalPages={totalPages} currentPage={currentPage} changePage={changePage} />
-          </Box>
-        </>
-      )}
+      </Flex>
     </Box>
   );
 }
