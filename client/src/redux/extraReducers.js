@@ -12,6 +12,7 @@ import {
   deleteReviewById,
   deleteUserById,
   deleteUserCart,
+  getAdminProducts,
   getAllProducts,
   getCartById,
   getCategories,
