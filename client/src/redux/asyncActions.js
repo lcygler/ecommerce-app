@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+// import Cookies from 'js-cookie';
 
 /* 
 //* PRODUCTS
@@ -56,6 +57,16 @@ export const getAllProducts = createAsyncThunk('slice/getAllProducts', async () 
   const response = await axios.get(`/products`);
   return response.data;
 });
+
+// export const getAllProducts = createAsyncThunk('slice/getAllProducts', async () => {
+//   const token = Cookies.get('token');
+//   const response = await axios.get(`/products`, {
+//     headers: {
+//       Authorization: `Bearer ${token}`,
+//     },
+//   });
+//   return response.data;
+// });
 
 export const getProductById = createAsyncThunk('slice/getProductById', async (productId) => {
   const response = await axios.get(`/products/${productId}`);
@@ -220,6 +231,14 @@ export const loginUser = createAsyncThunk('slice/loginUser', async (userData) =>
   return response.data;
 });
 
+// const token = response.data.token;
+
+// Verificar el valor del token en la consola
+// console.log('Token:', token);
+
+// Guardar el token en una cookie llamada 'token' con una vida útil de 1 día
+// Cookies.set('token', token, { expires: 1 });
+
 export const loginGoogle = createAsyncThunk('slice/loginGoogle', async (userData) => {
   const response = await axios.post(`/users/login/google`, userData);
   return response.data;
@@ -253,24 +272,3 @@ export const deleteReviewById = createAsyncThunk('slice/deleteReviewById', async
   const response = await axios.delete(`/users/${reviewId}`);
   return response.data;
 });
-
-//* OTHERS
-
-// export const addCartItem = createAsyncThunk('slice/addCartItem', async (userId, productId) => {
-//   const response = await axios.post(`/cart/users/${userId}`, productId);
-//   return response.data;
-// });
-
-// export const updateCartItem = createAsyncThunk('slice/updateCartItem', async (userId, product) => {
-//   const response = await axios.patch(`/cart/users/${userId}`, product);
-//   return response.data;
-// });
-
-// export const deleteCartItem = createAsyncThunk('slice/deleteCartItem', async (userId, product) => {
-//   const response = await axios.request({
-//     url: `/cart/users/${userId}`,
-//     method: 'delete',
-//     data: product,
-//   });
-//   return response.data;
-// });
