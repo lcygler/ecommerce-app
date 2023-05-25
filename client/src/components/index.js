@@ -12,6 +12,7 @@ import StarRating from './StarRating';
 import UserRoute from './UserRoute';
 import Sidebar from './Sidebar';
 import Charts from './Charts';
+import EditProduct from './EditProduct';
 
 export {
   CreateProduct,
@@ -28,4 +29,5 @@ export {
   UserRoute,
   Sidebar,
   Charts,
+  EditProduct,
 };

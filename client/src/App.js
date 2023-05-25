@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
-import { AdminRoute, UserRoute } from './components/index';
+import { useState } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
+import { AdminRoute, UserRoute, CreateProduct, EditProduct } from "./components/index";
 import {
   Cart,
   Dashboard,
@@ -12,23 +12,22 @@ import {
   PurchaseDetail,
   Purchases,
   Register,
-} from './views/index';
+} from "./views/index";
 
-import ChatBot from 'react-simple-chatbot';
-import CreateProduct from './components/CreateProduct';
+import ChatBot from "react-simple-chatbot";
 
-import { Button } from '@chakra-ui/react';
-import { FaComment } from 'react-icons/fa';
-import { ThemeProvider } from 'styled-components';
-import { steps, theme } from './chatbot';
+import { Button } from "@chakra-ui/react";
+import { FaComment } from "react-icons/fa";
+import { ThemeProvider } from "styled-components";
+import { steps, theme } from "./chatbot";
 
-import './App.css';
+import "./App.css";
 
 function App() {
   const location = useLocation();
   const [isChatOpen, setIsChatOpen] = useState(false);
 
-  const renderChatbot = location.pathname !== '/';
+  const renderChatbot = location.pathname !== "/";
 
   return (
     <div className="App">
@@ -43,7 +42,11 @@ function App() {
         <Route path="/purchases/:purchaseId" element={<PurchaseDetail />} />
         <Route path="/purchases" element={<Purchases />} />
         <Route path="/dashboard" element={<AdminRoute element={Dashboard} />} />
-        <Route path="/create" element={<AdminRoute element={CreateProduct} />} />
+        <Route
+          path="/create"
+          element={<AdminRoute element={CreateProduct} />}
+        />
+        <Route path="/edit" element={<AdminRoute element={EditProduct} />} />
       </Routes>
 
       {renderChatbot && isChatOpen && (

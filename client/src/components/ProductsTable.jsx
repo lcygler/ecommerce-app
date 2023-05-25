@@ -1,3 +1,6 @@
+import { useDispatch } from 'react-redux';
+import { deleteProductById, updateProductById } from '../redux/asyncActions';
+
 import { SettingsIcon } from '@chakra-ui/icons';
 import {
   Image,
@@ -17,6 +20,19 @@ import {
 } from '@chakra-ui/react';
 
 function ProductTable({ products }) {
+  const dispatch = useDispatch();
+  const handleEdit = (id) => {
+    // TODO hacer logica aqui
+  }
+
+  const handleDelete = (id) => {
+    dispatch(deleteProductById(id))
+  }
+
+  const handleSuspend = (id, status) => {
+    dispatch(updateProductById(id, {disable: !status}))
+  }
+
   return (
     <TableContainer marginTop={5} overflowY="auto">
       <Table variant="simple">
@@ -47,7 +63,7 @@ function ProductTable({ products }) {
               image,
               discounts,
               stock,
-              status,
+              disable,
             }) => (
               <Tr key={id} _hover={{ backgroundColor: 'whitesmoke' }}>
                 <Td>
@@ -65,16 +81,15 @@ function ProductTable({ products }) {
                 <Td>{stock}</Td>
                 <Td isNumeric>${price.toFixed(2)}</Td>
                 <Td>{discounts * 100}%</Td>
-                <Td>{status ? <Switch isChecked /> : <Switch />}</Td>
+                <Td>{disable ? <Switch onChange={() => handleSuspend(id, disable)} /> : <Switch onChange={() => handleSuspend(id,disable)} isChecked/>}</Td>
                 <Td>
                   <Menu>
                     <MenuButton as="button">
                       <SettingsIcon />
                     </MenuButton>
                     <MenuList>
-                      <MenuItem>Edit</MenuItem>
-                      <MenuItem>Delete</MenuItem>
-                      <MenuItem>Suspend</MenuItem>
+                      <MenuItem onClick={() => handleEdit(id)}>Edit</MenuItem>
+                      <MenuItem onClick={() => handleDelete(id)}>Delete</MenuItem>
                     </MenuList>
                   </Menu>
                 </Td>
