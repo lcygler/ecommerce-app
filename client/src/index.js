@@ -19,7 +19,15 @@ root.render(
     <ChakraProvider>
       <Provider store={store}>
         <BrowserRouter>
-          <ToastContainer />
+          <ToastContainer
+            position="top-right"
+            autoClose={2000}
+            // hideProgressBar={false}
+            // closeOnClick={true}
+            // pauseOnHover={true}
+            // draggable={true}
+            // progress={undefined}
+          />
           <App />
         </BrowserRouter>
       </Provider>
