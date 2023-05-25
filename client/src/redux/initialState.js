@@ -20,6 +20,7 @@ export const getInitialState = () => {
     // Products
     adminProducts: [],
     allProducts: [],
+    filteredAdminProducts: [],
     filteredProducts: [],
     selectedProduct: {},
     categories: [],
