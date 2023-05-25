@@ -120,18 +120,26 @@ export const deleteFavorite = createAsyncThunk('slice/deleteFavorite', async (fa
 });
 
 //* CART
-export const getUserCart = createAsyncThunk('slice/getCartOrders', async (userId) => {
+export const getUserCart = createAsyncThunk('slice/getUserCart', async (userId) => {
   const response = await axios.get(`/cart/users/${userId}`);
+  return response.data;
+});
+
+export const updateUserCart = createAsyncThunk(
+  'slice/updateUserCart',
+  async ({ userId, products }) => {
+    const response = await axios.post(`/cart/users/${userId}`, { products });
+    return response.data;
+  }
+);
+
+export const deleteUserCart = createAsyncThunk('slice/deleteUserCart', async (userId) => {
+  const response = await axios.delete(`/cart/users/${userId}`);
   return response.data;
 });
 
 export const getCartById = createAsyncThunk('slice/getCartById', async (cartId) => {
   const response = await axios.get(`/cart/${cartId}`);
-  return response.data;
-});
-
-export const createCart = createAsyncThunk('slice/createCart', async (cart) => {
-  const response = await axios.post(`/cart`, cart);
   return response.data;
 });
 
