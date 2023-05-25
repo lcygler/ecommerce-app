@@ -58,7 +58,7 @@ function App() {
         <Button
           position="fixed"
           bottom="20px"
-          right="40px"
+          right="20px"
           height="60px"
           width="60px"
           borderRadius="50%"
