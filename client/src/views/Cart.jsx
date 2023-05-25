@@ -41,10 +41,7 @@ function Cart() {
     if (payment_id && payment_id === 'null' && storedURL !== currentURL) {
       dispatch(actions.deleteOrder());
 
-      toast.error('Purchase unsuccessful', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
-      });
+      toast.error('Purchase unsuccessful');
 
       localStorage.setItem('mpErrorURL', currentURL);
     }
@@ -61,10 +58,7 @@ function Cart() {
       );
       dispatch(updateUserCart({ userId, products: updatedCartProducts }));
     } else {
-      toast.error('Quantity exceeds available stock!', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
-      });
+      toast.error('Quantity exceeds available stock!');
     }
   };
 
@@ -80,10 +74,7 @@ function Cart() {
         const updatedCartProducts = cartProducts.filter((p) => p.id !== productId);
         dispatch(updateUserCart({ userId, products: updatedCartProducts }));
 
-        toast.success('Product removed from cart!', {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 2000,
-        });
+        toast.success('Product removed from cart!');
       }
     } else {
       dispatch(actions.decreaseProduct(productId));
@@ -100,10 +91,7 @@ function Cart() {
     const newQuantity = parseInt(quantity);
 
     if (newQuantity > product.stock) {
-      toast.error('Quantity exceeds available stock!', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
-      });
+      toast.error('Quantity exceeds available stock!');
     } else {
       dispatch(actions.updateProduct({ productId, quantity }));
 
@@ -123,10 +111,7 @@ function Cart() {
       const updatedCartProducts = cartProducts.filter((p) => p.id !== productId);
       dispatch(updateUserCart({ userId, products: updatedCartProducts }));
 
-      toast.success('Product removed from cart!', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
-      });
+      toast.success('Product removed from cart!');
     }
   };
 
@@ -137,10 +122,7 @@ function Cart() {
       dispatch(actions.clearCart());
       dispatch(deleteUserCart(userId));
 
-      toast.success('Your cart was cleared!', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
-      });
+      toast.success('Your cart was cleared!');
     }
   };
 
@@ -154,10 +136,7 @@ function Cart() {
         }
       }
     } else {
-      toast.error('Login required to purchase', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
-      });
+      toast.error('Login required to purchase');
     }
   };
 

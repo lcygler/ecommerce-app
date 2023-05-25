@@ -58,10 +58,7 @@ function Detail() {
     const productExists = cartProducts?.find((product) => product.id === parseInt(productId));
 
     if (productExists) {
-      toast.error('Product already exists in cart!', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
-      });
+      toast.error('Product already exists in cart!');
     } else {
       const newProduct = {
         id: parseInt(productId),
@@ -82,10 +79,7 @@ function Detail() {
       const updatedCartProducts = [...cartProducts, newProduct];
       dispatch(updateUserCart({ userId, products: updatedCartProducts }));
 
-      toast.success('Product added to cart!', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
-      });
+      toast.success('Product added to cart!');
     }
   };
 

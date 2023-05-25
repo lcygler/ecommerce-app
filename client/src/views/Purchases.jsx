@@ -35,10 +35,7 @@ function Purchases() {
       dispatch(actions.clearCart());
       localStorage.setItem('mpSuccessURL', currentURL);
 
-      toast.success('Your purchase was successful!', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
-      });
+      toast.success('Your purchase was successful!');
     }
   }, [dispatch, cartProducts]);
 
