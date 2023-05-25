@@ -11,7 +11,7 @@ review.get('/', async (req, res) => {
     res.json(reviews);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Hubo un error al obtener las reseñas' });
+    res.status(200).status(500).json({ message: 'Hubo un error al obtener las reseñas' });
   }
 });
 
@@ -34,7 +34,7 @@ review.post('/', async (req, res) => {
       ProductId: productId,
     });
 
-    res.json(newReview);
+    res.status(201).json(newReview);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Hubo un error al crear la reseña' });
@@ -63,7 +63,7 @@ review.patch('/:reviewId', async (req, res) => {
   
       await existingReview.save();
   
-      res.json(existingReview);
+      res.status(200).json(existingReview);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Hubo un error al editar la reseña' });

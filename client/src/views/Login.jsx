@@ -122,16 +122,7 @@ function Login() {
       image: response.profileObj.imageUrl,
     };
 
-    await dispatch(actions.loginGoogle(user));
-
-    setError('');
-    setSuccess('Google login successful!');
-
-    navigateTimeoutId = setTimeout(() => {
-      navigate('/home');
-    }, 2000);
-
-    //Para cuando estén los controladores en el back
+    //* Login (back)
     const res = await dispatch(loginGoogle(user));
     if (res.payload) {
       setError('');
@@ -143,6 +134,14 @@ function Login() {
       setSuccess('');
       setError('Google login failed');
     }
+
+    //* Login (front)
+    // await dispatch(actions.loginGoogle(user));
+    // setError('');
+    // setSuccess('Google login successful!');
+    // navigateTimeoutId = setTimeout(() => {
+    //   navigate('/home');
+    // }, 2000);
   };
 
   const onFailure = (error) => {

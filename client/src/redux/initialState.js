@@ -18,7 +18,9 @@ export const getInitialState = () => {
 
   return {
     // Products
+    adminProducts: [],
     allProducts: [],
+    filteredAdminProducts: [],
     filteredProducts: [],
     selectedProduct: {},
     categories: [],
@@ -61,6 +63,7 @@ export const getInitialState = () => {
     //* Async Status
     // Products
     getAllProductsStatus: 'idle',
+    getAdminProductsStatus: 'idle',
     getProductByIdStatus: 'idle',
     getProductByNameStatus: 'idle',
     createProductStatus: 'idle',
@@ -113,6 +116,7 @@ export const getInitialState = () => {
 
     //* Async Error
     // Products
+    getAdminProductsError: null,
     getAllProductsError: null,
     getProductByIdError: null,
     getProductByNameError: null,

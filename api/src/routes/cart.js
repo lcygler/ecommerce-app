@@ -23,10 +23,8 @@ router.get('/users/:userId', async (req, res) => {
       },
     });
 
-    console.log(cart);
     res.status(200).json(cart);
   } catch (error) {
-    console.log(error);
     res.status(500).json({ error: error.message || 'Error retrieving user cart' });
   }
 });
@@ -104,7 +102,6 @@ router.post('/users/:userId', async (req, res) => {
       res.status(200).json(cart);
     }
   } catch (error) {
-    console.log(error);
     res.status(500).json({ error: error.message || 'Error updating cart' });
   }
 });
@@ -139,7 +136,6 @@ router.delete('/users/:userId', async (req, res) => {
 
     res.status(200).json({ message: 'Cart deleted successfully' });
   } catch (error) {
-    console.log(error);
     res.status(500).json({ error: error.message || 'Error deleting user cart' });
   }
 });
