@@ -1,6 +1,6 @@
 const express = require("express");
 const {
-  Users,
+  User,
   Review,
   Cart,
   CartDetail,
@@ -16,7 +16,7 @@ const {
  */
 const getUsers = async (req, res, next) => {
   try {
-    const users = await Users.findAll();
+    const users = await User.findAll();
     res.json(users);
   } catch (err) {
     next(err);
@@ -33,7 +33,7 @@ const updateUser = async (req, res, next) => {
     const { id } = req.params;
     let user = req.body;
 
-    const userUpdated = await Users.update(user, {
+    const userUpdated = await User.update(user, {
       where: { id },
     });
 
@@ -52,7 +52,7 @@ const getUserById = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const user = await Users.findOne(
+    const user = await User.findOne(
       { where: id },
       {
         include: [
@@ -79,7 +79,7 @@ const getUserById = async (req, res, next) => {
 const deleteUser = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const userDeleted = await Users.destroy({
+    const userDeleted = await User.destroy({
       where: { id },
     });
     res.json(userDeleted);
