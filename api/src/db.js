@@ -4,9 +4,7 @@ const path = require('path');
 const pg = require('pg');
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME, DB_DEPLOY, NODE_ENV } = process.env;
 
-const dbUrl =
-  DB_DEPLOY ||
-  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`;
+const dbUrl = DB_DEPLOY || `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`;
 
 const sequelize = new Sequelize(dbUrl, {
   logging: false, // set to console.log to see the raw SQL queries
@@ -22,23 +20,17 @@ const basename = path.basename(__filename);
 const modelDefiners = [];
 
 // Leemos todos los archivos de la carpeta Models, los requerimos y agregamos al arreglo modelDefiners
-fs.readdirSync(path.join(__dirname, "/models"))
-  .filter(
-    (file) =>
-      file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js"
-  )
+fs.readdirSync(path.join(__dirname, '/models'))
+  .filter((file) => file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js')
   .forEach((file) => {
-    modelDefiners.push(require(path.join(__dirname, "/models", file)));
+    modelDefiners.push(require(path.join(__dirname, '/models', file)));
   });
 
 // Injectamos la conexion (sequelize) a todos los modelos
 modelDefiners.forEach((model) => model(sequelize));
 // Capitalizamos los nombres de los modelos ie: product => Product
 let entries = Object.entries(sequelize.models);
-let capsEntries = entries.map((entry) => [
-  entry[0][0].toUpperCase() + entry[0].slice(1),
-  entry[1],
-]);
+let capsEntries = entries.map((entry) => [entry[0][0].toUpperCase() + entry[0].slice(1), entry[1]]);
 sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
@@ -72,13 +64,13 @@ CartDetail.belongsTo(Cart);
 Purchase.hasMany(PurchaseDetail);
 PurchaseDetail.belongsTo(Purchase);
 
-//* PRODUCT - CART DETAIL (Relación N-M)
-Product.belongsToMany(CartDetail, { through: 'Product_CartDetail' });
-CartDetail.belongsToMany(Product, { through: 'Product_CartDetail' });
+//* PRODUCT - CART DETAIL (Relación 1-N)
+Product.hasMany(CartDetail);
+CartDetail.belongsTo(Product);
 
-//* PRODUCT - PURCHASE DETAIL (Relación N-M)
-Product.belongsToMany(PurchaseDetail, { through: 'Product_PurchaseDetail' });
-PurchaseDetail.belongsToMany(Product, { through: 'Product_PurchaseDetail' });
+//* PRODUCT - PURCHASE DETAIL (Relación 1-N)
+Product.hasMany(PurchaseDetail);
+PurchaseDetail.belongsTo(Product);
 
 //* USER - PRODUCT (Relación N-M)
 User.belongsToMany(Product, { through: 'Favorites' });
@@ -104,6 +96,13 @@ Category.belongsToMany(Product, { through: 'Product_Category' });
 Product.belongsToMany(Season, { through: 'Product_Season' });
 Season.belongsToMany(Product, { through: 'Product_Season' });
 
+module.exports = {
+  ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
+  conn: sequelize, // para importart la conexión { conn } = require('./db.js');
+};
+
+// RELACIONES BACKUP
+
 // ADMIN - USER (Relación 1-N)
 // Admin.hasMany(User);
 // User.belongsTo(Admin);
@@ -124,7 +123,10 @@ Season.belongsToMany(Product, { through: 'Product_Season' });
 // Product.belongsToMany(Purchase, { through: 'Purchase_Product' });
 // Purchase.belongsToMany(Product, { through: 'Purchase_Product' });
 
-module.exports = {
-  ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
-  conn: sequelize, // para importart la conexión { conn } = require('./db.js');
-};
+// PRODUCT - CART DETAIL (Relación N-M)
+// Product.belongsToMany(CartDetail, { through: 'Product_CartDetail' });
+// CartDetail.belongsToMany(Product, { through: 'Product_CartDetail' });
+
+// PRODUCT - PURCHASE DETAIL (Relación N-M)
+// Product.belongsToMany(PurchaseDetail, { through: 'Product_PurchaseDetail' });
+// PurchaseDetail.belongsToMany(Product, { through: 'Product_PurchaseDetail' });

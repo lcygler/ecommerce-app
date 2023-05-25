@@ -10,6 +10,8 @@ import ProductsTable from './ProductsTable';
 import SearchBar from './SearchBar';
 import StarRating from './StarRating';
 import UserRoute from './UserRoute';
+import Sidebar from './Sidebar';
+import Charts from './Charts';
 
 export {
   CreateProduct,
@@ -24,4 +26,6 @@ export {
   ProductsTable,
   AdminRoute,
   UserRoute,
+  Sidebar,
+  Charts,
 };

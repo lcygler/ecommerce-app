@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
+import { updateUserCart } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
 import { toast } from 'react-toastify';
@@ -34,6 +35,7 @@ function Product({
   stock,
 }) {
   const dispatch = useDispatch();
+  const userId = useSelector((state) => state.userId);
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const cartProducts = useSelector((state) => state.cartProducts);
   const favorites = useSelector((state) => state.favorites);
@@ -41,12 +43,19 @@ function Product({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
     setIsFav(favorites?.some((fav) => fav.id === id));
   }, [favorites, id]);
 
-  useEffect(() => {
-    setLoading(false);
-  }, []);
+  // useEffect(() => {
+  //   if (cartProducts?.length > 0) {
+  //     console.log('Product.jsx - Products:');
+  //     dispatch(updateUserCart({ userId, products: cartProducts }));
+  //   }
+  // }, [dispatch, userId, cartProducts]);
 
   const handleFavorite = (e) => {
     e.preventDefault();
@@ -97,21 +106,24 @@ function Product({
         autoClose: 2000,
       });
     } else {
-      dispatch(
-        actions.addProduct({
-          id,
-          name,
-          price,
-          Categories,
-          description,
-          gender,
-          size,
-          image,
-          discounts,
-          stock,
-          quantity: 1,
-        })
-      );
+      const newProduct = {
+        id,
+        name,
+        price,
+        Categories,
+        description,
+        gender,
+        size,
+        image,
+        discounts,
+        stock,
+        quantity: 1,
+      };
+
+      dispatch(actions.addProduct(newProduct));
+
+      const updatedCartProducts = [...cartProducts, newProduct];
+      dispatch(updateUserCart({ userId, products: updatedCartProducts }));
 
       toast.success('Product added to cart!', {
         position: toast.POSITION.BOTTOM_RIGHT,
