@@ -40,6 +40,18 @@ import {
 export const extraReducers = (builder) => {
   builder
     //* PRODUCTS
+    .addCase(getAdminProducts.pending, (state) => {
+      state.getAdminProductsStatus = 'loading';
+    })
+    .addCase(getAdminProducts.fulfilled, (state, action) => {
+      state.getAdminProductsStatus = 'succeeded';
+      state.adminProducts = action.payload;
+    })
+    .addCase(getAdminProducts.rejected, (state, action) => {
+      state.getAdminProductsStatus = 'failed';
+      state.getAdminProductsError = action.error.message;
+    })
+
     .addCase(getAllProducts.pending, (state) => {
       state.getAllProductsStatus = 'loading';
     })
