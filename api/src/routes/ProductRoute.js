@@ -1,4 +1,4 @@
-const { getAllProducts } = require('../controllers/ProductController');
+const { getAllProducts, getAdminProducts } = require('../controllers/ProductController');
 const { Op } = require('sequelize');
 const { Product, Season, Category, Review } = require('../db');
 const { Router } = require('express');
@@ -11,6 +11,16 @@ const router = Router();
 router.get('/', async (req, res) => {
   try {
     const products = await getAllProducts();
+    res.status(200).json(products);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send('Server Error');
+  }
+});
+
+router.get('/admin', async (req, res) => {
+  try {
+    const products = await getAdminProducts();
     res.status(200).json(products);
   } catch (error) {
     console.log(error);

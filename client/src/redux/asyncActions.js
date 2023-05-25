@@ -58,6 +58,11 @@ export const getAllProducts = createAsyncThunk('slice/getAllProducts', async () 
   return response.data;
 });
 
+export const getAdminProducts = createAsyncThunk('slice/getAdminProducts', async () => {
+  const response = await axios.get(`/products/admin`);
+  return response.data;
+});
+
 // export const getAllProducts = createAsyncThunk('slice/getAllProducts', async () => {
 //   const token = Cookies.get('token');
 //   const response = await axios.get(`/products`, {

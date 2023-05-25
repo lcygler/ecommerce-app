@@ -29,6 +29,28 @@ export const filterProducts = (state, action) => {
   state.filteredProducts = filteredSorted;
 };
 
+export const filterAdminProducts = (state, action) => {
+  let filteredSorted = [...state.adminProducts];
+
+  if (state.category !== 'All') {
+    filteredSorted = filterByCategory(filteredSorted, state.category);
+  }
+  if (state.gender !== 'All') {
+    filteredSorted = filterByGender(filteredSorted, state.gender);
+  }
+  if (state.season !== 'All') {
+    filteredSorted = filterBySeason(filteredSorted, state.season);
+  }
+  if (state.discount !== 'All') {
+    filteredSorted = filterByDiscount(filteredSorted, state.discount);
+  }
+  if (state.order !== 'Default') {
+    filteredSorted = sortProducts(filteredSorted, state.order);
+  }
+
+  state.filteredAdminProducts = filteredSorted;
+};
+
 export const filterFavorites = (state, action) => {
   let filteredSorted = [...state.favorites];
 
