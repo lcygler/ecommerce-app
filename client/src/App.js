@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { AdminRoute, UserRoute } from './components/index';
 import {
   Cart,
@@ -25,7 +25,10 @@ import { steps, theme } from './chatbot';
 import './App.css';
 
 function App() {
+  const location = useLocation();
   const [isChatOpen, setIsChatOpen] = useState(false);
+
+  const renderChatbot = location.pathname !== '/';
 
   return (
     <div className="App">
@@ -43,7 +46,7 @@ function App() {
         <Route path="/create" element={<AdminRoute element={CreateProduct} />} />
       </Routes>
 
-      {isChatOpen && (
+      {renderChatbot && isChatOpen && (
         <div className="chatbot-container">
           <ThemeProvider theme={theme}>
             <ChatBot steps={steps} />
@@ -51,21 +54,23 @@ function App() {
         </div>
       )}
 
-      <Button
-        position="fixed"
-        bottom="20px"
-        right="40px"
-        height="60px"
-        width="60px"
-        borderRadius="50%"
-        boxShadow="md"
-        onClick={() => setIsChatOpen((prevState) => !prevState)}
-        zIndex="9999"
-        colorScheme="blue"
-        aria-label="Abrir chat"
-      >
-        <FaComment />
-      </Button>
+      {renderChatbot && (
+        <Button
+          position="fixed"
+          bottom="20px"
+          right="40px"
+          height="60px"
+          width="60px"
+          borderRadius="50%"
+          boxShadow="md"
+          onClick={() => setIsChatOpen((prevState) => !prevState)}
+          zIndex="9999"
+          colorScheme="blue"
+          aria-label="Abrir chat"
+        >
+          <FaComment />
+        </Button>
+      )}
     </div>
   );
 }
