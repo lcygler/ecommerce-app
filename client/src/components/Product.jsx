@@ -50,13 +50,6 @@ function Product({
     setIsFav(favorites?.some((fav) => fav.id === id));
   }, [favorites, id]);
 
-  // useEffect(() => {
-  //   if (cartProducts?.length > 0) {
-  //     console.log('Product.jsx - Products:');
-  //     dispatch(updateUserCart({ userId, products: cartProducts }));
-  //   }
-  // }, [dispatch, userId, cartProducts]);
-
   const handleFavorite = (e) => {
     e.preventDefault();
     if (isFav) {
@@ -65,10 +58,7 @@ function Product({
       dispatch(actions.removeFavorite(id));
       dispatch(actions.filterFavorites());
 
-      toast.success('Product removed from favorites!', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
-      });
+      toast.success('Product removed from favorites!');
     } else {
       setIsFav(true);
 
@@ -89,10 +79,7 @@ function Product({
       );
       dispatch(actions.filterFavorites());
 
-      toast.success('Product added to favorites!', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
-      });
+      toast.success('Product added to favorites!');
     }
   };
 
@@ -101,10 +88,7 @@ function Product({
     const productExists = cartProducts?.find((product) => product.id === id);
 
     if (productExists) {
-      toast.error('Product already exists in cart!', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
-      });
+      toast.error('Product already exists in cart!');
     } else {
       const newProduct = {
         id,
@@ -125,10 +109,7 @@ function Product({
       const updatedCartProducts = [...cartProducts, newProduct];
       dispatch(updateUserCart({ userId, products: updatedCartProducts }));
 
-      toast.success('Product added to cart!', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
-      });
+      toast.success('Product added to cart!');
     }
   };
 

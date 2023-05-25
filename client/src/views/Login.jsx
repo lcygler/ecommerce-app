@@ -123,10 +123,9 @@ function Login() {
     };
 
     await dispatch(actions.loginGoogle(user));
-    
+
     setError('');
     setSuccess('Google login successful!');
-  
 
     navigateTimeoutId = setTimeout(() => {
       navigate('/home');

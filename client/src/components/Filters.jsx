@@ -78,10 +78,7 @@ function Filters({ changePage, allProducts }) {
       if (confirmed) {
         dispatch(actions.clearFavorites());
 
-        toast.success('All favorites were cleared!', {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 2000,
-        });
+        toast.success('All favorites were cleared!');
       }
     }
   };
