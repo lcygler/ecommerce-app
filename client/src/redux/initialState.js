@@ -77,11 +77,16 @@ export const getInitialState = () => {
 
     // Cart
     getUserCartStatus: 'idle',
+    updateUserCartStatus: 'idle',
+    deleteUserCartStatus: 'idle',
     getCartByIdStatus: 'idle',
-    createCartStatus: 'idle',
     updateCartByIdStatus: 'idle',
     deleteCartByIdStatus: 'idle',
+
+    // Payment
     createPaymentLinkStatus: 'idle',
+
+    // Stock
     updateProductsStockStatus: 'idle',
 
     // Orders
@@ -125,11 +130,16 @@ export const getInitialState = () => {
 
     // Cart
     getUserCartError: null,
+    updateUserCartError: null,
+    deleteUserCartError: null,
     getCartByIdError: null,
-    createCartError: null,
     updateCartByIdError: null,
     deleteCartByIdError: null,
+
+    // Payment
     createPaymentLinkError: null,
+
+    // Stock
     updateProductsStockError: null,
 
     // Orders
