@@ -1,4 +1,6 @@
 import { useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
+
 import { deleteProductById, updateProductById } from '../redux/asyncActions';
 
 import { SettingsIcon } from '@chakra-ui/icons';
@@ -21,8 +23,11 @@ import {
 
 function ProductTable({ products }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handleEdit = (id) => {
     // TODO hacer logica aqui
+    navigate("/edit/"+ id)
   }
 
   const handleDelete = (id) => {

@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import { createProduct, getCategories, getGenders, getSeasons } from '../redux/asyncActions';
+import { getCategories, getGenders, getProductById, getSeasons, updateProductById } from '../redux/asyncActions';
 import { validateProduct } from '../utils/validateForm';
 
 import {
@@ -26,32 +26,47 @@ let navigateTimeoutId = null;
 function EditProduct() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const { productId } = useParams()
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const selectedProduct = useSelector((state) => state.selectedProduct);
+  const {
+    name,
+    image,
+    Categories,
+    discounts,
+    price,
+    Seasons,
+    size,
+    gender,
+    description,
+    //Reviews,
+    stock,
+  } = selectedProduct || {};
 
   useEffect(() => {
+    dispatch(getProductById(productId));
     dispatch(getCategories());
     dispatch(getSeasons());
     dispatch(getGenders());
-  }, [dispatch]);
+  }, [dispatch, productId]);
 
   const categories = useSelector((state) => state.categories);
   const seasons = useSelector((state) => state.seasons);
   const genders = useSelector((state) => state.genders);
 
   const [formData, setFormData] = useState({
-    name: '',
-    size: '',
-    gender: '',
-    description: '',
-    price: '',
-    discounts: '',
-    stock: '',
-    image: '',
-    season: '',
-    category: '',
+    name,
+    size,
+    gender,
+    description,
+    price,
+    discounts,
+    stock,
+    image,
+    season: Seasons[0].name || '',
+    category: Categories[0].name || '',
   });
 
   const [errors, setErrors] = useState({
@@ -108,6 +123,7 @@ function EditProduct() {
 
     if (formData.name && Object.values(errors).every((error) => error === '')) {
       const newProduct = {
+        id: productId,
         name: formData.name.trim().charAt(0).toUpperCase() + formData.name.trim().slice(1),
         size: formData.size.trim(),
         gender: formData.gender.trim(),
@@ -116,16 +132,16 @@ function EditProduct() {
         discounts: formData.discounts,
         stock: Math.floor(formData.stock),
         image: formData.image.trim(),
-        Seasons: { name: formData.season.trim() },
-        Categories: { name: formData.category.trim() },
+        Seasons: { name: formData.season.trim() } || { name: "Not specified"},
+        Categories: { name: formData.category.trim() } || { name: "Not specified"},
       };
 
-      const response = await dispatch(createProduct(newProduct));
+      const response = dispatch(updateProductById(newProduct));
 
       timeoutId = setTimeout(() => {
         setIsLoading(false);
         if (response) {
-          setSuccess('Product creation successful!');
+          setSuccess('Product updated successful!');
           setFormData({
             name: '',
             size: '',
@@ -206,7 +222,6 @@ function EditProduct() {
                   _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
                   _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
                 />
-                {/* <FormErrorMessage>{errors.name}</FormErrorMessage> */}
               </FormControl>
 
               <FormControl isRequired isInvalid={errors.description !== ''}>
@@ -221,26 +236,10 @@ function EditProduct() {
                   _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
                   _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
                 />
-                {/* <FormErrorMessage>{errors.description}</FormErrorMessage> */}
               </FormControl>
             </Stack>
 
             <Stack direction="row" spacing={4}>
-              {/* <FormControl isRequired isInvalid={errors.category !== ''}>
-                <FormLabel htmlFor="category">Category</FormLabel>
-                <Input
-                  id="category"
-                  name="category"
-                  type="text"
-                  placeholder="Enter category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
-                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
-                />
-              </FormControl> */}
-              {/* <FormErrorMessage>{errors.category}</FormErrorMessage> */}
-
               <FormControl isRequired isInvalid={errors.category !== ''}>
                 <FormLabel htmlFor="category">Category</FormLabel>
                 <Select
@@ -258,7 +257,6 @@ function EditProduct() {
                     </option>
                   ))}
                 </Select>
-                {/* <FormErrorMessage>{errors.category}</FormErrorMessage> */}
               </FormControl>
 
               <FormControl isRequired isInvalid={errors.season !== ''}>
@@ -278,7 +276,6 @@ function EditProduct() {
                     </option>
                   ))}
                 </Select>
-                {/* <FormErrorMessage>{errors.season}</FormErrorMessage> */}
               </FormControl>
             </Stack>
 
@@ -300,7 +297,6 @@ function EditProduct() {
                     </option>
                   ))}
                 </Select>
-                {/* <FormErrorMessage>{errors.gender}</FormErrorMessage> */}
               </FormControl>
 
               <FormControl isRequired isInvalid={errors.size !== ''}>
@@ -315,7 +311,6 @@ function EditProduct() {
                   _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
                   _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
                 />
-                {/* <FormErrorMessage>{errors.size}</FormErrorMessage> */}
               </FormControl>
             </Stack>
 
@@ -332,7 +327,6 @@ function EditProduct() {
                   _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
                   _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
                 />
-                {/* <FormErrorMessage>{errors.price}</FormErrorMessage> */}
               </FormControl>
 
               <FormControl isRequired isInvalid={errors.discounts !== ''}>
@@ -347,7 +341,6 @@ function EditProduct() {
                   _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
                   _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
                 />
-                {/* <FormErrorMessage>{errors.discounts}</FormErrorMessage> */}
               </FormControl>
             </Stack>
 
@@ -364,7 +357,6 @@ function EditProduct() {
                   _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
                   _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
                 />
-                {/* <FormErrorMessage>{errors.stock}</FormErrorMessage> */}
               </FormControl>
 
               <FormControl isRequired isInvalid={errors.image !== ''}>
@@ -379,7 +371,6 @@ function EditProduct() {
                   _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
                   _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
                 />
-                {/* <FormErrorMessage>{errors.image}</FormErrorMessage> */}
               </FormControl>
             </Stack>
           </Stack>

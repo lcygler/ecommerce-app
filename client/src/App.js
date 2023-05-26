@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
-import { AdminRoute, UserRoute, CreateProduct, EditProduct } from "./components/index";
+import { AdminRoute, /*UserRoute,*/ CreateProduct, EditProduct } from "./components/index";
 import {
   Cart,
   Dashboard,
@@ -46,7 +46,7 @@ function App() {
           path="/create"
           element={<AdminRoute element={CreateProduct} />}
         />
-        <Route path="/edit" element={<AdminRoute element={EditProduct} />} />
+        <Route path="/edit/:productId" element={<AdminRoute element={EditProduct} />} />
       </Routes>
 
       {renderChatbot && isChatOpen && (
