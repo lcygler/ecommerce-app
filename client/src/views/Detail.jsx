@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { getProductById } from '../redux/asyncActions';
+import { getProductById, updateUserCart } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
 import { toast } from 'react-toastify';
@@ -29,6 +29,7 @@ function Detail() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { productId } = useParams();
+  const userId = useSelector((state) => state.userId);
   const cartProducts = useSelector((state) => state.cartProducts);
   const filteredProducts = useSelector((state) => state.filteredProducts);
   const selectedProduct = useSelector((state) => state.selectedProduct);
@@ -57,31 +58,28 @@ function Detail() {
     const productExists = cartProducts?.find((product) => product.id === parseInt(productId));
 
     if (productExists) {
-      toast.error('Product already exists in cart!', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
-      });
+      toast.error('Product already exists in cart!');
     } else {
-      dispatch(
-        actions.addProduct({
-          id: parseInt(productId),
-          name,
-          price,
-          Categories,
-          description,
-          gender,
-          size,
-          image,
-          discounts,
-          stock,
-          quantity: 1,
-        })
-      );
+      const newProduct = {
+        id: parseInt(productId),
+        name,
+        price,
+        Categories,
+        description,
+        gender,
+        size,
+        image,
+        discounts,
+        stock,
+        quantity: 1,
+      };
 
-      toast.success('Product added to cart!', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
-      });
+      dispatch(actions.addProduct(newProduct));
+
+      const updatedCartProducts = [...cartProducts, newProduct];
+      dispatch(updateUserCart({ userId, products: updatedCartProducts }));
+
+      toast.success('Product added to cart!');
     }
   };
 
@@ -280,7 +278,7 @@ function Detail() {
                       colorScheme="gray"
                       width="150px"
                     >
-                      Go back
+                      Go Back
                     </Button>
 
                     <Button colorScheme="blue" width="150px" onClick={handleAddToCart}>

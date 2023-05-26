@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+// import Cookies from 'js-cookie';
 
 /* 
 //* PRODUCTS
@@ -56,6 +57,21 @@ export const getAllProducts = createAsyncThunk('slice/getAllProducts', async () 
   const response = await axios.get(`/products`);
   return response.data;
 });
+
+export const getAdminProducts = createAsyncThunk('slice/getAdminProducts', async () => {
+  const response = await axios.get(`/products/admin`);
+  return response.data;
+});
+
+// export const getAllProducts = createAsyncThunk('slice/getAllProducts', async () => {
+//   const token = Cookies.get('token');
+//   const response = await axios.get(`/products`, {
+//     headers: {
+//       Authorization: `Bearer ${token}`,
+//     },
+//   });
+//   return response.data;
+// });
 
 export const getProductById = createAsyncThunk('slice/getProductById', async (productId) => {
   const response = await axios.get(`/products/${productId}`);
@@ -120,18 +136,26 @@ export const deleteFavorite = createAsyncThunk('slice/deleteFavorite', async (fa
 });
 
 //* CART
-export const getUserCart = createAsyncThunk('slice/getCartOrders', async (userId) => {
+export const getUserCart = createAsyncThunk('slice/getUserCart', async (userId) => {
   const response = await axios.get(`/cart/users/${userId}`);
+  return response.data;
+});
+
+export const updateUserCart = createAsyncThunk(
+  'slice/updateUserCart',
+  async ({ userId, products }) => {
+    const response = await axios.post(`/cart/users/${userId}`, { products });
+    return response.data;
+  }
+);
+
+export const deleteUserCart = createAsyncThunk('slice/deleteUserCart', async (userId) => {
+  const response = await axios.delete(`/cart/users/${userId}`);
   return response.data;
 });
 
 export const getCartById = createAsyncThunk('slice/getCartById', async (cartId) => {
   const response = await axios.get(`/cart/${cartId}`);
-  return response.data;
-});
-
-export const createCart = createAsyncThunk('slice/createCart', async (cart) => {
-  const response = await axios.post(`/cart`, cart);
   return response.data;
 });
 
@@ -150,6 +174,15 @@ export const createPaymentLink = createAsyncThunk('slice/createPaymentLink', asy
   const response = await axios.post(`/payment`, data);
   return response.data;
 });
+
+//* STOCK
+export const updateProductsStock = createAsyncThunk(
+  'slice/updateProductsStock',
+  async (cartProducts) => {
+    const response = await axios.patch(`/stock/updateStock`, cartProducts);
+    return response.data;
+  }
+);
 
 //* ORDERS
 export const getUserOrders = createAsyncThunk('slice/getUserOrders', async (userId) => {
@@ -203,6 +236,14 @@ export const loginUser = createAsyncThunk('slice/loginUser', async (userData) =>
   return response.data;
 });
 
+// const token = response.data.token;
+
+// Verificar el valor del token en la consola
+// console.log('Token:', token);
+
+// Guardar el token en una cookie llamada 'token' con una vida útil de 1 día
+// Cookies.set('token', token, { expires: 1 });
+
 export const loginGoogle = createAsyncThunk('slice/loginGoogle', async (userData) => {
   const response = await axios.post(`/users/login/google`, userData);
   return response.data;
@@ -236,24 +277,3 @@ export const deleteReviewById = createAsyncThunk('slice/deleteReviewById', async
   const response = await axios.delete(`/users/${reviewId}`);
   return response.data;
 });
-
-//* OTHERS
-
-// export const addCartItem = createAsyncThunk('slice/addCartItem', async (userId, productId) => {
-//   const response = await axios.post(`/cart/users/${userId}`, productId);
-//   return response.data;
-// });
-
-// export const updateCartItem = createAsyncThunk('slice/updateCartItem', async (userId, product) => {
-//   const response = await axios.patch(`/cart/users/${userId}`, product);
-//   return response.data;
-// });
-
-// export const deleteCartItem = createAsyncThunk('slice/deleteCartItem', async (userId, product) => {
-//   const response = await axios.request({
-//     url: `/cart/users/${userId}`,
-//     method: 'delete',
-//     data: product,
-//   });
-//   return response.data;
-// });

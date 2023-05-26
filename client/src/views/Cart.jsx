@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { createPaymentLink, getUserCart } from '../redux/asyncActions';
+import {
+  createPaymentLink,
+  deleteUserCart,
+  getUserCart,
+  updateUserCart,
+} from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
 import { Navbar } from '../components/index';
@@ -17,11 +22,14 @@ import emptyCartImage from '../assets/images/empty-cart.png';
 function Cart() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+  const userId = useSelector((state) => state.userId);
+  const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const cartProducts = useSelector((state) => state.cartProducts);
   const cartTotal = useSelector((state) => state.cartTotal);
-  const isAuthenticated = useSelector((state) => state.isAuthenticated);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -33,25 +41,24 @@ function Cart() {
     if (payment_id && payment_id === 'null' && storedURL !== currentURL) {
       dispatch(actions.deleteOrder());
 
-      toast.error('Purchase unsuccessful', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
-      });
+      toast.error('Purchase unsuccessful');
 
       localStorage.setItem('mpErrorURL', currentURL);
     }
-  }, []);
+  }, [dispatch]);
 
   const handleIncrease = (productId) => {
     const product = cartProducts?.find((product) => product.id === productId);
 
     if (product.quantity < product.stock) {
       dispatch(actions.increaseProduct(productId));
+
+      const updatedCartProducts = cartProducts.map((p) =>
+        p.id === productId ? { ...p, quantity: p.quantity + 1 } : p
+      );
+      dispatch(updateUserCart({ userId, products: updatedCartProducts }));
     } else {
-      toast.error('Quantity exceeds available stock!', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
-      });
+      toast.error('Quantity exceeds available stock!');
     }
   };
 
@@ -64,13 +71,18 @@ function Cart() {
       if (confirmed) {
         dispatch(actions.decreaseProduct(productId));
 
-        toast.success('Product removed from cart!', {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 2000,
-        });
+        const updatedCartProducts = cartProducts.filter((p) => p.id !== productId);
+        dispatch(updateUserCart({ userId, products: updatedCartProducts }));
+
+        toast.success('Product removed from cart!');
       }
     } else {
       dispatch(actions.decreaseProduct(productId));
+
+      const updatedCartProducts = cartProducts.map((p) =>
+        p.id === productId ? { ...p, quantity: p.quantity - 1 } : p
+      );
+      dispatch(updateUserCart({ userId, products: updatedCartProducts }));
     }
   };
 
@@ -79,12 +91,14 @@ function Cart() {
     const newQuantity = parseInt(quantity);
 
     if (newQuantity > product.stock) {
-      toast.error('Quantity exceeds available stock!', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
-      });
+      toast.error('Quantity exceeds available stock!');
     } else {
       dispatch(actions.updateProduct({ productId, quantity }));
+
+      const updatedCartProducts = cartProducts.map((p) =>
+        p.id === productId ? { ...p, quantity: newQuantity } : p
+      );
+      dispatch(updateUserCart({ userId, products: updatedCartProducts }));
     }
   };
 
@@ -94,10 +108,10 @@ function Cart() {
     if (confirmed) {
       dispatch(actions.removeProduct(productId));
 
-      toast.success('Product removed from cart!', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
-      });
+      const updatedCartProducts = cartProducts.filter((p) => p.id !== productId);
+      dispatch(updateUserCart({ userId, products: updatedCartProducts }));
+
+      toast.success('Product removed from cart!');
     }
   };
 
@@ -106,11 +120,9 @@ function Cart() {
 
     if (confirmed) {
       dispatch(actions.clearCart());
+      dispatch(deleteUserCart(userId));
 
-      toast.success('Your cart was cleared!', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
-      });
+      toast.success('Your cart was cleared!');
     }
   };
 
@@ -121,14 +133,10 @@ function Cart() {
         if (response.payload) {
           dispatch(actions.createOrder(cartProducts));
           window.location.href = response.payload;
-          // window.open(response.payload, '_blank'); // open in new tab/window
         }
       }
     } else {
-      toast.error('Login required to purchase', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
-      });
+      toast.error('Login required to purchase');
     }
   };
 

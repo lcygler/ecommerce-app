@@ -114,35 +114,34 @@ function Login() {
   //* Google Login
   const onSuccess = async (response) => {
     const user = {
-      id: response.profileObj.googleId,
+      googleId: response.profileObj.googleId,
       email: response.profileObj.email,
-      firstname: response.profileObj.givenName,
+      name: response.profileObj.givenName,
       lastname: response.profileObj.familyName,
       fullname: response.profileObj.name,
       image: response.profileObj.imageUrl,
     };
 
-    await dispatch(actions.loginGoogle(user));
+    //* Login (back)
+    const res = await dispatch(loginGoogle(user));
+    if (res.payload) {
+      setError('');
+      setSuccess('Google login successful!');
+      navigateTimeoutId = setTimeout(() => {
+        navigate('/home');
+      }, 2000);
+    } else {
+      setSuccess('');
+      setError('Google login failed');
+    }
 
-    setError('');
-    setSuccess('Google login successful!');
-
-    navigateTimeoutId = setTimeout(() => {
-      navigate('/home');
-    }, 2000);
-
-    // Para cuando estén los controladores en el back
-    // const res = await dispatch(loginGoogle(user));
-    // if (res.payload) {
-    //   setError('');
-    //   setSuccess('Google login successful!');
-    //   navigateTimeoutId = setTimeout(() => {
-    //     navigate('/home');
-    //   }, 2000);
-    // } else {
-    //   setSuccess('');
-    //   setError('Google login failed');
-    // }
+    //* Login (front)
+    // await dispatch(actions.loginGoogle(user));
+    // setError('');
+    // setSuccess('Google login successful!');
+    // navigateTimeoutId = setTimeout(() => {
+    //   navigate('/home');
+    // }, 2000);
   };
 
   const onFailure = (error) => {

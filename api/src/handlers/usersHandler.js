@@ -1,5 +1,6 @@
 const { registerCtrl } = require('../controllers/userRegister');
-const { loginCtrl } = require('../controllers/userLogin');
+const { loginCtrl, loginGoogle } = require('../controllers/userLogin');
+
 const postRegister = async (req, res) => {
   try {
     const { name, lastname, username, email, password, birthdate, phoneNumber, isAdmin } = req.body;
@@ -30,4 +31,14 @@ const postLogin = async (req, res) => {
   }
 };
 
-module.exports = { postRegister, postLogin };
+const google = async (req, res) => {
+  try {
+    const userData = { ...req.body };
+    const user = await loginGoogle(userData);
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(400).json({ error: error.message || 'Server error' });
+  }
+};
+
+module.exports = { postRegister, postLogin, google };

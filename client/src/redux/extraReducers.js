@@ -1,6 +1,5 @@
 import {
   addFavorite,
-  createCart,
   createOrder,
   createPaymentLink,
   createProduct,
@@ -12,6 +11,8 @@ import {
   deleteProductById,
   deleteReviewById,
   deleteUserById,
+  deleteUserCart,
+  getAdminProducts,
   getAllProducts,
   getCartById,
   getCategories,
@@ -31,13 +32,27 @@ import {
   updateCartById,
   updateOrderById,
   updateProductById,
+  updateProductsStock,
   updateReviewById,
   updateUserById,
+  updateUserCart,
 } from './asyncActions';
 
 export const extraReducers = (builder) => {
   builder
     //* PRODUCTS
+    .addCase(getAdminProducts.pending, (state) => {
+      state.getAdminProductsStatus = 'loading';
+    })
+    .addCase(getAdminProducts.fulfilled, (state, action) => {
+      state.getAdminProductsStatus = 'succeeded';
+      state.adminProducts = action.payload;
+    })
+    .addCase(getAdminProducts.rejected, (state, action) => {
+      state.getAdminProductsStatus = 'failed';
+      state.getAdminProductsError = action.error.message;
+    })
+
     .addCase(getAllProducts.pending, (state) => {
       state.getAllProductsStatus = 'loading';
     })
@@ -196,6 +211,29 @@ export const extraReducers = (builder) => {
       state.getUserCartError = action.error.message;
     })
 
+    .addCase(updateUserCart.pending, (state) => {
+      state.updateUserCartStatus = 'loading';
+    })
+    .addCase(updateUserCart.fulfilled, (state, action) => {
+      state.updateUserCartStatus = 'succeeded';
+      state.selectedCart = action.payload;
+    })
+    .addCase(updateUserCart.rejected, (state, action) => {
+      state.updateUserCartStatus = 'failed';
+      state.updateUserCartError = action.error.message;
+    })
+
+    .addCase(deleteUserCart.pending, (state) => {
+      state.deleteUserCartStatus = 'loading';
+    })
+    .addCase(deleteUserCart.fulfilled, (state, action) => {
+      state.deleteUserCartStatus = 'succeeded';
+    })
+    .addCase(deleteUserCart.rejected, (state, action) => {
+      state.deleteUserCartStatus = 'failed';
+      state.deleteUserCartError = action.error.message;
+    })
+
     .addCase(getCartById.pending, (state) => {
       state.getCartByIdStatus = 'loading';
     })
@@ -206,18 +244,6 @@ export const extraReducers = (builder) => {
     .addCase(getCartById.rejected, (state, action) => {
       state.getCartByIdStatus = 'failed';
       state.getCartByIdError = action.error.message;
-    })
-
-    .addCase(createCart.pending, (state) => {
-      state.createCartStatus = 'loading';
-    })
-    .addCase(createCart.fulfilled, (state, action) => {
-      state.createCartStatus = 'succeeded';
-      state.selectedCart = action.payload;
-    })
-    .addCase(createCart.rejected, (state, action) => {
-      state.createCartStatus = 'failed';
-      state.createCartError = action.error.message;
     })
 
     .addCase(updateCartById.pending, (state) => {
@@ -254,6 +280,18 @@ export const extraReducers = (builder) => {
     .addCase(createPaymentLink.rejected, (state, action) => {
       state.createPaymentLinkStatus = 'failed';
       state.createPaymentLinkError = action.error.message;
+    })
+
+    //* STOCK
+    .addCase(updateProductsStock.pending, (state) => {
+      state.updateProductsStockStatus = 'loading';
+    })
+    .addCase(updateProductsStock.fulfilled, (state, action) => {
+      state.updateProductsStockStatus = 'succeeded';
+    })
+    .addCase(updateProductsStock.rejected, (state, action) => {
+      state.updateProductsStockStatus = 'failed';
+      state.updateProductsStockError = action.error.message;
     })
 
     //* ORDERS

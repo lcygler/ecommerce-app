@@ -18,7 +18,9 @@ export const getInitialState = () => {
 
   return {
     // Products
+    adminProducts: [],
     allProducts: [],
+    filteredAdminProducts: [],
     filteredProducts: [],
     selectedProduct: {},
     categories: [],
@@ -61,6 +63,7 @@ export const getInitialState = () => {
     //* Async Status
     // Products
     getAllProductsStatus: 'idle',
+    getAdminProductsStatus: 'idle',
     getProductByIdStatus: 'idle',
     getProductByNameStatus: 'idle',
     createProductStatus: 'idle',
@@ -77,11 +80,17 @@ export const getInitialState = () => {
 
     // Cart
     getUserCartStatus: 'idle',
+    updateUserCartStatus: 'idle',
+    deleteUserCartStatus: 'idle',
     getCartByIdStatus: 'idle',
-    createCartStatus: 'idle',
     updateCartByIdStatus: 'idle',
     deleteCartByIdStatus: 'idle',
+
+    // Payment
     createPaymentLinkStatus: 'idle',
+
+    // Stock
+    updateProductsStockStatus: 'idle',
 
     // Orders
     getUserOrdersStatus: 'idle',
@@ -107,6 +116,7 @@ export const getInitialState = () => {
 
     //* Async Error
     // Products
+    getAdminProductsError: null,
     getAllProductsError: null,
     getProductByIdError: null,
     getProductByNameError: null,
@@ -124,11 +134,17 @@ export const getInitialState = () => {
 
     // Cart
     getUserCartError: null,
+    updateUserCartError: null,
+    deleteUserCartError: null,
     getCartByIdError: null,
-    createCartError: null,
     updateCartByIdError: null,
     deleteCartByIdError: null,
+
+    // Payment
     createPaymentLinkError: null,
+
+    // Stock
+    updateProductsStockError: null,
 
     // Orders
     getUserOrdersError: null,

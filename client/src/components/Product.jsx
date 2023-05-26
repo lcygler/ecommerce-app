@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
+import { updateUserCart } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
 import { toast } from 'react-toastify';
@@ -34,6 +35,7 @@ function Product({
   stock,
 }) {
   const dispatch = useDispatch();
+  const userId = useSelector((state) => state.userId);
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const cartProducts = useSelector((state) => state.cartProducts);
   const favorites = useSelector((state) => state.favorites);
@@ -41,12 +43,12 @@ function Product({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setIsFav(favorites?.some((fav) => fav.id === id));
-  }, [favorites, id]);
-
-  useEffect(() => {
     setLoading(false);
   }, []);
+
+  useEffect(() => {
+    setIsFav(favorites?.some((fav) => fav.id === id));
+  }, [favorites, id]);
 
   const handleFavorite = (e) => {
     e.preventDefault();
@@ -56,10 +58,7 @@ function Product({
       dispatch(actions.removeFavorite(id));
       dispatch(actions.filterFavorites());
 
-      toast.success('Product removed from favorites!', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
-      });
+      toast.success('Product removed from favorites!');
     } else {
       setIsFav(true);
 
@@ -80,10 +79,7 @@ function Product({
       );
       dispatch(actions.filterFavorites());
 
-      toast.success('Product added to favorites!', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
-      });
+      toast.success('Product added to favorites!');
     }
   };
 
@@ -92,31 +88,28 @@ function Product({
     const productExists = cartProducts?.find((product) => product.id === id);
 
     if (productExists) {
-      toast.error('Product already exists in cart!', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
-      });
+      toast.error('Product already exists in cart!');
     } else {
-      dispatch(
-        actions.addProduct({
-          id,
-          name,
-          price,
-          Categories,
-          description,
-          gender,
-          size,
-          image,
-          discounts,
-          stock,
-          quantity: 1,
-        })
-      );
+      const newProduct = {
+        id,
+        name,
+        price,
+        Categories,
+        description,
+        gender,
+        size,
+        image,
+        discounts,
+        stock,
+        quantity: 1,
+      };
 
-      toast.success('Product added to cart!', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
-      });
+      dispatch(actions.addProduct(newProduct));
+
+      const updatedCartProducts = [...cartProducts, newProduct];
+      dispatch(updateUserCart({ userId, products: updatedCartProducts }));
+
+      toast.success('Product added to cart!');
     }
   };
 

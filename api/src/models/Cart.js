@@ -9,9 +9,6 @@ module.exports = (sequelize) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      status: {
-        type: DataTypes.ENUM('Open', 'Close'),
-      },
     },
     {
       timestamps: true,

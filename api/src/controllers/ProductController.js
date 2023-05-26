@@ -57,7 +57,15 @@ const getAllProducts = async () => {
   return products;
 };
 
+const getAdminProducts = async () => {
+  const products = await Product.findAll({
+    include: [Category, Season, Review],
+  });
+  return products;
+};
+
 module.exports = {
   getAllProducts,
   AddProducts,
+  getAdminProducts,
 };

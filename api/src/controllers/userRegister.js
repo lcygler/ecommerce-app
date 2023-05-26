@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
-const { User } = require('../db.js');
+const { User, ShippingAddress } = require('../db.js');
 const { encrypt } = require('../utils/HashPassword.js');
+const { sendEmail } = require('../utils/mail.config.js')
+
 
 const registerCtrl = async (
   name,
@@ -10,7 +12,10 @@ const registerCtrl = async (
   password,
   birthdate,
   phoneNumber,
-  isAdmin
+  isAdmin,
+  country,
+  address,
+  postalcode
 ) => {
   if (!name) throw new Error('El nombre es requerido');
   if (!lastname) throw new Error('El apellido es requerido');
@@ -32,10 +37,23 @@ const registerCtrl = async (
     isAdmin,
   });
 
+  const Shipping = await ShippingAddress.create({
+    country,
+    address,
+    postalcode,
+    UserId: createUser.id, // Establecer la relación con el usuario creado
+  });
+
+  // Buscar el usuario con la información de ShippingAddress
+  const userWithShipping = await User.findOne({
+    where: { id: createUser.id },
+    include: [ShippingAddress],
+  });
+
   // Generar JWT token
   const token = jwt.sign({ id: createUser.id }, process.env.JWT_SECRET, { expiresIn: '1d' });
-
-  return { user: createUser, token };
+  sendEmail(email);
+  return { user: userWithShipping, token };
 };
 
 module.exports = { registerCtrl };

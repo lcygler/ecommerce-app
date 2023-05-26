@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+
+import { updateProductsStock } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
 import { Box, Button, Fade, Flex, Heading, Image, Stack, Text } from '@chakra-ui/react';
@@ -16,7 +18,9 @@ function Purchases() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const cartProducts = useSelector((state) => state.cartProducts);
   const orders = useSelector((state) => state.orders);
+  const isAuthenticated = useSelector((state) => state.isAuthenticated);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -25,17 +29,15 @@ function Purchases() {
     const storedURL = localStorage.getItem('mpSuccessURL');
     const currentURL = window.location.href;
 
+    // If purchase was successful
     if (payment_id && payment_id !== 'null' && storedURL !== currentURL) {
+      dispatch(updateProductsStock(cartProducts)); // Update catalog stock
       dispatch(actions.clearCart());
-
-      toast.success('Your purchase was successful!', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
-      });
-
       localStorage.setItem('mpSuccessURL', currentURL);
+
+      toast.success('Your purchase was successful!');
     }
-  }, []);
+  }, [dispatch, cartProducts]);
 
   const handlePurchaseDetail = (id) => {
     navigate(`/purchases/${id}`);
@@ -73,7 +75,26 @@ function Purchases() {
             Purchases
           </Heading>
 
-          {orders?.length === 0 ? (
+          {!isAuthenticated ? (
+            <Box textAlign="center" fontSize="lg" fontWeight="normal">
+              Login to view your purchases
+              <Fade in={isImageLoaded}>
+                <Box mt={4} display="flex" justifyContent="center">
+                  <Image
+                    src={emptyCartImage}
+                    alt="Empty Purchases"
+                    width="300px"
+                    onLoad={() => setIsImageLoaded(true)}
+                  />
+                </Box>
+              </Fade>
+              <Box mt={4}>
+                <Button colorScheme="blue" onClick={() => navigate('/login')}>
+                  Login Now
+                </Button>
+              </Box>
+            </Box>
+          ) : orders?.length === 0 ? (
             <Box textAlign="center" fontSize="lg" fontWeight="normal">
               No purchases found
               <Fade in={isImageLoaded}>
