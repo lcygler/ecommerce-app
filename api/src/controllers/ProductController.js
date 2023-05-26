@@ -1,5 +1,5 @@
-const { uploadImage } = require('../utils/cloudinary.js');
 const { Product, Review, Category, Season } = require('../db.js');
+// const { uploadImage } = require('../utils/cloudinary.js');
 
 const AddProducts = async (api) => {
   const products = api.products;
