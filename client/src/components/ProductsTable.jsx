@@ -29,8 +29,8 @@ function ProductTable({ products }) {
     dispatch(deleteProductById(id))
   }
 
-  const handleSuspend = (id, status) => {
-    dispatch(updateProductById(id, {disable: !status}))
+  const handleSuspend = (productData) => {
+    dispatch(updateProductById(productData))
   }
 
   return (
@@ -81,7 +81,7 @@ function ProductTable({ products }) {
                 <Td>{stock}</Td>
                 <Td isNumeric>${price.toFixed(2)}</Td>
                 <Td>{discounts * 100}%</Td>
-                <Td>{disable ? <Switch onChange={() => handleSuspend(id, disable)} /> : <Switch onChange={() => handleSuspend(id,disable)} isChecked/>}</Td>
+                <Td>{!disable ? <Switch onChange={() => handleSuspend({id:id, disable:true})} isChecked/> : <Switch onChange={() => handleSuspend({id:id,disable:false})}/>}</Td>
                 <Td>
                   <Menu>
                     <MenuButton as="button">
