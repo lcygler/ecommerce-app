@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import { AdminRoute, UserRoute } from './components/index';
+import { AdminRoute, /*UserRoute,*/ CreateProduct, EditProduct } from './components/index';
 import {
   Cart,
   Dashboard,
@@ -15,7 +15,6 @@ import {
 } from './views/index';
 
 import ChatBot from 'react-simple-chatbot';
-import CreateProduct from './components/CreateProduct';
 
 import { Button } from '@chakra-ui/react';
 import { FaComment } from 'react-icons/fa';
@@ -44,6 +43,7 @@ function App() {
         <Route path="/purchases" element={<Purchases />} />
         <Route path="/dashboard" element={<AdminRoute element={Dashboard} />} />
         <Route path="/create" element={<AdminRoute element={CreateProduct} />} />
+        <Route path="/edit/:productId" element={<AdminRoute element={EditProduct} />} />
       </Routes>
 
       {renderChatbot && isChatOpen && (

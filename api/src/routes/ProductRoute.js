@@ -2,11 +2,13 @@ const { getAllProducts, getAdminProducts } = require('../controllers/ProductCont
 const { Op } = require('sequelize');
 const { Product, Season, Category, Review } = require('../db');
 const { Router } = require('express');
-//Middlewares:
+
+// Middlewares
 const { checkAuth } = require('../middlewares/auth');
 const { checkRoleAuth } = require('../middlewares/roleAuth');
 
 const router = Router();
+
 // router.get('/', checkAuth, checkRoleAuth, async (req, res) => {
 router.get('/', async (req, res) => {
   try {
@@ -14,7 +16,7 @@ router.get('/', async (req, res) => {
     res.status(200).json(products);
   } catch (error) {
     console.log(error);
-    res.status(500).send('Server Error');
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
@@ -24,7 +26,7 @@ router.get('/admin', async (req, res) => {
     res.status(200).json(products);
   } catch (error) {
     console.log(error);
-    res.status(500).send('Server Error');
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
@@ -34,14 +36,14 @@ router.patch('/:id', async (req, res) => {
     const product = await Product.findByPk(id);
 
     if (!product) {
-      return res.status(404).json({ message: 'Product not found' });
+      return res.status(404).json({ error: 'Product not found' });
     }
 
     const updatedProduct = await product.update(req.body);
 
     return res.json(updatedProduct);
   } catch (error) {
-    return res.status(500).json({ message: 'Internal server error' });
+    return res.status(500).json({ error: 'Server error' });
   }
 });
 
@@ -69,12 +71,12 @@ router.get('/:id', async (req, res) => {
     });
 
     if (!product) {
-      return res.status(404).json({ message: 'Product not found' });
+      return res.status(404).json({ error: 'Product not found' });
     }
 
     return res.json(product);
   } catch (error) {
-    return res.status(500).json({ message: 'Internal server error' });
+    return res.status(500).json({ error: 'Server error' });
   }
 });
 
@@ -107,7 +109,21 @@ router.post('/', async (req, res) => {
 
     res.status(201).json(newProduct);
   } catch (error) {
-    res.status(500).send('Server Error');
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Product.destroy({
+      where: {
+        id: id,
+      },
+    });
+    res.status(200).json({ message: 'Product with id: ' + id + ' deleted' });
+  } catch (error) {
+    res.status(500).json({ error: 'Something went wrong while deleting product' });
   }
 });
 

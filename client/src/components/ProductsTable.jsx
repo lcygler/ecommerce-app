@@ -1,3 +1,8 @@
+import { useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
+
+import { deleteProductById, updateProductById } from '../redux/asyncActions';
+
 import { SettingsIcon } from '@chakra-ui/icons';
 import {
   Image,
@@ -17,6 +22,22 @@ import {
 } from '@chakra-ui/react';
 
 function ProductTable({ products }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleEdit = (id) => {
+    // TODO hacer logica aqui
+    navigate("/edit/"+ id)
+  }
+
+  const handleDelete = (id) => {
+    dispatch(deleteProductById(id))
+  }
+
+  const handleSuspend = (productData) => {
+    dispatch(updateProductById(productData))
+  }
+
   return (
     <TableContainer marginTop={5} overflowY="auto">
       <Table variant="simple">
@@ -47,7 +68,7 @@ function ProductTable({ products }) {
               image,
               discounts,
               stock,
-              status,
+              disable,
             }) => (
               <Tr key={id} _hover={{ backgroundColor: 'whitesmoke' }}>
                 <Td>
@@ -65,16 +86,15 @@ function ProductTable({ products }) {
                 <Td>{stock}</Td>
                 <Td isNumeric>${price.toFixed(2)}</Td>
                 <Td>{discounts * 100}%</Td>
-                <Td>{status ? <Switch isChecked /> : <Switch />}</Td>
+                <Td>{!disable ? <Switch onChange={() => handleSuspend({id:id, disable:true})} isChecked/> : <Switch onChange={() => handleSuspend({id:id,disable:false})}/>}</Td>
                 <Td>
                   <Menu>
                     <MenuButton as="button">
                       <SettingsIcon />
                     </MenuButton>
                     <MenuList>
-                      <MenuItem>Edit</MenuItem>
-                      <MenuItem>Delete</MenuItem>
-                      <MenuItem>Suspend</MenuItem>
+                      <MenuItem onClick={() => handleEdit(id)}>Edit</MenuItem>
+                      <MenuItem onClick={() => handleDelete(id)}>Delete</MenuItem>
                     </MenuList>
                   </Menu>
                 </Td>
