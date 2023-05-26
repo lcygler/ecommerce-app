@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Box,
   Flex,
@@ -12,16 +11,14 @@ import {
   Button,
 } from '@chakra-ui/react';
 
-import { getAllProducts, getCategories, getGenders, getSeasons } from '../redux/asyncActions';
+import { getAdminProducts, getCategories, getGenders, getSeasons } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 import { Filters, Navbar, Pagination, ProductsTable, Charts, Sidebar } from '../components/index';
 
 function Dashboard() {
   const dispatch = useDispatch();
-  const location = useLocation();
-  const navigate = useNavigate();
-  const allProducts = useSelector((state) => state.allProducts);
-  const filteredProducts = useSelector((state) => state.filteredProducts);
+  const adminProducts = useSelector((state) => state.adminProducts);
+  const filteredAdminProducts = useSelector((state) => state.filteredAdminProducts);
   const currentPage = useSelector((state) => state.currentPage);
   const [itemsPerPage] = useState(10);
   const [loading, setLoading] = useState(true);
@@ -29,8 +26,8 @@ function Dashboard() {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      await dispatch(getAllProducts());
-      await dispatch(actions.filterProducts());
+      dispatch(getAdminProducts());
+      dispatch(actions.filterAdminProducts());
       dispatch(getCategories());
       dispatch(getSeasons());
       dispatch(getGenders());
@@ -39,10 +36,10 @@ function Dashboard() {
     fetchProducts();
   }, [dispatch]);
 
-  const totalPages = Math.ceil(filteredProducts?.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredAdminProducts?.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentProducts = filteredProducts?.slice(startIndex, endIndex);
+  const currentProducts = filteredAdminProducts?.slice(startIndex, endIndex);
 
   const changePage = (pageNumber) => {
     dispatch(actions.setCurrentPage(pageNumber));
@@ -50,7 +47,7 @@ function Dashboard() {
 
   const handleReset = () => {
     dispatch(actions.resetFilters());
-    dispatch(actions.filterProducts());
+    dispatch(actions.filterAdminProducts());
     changePage(1);
   };
 
@@ -65,16 +62,16 @@ function Dashboard() {
         <Sidebar handleSidebarOption={handleSidebarOption} selectedOption={selectedOption} />
         <Box flex="1" overflow="auto">
           <Box padding="4">
-            <Filters changePage={changePage} allProducts={allProducts} />
+            <Filters changePage={changePage} allProducts={adminProducts} />
           </Box>
 
-          {!allProducts?.length ? (
+          {!adminProducts?.length ? (
             <>
               <Box display="grid" placeItems="center" height="60vh">
                 <Spinner size="xl" color="blue.500" />
               </Box>
             </>
-          ) : !loading && !filteredProducts?.length ? (
+          ) : !loading && !filteredAdminProducts?.length ? (
             <Box
               display="flex"
               flexDirection="column"
