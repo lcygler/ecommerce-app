@@ -61,16 +61,16 @@ router.post('/users/:userId', async (req, res) => {
         const prod = await Product.findByPk(id);
         await prod.addCartDetail(createdCartDetail);
         // await createdCartDetail.setProduct(id);
-
-        cart = await Cart.findOne({
-          where: { id: newCart.id },
-          include: {
-            model: CartDetail,
-          },
-        });
-
-        res.status(201).json(cart);
       }
+
+      cart = await Cart.findOne({
+        where: { id: newCart.id },
+        include: {
+          model: CartDetail,
+        },
+      });
+
+      res.status(201).json(cart);
     } else {
       await CartDetail.destroy({ where: { CartId: cart.id } });
 
