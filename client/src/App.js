@@ -27,7 +27,13 @@ function App() {
   const location = useLocation();
   const [isChatOpen, setIsChatOpen] = useState(false);
 
-  const renderChatbot = location.pathname !== '/';
+  const exactMatchRoutes = ['/', '/dashboard', '/create'];
+  const startsWithRoutes = ['/edit'];
+
+  const renderChatbot = !(
+    exactMatchRoutes.includes(location.pathname) ||
+    startsWithRoutes.some((route) => location.pathname.startsWith(route))
+  );
 
   return (
     <div className="App">
