@@ -65,8 +65,8 @@ function EditProduct() {
     discounts,
     stock,
     image,
-    season: Seasons[0].name || '',
-    category: Categories[0].name || '',
+    season: Seasons ? Seasons[0].name : '',
+    category: Categories ? Categories[0].name : '',
   });
 
   const [errors, setErrors] = useState({
@@ -132,8 +132,8 @@ function EditProduct() {
         discounts: formData.discounts,
         stock: Math.floor(formData.stock),
         image: formData.image.trim(),
-        Seasons: { name: formData.season.trim() } || { name: "Not specified"},
-        Categories: { name: formData.category.trim() } || { name: "Not specified"},
+        Seasons: { name: formData.season.trim() },
+        Categories: { name: formData.category.trim() },
       };
 
       const response = dispatch(updateProductById(newProduct));
@@ -155,7 +155,7 @@ function EditProduct() {
             category: '',
           });
           navigateTimeoutId = setTimeout(() => {
-            navigate(`/home/${response.payload.id}`);
+            navigate(`/dashboard`);
           }, 1000);
         } else {
           setError('Incomplete or incorrect data');
