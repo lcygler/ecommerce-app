@@ -9,7 +9,7 @@ module.exports = (sequelize) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      amount: {
+      quantity: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },

@@ -9,8 +9,9 @@ module.exports = (sequelize) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      state: {
-        type: DataTypes.ENUM('Preparing', 'In progress', 'On the way', 'Delivered'),
+      status: {
+        type: DataTypes.ENUM('Preparing', 'On its way', 'Delivered'),
+        defaultValue: 'Preparing',
       },
       total: {
         type: DataTypes.FLOAT,
