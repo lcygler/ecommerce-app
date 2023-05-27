@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { getCategories, getGenders, getSeasons } from '../redux/asyncActions';
+import { getCategories, getGenders, getSeasons, getUserFavorites } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
 import { Filters, Navbar, Pagination, Products } from '../components/index';
@@ -19,6 +19,7 @@ import {
 function Favorites() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const userId = useSelector((state) => state.userId);
   const favorites = useSelector((state) => state.favorites);
   const filteredFavorites = useSelector((state) => state.filteredFavorites);
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
@@ -26,7 +27,11 @@ function Favorites() {
   const [itemsPerPage] = useState(10);
 
   useEffect(() => {
-    dispatch(actions.filterFavorites());
+    const fetchFavorites = async () => {
+      await dispatch(getUserFavorites(userId));
+      dispatch(actions.filterFavorites());
+    };
+    fetchFavorites();
     dispatch(getCategories());
     dispatch(getSeasons());
     dispatch(getGenders());

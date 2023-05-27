@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { actions } from '../redux/slice';
 
 import { gapi } from 'gapi-script';
 import GoogleLogin from 'react-google-login';
 
-import { getUserFavorites, getUserOrders, loginGoogle, loginUser } from '../redux/asyncActions';
+import {
+  getUserCart,
+  getUserFavorites,
+  getUserPurchases,
+  loginGoogle,
+  loginUser,
+} from '../redux/asyncActions';
 import { validateLogin } from '../utils/validateForm';
 
 import {
@@ -85,15 +90,20 @@ function Login() {
 
     timeoutId = setTimeout(() => {
       setIsLoading(false);
+
       if (response.payload) {
+        dispatch(getUserCart(response.payload.user.id));
+        dispatch(getUserPurchases(response.payload.user.id));
+        dispatch(getUserFavorites(response.payload.user.id));
+
         setError('');
         setSuccess('Login successful!');
-        // dispatch(getUserFavorites());
-        // dispatch(getUserOrders());
+
         setFormData({
           email: '',
           password: '',
         });
+
         navigateTimeoutId = setTimeout(() => {
           navigate('/home');
         }, 1000);
@@ -125,8 +135,14 @@ function Login() {
     //* Login (back)
     const res = await dispatch(loginGoogle(user));
     if (res.payload) {
+      const userId = res.payload.user.id;
+      dispatch(getUserCart(userId));
+      dispatch(getUserPurchases(userId));
+      dispatch(getUserFavorites(userId));
+
       setError('');
       setSuccess('Google login successful!');
+
       navigateTimeoutId = setTimeout(() => {
         navigate('/home');
       }, 2000);

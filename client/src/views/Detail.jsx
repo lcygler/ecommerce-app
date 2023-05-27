@@ -64,7 +64,6 @@ function Detail() {
         id: parseInt(productId),
         name,
         price,
-        Categories,
         description,
         gender,
         size,

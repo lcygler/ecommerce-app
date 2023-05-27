@@ -21,7 +21,7 @@ getColor (Front NOK - Back NOK)
 //* FAVORITES
 getUserFavorites (Front OK - Back NOK)
 addFavorite (Front OK - Back NOK)
-deleteFavorite (Front OK - Back NOK)
+removeFavorite (Front OK - Back NOK)
 
 //* CART
 getUserCart (Front OK - Back NOK)
@@ -30,12 +30,12 @@ createCart (Front OK - Back NOK)
 updateCartById (Front OK - Back NOK)
 deleteCartById (Front OK - Back NOK)
 
-//* ORDERS
-getUserOrders (Front OK - Back NOK)
-getOrderById (Front OK - Back NOK)
-createOrder (Front OK - Back NOK)
-updateOrderById (Front OK - Back NOK)
-deleteOrderById  (Front OK - Back NOK)
+//* PURCHASES
+getUserPurchases (Front OK - Back NOK)
+getPurchaseById (Front OK - Back NOK)
+createPurchase (Front OK - Back NOK)
+updatePurchaseById (Front OK - Back NOK)
+deletePurchaseById  (Front OK - Back NOK)
 
 //* USERS
 getUserById (Front OK - Back NOK)
@@ -125,13 +125,21 @@ export const getUserFavorites = createAsyncThunk('slice/getUserFavorites', async
   return response.data;
 });
 
-export const addFavorite = createAsyncThunk('slice/addFavorite', async (userId, favorite) => {
-  const response = await axios.post(`/favorites/users/${userId}`, favorite);
+export const addFavorite = createAsyncThunk('slice/addFavorite', async ({ userId, productId }) => {
+  const response = await axios.post(`/favorites/${productId}/users/${userId}`);
   return response.data;
 });
 
-export const deleteFavorite = createAsyncThunk('slice/deleteFavorite', async (favoriteId) => {
-  const response = await axios.delete(`/favorites/${favoriteId}`);
+export const removeFavorite = createAsyncThunk(
+  'slice/removeFavorite',
+  async ({ userId, productId }) => {
+    const response = await axios.delete(`/favorites/${productId}/users/${userId}`);
+    return response.data;
+  }
+);
+
+export const removeUserFavorites = createAsyncThunk('slice/removeUserFavorites', async (userId) => {
+  const response = await axios.delete(`/favorites/users/${userId}`);
   return response.data;
 });
 
@@ -144,7 +152,7 @@ export const getUserCart = createAsyncThunk('slice/getUserCart', async (userId) 
 export const updateUserCart = createAsyncThunk(
   'slice/updateUserCart',
   async ({ userId, products }) => {
-    const response = await axios.post(`/cart/users/${userId}`, { products });
+    const response = await axios.post(`/cart/users/${userId}`, products);
     return response.data;
   }
 );
@@ -170,10 +178,13 @@ export const deleteCartById = createAsyncThunk('slice/deleteCartById', async (ca
 });
 
 //* PAYMENT
-export const createPaymentLink = createAsyncThunk('slice/createPaymentLink', async (data) => {
-  const response = await axios.post(`/payment`, data);
-  return response.data;
-});
+export const createPaymentLink = createAsyncThunk(
+  'slice/createPaymentLink',
+  async (cartProducts) => {
+    const response = await axios.post(`/payment`, cartProducts);
+    return response.data;
+  }
+);
 
 //* STOCK
 export const updateProductsStock = createAsyncThunk(
@@ -184,31 +195,40 @@ export const updateProductsStock = createAsyncThunk(
   }
 );
 
-//* ORDERS
-export const getUserOrders = createAsyncThunk('slice/getUserOrders', async (userId) => {
-  const response = await axios.get(`/orders/users/${userId}`);
+//* PURCHASES
+export const getUserPurchases = createAsyncThunk('slice/getUserPurchases', async (userId) => {
+  const response = await axios.get(`/purchases/users/${userId}`);
   return response.data;
 });
 
-export const getOrderById = createAsyncThunk('slice/getOrderById', async (orderId) => {
-  const response = await axios.get(`/orders/${orderId}`);
+export const getPurchaseById = createAsyncThunk('slice/getPurchaseById', async (purchaseId) => {
+  const response = await axios.get(`/purchases/${purchaseId}`);
   return response.data;
 });
 
-export const createOrder = createAsyncThunk('slice/createOrder', async (order) => {
-  const response = await axios.post(`/orders`, order);
-  return response.data;
-});
+export const createPurchase = createAsyncThunk(
+  'slice/createPurchase',
+  async ({ userId, products }) => {
+    const response = await axios.post(`/purchases/users/${userId}`, products);
+    return response.data;
+  }
+);
 
-export const updateOrderById = createAsyncThunk('slice/updateOrderById', async (orderId, order) => {
-  const response = await axios.patch(`/orders/${orderId}`, order);
-  return response.data;
-});
+export const updatePurchaseById = createAsyncThunk(
+  'slice/updatePurchaseById',
+  async ({ purchaseId, purchaseData }) => {
+    const response = await axios.patch(`/purchases/${purchaseId}`, purchaseData);
+    return response.data;
+  }
+);
 
-export const deleteOrderById = createAsyncThunk('slice/deleteOrderById', async (orderId) => {
-  const response = await axios.delete(`/orders/${orderId}`);
-  return response.data;
-});
+export const deletePurchaseById = createAsyncThunk(
+  'slice/deletePurchaseById',
+  async (purchaseId) => {
+    const response = await axios.delete(`/purchases/${purchaseId}`);
+    return response.data;
+  }
+);
 
 //* USERS
 export const getUserById = createAsyncThunk('slice/getUserById', async (userId) => {

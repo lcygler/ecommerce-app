@@ -65,7 +65,7 @@ const getAdminProducts = async () => {
 };
 
 module.exports = {
-  getAllProducts,
   AddProducts,
+  getAllProducts,
   getAdminProducts,
 };
