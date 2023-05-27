@@ -16,6 +16,7 @@ module.exports = (sequelize) => {
       total: {
         type: DataTypes.FLOAT,
         allowNull: false,
+        defaultValue: 0,
       },
     },
     {

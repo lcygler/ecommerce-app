@@ -109,8 +109,8 @@ export const clearSelectedProduct = (state, action) => {
   state.selectedProduct = action.payload;
 };
 
-export const clearSelectedOrder = (state, action) => {
-  state.selectedOrder = action.payload;
+export const clearSelectedPurchase = (state, action) => {
+  state.selectedPurchase = action.payload;
 };
 
 //* FAVORITES
@@ -232,13 +232,16 @@ export const clearCart = (state, action) => {
   localStorage.removeItem(`user_${userId}_cartTotal`);
 };
 
-//* ORDERS
-export const createOrder = (state, action) => {
+//* PURCHASES
+export const createPurchase = (state, action) => {
   const products = action.payload;
 
   let id;
-  if (state.orders && state.orders.length > 0) {
-    const maxId = state.orders.reduce((maxId, order) => (order.id > maxId ? order.id : maxId), 0);
+  if (state.purchases && state.purchases.length > 0) {
+    const maxId = state.purchases.reduce(
+      (maxId, purchase) => (purchase.id > maxId ? purchase.id : maxId),
+      0
+    );
     id = maxId + 1;
   } else {
     id = 1;
@@ -254,7 +257,7 @@ export const createOrder = (state, action) => {
     0
   );
 
-  const order = {
+  const purchase = {
     id,
     date: `${year}-${month}-${day}`, // YYYY-MM-DD
     status: 'On its way',
@@ -262,26 +265,26 @@ export const createOrder = (state, action) => {
     products: products,
   };
 
-  state.orders.push(order);
+  state.purchases.push(purchase);
 
   const userId = state.userId;
-  localStorage.setItem(`user_${userId}_orders`, JSON.stringify(state.orders));
+  localStorage.setItem(`user_${userId}_purchases`, JSON.stringify(state.purchases));
 };
 
-export const deleteOrder = (state, action) => {
-  if (state.orders.length !== 0) {
-    state.orders.pop();
+export const deletePurchase = (state, action) => {
+  if (state.purchases.length !== 0) {
+    state.purchases.pop();
 
     const userId = state.userId;
-    localStorage.setItem(`user_${userId}_orders`, JSON.stringify(state.orders));
+    localStorage.setItem(`user_${userId}_purchases`, JSON.stringify(state.purchases));
   }
 };
 
-export const clearOrders = (state, action) => {
-  state.orders = [];
+export const clearPurchases = (state, action) => {
+  state.purchases = [];
 
   const userId = state.userId;
-  localStorage.removeItem(`user_${userId}_orders`);
+  localStorage.removeItem(`user_${userId}_purchases`);
 };
 
 //* AUTH
@@ -301,7 +304,7 @@ export const loginGoogle = (state, action) => {
   state.cartProducts = JSON.parse(localStorage.getItem(`user_${userId}_cartProducts`)) || [];
   state.cartTotal = JSON.parse(localStorage.getItem(`user_${userId}_cartTotal`)) || 0;
   state.favorites = JSON.parse(localStorage.getItem(`user_${userId}_favorites`)) || [];
-  state.orders = JSON.parse(localStorage.getItem(`user_${userId}_orders`)) || [];
+  state.purchases = JSON.parse(localStorage.getItem(`user_${userId}_purchases`)) || [];
 };
 
 export const logoutUser = (state, action) => {
@@ -312,7 +315,7 @@ export const logoutUser = (state, action) => {
   state.cartProducts = [];
   state.cartTotal = 0;
   state.favorites = [];
-  state.orders = [];
+  state.purchases = [];
 
   localStorage.removeItem(`userId`);
 };

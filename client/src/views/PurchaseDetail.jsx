@@ -8,17 +8,17 @@ import { Navbar } from '../components/index';
 import backgroundImage from '../assets/images/background.jpg';
 
 function PurchaseDetail() {
-  const { purchaseId } = useParams();
   const navigate = useNavigate();
-  const orders = useSelector((state) => state.orders);
-  const order = orders?.find((order) => order.id === parseInt(purchaseId));
+  const { purchaseId } = useParams();
+  const purchases = useSelector((state) => state.purchases);
+  const purchase = purchases?.find((purchase) => purchase.id === parseInt(purchaseId));
 
   useEffect(() => {
-    if (!order) {
-      // Handle case when order is not found
+    if (!purchase) {
+      // Handle case when purchase is not found
       navigate('/purchases');
     }
-  }, [order, navigate]);
+  }, [purchase, navigate]);
 
   return (
     <Box
@@ -52,7 +52,7 @@ function PurchaseDetail() {
             Purchase Detail
           </Heading>
 
-          {order ? (
+          {purchase ? (
             <Flex flexDirection="column" alignItems="center">
               <Box bg="gray.100" borderRadius="md" p={4} width="100%">
                 <Flex
@@ -62,7 +62,7 @@ function PurchaseDetail() {
                   mb={2}
                 >
                   <Text flex="1" pr={4}>
-                    Order
+                    Purchase
                   </Text>
                   <Text flex="1" pr={4}>
                     Date
@@ -76,7 +76,7 @@ function PurchaseDetail() {
                 </Flex>
 
                 <Box
-                  key={order.id}
+                  key={purchase.id}
                   display="flex"
                   alignItems="center"
                   justifyContent="space-between"
@@ -86,26 +86,26 @@ function PurchaseDetail() {
                 >
                   <Flex flexDirection="column" justifyContent="flex-start" flex="1">
                     <Text flex="1" ml="4">
-                      {order.id}
+                      {purchase.id}
                     </Text>
                   </Flex>
 
                   <Flex flexDirection="column" justifyContent="flex-start" flex="1">
-                    <Text flex="1">{order.date}</Text>
+                    <Text flex="1">{purchase.date}</Text>
                   </Flex>
 
                   <Flex flexDirection="column" justifyContent="flex-start" flex="1">
-                    <Text flex="1">{order.status}</Text>
+                    <Text flex="1">{purchase.status}</Text>
                   </Flex>
 
                   <Flex flexDirection="column" justifyContent="flex-start" flex="1">
-                    <Text flex="1">${order.total.toFixed(2)}</Text>
+                    <Text flex="1">${purchase.total.toFixed(2)}</Text>
                   </Flex>
                 </Box>
               </Box>
 
               <Box mb={6} p={2} bg="white" borderRadius="md">
-                {order?.products
+                {purchase?.products
                   .slice()
                   .sort((a, b) => a.id - b.id)
                   .map((product) => (
@@ -200,7 +200,7 @@ function PurchaseDetail() {
             </Flex>
           ) : (
             <Text fontSize="lg" fontWeight="bold" textAlign="center">
-              Order not found!
+              Purchase not found!
             </Text>
           )}
         </Box>

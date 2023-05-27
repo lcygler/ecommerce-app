@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
   createPaymentLink,
+  createPurchase,
+  deletePurchaseById,
   deleteUserCart,
-  getUserCart,
   updateUserCart,
 } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
@@ -19,17 +20,26 @@ import { Box, Button, Fade, Flex, Heading, Image, Input, Stack, Text } from '@ch
 import backgroundImage from '../assets/images/background.jpg';
 import emptyCartImage from '../assets/images/empty-cart.png';
 
+let navigateTimeoutId = null;
+
 function Cart() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const userId = useSelector((state) => state.userId);
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
+  const selectedPurchase = useSelector((state) => state.selectedPurchase);
   const cartProducts = useSelector((state) => state.cartProducts);
   const cartTotal = useSelector((state) => state.cartTotal);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(navigateTimeoutId);
+    };
+  }, []);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -39,15 +49,14 @@ function Cart() {
     const currentURL = window.location.href;
 
     if (payment_id && payment_id === 'null' && storedURL !== currentURL) {
-      dispatch(actions.deleteOrder());
-
+      dispatch(deletePurchaseById(selectedPurchase?.id));
+      // dispatch(actions.deletePurchase());
       toast.error('Purchase unsuccessful');
-
       localStorage.setItem('mpErrorURL', currentURL);
     }
-  }, [dispatch]);
+  }, [dispatch, selectedPurchase]);
 
-  const handleIncrease = (productId) => {
+  const handleIncreaseItem = (productId) => {
     const product = cartProducts?.find((product) => product.id === productId);
 
     if (product.quantity < product.stock) {
@@ -62,7 +71,7 @@ function Cart() {
     }
   };
 
-  const handleDecrease = (productId) => {
+  const handleDecreaseItem = (productId) => {
     const prod = cartProducts?.find((product) => product.id === productId);
 
     if (prod.quantity === 1) {
@@ -86,7 +95,7 @@ function Cart() {
     }
   };
 
-  const handleUpdate = (productId, quantity) => {
+  const handleUpdateItem = (productId, quantity) => {
     const product = cartProducts?.find((product) => product.id === productId);
     const newQuantity = parseInt(quantity);
 
@@ -102,7 +111,7 @@ function Cart() {
     }
   };
 
-  const handleRemove = (productId) => {
+  const handleRemoveItem = (productId) => {
     const confirmed = window.confirm('Are you sure you want to remove this product?');
 
     if (confirmed) {
@@ -115,7 +124,7 @@ function Cart() {
     }
   };
 
-  const handleClear = () => {
+  const handleClearCart = () => {
     const confirmed = window.confirm('Are you sure you want to clear the cart?');
 
     if (confirmed) {
@@ -129,10 +138,19 @@ function Cart() {
   const handleCheckout = async () => {
     if (isAuthenticated) {
       if (cartProducts?.length !== 0) {
+        setIsLoading(true);
         const response = await dispatch(createPaymentLink(cartProducts));
         if (response.payload) {
-          dispatch(actions.createOrder(cartProducts));
-          window.location.href = response.payload;
+          dispatch(createPurchase({ userId, products: cartProducts }));
+          // dispatch(actions.createPurchase(cartProducts));
+
+          navigateTimeoutId = setTimeout(() => {
+            setIsLoading(false);
+            window.location.href = response.payload;
+          }, 2000);
+        } else {
+          setIsLoading(false);
+          console.error('Checkout process failed');
         }
       }
     } else {
@@ -266,7 +284,11 @@ function Cart() {
                     <Flex alignItems="center" marginTop={{ base: 2, md: 0 }}>
                       <Text>Quantity:</Text>
 
-                      <Button onClick={() => handleDecrease(product.id)} size="sm" marginLeft={2}>
+                      <Button
+                        onClick={() => handleDecreaseItem(product.id)}
+                        size="sm"
+                        marginLeft={2}
+                      >
                         <MinusIcon fontSize="8px" />
                       </Button>
 
@@ -277,9 +299,9 @@ function Cart() {
                         onChange={(e) => {
                           const newQuantity = parseInt(e.target.value);
                           if (newQuantity === 0) {
-                            handleRemove(product.id);
+                            handleRemoveItem(product.id);
                           } else if (!isNaN(newQuantity) && newQuantity > 0) {
-                            handleUpdate(product.id, newQuantity);
+                            handleUpdateItem(product.id, newQuantity);
                           }
                         }}
                         size="sm"
@@ -287,11 +309,11 @@ function Cart() {
                         textAlign="center"
                       />
 
-                      <Button onClick={() => handleIncrease(product.id)} size="sm">
+                      <Button onClick={() => handleIncreaseItem(product.id)} size="sm">
                         <AddIcon fontSize="8px" />
                       </Button>
 
-                      <Button onClick={() => handleRemove(product.id)} size="sm" marginLeft={2}>
+                      <Button onClick={() => handleRemoveItem(product.id)} size="sm" marginLeft={2}>
                         <CloseIcon fontSize="8px" />
                       </Button>
                     </Flex>
@@ -327,7 +349,13 @@ function Cart() {
                   </Button>
                 </Stack>
 
-                <Button colorScheme="red" variant="ghost" onClick={handleClear} width="30%" mt="6">
+                <Button
+                  colorScheme="red"
+                  variant="ghost"
+                  onClick={handleClearCart}
+                  width="30%"
+                  mt="6"
+                >
                   Empty Cart
                 </Button>
               </Flex>

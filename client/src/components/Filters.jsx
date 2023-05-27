@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { removeUserFavorites } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
 import { toast } from 'react-toastify';
@@ -14,6 +15,7 @@ function Filters({ changePage, allProducts }) {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const userId = useSelector((state) => state.userId);
   const categories = useSelector((state) => state.categories);
   const seasons = useSelector((state) => state.seasons);
   const genders = useSelector((state) => state.genders);
@@ -77,7 +79,7 @@ function Filters({ changePage, allProducts }) {
       const confirmed = window.confirm('Are you sure you want to clear all favorites?');
       if (confirmed) {
         dispatch(actions.clearFavorites());
-
+        dispatch(removeUserFavorites(userId));
         toast.success('All favorites were cleared!');
       }
     }
