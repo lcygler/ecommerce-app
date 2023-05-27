@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
-import { updateUserCart } from '../redux/asyncActions';
+import {
+  addFavorite,
+  getUserFavorites,
+  removeFavorite,
+  updateUserCart,
+} from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
 import { toast } from 'react-toastify';
@@ -50,33 +55,38 @@ function Product({
     setIsFav(favorites?.some((fav) => fav.id === id));
   }, [favorites, id]);
 
-  const handleFavorite = (e) => {
+  const handleFavorite = async (e) => {
     e.preventDefault();
     if (isFav) {
       setIsFav(false);
 
-      dispatch(actions.removeFavorite(id));
+      // dispatch(actions.removeFavorite(id));
+      await dispatch(removeFavorite({ userId, productId: id }));
+      await dispatch(getUserFavorites(userId));
       dispatch(actions.filterFavorites());
 
       toast.success('Product removed from favorites!');
     } else {
       setIsFav(true);
 
-      dispatch(
-        actions.addFavorite({
-          id,
-          name,
-          price,
-          Categories,
-          description,
-          gender,
-          Seasons,
-          size,
-          image,
-          discounts,
-          stock,
-        })
-      );
+      // dispatch(
+      //   actions.addFavorite({
+      //     id,
+      //     name,
+      //     price,
+      //     Categories,
+      //     description,
+      //     gender,
+      //     Seasons,
+      //     size,
+      //     image,
+      //     discounts,
+      //     stock,
+      //   })
+      // );
+
+      await dispatch(addFavorite({ userId, productId: id }));
+      await dispatch(getUserFavorites(userId));
       dispatch(actions.filterFavorites());
 
       toast.success('Product added to favorites!');
@@ -94,7 +104,6 @@ function Product({
         id,
         name,
         price,
-        Categories,
         description,
         gender,
         size,

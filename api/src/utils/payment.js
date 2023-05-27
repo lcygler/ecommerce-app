@@ -1,16 +1,14 @@
 const API_URL = process.env.API_URL || 'http://localhost:3000';
 const axios = require('axios');
 
-const createPayment = async (req) => {
+const createPayment = async (products) => {
   const url = 'https://api.mercadopago.com/checkout/preferences';
-
-  const products = req.body;
 
   const formattedProducts = products?.map((product) => ({
     title: product.name,
     description: product.description,
     picture_url: product.image,
-    category_id: product.Categories[0].id,
+    // category_id: product.Categories[0].id,
     quantity: product.quantity,
     currency_id: 'ARS',
     unit_price: product.price * (1 - product.discounts),

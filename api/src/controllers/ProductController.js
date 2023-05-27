@@ -1,5 +1,5 @@
-const { uploadImage } = require('../utils/cloudinary.js');
 const { Product, Review, Category, Season } = require('../db.js');
+// const { uploadImage } = require('../utils/cloudinary.js');
 
 const AddProducts = async (api) => {
   const products = api.products;
@@ -57,7 +57,15 @@ const getAllProducts = async () => {
   return products;
 };
 
+const getAdminProducts = async () => {
+  const products = await Product.findAll({
+    include: [Category, Season, Review],
+  });
+  return products;
+};
+
 module.exports = {
-  getAllProducts,
   AddProducts,
+  getAllProducts,
+  getAdminProducts,
 };

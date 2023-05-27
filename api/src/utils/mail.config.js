@@ -1,12 +1,12 @@
-const nodemailer = require("nodemailer");
-const dotenv = require("dotenv");
+const nodemailer = require('nodemailer');
+const dotenv = require('dotenv');
 
 dotenv.config();
 
 const EMAIL = process.env.EMAIL;
 const EMAIL_PSSWRD = process.env.EMAIL_PSSWRD;
-const SERVER = process.env.SERVER
-const CLIENT_HOST = process.env.CLIENT_HOST
+const SERVER = process.env.SERVER;
+const CLIENT_HOST = process.env.CLIENT_HOST;
 
 const mail = {
   user: EMAIL,
@@ -14,7 +14,7 @@ const mail = {
 };
 
 let transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
+  host: 'smtp.gmail.com',
   port: 465,
   tls: {
     rejectUnauthorized: false,
@@ -27,13 +27,13 @@ let transporter = nodemailer.createTransport({
 });
 
 //msj of Welcome
-const sendEmail = async (email, subject, html) => {
+const sendWelcomeEmail = async (email, subject, html) => {
   try {
     await transporter.sendMail({
       from: `${mail.user}`,
       to: email,
-      subject: "Welcome, a pleasure to have here",
-      text: ` ¡Bienvenidos a la Moda Moderna!
+      subject: "Welcome! It's a pleasure to have you here",
+      text: ` ¡Bienvenidos a Modern Fashion!
 
       Estamos encantados de tenerte como nuevo miembro de nuestra comunidad de moda. Como miembro valioso, ahora tiene acceso a las últimas tendencias, ofertas exclusivas y una experiencia de compra sin igual.
       
@@ -43,12 +43,12 @@ const sendEmail = async (email, subject, html) => {
       
       Si tiene alguna pregunta o necesita ayuda, nuestro amable equipo de atención al cliente está aquí para ayudarlo. No dude en comunicarse con nosotros a través de nuestra página de contacto y estaremos encantados de ayudarle.
       
-      Gracias por elegir Moda Moderna. Esperamos brindarle opciones de moda excepcionales y una experiencia de compra encantadora.
+      Gracias por elegir Modern Fashion. Esperamos brindarle opciones de moda excepcionales y una experiencia de compra encantadora.
       
       Atentamente,
       
-      El equipo de moda moderna`,
-      html : `<head>
+      El equipo de Modern Fashion`,
+      html: `<head>
       <style>
           body {
               font-family: Arial, sans-serif;
@@ -104,19 +104,19 @@ const sendEmail = async (email, subject, html) => {
       </div>
   </body>`,
     });
-    console.log("Email enviado");
+    console.log('Email enviado');
   } catch (error) {
-    console.log("Something went wrong with your email", error);
+    console.log('Something went wrong with your email', error);
   }
 };
- 
-const getCompraProduct = async (email, subject, products, html) => {
+
+const sendPurchaseSuccess = async (email, subject, products, html) => {
   try {
     await transporter.sendMail({
       from: `${mail.user}`,
       to: email,
-      subject: "successful purchase",
-      text:`
+      subject: 'Successful purchase',
+      text: `
       En nombre de Modern Fashion, nos complace informarle que su compra ha sido realizada con éxito.
 
       Queremos expresar nuestro más sincero agradecimiento por elegirnos como su destino de comprasNos complace confirmar que su pedido ha sido procesado y enviado según lo acordado. 
@@ -209,19 +209,19 @@ const getCompraProduct = async (email, subject, products, html) => {
       </div>
   </body>`,
     });
-    console.log("Email enviado"); 
+    console.log('Email enviado');
   } catch (error) {
     console.log(error);
   }
 };
 
-const getFailCompra =  async(user, Products, sender, error) => {
+const sendPurchaseFailure = async (user, Products, sender, error) => {
   try {
     await transporter.sendMail({
       from: `${mail.user}`,
       to: email,
-      subject: "Error de compora",
-      text:`
+      subject: 'Error en la compra',
+      text: `
       Estimado/a cliente,
 
       Lamentamos informarle que su compra ha experimentado un inconveniente y no se ha podido completar satisfactoriamente. Entendemos lo importante que es para usted recibir los productos que ha seleccionado, y nos disculpamos por cualquier inconveniente que esto haya causado.
@@ -290,14 +290,12 @@ const getFailCompra =  async(user, Products, sender, error) => {
           </div>
       </body>`,
     });
-    console.log("Email enviado");
-  } catch (error) {
-    
-  }
-}
+    console.log('Email enviado');
+  } catch (error) {}
+};
 
 module.exports = {
-  sendEmail,
-  getCompraProduct,
-  getFailCompra
+  sendWelcomeEmail,
+  sendPurchaseSuccess,
+  sendPurchaseFailure,
 };

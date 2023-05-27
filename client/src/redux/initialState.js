@@ -10,15 +10,20 @@ export const getInitialState = () => {
   const storedCartProducts = JSON.parse(localStorage.getItem(`user_${storedUserId}_cartProducts`));
   const storedCartTotal = JSON.parse(localStorage.getItem(`user_${storedUserId}_cartTotal`));
 
-  //* ORDERS
-  const storedOrders = JSON.parse(localStorage.getItem(`user_${storedUserId}_orders`));
+  //* PURCHASES
+  const storedPurchases = JSON.parse(localStorage.getItem(`user_${storedUserId}_purchases`));
+  const storedSelectedPurchase = JSON.parse(
+    localStorage.getItem(`user_${storedUserId}_selectedPurchase`)
+  );
 
   //* FAVORITES
   const storedFavorites = JSON.parse(localStorage.getItem(`user_${storedUserId}_favorites`));
 
   return {
     // Products
+    adminProducts: [],
     allProducts: [],
+    filteredAdminProducts: [],
     filteredProducts: [],
     selectedProduct: {},
     categories: [],
@@ -43,9 +48,9 @@ export const getInitialState = () => {
     cartProducts: storedCartProducts || [],
     cartTotal: storedCartTotal || 0,
 
-    // Orders
-    orders: storedOrders || [],
-    selectedOrder: {},
+    // Purchases
+    purchases: storedPurchases || [],
+    selectedPurchase: storedSelectedPurchase || {},
     paymentLink: '',
 
     // Users
@@ -61,6 +66,7 @@ export const getInitialState = () => {
     //* Async Status
     // Products
     getAllProductsStatus: 'idle',
+    getAdminProductsStatus: 'idle',
     getProductByIdStatus: 'idle',
     getProductByNameStatus: 'idle',
     createProductStatus: 'idle',
@@ -73,7 +79,8 @@ export const getInitialState = () => {
     // Favorites
     getUserFavoritesStatus: 'idle',
     addFavoriteStatus: 'idle',
-    deleteFavoriteStatus: 'idle',
+    removeFavoriteStatus: 'idle',
+    removeUserFavoritesStatus: 'idle',
 
     // Cart
     getUserCartStatus: 'idle',
@@ -89,12 +96,12 @@ export const getInitialState = () => {
     // Stock
     updateProductsStockStatus: 'idle',
 
-    // Orders
-    getUserOrdersStatus: 'idle',
-    getOrderByIdStatus: 'idle',
-    createOrderStatus: 'idle',
-    updateOrderByIdStatus: 'idle',
-    deleteOrderByIdStatus: 'idle',
+    // Purchases
+    getUserPurchasesStatus: 'idle',
+    getPurchaseByIdStatus: 'idle',
+    createPurchaseStatus: 'idle',
+    updatePurchaseByIdStatus: 'idle',
+    deletePurchaseByIdStatus: 'idle',
 
     // Users
     getUserByIdStatus: 'idle',
@@ -113,6 +120,7 @@ export const getInitialState = () => {
 
     //* Async Error
     // Products
+    getAdminProductsError: null,
     getAllProductsError: null,
     getProductByIdError: null,
     getProductByNameError: null,
@@ -126,7 +134,8 @@ export const getInitialState = () => {
     // Favorites
     getUserFavoritesError: null,
     addFavoriteError: null,
-    deleteFavoriteError: null,
+    removeFavoriteError: null,
+    removeUserFavoritesError: null,
 
     // Cart
     getUserCartError: null,
@@ -142,12 +151,12 @@ export const getInitialState = () => {
     // Stock
     updateProductsStockError: null,
 
-    // Orders
-    getUserOrdersError: null,
-    getOrderByIdError: null,
-    createOrderError: null,
-    updateOrderByIdError: null,
-    deleteOrderByIdError: null,
+    // Purchases
+    getUserPurchasesError: null,
+    getPurchaseByIdError: null,
+    createPurchaseError: null,
+    updatePurchaseByIdError: null,
+    deletePurchaseByIdError: null,
 
     // Users
     getUserByIdError: null,
