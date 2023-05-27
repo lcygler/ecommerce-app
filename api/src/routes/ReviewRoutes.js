@@ -17,7 +17,7 @@ review.get('/', async (req, res) => {
 
 // Crear una nueva reseña
 review.post('/', async (req, res) => {
-  const { comment, punctuation, userId, productId } = req.body;
+  const { comment, rating, userId, productId } = req.body;
 
   try {
     const user = await User.findByPk(userId);
@@ -29,7 +29,7 @@ review.post('/', async (req, res) => {
 
     const newReview = await Review.create({
       comment,
-      punctuation,
+      punctuation: rating,
       UserId: userId,
       ProductId: productId,
     });
