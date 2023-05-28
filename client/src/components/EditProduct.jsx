@@ -3,7 +3,13 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { getCategories, getGenders, getProductById, getSeasons, updateProductById } from '../redux/asyncActions';
+import {
+  getCategories,
+  getGenders,
+  getProductById,
+  getSeasons,
+  updateProductById,
+} from '../redux/asyncActions';
 import { validateProduct } from '../utils/validateForm';
 
 import {
@@ -16,6 +22,7 @@ import {
   Heading,
   Input,
   Select,
+  Spinner,
   Stack,
 } from '@chakra-ui/react';
 import backgroundImage from '../assets/images/background.jpg';
@@ -26,27 +33,21 @@ let navigateTimeoutId = null;
 function EditProduct() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { productId } = useParams()
+  const { productId } = useParams();
+
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingData, setIsLoadingData] = useState(true);
+
   const selectedProduct = useSelector((state) => state.selectedProduct);
-  const {
-    name,
-    image,
-    Categories,
-    discounts,
-    price,
-    Seasons,
-    size,
-    gender,
-    description,
-    //Reviews,
-    stock,
-  } = selectedProduct || {};
 
   useEffect(() => {
-    dispatch(getProductById(productId));
+    const fetchProduct = async () => {
+      await dispatch(getProductById(productId));
+      setIsLoadingData(false);
+    };
+    fetchProduct();
     dispatch(getCategories());
     dispatch(getSeasons());
     dispatch(getGenders());
@@ -57,17 +58,47 @@ function EditProduct() {
   const genders = useSelector((state) => state.genders);
 
   const [formData, setFormData] = useState({
-    name,
-    size,
-    gender,
-    description,
-    price,
-    discounts,
-    stock,
-    image,
-    season: Seasons ? Seasons[0].name : '',
-    category: Categories ? Categories[0].name : '',
+    name: '',
+    size: '',
+    gender: '',
+    description: '',
+    price: '',
+    discounts: '',
+    stock: '',
+    image: '',
+    season: '',
+    category: '',
   });
+
+  useEffect(() => {
+    if (!isLoadingData && selectedProduct) {
+      const {
+        name,
+        image,
+        Categories,
+        discounts,
+        price,
+        Seasons,
+        size,
+        gender,
+        description,
+        stock,
+      } = selectedProduct;
+
+      setFormData({
+        name,
+        size,
+        gender,
+        description,
+        price,
+        discounts,
+        stock,
+        image,
+        season: Seasons ? Seasons[0].name : '',
+        category: Categories ? Categories[0].name : '',
+      });
+    }
+  }, [isLoadingData, selectedProduct]);
 
   const [errors, setErrors] = useState({
     name: '',
@@ -124,7 +155,11 @@ function EditProduct() {
     if (formData.name && Object.values(errors).every((error) => error === '')) {
       const newProduct = {
         id: productId,
-        name: formData.name.trim().charAt(0).toUpperCase() + formData.name.trim().slice(1),
+        name:
+          formData.name
+            .trim()
+            .charAt(0)
+            .toUpperCase() + formData.name.trim().slice(1),
         size: formData.size.trim(),
         gender: formData.gender.trim(),
         description: formData.description.trim(),
@@ -172,6 +207,14 @@ function EditProduct() {
       clearTimeout(navigateTimeoutId);
     };
   }, []);
+
+  if (isLoadingData || !selectedProduct) {
+    return (
+      <Box display="grid" placeItems="center" height="100vh">
+        <Spinner size="xl" color="blue.500" />
+      </Box>
+    );
+  }
 
   return (
     <Box
