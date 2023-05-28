@@ -17,11 +17,12 @@ review.get('/', async (req, res) => {
 
 // Crear una nueva reseña
 review.post('/', async (req, res) => {
-  const { comment, rating, userId, productId } = req.body;
+  const { comment, punctuation, userId, productId } = req.body;
 
   try {
     const user = await User.findByPk(userId);
     const product = await Product.findByPk(productId);
+    
 
     if (!user || !product) {
       return res.status(404).json({ message: 'Usuario o producto no encontrado' });
@@ -29,7 +30,7 @@ review.post('/', async (req, res) => {
 
     const newReview = await Review.create({
       comment,
-      punctuation: rating,
+      punctuation,
       UserId: userId,
       ProductId: productId,
     });
@@ -40,6 +41,7 @@ review.post('/', async (req, res) => {
     res.status(500).json({ message: 'Hubo un error al crear la reseña' });
   }
 });
+
 
 
 

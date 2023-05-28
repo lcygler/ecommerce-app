@@ -34,8 +34,6 @@ function CrearReviews({ productId }) {
       productId, // Agregar el ID del producto al objeto de datos de la reseña
     };
 
-    console.log(reviewData);
-
     dispatch(createReview(reviewData));
 
     // Limpiar el formulario después de enviar la reseña
