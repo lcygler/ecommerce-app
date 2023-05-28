@@ -14,6 +14,9 @@ router.get('/users/:userId', async (req, res) => {
     }
 
     const favorites = await user.getProducts({
+      where: {
+        disable: false,
+      },
       include: [Category, Season, Review],
     });
 
