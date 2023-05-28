@@ -24,6 +24,7 @@ import { motion } from 'framer-motion';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import backgroundImage from '../assets/images/background.jpg';
 import { StarRating } from '../components/index';
+import CrearReviews from '../components/createReviews';
 
 function Detail() {
   const dispatch = useDispatch();
@@ -297,8 +298,11 @@ function Detail() {
               >
                 <Icon as={FaChevronRight} />
               </Button>
+              <CrearReviews productId={productId}/>
             </Flex>
           </Box>
+          
+          
         </motion.div>
       )}
     </>
