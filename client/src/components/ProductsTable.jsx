@@ -26,7 +26,6 @@ function ProductTable({ products }) {
   const navigate = useNavigate();
 
   const handleEdit = (id) => {
-    // TODO hacer logica aqui
     navigate("/edit/"+ id)
   }
 
