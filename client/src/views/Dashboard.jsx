@@ -11,9 +11,10 @@ import {
   Button,
 } from '@chakra-ui/react';
 
-import { getAdminProducts, getCategories, getGenders, getSeasons } from '../redux/asyncActions';
+import { deleteProductById, getAdminProducts, getCategories, getGenders, getSeasons, updateProductById } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 import { Filters, Navbar, Pagination, ProductsTable, Charts, Sidebar } from '../components/index';
+import { useNavigate } from 'react-router-dom';
 
 function Dashboard() {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ function Dashboard() {
   const [itemsPerPage] = useState(10);
   const [loading, setLoading] = useState(true);
   const [selectedOption, setSelectedOption] = useState('products');
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -54,6 +56,18 @@ function Dashboard() {
   const handleSidebarOption = (option) => {
     setSelectedOption(option);
   };
+
+  const handleEditProduct = (id) => {
+    navigate("/edit/"+ id)
+  }
+
+  const handleDeleteProduct = (id) => {
+    dispatch(deleteProductById(id))
+  }
+
+  const handleSuspendProduct = (productData) => {
+    dispatch(updateProductById(productData))
+  }
 
   return (
     <Box display="flex" flexDirection="column" minHeight="100vh">
@@ -106,7 +120,7 @@ function Dashboard() {
             </Box>
           ) : (
             <>
-              {selectedOption === 'products' && <ProductsTable products={currentProducts} />}
+              {selectedOption === 'products' && <ProductsTable products={currentProducts} editProduct={handleEditProduct} deleteProduct={handleDeleteProduct} suspendProduct={handleSuspendProduct}/>}
               {selectedOption === 'charts' && <Charts />}
               {selectedOption === 'products' && (
                 <Box display="flex" justifyContent="center" mt="4">
