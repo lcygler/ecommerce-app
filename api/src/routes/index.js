@@ -12,9 +12,11 @@ const favoritesRouter = require('./favorites.js');
 const paymentRouter = require('./payment.js');
 const reviewsRouter = require('./ReviewRoutes');
 const stockRouter = require('./StockRoute.js');
+// const apiRouter = require('./apiChat');
 
 const router = Router();
 
+// router.use('/api', apiRouter);
 router.use('/users', usersRouter);
 router.use('/admin', adminRouter);
 router.use('/catalog', catalogRouter);
