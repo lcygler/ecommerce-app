@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -16,7 +16,24 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { AddIcon, CloseIcon, MinusIcon } from '@chakra-ui/icons';
-import { Box, Button, Fade, Flex, Heading, Image, Input, Stack, Text } from '@chakra-ui/react';
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  Box,
+  Button,
+  Fade,
+  Flex,
+  Heading,
+  Image,
+  Input,
+  Stack,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
 import backgroundImage from '../assets/images/background.jpg';
 import emptyCartImage from '../assets/images/empty-cart.png';
 
@@ -26,6 +43,18 @@ function Cart() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const cancelRef = useRef();
+  const {
+    isOpen: isRemoveAlertOpen,
+    onOpen: onRemoveAlertOpen,
+    onClose: onRemoveAlertClose,
+  } = useDisclosure();
+  const {
+    isOpen: isEmptyCartAlertOpen,
+    onOpen: onEmptyCartAlertOpen,
+    onClose: onEmptyCartAlertClose,
+  } = useDisclosure();
+
   const userId = useSelector((state) => state.userId);
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const selectedPurchase = useSelector((state) => state.selectedPurchase);
@@ -34,6 +63,7 @@ function Cart() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [removeProductId, setRemoveProductId] = useState(null);
 
   useEffect(() => {
     return () => {
@@ -44,7 +74,6 @@ function Cart() {
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const payment_id = searchParams.get('payment_id');
-
     const storedURL = localStorage.getItem('mpErrorURL');
     const currentURL = window.location.href;
 
@@ -75,16 +104,15 @@ function Cart() {
     const prod = cartProducts?.find((product) => product.id === productId);
 
     if (prod.quantity === 1) {
-      const confirmed = window.confirm('Are you sure you want to remove this product?');
-
-      if (confirmed) {
-        dispatch(actions.decreaseProduct(productId));
-
-        const updatedCartProducts = cartProducts.filter((p) => p.id !== productId);
-        dispatch(updateUserCart({ userId, products: updatedCartProducts }));
-
-        toast.success('Product removed from cart!');
-      }
+      // const confirmed = window.confirm('Are you sure you want to remove this product?');
+      // if (confirmed) {
+      // dispatch(actions.decreaseProduct(productId));
+      // const updatedCartProducts = cartProducts.filter((p) => p.id !== productId);
+      // dispatch(updateUserCart({ userId, products: updatedCartProducts }));
+      // toast.success('Product removed from cart!');
+      // }
+      setRemoveProductId(productId);
+      onRemoveAlertOpen();
     } else {
       dispatch(actions.decreaseProduct(productId));
 
@@ -112,27 +140,22 @@ function Cart() {
   };
 
   const handleRemoveItem = (productId) => {
-    const confirmed = window.confirm('Are you sure you want to remove this product?');
-
-    if (confirmed) {
-      dispatch(actions.removeProduct(productId));
-
-      const updatedCartProducts = cartProducts.filter((p) => p.id !== productId);
-      dispatch(updateUserCart({ userId, products: updatedCartProducts }));
-
-      toast.success('Product removed from cart!');
-    }
+    // const confirmed = window.confirm('Are you sure you want to remove this product?');
+    // if (confirmed) {
+    dispatch(actions.removeProduct(productId));
+    const updatedCartProducts = cartProducts.filter((p) => p.id !== productId);
+    dispatch(updateUserCart({ userId, products: updatedCartProducts }));
+    toast.success('Product removed from cart!');
+    // }
   };
 
   const handleClearCart = () => {
-    const confirmed = window.confirm('Are you sure you want to clear the cart?');
-
-    if (confirmed) {
-      dispatch(actions.clearCart());
-      dispatch(deleteUserCart(userId));
-
-      toast.success('Your cart was cleared!');
-    }
+    // const confirmed = window.confirm('Are you sure you want to clear the cart?');
+    // if (confirmed) {
+    dispatch(actions.clearCart());
+    dispatch(deleteUserCart(userId));
+    toast.success('Your cart was cleared!');
+    // }
   };
 
   const handleCheckout = async () => {
@@ -313,7 +336,15 @@ function Cart() {
                         <AddIcon fontSize="8px" />
                       </Button>
 
-                      <Button onClick={() => handleRemoveItem(product.id)} size="sm" marginLeft={2}>
+                      {/* <Button onClick={() => handleRemoveItem(product.id)} size="sm" marginLeft={2}> */}
+                      <Button
+                        onClick={() => {
+                          setRemoveProductId(product.id);
+                          onRemoveAlertOpen();
+                        }}
+                        size="sm"
+                        marginLeft={2}
+                      >
                         <CloseIcon fontSize="8px" />
                       </Button>
                     </Flex>
@@ -352,7 +383,8 @@ function Cart() {
                 <Button
                   colorScheme="red"
                   variant="ghost"
-                  onClick={handleClearCart}
+                  // onClick={handleClearCart}
+                  onClick={onEmptyCartAlertOpen}
                   width="30%"
                   mt="6"
                 >
@@ -363,6 +395,70 @@ function Cart() {
           )}
         </Box>
       </Box>
+
+      <AlertDialog
+        isOpen={isRemoveAlertOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onRemoveAlertClose}
+      >
+        <AlertDialogOverlay backgroundColor="transparent">
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Remove Item
+            </AlertDialogHeader>
+
+            <AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onRemoveAlertClose}>
+                Cancel
+              </Button>
+              <Button
+                colorScheme="red"
+                onClick={() => {
+                  handleRemoveItem(removeProductId);
+                  onRemoveAlertClose();
+                }}
+                ml={3}
+              >
+                Confirm
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+
+      <AlertDialog
+        isOpen={isEmptyCartAlertOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onEmptyCartAlertClose}
+      >
+        <AlertDialogOverlay backgroundColor="transparent">
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Empty Cart
+            </AlertDialogHeader>
+
+            <AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onEmptyCartAlertClose}>
+                Cancel
+              </Button>
+              <Button
+                colorScheme="red"
+                onClick={() => {
+                  handleClearCart();
+                  onEmptyCartAlertClose();
+                }}
+                ml={3}
+              >
+                Confirm
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </Box>
   );
 }
