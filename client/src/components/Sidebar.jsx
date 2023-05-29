@@ -29,7 +29,7 @@ function Sidebar({ handleSidebarOption, selectedOption }) {
         variant="outline"
         backgroundColor={selectedOption === 'ventas' ? 'blue.100' : 'gray.150'}
       >
-        Ventas
+        Sales
       </Button>
       <Button
         mb="6"

@@ -85,9 +85,16 @@ function Register() {
 
     if (formData.name && Object.values(errors).every((error) => error === '')) {
       const newUser = {
-        name: formData.name.trim().charAt(0).toUpperCase() + formData.name.trim().slice(1),
+        name:
+          formData.name
+            .trim()
+            .charAt(0)
+            .toUpperCase() + formData.name.trim().slice(1),
         lastname:
-          formData.lastname.trim().charAt(0).toUpperCase() + formData.lastname.trim().slice(1),
+          formData.lastname
+            .trim()
+            .charAt(0)
+            .toUpperCase() + formData.lastname.trim().slice(1),
         username: formData.username.trim(),
         email: formData.email.trim(),
         password: formData.password.trim(),

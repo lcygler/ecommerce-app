@@ -13,6 +13,7 @@ const paymentRouter = require('./payment.js');
 const reviewsRouter = require('./ReviewRoutes');
 const stockRouter = require('./StockRoute.js');
 // const apiRouter = require('./apiChat');
+const chartRoutes = require('./chartRoutes');
 
 const router = Router();
 
@@ -30,5 +31,6 @@ router.use('/purchases', purchasesRouter);
 router.use('/favorites', favoritesRouter);
 router.use('/payment', paymentRouter);
 router.use('/reviews', reviewsRouter);
+router.use('/charts', chartRoutes);
 
 module.exports = router;

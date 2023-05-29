@@ -10,13 +10,14 @@ import {
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { useNavigate } from 'react-router-dom';
+
 import { Charts, Filters, Navbar, Pagination, ProductsTable, Sidebar } from '../components/index';
 import {
   deleteProductById,
   getAdminProducts,
   getCategories,
+  getChartData,
   getGenders,
   getSeasons,
   updateProductById,
@@ -34,6 +35,7 @@ function Dashboard() {
   const [itemsPerPage] = useState(10);
   const [loading, setLoading] = useState(true);
   const [selectedOption, setSelectedOption] = useState('products');
+  const chartData = useSelector((state) => state.chartData);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -46,6 +48,12 @@ function Dashboard() {
     };
     fetchProducts();
   }, [dispatch]);
+
+  useEffect(() => {
+    if (selectedOption === 'charts' && !chartData) {
+      dispatch(getChartData());
+    }
+  }, [dispatch, selectedOption, chartData]);
 
   const totalPages = Math.ceil(filteredAdminProducts?.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -67,7 +75,7 @@ function Dashboard() {
   };
 
   const handleEditProduct = (productId) => {
-    navigate(`/edit/${productId}`);
+    navigate(`/dashboard/edit/${productId}`);
   };
 
   const handleDeleteProduct = async (productId) => {
@@ -89,7 +97,9 @@ function Dashboard() {
         <Sidebar handleSidebarOption={handleSidebarOption} selectedOption={selectedOption} />
         <Box flex="1" overflow="auto">
           <Box padding="4">
-            <Filters changePage={changePage} allProducts={adminProducts} />
+            {selectedOption === 'products' && (
+              <Filters changePage={changePage} allProducts={adminProducts} />
+            )}
           </Box>
 
           {!adminProducts?.length ? (
@@ -141,7 +151,9 @@ function Dashboard() {
                   suspendProduct={handleSuspendProduct}
                 />
               )}
-              {selectedOption === 'charts' && <Charts />}
+
+              {selectedOption === 'charts' && chartData && <Charts dataCharts={chartData} />}
+
               {selectedOption === 'products' && (
                 <Box display="flex" justifyContent="center" mt="4">
                   <Pagination
