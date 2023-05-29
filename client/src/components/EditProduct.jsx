@@ -275,7 +275,7 @@ function EditProduct() {
         boxSizing="border-box"
       >
         <Heading size="lg" mb="6" w="100%" textAlign="center">
-          Update a product
+          Update Product
         </Heading>
         <form onChange={handleForm} onSubmit={handleSubmit}>
           {error && (

@@ -108,7 +108,11 @@ function CreateProduct() {
 
     if (formData.name && Object.values(errors).every((error) => error === '')) {
       const newProduct = {
-        name: formData.name.trim().charAt(0).toUpperCase() + formData.name.trim().slice(1),
+        name:
+          formData.name
+            .trim()
+            .charAt(0)
+            .toUpperCase() + formData.name.trim().slice(1),
         size: formData.size.trim(),
         gender: formData.gender.trim(),
         description: formData.description.trim(),
@@ -177,7 +181,7 @@ function CreateProduct() {
         boxSizing="border-box"
       >
         <Heading size="lg" mb="6" w="100%" textAlign="center">
-          Create a product
+          Create Product
         </Heading>
         <form onChange={handleForm} onSubmit={handleSubmit}>
           {error && (
