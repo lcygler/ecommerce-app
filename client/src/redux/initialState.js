@@ -63,6 +63,9 @@ export const getInitialState = () => {
     reviews: [],
     selectedReview: {},
 
+    // Chart
+    getChartData: [],
+
     //* Async Status
     // Products
     getAllProductsStatus: 'idle',
@@ -118,6 +121,9 @@ export const getInitialState = () => {
     updateReviewByIdStatus: 'idle',
     deleteReviewByIdStatus: 'idle',
 
+    //Chart
+    getChartDataStatus: 'idle',
+
     //* Async Error
     // Products
     getAdminProductsError: null,
@@ -172,5 +178,8 @@ export const getInitialState = () => {
     createReviewError: null,
     updateReviewByIdError: null,
     deleteReviewByIdError: null,
+
+    //Chart
+    getChartDataError: null,
   };
 };

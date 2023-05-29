@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import { AdminRoute, /*UserRoute,*/ CreateProduct, EditProduct } from './components/index';
+import { AdminRoute, CreateProduct, EditProduct, UserRoute } from './components/index';
 import {
   Cart,
   Dashboard,
   Detail,
+  EditProfile,
   Favorites,
   Home,
   Landing,
@@ -48,7 +49,8 @@ function App() {
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/purchases/:purchaseId" element={<PurchaseDetail />} />
         <Route path="/purchases" element={<Purchases />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={<UserRoute element={Profile} />} />
+        <Route path="/edit/:userId" element={<UserRoute element={EditProfile} />} />
         <Route path="/dashboard" element={<AdminRoute element={Dashboard} />} />
         <Route path="/create" element={<AdminRoute element={CreateProduct} />} />
         <Route path="/edit/:productId" element={<AdminRoute element={EditProduct} />} />
