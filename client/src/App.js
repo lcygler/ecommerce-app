@@ -50,10 +50,10 @@ function App() {
         <Route path="/purchases/:purchaseId" element={<PurchaseDetail />} />
         <Route path="/purchases" element={<Purchases />} />
         <Route path="/profile" element={<UserRoute element={Profile} />} />
-        <Route path="/edit/:userId" element={<UserRoute element={EditProfile} />} />
+        <Route path="/profile/edit" element={<UserRoute element={EditProfile} />} />
         <Route path="/dashboard" element={<AdminRoute element={Dashboard} />} />
-        <Route path="/create" element={<AdminRoute element={CreateProduct} />} />
-        <Route path="/edit/:productId" element={<AdminRoute element={EditProduct} />} />
+        <Route path="/dashboard/create" element={<AdminRoute element={CreateProduct} />} />
+        <Route path="/dashboard/edit/:productId" element={<AdminRoute element={EditProduct} />} />
       </Routes>
 
       {renderChatbot && isChatOpen && (

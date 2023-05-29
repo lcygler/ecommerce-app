@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { createUser, getChartData } from '../redux/asyncActions';
+import { createUser } from '../redux/asyncActions';
 import { validateRegister } from '../utils/validateForm';
 
 import {
@@ -111,7 +111,6 @@ function Register() {
       timeoutId = setTimeout(() => {
         setIsLoading(false);
         if (response.payload) {
-          dispatch(getChartData());
           setError('');
           setSuccess('Registration successful!');
           setFormData({
