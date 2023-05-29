@@ -5,7 +5,7 @@ import { createReview } from '../redux/asyncActions';
 import { Box, Button, Flex, Heading, Icon, Stack, Text, Textarea } from '@chakra-ui/react';
 import { FaStar } from 'react-icons/fa';
 
-function CrearReviews({ productId }) {
+function CreateReview({ productId }) {
   const dispatch = useDispatch();
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
@@ -67,4 +67,4 @@ function CrearReviews({ productId }) {
   );
 }
 
-export default CrearReviews;
+export default CreateReview;
