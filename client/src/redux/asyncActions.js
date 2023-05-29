@@ -298,10 +298,8 @@ export const deleteReviewById = createAsyncThunk('slice/deleteReviewById', async
   return response.data;
 });
 
-// CHARTS
-
+//* CHARTS
 export const getChartData = createAsyncThunk('slice/getChartData', async () => {
   const response = await axios.get('/charts');
-
   return response.data;
 });
