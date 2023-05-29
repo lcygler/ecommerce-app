@@ -152,95 +152,91 @@ function EditProduct() {
     e.preventDefault();
     setIsLoading(true);
 
+    // if (formData.name && Object.values(errors).every((error) => error === '')) {
+    // const newProduct = {
+    //   id: productId,
+    //   name:
+    //     formData.name
+    //       .trim()
+    //       .charAt(0)
+    //       .toUpperCase() + formData.name.trim().slice(1),
+    //   size: formData.size.trim(),
+    //   gender: formData.gender.trim(),
+    //   description: formData.description.trim(),
+    //   price: formData.price,
+    //   discounts: formData.discounts,
+    //   stock: Math.floor(formData.stock),
+    //   image: formData.image.trim(),
+    //   Seasons: { name: formData.season.trim() },
+    //   Categories: { name: formData.category.trim() },
+    // };
+
     if (
       Object.values(formData).some((field) => field !== '') &&
       Object.values(errors).every((error) => error === '')
     ) {
-      // if (formData.name && Object.values(errors).every((error) => error === '')) {
-      // const newProduct = {
-      //   id: productId,
-      //   name:
-      //     formData.name
-      //       .trim()
-      //       .charAt(0)
-      //       .toUpperCase() + formData.name.trim().slice(1),
-      //   size: formData.size.trim(),
-      //   gender: formData.gender.trim(),
-      //   description: formData.description.trim(),
-      //   price: formData.price,
-      //   discounts: formData.discounts,
-      //   stock: Math.floor(formData.stock),
-      //   image: formData.image.trim(),
-      //   Seasons: { name: formData.season.trim() },
-      //   Categories: { name: formData.category.trim() },
-      // };
+      const updatedProduct = {};
 
-      if (formData.name && Object.values(errors).every((error) => error === '')) {
-        const updatedProduct = {};
-
-        if (formData.name.trim() !== '') {
-          updatedProduct.name =
-            formData.name
-              .trim()
-              .charAt(0)
-              .toUpperCase() + formData.name.trim().slice(1);
-        }
-        if (formData.size.trim() !== '') {
-          updatedProduct.size = formData.size.trim();
-        }
-        if (formData.gender.trim() !== '') {
-          updatedProduct.gender = formData.gender.trim();
-        }
-        if (formData.description.trim() !== '') {
-          updatedProduct.description = formData.description.trim();
-        }
-        if (formData.price !== '') {
-          updatedProduct.price = formData.price;
-        }
-        if (formData.discounts !== '') {
-          updatedProduct.discounts = formData.discounts;
-        }
-        if (formData.stock !== '') {
-          updatedProduct.stock = Math.floor(formData.stock);
-        }
-        if (formData.image.trim() !== '') {
-          updatedProduct.image = formData.image.trim();
-        }
-        if (formData.season.trim() !== '') {
-          updatedProduct.Seasons = { name: formData.season.trim() };
-        }
-        if (formData.category.trim() !== '') {
-          updatedProduct.Categories = { name: formData.category.trim() };
-        }
-
-        const response = dispatch(updateProductById({ productId, updatedProduct }));
-
-        timeoutId = setTimeout(() => {
-          setIsLoading(false);
-          if (response) {
-            setSuccess('Product updated successful!');
-            setFormData({
-              name: '',
-              size: '',
-              gender: '',
-              description: '',
-              price: '',
-              discounts: '',
-              stock: '',
-              image: '',
-              season: '',
-              category: '',
-            });
-            navigateTimeoutId = setTimeout(() => {
-              navigate(`/dashboard`);
-            }, 1000);
-          } else {
-            setError('Incomplete or incorrect data');
-          }
-        }, 2000);
+      if (formData.name.trim() !== '') {
+        updatedProduct.name =
+          formData.name
+            .trim()
+            .charAt(0)
+            .toUpperCase() + formData.name.trim().slice(1);
+      }
+      if (formData.size.trim() !== '') {
+        updatedProduct.size = formData.size.trim();
+      }
+      if (formData.gender.trim() !== '') {
+        updatedProduct.gender = formData.gender.trim();
+      }
+      if (formData.description.trim() !== '') {
+        updatedProduct.description = formData.description.trim();
+      }
+      if (formData.price !== '') {
+        updatedProduct.price = formData.price;
+      }
+      if (formData.discounts !== '') {
+        updatedProduct.discounts = formData.discounts;
+      }
+      if (formData.stock !== '') {
+        updatedProduct.stock = Math.floor(formData.stock);
+      }
+      if (formData.image.trim() !== '') {
+        updatedProduct.image = formData.image.trim();
+      }
+      if (formData.season.trim() !== '') {
+        updatedProduct.Seasons = { name: formData.season.trim() };
+      }
+      if (formData.category.trim() !== '') {
+        updatedProduct.Categories = { name: formData.category.trim() };
       }
 
-      setIsLoading(false);
+      const response = dispatch(updateProductById({ productId, updatedProduct }));
+
+      timeoutId = setTimeout(() => {
+        setIsLoading(false);
+        if (response) {
+          setSuccess('Product updated successfully!');
+          setFormData({
+            name: '',
+            size: '',
+            gender: '',
+            description: '',
+            price: '',
+            discounts: '',
+            stock: '',
+            image: '',
+            season: '',
+            category: '',
+          });
+          navigateTimeoutId = setTimeout(() => {
+            navigate(`/dashboard`);
+          }, 1000);
+        } else {
+          setError('Incomplete or incorrect data');
+        }
+      }, 2000);
     }
   };
 
