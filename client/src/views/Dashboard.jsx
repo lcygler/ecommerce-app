@@ -106,9 +106,9 @@ function Dashboard() {
     await dispatch(actions.filterAdminProducts());
   };
 
-  const handleDeleteUser = async () => {}
+  const handleDeleteUser = async (userId) => {}
 
-  const handleSuspendUser = async () => {}
+  const handleSuspendUser = async ({ userId, updatedUser }) => {}
 
   return (
     <Box display="flex" flexDirection="column" minHeight="100vh">
