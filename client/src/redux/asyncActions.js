@@ -231,6 +231,11 @@ export const deletePurchaseById = createAsyncThunk(
 );
 
 //* USERS
+export const getUsers = createAsyncThunk('slice/getUsers', async () => {
+  const response = await axios.get(`/users`);
+  return response.data;
+});
+
 export const getUserById = createAsyncThunk('slice/getUserById', async (userId) => {
   const response = await axios.get(`/users/${userId}`);
   return response.data;

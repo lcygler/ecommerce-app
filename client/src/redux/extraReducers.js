@@ -21,6 +21,7 @@ import {
   getPurchaseById,
   getReviewById,
   getSeasons,
+  getUsers,
   getUserById,
   getUserCart,
   getUserFavorites,
@@ -385,6 +386,18 @@ export const extraReducers = (builder) => {
     })
 
     //* USERS
+    .addCase(getUsers.pending, (state) => {
+      state.getUsersStatus = 'loading';
+    })
+    .addCase(getUsers.fulfilled, (state, action) => {
+      state.getUsersStatus = 'succeeded';
+      state.allUsers = action.payload;
+    })
+    .addCase(getUsers.rejected, (state, action) => {
+      state.getUsersStatus = 'failed';
+      state.getUsersError = action.error.message;
+    })
+
     .addCase(getUserById.pending, (state) => {
       state.getUserByIdStatus = 'loading';
     })
