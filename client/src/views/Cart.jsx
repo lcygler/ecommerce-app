@@ -6,9 +6,11 @@ import {
   createPurchase,
   deletePurchaseById,
   deleteUserCart,
+  getAllProducts,
   updateUserCart,
 } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
+import store from '../redux/store';
 
 import { Navbar } from '../components/index';
 
@@ -23,6 +25,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
+  Badge,
   Box,
   Button,
   Fade,
@@ -64,12 +67,19 @@ function Cart() {
   const [isLoading, setIsLoading] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [removeProductId, setRemoveProductId] = useState(null);
+  const [renderCart, setRenderCart] = useState(false);
 
   useEffect(() => {
+    const fetchProducts = async () => {
+      await dispatch(getAllProducts());
+      dispatch(actions.updateCartStock());
+      setRenderCart(false);
+    };
+    fetchProducts();
     return () => {
       clearTimeout(navigateTimeoutId);
     };
-  }, []);
+  }, [dispatch, renderCart]);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -96,7 +106,7 @@ function Cart() {
       );
       dispatch(updateUserCart({ userId, products: updatedCartProducts }));
     } else {
-      toast.error('Quantity exceeds available stock!');
+      toast.error('Quantity exceeds available stock');
     }
   };
 
@@ -128,7 +138,7 @@ function Cart() {
     const newQuantity = parseInt(quantity);
 
     if (newQuantity > product.stock) {
-      toast.error('Quantity exceeds available stock!');
+      toast.error('Quantity exceeds available stock');
     } else {
       dispatch(actions.updateProduct({ productId, quantity }));
 
@@ -162,18 +172,33 @@ function Cart() {
     if (isAuthenticated) {
       if (cartProducts?.length !== 0) {
         setIsLoading(true);
-        const response = await dispatch(createPaymentLink(cartProducts));
-        if (response.payload) {
-          dispatch(createPurchase({ userId, products: cartProducts }));
-          // dispatch(actions.createPurchase(cartProducts));
+        await dispatch(getAllProducts());
+        const allProducts = store.getState().allProducts;
 
-          navigateTimeoutId = setTimeout(() => {
+        const isValidQuantity = cartProducts.every((product) => {
+          const matchedProduct = allProducts.find((p) => p.id === product.id);
+          return matchedProduct && product.quantity <= matchedProduct.stock;
+        });
+
+        if (isValidQuantity) {
+          const response = await dispatch(createPaymentLink(cartProducts));
+          if (response.payload) {
+            dispatch(createPurchase({ userId, products: cartProducts }));
+            // dispatch(actions.createPurchase(cartProducts));
+
+            navigateTimeoutId = setTimeout(() => {
+              setIsLoading(false);
+              window.location.href = response.payload;
+            }, 2000);
+          } else {
             setIsLoading(false);
-            window.location.href = response.payload;
-          }, 2000);
+            toast.error('Checkout process failed');
+            setRenderCart(true);
+          }
         } else {
           setIsLoading(false);
-          console.error('Checkout process failed');
+          toast.error('Quantity exceeds available stock');
+          setRenderCart(true);
         }
       }
     } else {
@@ -303,7 +328,7 @@ function Cart() {
                     </Flex>
                   </Flex>
 
-                  <Flex alignItems="center">
+                  <Flex alignItems="flex-end" flexDirection="column">
                     <Flex alignItems="center" marginTop={{ base: 2, md: 0 }}>
                       <Text>Quantity:</Text>
 
@@ -348,6 +373,27 @@ function Cart() {
                         <CloseIcon fontSize="8px" />
                       </Button>
                     </Flex>
+
+                    {product.stock === 1 ? (
+                      <Badge colorScheme="red" variant="subtle" mt={3}>
+                        Last unit!
+                      </Badge>
+                    ) : product.stock > 1 && product.stock <= 5 ? (
+                      <Badge colorScheme="red" variant="subtle" mt={3}>
+                        Last {product.stock} units!
+                      </Badge>
+                    ) : (
+                      <Badge colorScheme="green" variant="subtle" mt={3}>
+                        {product.stock} units left
+                      </Badge>
+                    )}
+                    {/* <Text fontWeight="normal" fontSize="sm" mt="4">
+                      {product.stock === 1
+                        ? 'Last unit!'
+                        : product.stock > 1 && product.stock <= 5
+                        ? `Last ${product.stock} units!`
+                        : `${product.stock} units left`}
+                    </Text> */}
                   </Flex>
                 </Box>
               ))}
