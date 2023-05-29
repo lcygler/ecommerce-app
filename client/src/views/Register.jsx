@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { createUser } from '../redux/asyncActions';
+import { createUser, getChartData } from '../redux/asyncActions';
 import { validateRegister } from '../utils/validateForm';
 
 import {
@@ -85,9 +85,16 @@ function Register() {
 
     if (formData.name && Object.values(errors).every((error) => error === '')) {
       const newUser = {
-        name: formData.name.trim().charAt(0).toUpperCase() + formData.name.trim().slice(1),
+        name:
+          formData.name
+            .trim()
+            .charAt(0)
+            .toUpperCase() + formData.name.trim().slice(1),
         lastname:
-          formData.lastname.trim().charAt(0).toUpperCase() + formData.lastname.trim().slice(1),
+          formData.lastname
+            .trim()
+            .charAt(0)
+            .toUpperCase() + formData.lastname.trim().slice(1),
         username: formData.username.trim(),
         email: formData.email.trim(),
         password: formData.password.trim(),
@@ -104,6 +111,7 @@ function Register() {
       timeoutId = setTimeout(() => {
         setIsLoading(false);
         if (response.payload) {
+          dispatch(getChartData());
           setError('');
           setSuccess('Registration successful!');
           setFormData({

@@ -37,6 +37,7 @@ import {
   updateReviewById,
   updateUserById,
   updateUserCart,
+  getChartData,
 } from './asyncActions';
 
 export const extraReducers = (builder) => {
@@ -542,5 +543,18 @@ export const extraReducers = (builder) => {
     .addCase(deleteReviewById.rejected, (state, action) => {
       state.deleteReviewByIdStatus = 'failed';
       state.deleteReviewByIdError = action.error.message;
+    })
+
+    //* CHART DATA
+    .addCase(getChartData.pending, (state) => {
+      state.getChartDataStatus = 'loading';
+    })
+    .addCase(getChartData.fulfilled, (state, action) => {
+      state.getChartDataStatus = 'succeeded';
+      state.chartData = action.payload;
+    })
+    .addCase(getChartData.rejected, (state, action) => {
+      state.getChartDataStatus = 'failed';
+      state.getChartDataError = action.error.message;
     });
 };
