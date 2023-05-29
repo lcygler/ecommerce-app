@@ -1,5 +1,12 @@
-import { SettingsIcon } from '@chakra-ui/icons';
+import { SettingsIcon } from "@chakra-ui/icons";
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  Button,
   Image,
   Menu,
   MenuButton,
@@ -14,9 +21,18 @@ import {
   Th,
   Thead,
   Tr,
-} from '@chakra-ui/react';
+  useDisclosure,
+} from "@chakra-ui/react";
+import { useRef } from "react";
 
-function ProductTable({ products, editProduct, deleteProduct, suspendProduct }) {
+function ProductTable({
+  products,
+  editProduct,
+  deleteProduct,
+  suspendProduct,
+}) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef();
   return (
     <TableContainer marginTop={5} overflowY="auto">
       <Table variant="simple">
@@ -49,7 +65,7 @@ function ProductTable({ products, editProduct, deleteProduct, suspendProduct }) 
               stock,
               disable,
             }) => (
-              <Tr key={id} _hover={{ backgroundColor: 'whitesmoke' }}>
+              <Tr key={id} _hover={{ backgroundColor: "whitesmoke" }}>
                 <Td>
                   <Image
                     boxSize="100px"
@@ -65,7 +81,20 @@ function ProductTable({ products, editProduct, deleteProduct, suspendProduct }) 
                 <Td>{stock}</Td>
                 <Td isNumeric>${price.toFixed(2)}</Td>
                 <Td>{discounts * 100}%</Td>
-                <Td>{!disable ? <Switch onChange={() => suspendProduct({id:id, disable:true})} isChecked/> : <Switch onChange={() => suspendProduct({id:id,disable:false})}/>}</Td>
+                <Td>
+                  {!disable ? (
+                    <Switch
+                      onChange={() => suspendProduct({ id: id, disable: true })}
+                      isChecked
+                    />
+                  ) : (
+                    <Switch
+                      onChange={() =>
+                        suspendProduct({ id: id, disable: false })
+                      }
+                    />
+                  )}
+                </Td>
                 <Td>
                   <Menu>
                     <MenuButton as="button">
@@ -73,7 +102,43 @@ function ProductTable({ products, editProduct, deleteProduct, suspendProduct }) 
                     </MenuButton>
                     <MenuList>
                       <MenuItem onClick={() => editProduct(id)}>Edit</MenuItem>
-                      <MenuItem onClick={() => deleteProduct(id)}>Delete</MenuItem>
+                      <MenuItem colorScheme="red" onClick={onOpen}>
+                        Delete
+                      </MenuItem>
+                      <AlertDialog
+                        isOpen={isOpen}
+                        leastDestructiveRef={cancelRef}
+                        onClose={onClose}
+                      >
+                        <AlertDialogOverlay backgroundColor="transparent">
+                          <AlertDialogContent>
+                            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                              Delete Product
+                            </AlertDialogHeader>
+
+                            <AlertDialogBody>
+                              Are you sure? You can't undo this action
+                              afterwards.
+                            </AlertDialogBody>
+
+                            <AlertDialogFooter>
+                              <Button ref={cancelRef} onClick={onClose}>
+                                Cancel
+                              </Button>
+                              <Button
+                                colorScheme="red"
+                                onClick={() => {
+                                  deleteProduct(id);
+                                  onClose();
+                                }}
+                                ml={3}
+                              >
+                                Delete
+                              </Button>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialogOverlay>
+                      </AlertDialog>
                     </MenuList>
                   </Menu>
                 </Td>
