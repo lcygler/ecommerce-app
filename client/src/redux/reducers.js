@@ -223,6 +223,36 @@ export const decreaseProduct = (state, action) => {
   localStorage.setItem(`user_${userId}_cartTotal`, JSON.stringify(state.cartTotal));
 };
 
+export const updateCartStock = (state, action) => {
+  const updatedCartProducts = [];
+
+  for (const product of state.cartProducts) {
+    const matchedProduct = state.allProducts.find((p) => p.id === product.id);
+
+    if (matchedProduct) {
+      // const updatedQuantity = Math.min(product.quantity, matchedProduct.stock);
+      // if (updatedQuantity > 0) {
+      updatedCartProducts.push({
+        ...product,
+        stock: matchedProduct.stock,
+        // quantity: updatedQuantity,
+      });
+      // }
+    }
+  }
+
+  state.cartProducts = updatedCartProducts;
+
+  state.cartTotal = state.cartProducts.reduce(
+    (total, product) => total + product.price * (1 - product.discounts) * product.quantity,
+    0
+  );
+
+  const userId = state.userId;
+  localStorage.setItem(`user_${userId}_cartProducts`, JSON.stringify(state.cartProducts));
+  localStorage.setItem(`user_${userId}_cartTotal`, JSON.stringify(state.cartTotal));
+};
+
 export const clearCart = (state, action) => {
   state.cartProducts = [];
   state.cartTotal = 0;
