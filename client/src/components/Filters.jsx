@@ -208,7 +208,7 @@ function Filters({ changePage, allProducts }) {
             colorScheme="blue"
             position="absolute"
             right="100px"
-            onClick={() => navigate('/create')}
+            onClick={() => navigate('/dashboard/create')}
           >
             Create Product
           </Button>

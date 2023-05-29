@@ -6,6 +6,7 @@ import { gapi } from 'gapi-script';
 import GoogleLogin from 'react-google-login';
 
 import {
+  getChartData,
   getUserCart,
   getUserFavorites,
   getUserPurchases,
@@ -95,6 +96,10 @@ function Login() {
         dispatch(getUserCart(response.payload.user.id));
         dispatch(getUserPurchases(response.payload.user.id));
         dispatch(getUserFavorites(response.payload.user.id));
+
+        if (response.payload.user.isAdmin === 'true') {
+          dispatch(getChartData());
+        }
 
         setError('');
         setSuccess('Login successful!');
