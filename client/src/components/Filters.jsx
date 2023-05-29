@@ -186,7 +186,7 @@ function Filters({ changePage, allProducts }) {
             right="100px"
             onClick={() => navigate('/create')}
           >
-            Create product
+            Create Product
           </Button>
         </Box>
       )}
