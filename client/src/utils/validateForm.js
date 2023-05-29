@@ -20,6 +20,7 @@ export function validateLogin(formData, errors, setErrors) {
 
 export function validateRegister(formData, errors, setErrors) {
   let newErrors = { ...errors };
+
   const {
     name,
     lastname,
@@ -111,8 +112,19 @@ export function validateRegister(formData, errors, setErrors) {
 
 export function validateProduct(formData, errors, setErrors) {
   let newErrors = { ...errors };
-  const { name, category, season, size, gender, description, price, discounts, stock, image } =
-    formData;
+
+  const {
+    name,
+    category,
+    season,
+    size,
+    gender,
+    description,
+    price,
+    discounts,
+    stock,
+    image,
+  } = formData;
 
   //* Name
   if (!name) newErrors.name = 'Name cannot be empty';
@@ -163,6 +175,85 @@ export function validateProduct(formData, errors, setErrors) {
   else if (typeof image !== 'string') newErrors.image = 'Image must be a string';
   else if (!imageRegex.test(image)) newErrors.image = 'Invalid image file format';
   else newErrors.image = '';
+
+  setErrors(newErrors);
+}
+
+export function validateEditProduct(formData, errors, setErrors) {
+  let newErrors = { ...errors };
+
+  const {
+    name,
+    category,
+    season,
+    size,
+    gender,
+    description,
+    price,
+    discounts,
+    stock,
+    image,
+  } = formData;
+
+  //* Name
+  if (name) {
+    if (typeof name !== 'string') newErrors.name = 'Name must be string';
+    else newErrors.name = '';
+  }
+
+  //* Description
+  if (description) {
+    if (typeof description !== 'string') newErrors.description = 'Description must be string';
+    else newErrors.description = '';
+  }
+
+  //* Category
+  if (category) {
+    if (typeof category !== 'string') newErrors.category = 'Category must be string';
+    else newErrors.category = '';
+  }
+
+  //* Season
+  if (season) {
+    if (typeof season !== 'string') newErrors.season = 'Season must be string';
+    else newErrors.season = '';
+  }
+
+  //* Gender
+  if (gender) {
+    if (typeof gender !== 'string') newErrors.gender = 'Gender must be string';
+    else newErrors.gender = '';
+  }
+
+  //* Size
+  if (size) {
+    newErrors.size = '';
+  }
+
+  //* Price
+  if (price) {
+    if (isNaN(Number(price))) newErrors.price = 'Price must be a number';
+    else newErrors.price = '';
+  }
+
+  //* Discounts
+  if (discounts) {
+    if (isNaN(Number(discounts))) newErrors.discounts = 'Discounts must be a number';
+    else newErrors.discounts = '';
+  }
+
+  //* Stock
+  if (stock) {
+    if (!Number.isInteger(Number(stock))) newErrors.stock = 'Stock must be integer';
+    else newErrors.stock = '';
+  }
+
+  //* Image
+  if (image) {
+    if (typeof image !== 'string') newErrors.image = 'Image must be a string';
+    else if (!imageRegex.test(image)) newErrors.image = 'Invalid image file format';
+    else newErrors.image = '';
+  }
 
   setErrors(newErrors);
 }
