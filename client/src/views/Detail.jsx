@@ -23,7 +23,8 @@ import {
 import { motion } from 'framer-motion';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import backgroundImage from '../assets/images/background.jpg';
-import { CreateReview, StarRating } from '../components/index';
+import { CreateReview, StarRating, ReviewCard } from '../components/index';
+
 
 function Detail() {
   const dispatch = useDispatch();
@@ -185,6 +186,8 @@ function Detail() {
                         </Box>
 
                         <Box mt="4" d="flex" alignItems="center">
+                          <Text fontWeight="bold">
+                            Description</Text>
                           <Text fontSize="md">{description}</Text>
                         </Box>
 
@@ -193,25 +196,42 @@ function Detail() {
                             Sin stock
                           </Badge>
                         ) : stock < 6 ? (
-                          <Badge fontWeight="normal" fontSize="md" colorScheme="red" mr="2" mt="4">
+                          <>
+                          <Badge fontWeight="normal" fontSize="md" colorScheme="gray" mr="2" mt="4">
+                            Stock: {stock}
+                          </Badge>
+                          <Badge fontWeight="normal" fontSize="md" colorScheme="red" mr="2" mt="4">  
                             ¡Últimas unidades!
                           </Badge>
+                          </>
                         ) : (
                           <Badge fontWeight="normal" fontSize="md" colorScheme="gray" mr="2" mt="4">
                             Stock: {stock}
                           </Badge>
                         )}
 
-                        <Box mt="4" d="flex" justifyContent="space-between" alignItems="center">
+                        <Box mt="4" d="flex" justifyContent="spa" alignItems="center">
+                       <Box>
+                       <Text fontWeight="bold">
+                            Size</Text>
                           <Badge fontWeight="normal" fontSize="md" colorScheme="gray" mr="2">
                             {size}
                           </Badge>
+                       </Box>
 
+                          <Box>
+                          <Text fontWeight="bold">
+                            Gender</Text>
                           <Badge fontWeight="normal" fontSize="md" colorScheme="gray" mr="2">
                             {gender}
                           </Badge>
 
+                          </Box>
+                          <Text fontWeight="bold">
+                            Category</Text>
                           {Categories?.map((category) => (
+                           <>
+                            
                             <Badge
                               key={category.id}
                               fontWeight="normal"
@@ -220,10 +240,12 @@ function Detail() {
                               mr="2"
                             >
                               {category.name}
-                            </Badge>
+                            </Badge></>
                           ))}
 
                           <Box fontWeight="normal" fontSize="md" mt="2">
+                          <Text fontWeight="bold">
+                            Season</Text>
                             {Seasons?.map((season) => (
                               <Badge
                                 key={season.id}
@@ -245,31 +267,12 @@ function Detail() {
                             ))}
                           </Box>
                         </Box>
-
-                        <Box mt="4" d="flex" flexDirection="column" alignItems="center">
-                          {Reviews?.map((review) => (
-                            <Box
-                              key={review.id}
-                              bg="white"
-                              borderRadius="md"
-                              p="4"
-                              mb="4"
-                              boxShadow="md"
-                            >
-                              <Box color="blue.500" fontWeight="bold" fontSize="lg" mb="2">
-                                <StarRating value={review.punctuation} />
-                              </Box>
-                              <Text color="gray.600" fontSize="sm">
-                                {review.comment}
-                              </Text>
-                            </Box>
-                          ))}
-                        </Box>
                       </Box>
                     </Flex>
                   </Flex>
 
                   <Stack direction="row" spacing={4} mt="8">
+                  <CreateReview productId={productId} />
                     <Button
                       onClick={() => {
                         navigate('/home');
@@ -283,10 +286,15 @@ function Detail() {
                     <Button colorScheme="blue" width="150px" onClick={handleAddToCart}>
                       Add to Cart
                     </Button>
+                    
                   </Stack>
                 </Flex>
+                <Box>
+                  <Text justifyContent="center" textAlign="center" fontWeight="bold" margin="30px">
+                      Mira la opinión sobre este producto
+                  </Text>
+                </Box>
               </Box>
-
               <Button
                 colorScheme="blue"
                 variant="ghost"
@@ -295,11 +303,22 @@ function Detail() {
                 ml="4"
                 onClick={handleNext}
               >
+                
                 <Icon as={FaChevronRight} />
               </Button>
-              <CreateReview productId={productId} />
+              
             </Flex>
+            
           </Box>
+
+          <Box mt="4" d="flex" flexDirection="column" alignItems="center">
+                          {Reviews?.map((review) => (
+                            <ReviewCard key={review.id} comment={review.comment} punctuation={review.punctuation} />
+                          ))}
+                        </Box>    
+
+
+
         </motion.div>
       )}
     </>

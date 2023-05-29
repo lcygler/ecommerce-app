@@ -14,6 +14,7 @@ import SearchBar from './SearchBar';
 import Sidebar from './Sidebar';
 import StarRating from './StarRating';
 import UserRoute from './UserRoute';
+import ReviewCard from '../views/ReviewCard';
 
 export {
   CreateProduct,
@@ -32,4 +33,5 @@ export {
   Sidebar,
   Charts,
   EditProduct,
+  ReviewCard
 };
