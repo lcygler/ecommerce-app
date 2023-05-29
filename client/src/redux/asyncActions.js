@@ -90,8 +90,8 @@ export const createProduct = createAsyncThunk('slice/createProduct', async (prod
 
 export const updateProductById = createAsyncThunk(
   'slice/updateProductById',
-  async (productData) => {
-    const response = await axios.patch(`/products/${productData.id}`, productData);
+  async ({ productId, updatedProduct }) => {
+    const response = await axios.patch(`/products/${productId}`, updatedProduct);
     return response.data;
   }
 );
