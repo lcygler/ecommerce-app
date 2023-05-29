@@ -69,7 +69,7 @@ const UsersTable = ({ users, deleteUser, suspendUser }) => {
                 <Td>{username}</Td>
                 <Td>{email}</Td>
                 <Td>{new Date(birthdate).toLocaleDateString("es-AR")}</Td>
-                <Td isNumeric>${phoneNumber}</Td>
+                <Td isNumeric>{phoneNumber}</Td>
                 <Td>
                   <Switch
                     isChecked={state}
