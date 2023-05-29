@@ -35,7 +35,7 @@ function Favorites() {
     dispatch(getCategories());
     dispatch(getSeasons());
     dispatch(getGenders());
-  }, [dispatch]);
+  }, [dispatch, userId]);
 
   const totalPages = Math.ceil(filteredFavorites?.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;

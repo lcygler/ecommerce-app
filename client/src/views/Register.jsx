@@ -101,9 +101,17 @@ function Register() {
         birthdate: formData.birthdate,
         phoneNumber: formData.phoneNumber.trim(),
         address: formData.address.trim(),
-        postalCode: Math.floor(formData.postalCode),
-        state: formData.state.trim(),
-        country: formData.country.trim(),
+        postalCode: formData.postalCode.trim(),
+        state:
+          formData.state
+            .trim()
+            .charAt(0)
+            .toUpperCase() + formData.lastname.trim().slice(1),
+        country:
+          formData.country
+            .trim()
+            .charAt(0)
+            .toUpperCase() + formData.lastname.trim().slice(1),
       };
 
       const response = await dispatch(createUser(newUser));
@@ -332,7 +340,7 @@ function Register() {
                 <Input
                   id="postalCode"
                   name="postalCode"
-                  type="number"
+                  type="text"
                   placeholder="Enter your postal code"
                   value={formData.postalCode}
                   onChange={handleChange}

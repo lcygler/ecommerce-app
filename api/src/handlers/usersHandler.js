@@ -3,18 +3,10 @@ const { loginCtrl, loginGoogle } = require('../controllers/userLogin');
 
 const postRegister = async (req, res) => {
   try {
-    const { name, lastname, username, email, password, birthdate, phoneNumber, isAdmin } = req.body;
-    const response = await registerCtrl(
-      name,
-      lastname,
-      username,
-      email,
-      password,
-      birthdate,
-      phoneNumber,
-      isAdmin
-    );
-    console.log(response);
+    const userData = {
+      ...req.body,
+    };
+    const response = await registerCtrl(userData);
     res.status(201).json(response);
   } catch (error) {
     res.status(400).json({ error: error.message });
