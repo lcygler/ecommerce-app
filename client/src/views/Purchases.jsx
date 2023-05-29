@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { updateProductsStock } from '../redux/asyncActions';
+import { deleteUserCart, getUserPurchases, updateProductsStock } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
 import { Box, Button, Fade, Flex, Heading, Image, Stack, Text } from '@chakra-ui/react';
@@ -17,27 +17,35 @@ import emptyCartImage from '../assets/images/empty-cart.png';
 function Purchases() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+  const userId = useSelector((state) => state.userId);
   const cartProducts = useSelector((state) => state.cartProducts);
-  const orders = useSelector((state) => state.orders);
+  const purchases = useSelector((state) => state.purchases);
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
+
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+  useEffect(() => {
+    dispatch(getUserPurchases(userId));
+  }, [dispatch, userId]);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const payment_id = searchParams.get('payment_id');
-
     const storedURL = localStorage.getItem('mpSuccessURL');
     const currentURL = window.location.href;
 
-    // If purchase was successful
+    // If purchase was successful, then:
     if (payment_id && payment_id !== 'null' && storedURL !== currentURL) {
-      dispatch(updateProductsStock(cartProducts)); // Update catalog stock
-      dispatch(actions.clearCart());
+      dispatch(updateProductsStock(cartProducts)); // Update products stock in DB
+      dispatch(deleteUserCart(userId)); // Clear user cart in DB
+      dispatch(actions.clearCart()); // Clear user cart in state
+
       localStorage.setItem('mpSuccessURL', currentURL);
 
       toast.success('Your purchase was successful!');
     }
-  }, [dispatch, cartProducts]);
+  }, [dispatch, cartProducts, userId]);
 
   const handlePurchaseDetail = (id) => {
     navigate(`/purchases/${id}`);
@@ -94,7 +102,7 @@ function Purchases() {
                 </Button>
               </Box>
             </Box>
-          ) : orders?.length === 0 ? (
+          ) : purchases?.length === 0 ? (
             <Box textAlign="center" fontSize="lg" fontWeight="normal">
               No purchases found
               <Fade in={isImageLoaded}>
@@ -123,7 +131,7 @@ function Purchases() {
                   mb={2}
                 >
                   <Text flex="1" pr={4}>
-                    Order
+                    Purchase
                   </Text>
                   <Text flex="1" pr={4}>
                     Date
@@ -140,9 +148,9 @@ function Purchases() {
                 </Flex>
               </Box>
 
-              {orders?.map((order) => (
+              {purchases?.map((purchase) => (
                 <Box
-                  key={order.id}
+                  key={purchase.id}
                   borderBottom="1px solid gray"
                   display="flex"
                   alignItems="center"
@@ -153,20 +161,20 @@ function Purchases() {
                 >
                   <Flex flexDirection="column" justifyContent="flex-start" flex="1">
                     <Text flex="1" ml="4">
-                      {order.id}
+                      {purchase.id}
                     </Text>
                   </Flex>
 
                   <Flex flexDirection="column" justifyContent="flex-start" flex="1">
-                    <Text flex="1">{order.date}</Text>
+                    <Text flex="1">{purchase.date}</Text>
                   </Flex>
 
                   <Flex flexDirection="column" justifyContent="flex-start" flex="1">
-                    <Text flex="1">{order.status}</Text>
+                    <Text flex="1">{purchase.status}</Text>
                   </Flex>
 
                   <Flex flexDirection="column" justifyContent="flex-start" flex="1">
-                    <Text flex="1">${order.total.toFixed(2)}</Text>
+                    <Text flex="1">${purchase.total.toFixed(2)}</Text>
                   </Flex>
 
                   <Flex flexDirection="column" justifyContent="flex-start" flex="1">
@@ -174,7 +182,7 @@ function Purchases() {
                       size="sm"
                       width="100px"
                       colorScheme="blue"
-                      onClick={() => handlePurchaseDetail(order.id)}
+                      onClick={() => handlePurchaseDetail(purchase.id)}
                     >
                       View Detail
                     </Button>

@@ -1,33 +1,44 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import {
-  Box,
-  Flex,
-  Spinner,
   Alert,
+  AlertDescription,
   AlertIcon,
   AlertTitle,
-  AlertDescription,
+  Box,
   Button,
+  Flex,
+  Spinner,
 } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { getAdminProducts, getCategories, getGenders, getSeasons } from '../redux/asyncActions';
+import { useNavigate } from 'react-router-dom';
+import { Charts, Filters, Navbar, Pagination, ProductsTable, Sidebar } from '../components/index';
+import {
+  deleteProductById,
+  getAdminProducts,
+  getCategories,
+  getGenders,
+  getSeasons,
+  updateProductById,
+} from '../redux/asyncActions';
 import { actions } from '../redux/slice';
-import { Filters, Navbar, Pagination, ProductsTable, Charts, Sidebar } from '../components/index';
 
 function Dashboard() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const adminProducts = useSelector((state) => state.adminProducts);
   const filteredAdminProducts = useSelector((state) => state.filteredAdminProducts);
   const currentPage = useSelector((state) => state.currentPage);
+
   const [itemsPerPage] = useState(10);
   const [loading, setLoading] = useState(true);
   const [selectedOption, setSelectedOption] = useState('products');
 
   useEffect(() => {
     const fetchProducts = async () => {
-      dispatch(getAdminProducts());
-      dispatch(actions.filterAdminProducts());
+      await dispatch(getAdminProducts());
+      await dispatch(actions.filterAdminProducts());
       dispatch(getCategories());
       dispatch(getSeasons());
       dispatch(getGenders());
@@ -45,14 +56,30 @@ function Dashboard() {
     dispatch(actions.setCurrentPage(pageNumber));
   };
 
-  const handleReset = () => {
-    dispatch(actions.resetFilters());
+  const handleReset = async () => {
+    await dispatch(actions.resetFilters());
     dispatch(actions.filterAdminProducts());
     changePage(1);
   };
 
   const handleSidebarOption = (option) => {
     setSelectedOption(option);
+  };
+
+  const handleEditProduct = (productId) => {
+    navigate(`/edit/${productId}`);
+  };
+
+  const handleDeleteProduct = async (productId) => {
+    await dispatch(deleteProductById(productId));
+    await dispatch(getAdminProducts());
+    await dispatch(actions.filterAdminProducts());
+  };
+
+  const handleSuspendProduct = async ({ productId, updatedProduct }) => {
+    await dispatch(updateProductById({ productId, updatedProduct }));
+    await dispatch(getAdminProducts());
+    await dispatch(actions.filterAdminProducts());
   };
 
   return (
@@ -106,7 +133,14 @@ function Dashboard() {
             </Box>
           ) : (
             <>
-              {selectedOption === 'products' && <ProductsTable products={currentProducts} />}
+              {selectedOption === 'products' && (
+                <ProductsTable
+                  products={currentProducts}
+                  editProduct={handleEditProduct}
+                  deleteProduct={handleDeleteProduct}
+                  suspendProduct={handleSuspendProduct}
+                />
+              )}
               {selectedOption === 'charts' && <Charts />}
               {selectedOption === 'products' && (
                 <Box display="flex" justifyContent="center" mt="4">

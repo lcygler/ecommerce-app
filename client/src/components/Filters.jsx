@@ -1,19 +1,36 @@
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { removeUserFavorites } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { AddIcon } from '@chakra-ui/icons';
-import { Box, Button, Flex, Select } from '@chakra-ui/react';
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  Box,
+  Button,
+  Flex,
+  Select,
+  useDisclosure,
+} from '@chakra-ui/react';
 
 function Filters({ changePage, allProducts }) {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
 
+  const cancelRef = useRef();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const userId = useSelector((state) => state.userId);
   const categories = useSelector((state) => state.categories);
   const seasons = useSelector((state) => state.seasons);
   const genders = useSelector((state) => state.genders);
@@ -74,14 +91,22 @@ function Filters({ changePage, allProducts }) {
 
   const handleClearFavorites = () => {
     if (allProducts.length !== 0) {
-      const confirmed = window.confirm('Are you sure you want to clear all favorites?');
-      if (confirmed) {
-        dispatch(actions.clearFavorites());
-
-        toast.success('All favorites were cleared!');
-      }
+      dispatch(actions.clearFavorites());
+      dispatch(removeUserFavorites(userId));
+      toast.success('All favorites were cleared!');
     }
   };
+
+  // const handleClearFavorites = () => {
+  //   if (allProducts.length !== 0) {
+  //     const confirmed = window.confirm('Are you sure you want to clear all favorites?');
+  //     if (confirmed) {
+  //       dispatch(actions.clearFavorites());
+  //       dispatch(removeUserFavorites(userId));
+  //       toast.success('All favorites were cleared!');
+  //     }
+  //   }
+  // };
 
   return (
     <Flex
@@ -169,7 +194,8 @@ function Filters({ changePage, allProducts }) {
 
       {location.pathname === '/favorites' && allProducts.length !== 0 && (
         <Box display="flex" alignItems="center" justifyContent="center" ml="4">
-          <Button colorScheme="red" variant="ghost" onClick={handleClearFavorites}>
+          {/* <Button colorScheme="red" variant="ghost" onClick={handleClearFavorites}> */}
+          <Button colorScheme="red" variant="ghost" onClick={onOpen}>
             Clear Favorites
           </Button>
         </Box>
@@ -184,10 +210,38 @@ function Filters({ changePage, allProducts }) {
             right="100px"
             onClick={() => navigate('/create')}
           >
-            Create product
+            Create Product
           </Button>
         </Box>
       )}
+
+      <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
+        <AlertDialogOverlay backgroundColor="transparent">
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Clear Favorites
+            </AlertDialogHeader>
+
+            <AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button
+                colorScheme="red"
+                onClick={() => {
+                  handleClearFavorites();
+                  onClose();
+                }}
+                ml={3}
+              >
+                Confirm
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </Flex>
   );
 }

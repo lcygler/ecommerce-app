@@ -23,7 +23,7 @@ import {
 import { motion } from 'framer-motion';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import backgroundImage from '../assets/images/background.jpg';
-import { StarRating } from '../components/index';
+import { CreateReview, StarRating } from '../components/index';
 
 function Detail() {
   const dispatch = useDispatch();
@@ -64,7 +64,6 @@ function Detail() {
         id: parseInt(productId),
         name,
         price,
-        Categories,
         description,
         gender,
         size,
@@ -298,6 +297,7 @@ function Detail() {
               >
                 <Icon as={FaChevronRight} />
               </Button>
+              <CreateReview productId={productId} />
             </Flex>
           </Box>
         </motion.div>

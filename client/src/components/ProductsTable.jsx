@@ -1,10 +1,14 @@
-import { useDispatch } from 'react-redux';
-import { useNavigate } from "react-router-dom";
-
-import { deleteProductById, updateProductById } from '../redux/asyncActions';
+import { useRef, useState } from 'react';
 
 import { SettingsIcon } from '@chakra-ui/icons';
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  Button,
   Image,
   Menu,
   MenuButton,
@@ -19,24 +23,18 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
 } from '@chakra-ui/react';
 
-function ProductTable({ products }) {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+function ProductTable({ products, editProduct, deleteProduct, suspendProduct }) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef();
+  const [productId, setProductId] = useState(null);
 
-  const handleEdit = (id) => {
-    // TODO hacer logica aqui
-    navigate("/edit/"+ id)
-  }
-
-  const handleDelete = (id) => {
-    dispatch(deleteProductById(id))
-  }
-
-  const handleSuspend = (productData) => {
-    dispatch(updateProductById(productData))
-  }
+  const handleDeleteProduct = () => {
+    deleteProduct(productId);
+    onClose();
+  };
 
   return (
     <TableContainer marginTop={5} overflowY="auto">
@@ -60,10 +58,7 @@ function ProductTable({ products }) {
               id,
               name,
               price,
-              Categories,
-              description,
-              gender,
-              Seasons,
+              description, // Categories, Seasons, gender,
               size,
               image,
               discounts,
@@ -86,15 +81,30 @@ function ProductTable({ products }) {
                 <Td>{stock}</Td>
                 <Td isNumeric>${price.toFixed(2)}</Td>
                 <Td>{discounts * 100}%</Td>
-                <Td>{!disable ? <Switch onChange={() => handleSuspend({id:id, disable:true})} isChecked/> : <Switch onChange={() => handleSuspend({id:id,disable:false})}/>}</Td>
+                <Td>
+                  <Switch
+                    isChecked={!disable}
+                    onChange={() => {
+                      suspendProduct({ productId: id, updatedProduct: { disable: !disable } });
+                    }}
+                  />
+                </Td>
                 <Td>
                   <Menu>
                     <MenuButton as="button">
                       <SettingsIcon />
                     </MenuButton>
                     <MenuList>
-                      <MenuItem onClick={() => handleEdit(id)}>Edit</MenuItem>
-                      <MenuItem onClick={() => handleDelete(id)}>Delete</MenuItem>
+                      <MenuItem onClick={() => editProduct(id)}>Edit</MenuItem>
+                      <MenuItem
+                        colorScheme="red"
+                        onClick={() => {
+                          setProductId(id);
+                          onOpen();
+                        }}
+                      >
+                        Delete
+                      </MenuItem>
                     </MenuList>
                   </Menu>
                 </Td>
@@ -103,6 +113,27 @@ function ProductTable({ products }) {
           )}
         </Tbody>
       </Table>
+
+      <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
+        <AlertDialogOverlay backgroundColor="transparent">
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Product
+            </AlertDialogHeader>
+
+            <AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button colorScheme="red" onClick={handleDeleteProduct} ml={3}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </TableContainer>
   );
 }

@@ -1,5 +1,8 @@
 import AdminRoute from './AdminRoute';
+import Charts from './Charts';
 import CreateProduct from './CreateProduct';
+import CreateReview from './CreateReview';
+import EditProduct from './EditProduct';
 import Filters from './Filters';
 import Footer from './Footer';
 import Navbar from './Navbar';
@@ -8,14 +11,13 @@ import Product from './Product';
 import Products from './Products';
 import ProductsTable from './ProductsTable';
 import SearchBar from './SearchBar';
+import Sidebar from './Sidebar';
 import StarRating from './StarRating';
 import UserRoute from './UserRoute';
-import Sidebar from './Sidebar';
-import Charts from './Charts';
-import EditProduct from './EditProduct';
 
 export {
   CreateProduct,
+  CreateReview,
   Filters,
   Footer,
   Navbar,

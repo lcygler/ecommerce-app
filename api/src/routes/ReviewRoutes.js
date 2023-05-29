@@ -22,6 +22,7 @@ review.post('/', async (req, res) => {
   try {
     const user = await User.findByPk(userId);
     const product = await Product.findByPk(productId);
+    
 
     if (!user || !product) {
       return res.status(404).json({ message: 'Usuario o producto no encontrado' });
@@ -40,6 +41,7 @@ review.post('/', async (req, res) => {
     res.status(500).json({ message: 'Hubo un error al crear la reseña' });
   }
 });
+
 
 
 

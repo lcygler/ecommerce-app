@@ -2,7 +2,7 @@ const { User } = require('../db.js');
 const { Op } = require('sequelize');
 const { compare } = require('../utils/HashPassword.js');
 const jwt = require('jsonwebtoken');
-const { sendEmail } = require('../utils/mail.config.js');
+const { sendWelcomeEmail } = require('../utils/mail.config.js');
 
 const generateToken = (user) => {
   const payload = {
@@ -51,7 +51,7 @@ const loginGoogle = async (userData) => {
 
     const newUser = await User.create({ googleId, email, name, lastname, image });
     const token = generateToken(newUser);
-    sendEmail(email);
+    sendWelcomeEmail(email);
     return { user: newUser, token };
   } catch (error) {
     throw new Error('Error in google login');

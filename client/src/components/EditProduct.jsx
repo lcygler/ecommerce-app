@@ -3,8 +3,14 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { getCategories, getGenders, getProductById, getSeasons, updateProductById } from '../redux/asyncActions';
-import { validateProduct } from '../utils/validateForm';
+import {
+  getCategories,
+  getGenders,
+  getProductById,
+  getSeasons,
+  updateProductById,
+} from '../redux/asyncActions';
+import { validateEditProduct } from '../utils/validateForm';
 
 import {
   Alert,
@@ -16,6 +22,7 @@ import {
   Heading,
   Input,
   Select,
+  Spinner,
   Stack,
 } from '@chakra-ui/react';
 import backgroundImage from '../assets/images/background.jpg';
@@ -26,27 +33,21 @@ let navigateTimeoutId = null;
 function EditProduct() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { productId } = useParams()
+  const { productId } = useParams();
+
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingData, setIsLoadingData] = useState(true);
+
   const selectedProduct = useSelector((state) => state.selectedProduct);
-  const {
-    name,
-    image,
-    Categories,
-    discounts,
-    price,
-    Seasons,
-    size,
-    gender,
-    description,
-    //Reviews,
-    stock,
-  } = selectedProduct || {};
 
   useEffect(() => {
-    dispatch(getProductById(productId));
+    const fetchProduct = async () => {
+      await dispatch(getProductById(productId));
+      setIsLoadingData(false);
+    };
+    fetchProduct();
     dispatch(getCategories());
     dispatch(getSeasons());
     dispatch(getGenders());
@@ -57,17 +58,47 @@ function EditProduct() {
   const genders = useSelector((state) => state.genders);
 
   const [formData, setFormData] = useState({
-    name,
-    size,
-    gender,
-    description,
-    price,
-    discounts,
-    stock,
-    image,
-    season: Seasons ? Seasons[0].name : '',
-    category: Categories ? Categories[0].name : '',
+    name: '',
+    size: '',
+    gender: '',
+    description: '',
+    price: '',
+    discounts: '',
+    stock: '',
+    image: '',
+    season: '',
+    category: '',
   });
+
+  useEffect(() => {
+    if (!isLoadingData && selectedProduct) {
+      const {
+        name,
+        image,
+        Categories,
+        discounts,
+        price,
+        Seasons,
+        size,
+        gender,
+        description,
+        stock,
+      } = selectedProduct;
+
+      setFormData({
+        name,
+        size,
+        gender,
+        description,
+        price,
+        discounts,
+        stock,
+        image,
+        season: Seasons ? Seasons[0].name : '',
+        category: Categories ? Categories[0].name : '',
+      });
+    }
+  }, [isLoadingData, selectedProduct]);
 
   const [errors, setErrors] = useState({
     name: '',
@@ -97,7 +128,7 @@ function EditProduct() {
       }
     }
 
-    validateProduct(formFields, errors, setErrors);
+    validateEditProduct(formFields, errors, setErrors);
   };
 
   const uploadImage = async (e) => {
@@ -121,27 +152,72 @@ function EditProduct() {
     e.preventDefault();
     setIsLoading(true);
 
-    if (formData.name && Object.values(errors).every((error) => error === '')) {
-      const newProduct = {
-        id: productId,
-        name: formData.name.trim().charAt(0).toUpperCase() + formData.name.trim().slice(1),
-        size: formData.size.trim(),
-        gender: formData.gender.trim(),
-        description: formData.description.trim(),
-        price: formData.price,
-        discounts: formData.discounts,
-        stock: Math.floor(formData.stock),
-        image: formData.image.trim(),
-        Seasons: { name: formData.season.trim() },
-        Categories: { name: formData.category.trim() },
-      };
+    // if (formData.name && Object.values(errors).every((error) => error === '')) {
+    // const newProduct = {
+    //   id: productId,
+    //   name:
+    //     formData.name
+    //       .trim()
+    //       .charAt(0)
+    //       .toUpperCase() + formData.name.trim().slice(1),
+    //   size: formData.size.trim(),
+    //   gender: formData.gender.trim(),
+    //   description: formData.description.trim(),
+    //   price: formData.price,
+    //   discounts: formData.discounts,
+    //   stock: Math.floor(formData.stock),
+    //   image: formData.image.trim(),
+    //   Seasons: { name: formData.season.trim() },
+    //   Categories: { name: formData.category.trim() },
+    // };
 
-      const response = dispatch(updateProductById(newProduct));
+    if (
+      Object.values(formData).some((field) => field !== '') &&
+      Object.values(errors).every((error) => error === '')
+    ) {
+      const updatedProduct = {};
+
+      if (formData.name.trim() !== '') {
+        updatedProduct.name =
+          formData.name
+            .trim()
+            .charAt(0)
+            .toUpperCase() + formData.name.trim().slice(1);
+      }
+      if (formData.size.trim() !== '') {
+        updatedProduct.size = formData.size.trim();
+      }
+      if (formData.gender.trim() !== '') {
+        updatedProduct.gender = formData.gender.trim();
+      }
+      if (formData.description.trim() !== '') {
+        updatedProduct.description = formData.description.trim();
+      }
+      if (formData.price !== '') {
+        updatedProduct.price = formData.price;
+      }
+      if (formData.discounts !== '') {
+        updatedProduct.discounts = formData.discounts;
+      }
+      if (formData.stock !== '') {
+        updatedProduct.stock = Math.floor(formData.stock);
+      }
+      if (formData.image.trim() !== '') {
+        updatedProduct.image = formData.image.trim();
+      }
+      if (formData.season.trim() !== '') {
+        updatedProduct.Seasons = { name: formData.season.trim() };
+      }
+      if (formData.category.trim() !== '') {
+        updatedProduct.Categories = { name: formData.category.trim() };
+      }
+
+      const response = dispatch(updateProductById({ productId, updatedProduct }));
 
       timeoutId = setTimeout(() => {
         setIsLoading(false);
         if (response) {
-          setSuccess('Product updated successful!');
+          setSuccess('Product updated successfully!');
           setFormData({
             name: '',
             size: '',
@@ -162,8 +238,6 @@ function EditProduct() {
         }
       }, 2000);
     }
-
-    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -172,6 +246,14 @@ function EditProduct() {
       clearTimeout(navigateTimeoutId);
     };
   }, []);
+
+  if (isLoadingData || !selectedProduct) {
+    return (
+      <Box display="grid" placeItems="center" height="100vh">
+        <Spinner size="xl" color="blue.500" />
+      </Box>
+    );
+  }
 
   return (
     <Box
@@ -193,7 +275,7 @@ function EditProduct() {
         boxSizing="border-box"
       >
         <Heading size="lg" mb="6" w="100%" textAlign="center">
-          Update a product
+          Update Product
         </Heading>
         <form onChange={handleForm} onSubmit={handleSubmit}>
           {error && (
@@ -210,7 +292,7 @@ function EditProduct() {
           )}
           <Stack direction="column" spacing={4}>
             <Stack direction="row" spacing={4}>
-              <FormControl isRequired isInvalid={errors.name !== ''}>
+              <FormControl /* isRequired */ isInvalid={errors.name !== ''}>
                 <FormLabel htmlFor="name">Name</FormLabel>
                 <Input
                   id="name"
@@ -224,7 +306,7 @@ function EditProduct() {
                 />
               </FormControl>
 
-              <FormControl isRequired isInvalid={errors.description !== ''}>
+              <FormControl /* isRequired */ isInvalid={errors.description !== ''}>
                 <FormLabel htmlFor="description">Description</FormLabel>
                 <Input
                   id="description"
@@ -240,7 +322,7 @@ function EditProduct() {
             </Stack>
 
             <Stack direction="row" spacing={4}>
-              <FormControl isRequired isInvalid={errors.category !== ''}>
+              <FormControl /* isRequired */ isInvalid={errors.category !== ''}>
                 <FormLabel htmlFor="category">Category</FormLabel>
                 <Select
                   id="category"
@@ -259,7 +341,7 @@ function EditProduct() {
                 </Select>
               </FormControl>
 
-              <FormControl isRequired isInvalid={errors.season !== ''}>
+              <FormControl /* isRequired */ isInvalid={errors.season !== ''}>
                 <FormLabel htmlFor="season">Season</FormLabel>
                 <Select
                   id="season"
@@ -280,7 +362,7 @@ function EditProduct() {
             </Stack>
 
             <Stack direction="row" spacing={4}>
-              <FormControl isRequired isInvalid={errors.gender !== ''}>
+              <FormControl /* isRequired */ isInvalid={errors.gender !== ''}>
                 <FormLabel htmlFor="gender">Gender</FormLabel>
                 <Select
                   id="gender"
@@ -299,7 +381,7 @@ function EditProduct() {
                 </Select>
               </FormControl>
 
-              <FormControl isRequired isInvalid={errors.size !== ''}>
+              <FormControl /* isRequired */ isInvalid={errors.size !== ''}>
                 <FormLabel htmlFor="size">Size</FormLabel>
                 <Input
                   id="size"
@@ -315,7 +397,7 @@ function EditProduct() {
             </Stack>
 
             <Stack direction="row" spacing={4}>
-              <FormControl isRequired isInvalid={errors.price !== ''}>
+              <FormControl /* isRequired */ isInvalid={errors.price !== ''}>
                 <FormLabel htmlFor="price">Price</FormLabel>
                 <Input
                   id="price"
@@ -329,7 +411,7 @@ function EditProduct() {
                 />
               </FormControl>
 
-              <FormControl isRequired isInvalid={errors.discounts !== ''}>
+              <FormControl /* isRequired */ isInvalid={errors.discounts !== ''}>
                 <FormLabel htmlFor="discounts">Discount</FormLabel>
                 <Input
                   id="discounts"
@@ -345,7 +427,7 @@ function EditProduct() {
             </Stack>
 
             <Stack direction="row" spacing={4}>
-              <FormControl isRequired isInvalid={errors.stock !== ''}>
+              <FormControl /* isRequired */ isInvalid={errors.stock !== ''}>
                 <FormLabel htmlFor="stock">Stock</FormLabel>
                 <Input
                   id="stock"
@@ -359,7 +441,7 @@ function EditProduct() {
                 />
               </FormControl>
 
-              <FormControl isRequired isInvalid={errors.image !== ''}>
+              <FormControl /* isRequired */ isInvalid={errors.image !== ''}>
                 <FormLabel htmlFor="image">Image</FormLabel>
                 <Input
                   id="image"

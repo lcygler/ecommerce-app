@@ -104,6 +104,19 @@ function Navbar() {
             </Link>
           )}
 
+          {isAuthenticated && (
+            <Link as={RouterLink} to="/profile" mr={4}>
+              <Button
+                leftIcon={<FaUser />}
+                colorScheme="blue"
+                variant="ghost"
+                backgroundColor={location.pathname === '/profile' ? 'blue.50' : 'white'}
+              >
+                Profile
+              </Button>
+            </Link>
+          )}
+
           {!isAuthenticated ? (
             <Link as={RouterLink} to="/login" mr={4}>
               <Button
@@ -214,6 +227,20 @@ function Navbar() {
                     backgroundColor={location.pathname === '/dashboard' ? 'blue.50' : 'white'}
                   >
                     Dashboard
+                  </Button>
+                </Link>
+              )}
+
+              {isAuthenticated && (
+                <Link as={RouterLink} to="/profile" w="full" mb={4}>
+                  <Button
+                    w="full"
+                    leftIcon={<FaUser />}
+                    colorScheme="blue"
+                    variant="ghost"
+                    backgroundColor={location.pathname === '/profile' ? 'blue.50' : 'white'}
+                  >
+                    Profile
                   </Button>
                 </Link>
               )}

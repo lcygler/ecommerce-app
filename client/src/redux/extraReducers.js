@@ -1,14 +1,13 @@
 import {
   addFavorite,
-  createOrder,
   createPaymentLink,
   createProduct,
+  createPurchase,
   createReview,
   createUser,
   deleteCartById,
-  deleteFavorite,
-  deleteOrderById,
   deleteProductById,
+  deletePurchaseById,
   deleteReviewById,
   deleteUserById,
   deleteUserCart,
@@ -17,22 +16,24 @@ import {
   getCartById,
   getCategories,
   getGenders,
-  getOrderById,
   getProductById,
   getProductByName,
+  getPurchaseById,
   getReviewById,
   getSeasons,
   getUserById,
   getUserCart,
   getUserFavorites,
-  getUserOrders,
+  getUserPurchases,
   getUserReviews,
   loginGoogle,
   loginUser,
+  removeFavorite,
+  removeUserFavorites,
   updateCartById,
-  updateOrderById,
   updateProductById,
   updateProductsStock,
+  updatePurchaseById,
   updateReviewById,
   updateUserById,
   updateUserCart,
@@ -170,6 +171,9 @@ export const extraReducers = (builder) => {
     .addCase(getUserFavorites.fulfilled, (state, action) => {
       state.getUserFavoritesStatus = 'succeeded';
       state.favorites = action.payload;
+
+      const userId = state.userId;
+      localStorage.setItem(`user_${userId}_favorites`, JSON.stringify(action.payload));
     })
     .addCase(getUserFavorites.rejected, (state, action) => {
       state.getUserFavoritesStatus = 'failed';
@@ -187,15 +191,26 @@ export const extraReducers = (builder) => {
       state.addFavoriteError = action.error.message;
     })
 
-    .addCase(deleteFavorite.pending, (state) => {
-      state.deleteFavoriteStatus = 'loading';
+    .addCase(removeFavorite.pending, (state) => {
+      state.removeFavoriteStatus = 'loading';
     })
-    .addCase(deleteFavorite.fulfilled, (state, action) => {
-      state.deleteFavoriteStatus = 'succeeded';
+    .addCase(removeFavorite.fulfilled, (state, action) => {
+      state.removeFavoriteStatus = 'succeeded';
     })
-    .addCase(deleteFavorite.rejected, (state, action) => {
-      state.deleteFavoriteStatus = 'failed';
-      state.deleteFavoriteError = action.error.message;
+    .addCase(removeFavorite.rejected, (state, action) => {
+      state.removeFavoriteStatus = 'failed';
+      state.removeFavoriteError = action.error.message;
+    })
+
+    .addCase(removeUserFavorites.pending, (state) => {
+      state.removeUserFavoritesStatus = 'loading';
+    })
+    .addCase(removeUserFavorites.fulfilled, (state, action) => {
+      state.removeUserFavoritesStatus = 'succeeded';
+    })
+    .addCase(removeUserFavorites.rejected, (state, action) => {
+      state.removeUserFavoritesStatus = 'failed';
+      state.removeUserFavoritesError = action.error.message;
     })
 
     //* CART
@@ -205,6 +220,14 @@ export const extraReducers = (builder) => {
     .addCase(getUserCart.fulfilled, (state, action) => {
       state.getUserCartStatus = 'succeeded';
       state.selectedCart = action.payload;
+      state.cartProducts = action.payload;
+      state.cartTotal = action.payload.reduce(
+        (total, product) => total + product.price * (1 - product.discounts) * product.quantity,
+        0
+      );
+
+      const userId = state.userId;
+      localStorage.setItem(`user_${userId}_cartProducts`, JSON.stringify(action.payload));
     })
     .addCase(getUserCart.rejected, (state, action) => {
       state.getUserCartStatus = 'failed';
@@ -294,64 +317,70 @@ export const extraReducers = (builder) => {
       state.updateProductsStockError = action.error.message;
     })
 
-    //* ORDERS
-    .addCase(getUserOrders.pending, (state) => {
-      state.getUserOrdersStatus = 'loading';
+    //* PURCHASES
+    .addCase(getUserPurchases.pending, (state) => {
+      state.getUserPurchasesStatus = 'loading';
     })
-    .addCase(getUserOrders.fulfilled, (state, action) => {
-      state.getUserOrdersStatus = 'succeeded';
-      state.orders = action.payload;
+    .addCase(getUserPurchases.fulfilled, (state, action) => {
+      state.getUserPurchasesStatus = 'succeeded';
+      state.purchases = action.payload;
+
+      const userId = state.userId;
+      localStorage.setItem(`user_${userId}_purchases`, JSON.stringify(action.payload));
     })
-    .addCase(getUserOrders.rejected, (state, action) => {
-      state.getUserOrdersStatus = 'failed';
-      state.getUserOrdersError = action.error.message;
+    .addCase(getUserPurchases.rejected, (state, action) => {
+      state.getUserPurchasesStatus = 'failed';
+      state.getUserPurchasesError = action.error.message;
     })
 
-    .addCase(getOrderById.pending, (state) => {
-      state.getOrderByIdStatus = 'loading';
+    .addCase(getPurchaseById.pending, (state) => {
+      state.getPurchaseByIdStatus = 'loading';
     })
-    .addCase(getOrderById.fulfilled, (state, action) => {
-      state.getOrderByIdStatus = 'succeeded';
-      state.selectedOrder = action.payload;
+    .addCase(getPurchaseById.fulfilled, (state, action) => {
+      state.getPurchaseByIdStatus = 'succeeded';
+      state.selectedPurchase = action.payload;
     })
-    .addCase(getOrderById.rejected, (state, action) => {
-      state.getOrderByIdStatus = 'failed';
-      state.getOrderByIdError = action.error.message;
-    })
-
-    .addCase(createOrder.pending, (state) => {
-      state.createOrderStatus = 'loading';
-    })
-    .addCase(createOrder.fulfilled, (state, action) => {
-      state.createOrderStatus = 'succeeded';
-      state.selectedOrder = action.payload;
-    })
-    .addCase(createOrder.rejected, (state, action) => {
-      state.createOrderStatus = 'failed';
-      state.createOrderError = action.error.message;
+    .addCase(getPurchaseById.rejected, (state, action) => {
+      state.getPurchaseByIdStatus = 'failed';
+      state.getPurchaseByIdError = action.error.message;
     })
 
-    .addCase(updateOrderById.pending, (state) => {
-      state.updateOrderByIdStatus = 'loading';
+    .addCase(createPurchase.pending, (state) => {
+      state.createPurchaseStatus = 'loading';
     })
-    .addCase(updateOrderById.fulfilled, (state, action) => {
-      state.updateOrderByIdStatus = 'succeeded';
-      state.selectedOrder = action.payload;
+    .addCase(createPurchase.fulfilled, (state, action) => {
+      state.createPurchaseStatus = 'succeeded';
+      state.selectedPurchase = action.payload;
+
+      const userId = action.payload?.UserId;
+      localStorage.setItem(`user_${userId}_selectedPurchase`, JSON.stringify(action.payload));
     })
-    .addCase(updateOrderById.rejected, (state, action) => {
-      state.updateOrderByIdStatus = 'failed';
-      state.updateOrderByIdError = action.error.message;
+    .addCase(createPurchase.rejected, (state, action) => {
+      state.createPurchaseStatus = 'failed';
+      state.createPurchaseError = action.error.message;
     })
 
-    .addCase(deleteOrderById.pending, (state) => {
-      state.deleteOrderByIdStatus = 'loading';
+    .addCase(updatePurchaseById.pending, (state) => {
+      state.updatePurchaseByIdStatus = 'loading';
     })
-    .addCase(deleteOrderById.fulfilled, (state, action) => {
-      state.deleteOrderByIdStatus = 'succeeded';
+    .addCase(updatePurchaseById.fulfilled, (state, action) => {
+      state.updatePurchaseByIdStatus = 'succeeded';
+      state.selectedPurchase = action.payload;
     })
-    .addCase(deleteOrderById.rejected, (state, action) => {
-      state.deleteOrderByIdStatus = 'failed';
-      state.deleteOrderByIdError = action.error.message;
+    .addCase(updatePurchaseById.rejected, (state, action) => {
+      state.updatePurchaseByIdStatus = 'failed';
+      state.updatePurchaseByIdError = action.error.message;
+    })
+
+    .addCase(deletePurchaseById.pending, (state) => {
+      state.deletePurchaseByIdStatus = 'loading';
+    })
+    .addCase(deletePurchaseById.fulfilled, (state, action) => {
+      state.deletePurchaseByIdStatus = 'succeeded';
+    })
+    .addCase(deletePurchaseById.rejected, (state, action) => {
+      state.deletePurchaseByIdStatus = 'failed';
+      state.deletePurchaseByIdError = action.error.message;
     })
 
     //* USERS
@@ -412,17 +441,16 @@ export const extraReducers = (builder) => {
       state.isAdmin = action.payload.user.isAdmin;
       state.userId = action.payload.user.id;
 
-      // localStorage
       const userId = action.payload.user.id;
       localStorage.setItem('userId', userId);
       localStorage.setItem(`user_${userId}_selectedUser`, JSON.stringify(action.payload));
       localStorage.setItem(`user_${userId}_isAuthenticated`, 'true');
       localStorage.setItem(`user_${userId}_isAdmin`, action.payload.user.isAdmin);
 
-      state.cartProducts = JSON.parse(localStorage.getItem(`user_${userId}_cartProducts`)) || [];
-      state.cartTotal = JSON.parse(localStorage.getItem(`user_${userId}_cartTotal`)) || 0;
-      state.favorites = JSON.parse(localStorage.getItem(`user_${userId}_favorites`)) || [];
-      state.orders = JSON.parse(localStorage.getItem(`user_${userId}_orders`)) || [];
+      // state.cartProducts = JSON.parse(localStorage.getItem(`user_${userId}_cartProducts`)) || [];
+      // state.cartTotal = JSON.parse(localStorage.getItem(`user_${userId}_cartTotal`)) || 0;
+      // state.purchases = JSON.parse(localStorage.getItem(`user_${userId}_purchases`)) || [];
+      // state.favorites = JSON.parse(localStorage.getItem(`user_${userId}_favorites`)) || [];
     })
     .addCase(loginUser.rejected, (state, action) => {
       state.loginUserStatus = 'failed';
@@ -440,17 +468,16 @@ export const extraReducers = (builder) => {
       state.isAdmin = action.payload.user.isAdmin;
       state.userId = action.payload.user.id;
 
-      // localStorage
       const userId = action.payload.user.id;
       localStorage.setItem('userId', userId);
       localStorage.setItem(`user_${userId}_selectedUser`, JSON.stringify(action.payload));
       localStorage.setItem(`user_${userId}_isAuthenticated`, 'true');
       localStorage.setItem(`user_${userId}_isAdmin`, action.payload.user.isAdmin);
 
-      state.cartProducts = JSON.parse(localStorage.getItem(`user_${userId}_cartProducts`)) || [];
-      state.cartTotal = JSON.parse(localStorage.getItem(`user_${userId}_cartTotal`)) || 0;
-      state.favorites = JSON.parse(localStorage.getItem(`user_${userId}_favorites`)) || [];
-      state.orders = JSON.parse(localStorage.getItem(`user_${userId}_orders`)) || [];
+      // state.cartProducts = JSON.parse(localStorage.getItem(`user_${userId}_cartProducts`)) || [];
+      // state.cartTotal = JSON.parse(localStorage.getItem(`user_${userId}_cartTotal`)) || 0;
+      // state.purchases = JSON.parse(localStorage.getItem(`user_${userId}_purchases`)) || [];
+      // state.favorites = JSON.parse(localStorage.getItem(`user_${userId}_favorites`)) || [];
     })
     .addCase(loginGoogle.rejected, (state, action) => {
       state.loginGoogleStatus = 'failed';

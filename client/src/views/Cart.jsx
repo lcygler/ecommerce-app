@@ -1,13 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
   createPaymentLink,
+  createPurchase,
+  deletePurchaseById,
   deleteUserCart,
-  getUserCart,
+  getAllProducts,
   updateUserCart,
 } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
+import store from '../redux/store';
 
 import { Navbar } from '../components/index';
 
@@ -15,39 +18,84 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { AddIcon, CloseIcon, MinusIcon } from '@chakra-ui/icons';
-import { Box, Button, Fade, Flex, Heading, Image, Input, Stack, Text } from '@chakra-ui/react';
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  Badge,
+  Box,
+  Button,
+  Fade,
+  Flex,
+  Heading,
+  Image,
+  Input,
+  Stack,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
 import backgroundImage from '../assets/images/background.jpg';
 import emptyCartImage from '../assets/images/empty-cart.png';
+
+let navigateTimeoutId = null;
 
 function Cart() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const cancelRef = useRef();
+  const {
+    isOpen: isRemoveAlertOpen,
+    onOpen: onRemoveAlertOpen,
+    onClose: onRemoveAlertClose,
+  } = useDisclosure();
+  const {
+    isOpen: isEmptyCartAlertOpen,
+    onOpen: onEmptyCartAlertOpen,
+    onClose: onEmptyCartAlertClose,
+  } = useDisclosure();
+
   const userId = useSelector((state) => state.userId);
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
+  const selectedPurchase = useSelector((state) => state.selectedPurchase);
   const cartProducts = useSelector((state) => state.cartProducts);
   const cartTotal = useSelector((state) => state.cartTotal);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [removeProductId, setRemoveProductId] = useState(null);
+  const [renderCart, setRenderCart] = useState(false);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      await dispatch(getAllProducts());
+      dispatch(actions.updateCartStock());
+      setRenderCart(false);
+    };
+    fetchProducts();
+    return () => {
+      clearTimeout(navigateTimeoutId);
+    };
+  }, [dispatch, renderCart]);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const payment_id = searchParams.get('payment_id');
-
     const storedURL = localStorage.getItem('mpErrorURL');
     const currentURL = window.location.href;
 
     if (payment_id && payment_id === 'null' && storedURL !== currentURL) {
-      dispatch(actions.deleteOrder());
-
+      dispatch(deletePurchaseById(selectedPurchase?.id));
+      // dispatch(actions.deletePurchase());
       toast.error('Purchase unsuccessful');
-
       localStorage.setItem('mpErrorURL', currentURL);
     }
-  }, [dispatch]);
+  }, [dispatch, selectedPurchase]);
 
-  const handleIncrease = (productId) => {
+  const handleIncreaseItem = (productId) => {
     const product = cartProducts?.find((product) => product.id === productId);
 
     if (product.quantity < product.stock) {
@@ -58,24 +106,23 @@ function Cart() {
       );
       dispatch(updateUserCart({ userId, products: updatedCartProducts }));
     } else {
-      toast.error('Quantity exceeds available stock!');
+      toast.error('Quantity exceeds available stock');
     }
   };
 
-  const handleDecrease = (productId) => {
+  const handleDecreaseItem = (productId) => {
     const prod = cartProducts?.find((product) => product.id === productId);
 
     if (prod.quantity === 1) {
-      const confirmed = window.confirm('Are you sure you want to remove this product?');
-
-      if (confirmed) {
-        dispatch(actions.decreaseProduct(productId));
-
-        const updatedCartProducts = cartProducts.filter((p) => p.id !== productId);
-        dispatch(updateUserCart({ userId, products: updatedCartProducts }));
-
-        toast.success('Product removed from cart!');
-      }
+      // const confirmed = window.confirm('Are you sure you want to remove this product?');
+      // if (confirmed) {
+      // dispatch(actions.decreaseProduct(productId));
+      // const updatedCartProducts = cartProducts.filter((p) => p.id !== productId);
+      // dispatch(updateUserCart({ userId, products: updatedCartProducts }));
+      // toast.success('Product removed from cart!');
+      // }
+      setRemoveProductId(productId);
+      onRemoveAlertOpen();
     } else {
       dispatch(actions.decreaseProduct(productId));
 
@@ -86,12 +133,12 @@ function Cart() {
     }
   };
 
-  const handleUpdate = (productId, quantity) => {
+  const handleUpdateItem = (productId, quantity) => {
     const product = cartProducts?.find((product) => product.id === productId);
     const newQuantity = parseInt(quantity);
 
     if (newQuantity > product.stock) {
-      toast.error('Quantity exceeds available stock!');
+      toast.error('Quantity exceeds available stock');
     } else {
       dispatch(actions.updateProduct({ productId, quantity }));
 
@@ -102,37 +149,56 @@ function Cart() {
     }
   };
 
-  const handleRemove = (productId) => {
-    const confirmed = window.confirm('Are you sure you want to remove this product?');
-
-    if (confirmed) {
-      dispatch(actions.removeProduct(productId));
-
-      const updatedCartProducts = cartProducts.filter((p) => p.id !== productId);
-      dispatch(updateUserCart({ userId, products: updatedCartProducts }));
-
-      toast.success('Product removed from cart!');
-    }
+  const handleRemoveItem = (productId) => {
+    // const confirmed = window.confirm('Are you sure you want to remove this product?');
+    // if (confirmed) {
+    dispatch(actions.removeProduct(productId));
+    const updatedCartProducts = cartProducts.filter((p) => p.id !== productId);
+    dispatch(updateUserCart({ userId, products: updatedCartProducts }));
+    toast.success('Product removed from cart!');
+    // }
   };
 
-  const handleClear = () => {
-    const confirmed = window.confirm('Are you sure you want to clear the cart?');
-
-    if (confirmed) {
-      dispatch(actions.clearCart());
-      dispatch(deleteUserCart(userId));
-
-      toast.success('Your cart was cleared!');
-    }
+  const handleClearCart = () => {
+    // const confirmed = window.confirm('Are you sure you want to clear the cart?');
+    // if (confirmed) {
+    dispatch(actions.clearCart());
+    dispatch(deleteUserCart(userId));
+    toast.success('Your cart was cleared!');
+    // }
   };
 
   const handleCheckout = async () => {
     if (isAuthenticated) {
       if (cartProducts?.length !== 0) {
-        const response = await dispatch(createPaymentLink(cartProducts));
-        if (response.payload) {
-          dispatch(actions.createOrder(cartProducts));
-          window.location.href = response.payload;
+        setIsLoading(true);
+        await dispatch(getAllProducts());
+        const allProducts = store.getState().allProducts;
+
+        const isValidQuantity = cartProducts.every((product) => {
+          const matchedProduct = allProducts.find((p) => p.id === product.id);
+          return matchedProduct && product.quantity <= matchedProduct.stock;
+        });
+
+        if (isValidQuantity) {
+          const response = await dispatch(createPaymentLink(cartProducts));
+          if (response.payload) {
+            dispatch(createPurchase({ userId, products: cartProducts }));
+            // dispatch(actions.createPurchase(cartProducts));
+
+            navigateTimeoutId = setTimeout(() => {
+              setIsLoading(false);
+              window.location.href = response.payload;
+            }, 2000);
+          } else {
+            setIsLoading(false);
+            toast.error('Checkout process failed');
+            setRenderCart(true);
+          }
+        } else {
+          setIsLoading(false);
+          toast.error('Quantity exceeds available stock');
+          setRenderCart(true);
         }
       }
     } else {
@@ -262,11 +328,15 @@ function Cart() {
                     </Flex>
                   </Flex>
 
-                  <Flex alignItems="center">
+                  <Flex alignItems="flex-end" flexDirection="column">
                     <Flex alignItems="center" marginTop={{ base: 2, md: 0 }}>
                       <Text>Quantity:</Text>
 
-                      <Button onClick={() => handleDecrease(product.id)} size="sm" marginLeft={2}>
+                      <Button
+                        onClick={() => handleDecreaseItem(product.id)}
+                        size="sm"
+                        marginLeft={2}
+                      >
                         <MinusIcon fontSize="8px" />
                       </Button>
 
@@ -277,9 +347,9 @@ function Cart() {
                         onChange={(e) => {
                           const newQuantity = parseInt(e.target.value);
                           if (newQuantity === 0) {
-                            handleRemove(product.id);
+                            handleRemoveItem(product.id);
                           } else if (!isNaN(newQuantity) && newQuantity > 0) {
-                            handleUpdate(product.id, newQuantity);
+                            handleUpdateItem(product.id, newQuantity);
                           }
                         }}
                         size="sm"
@@ -287,14 +357,43 @@ function Cart() {
                         textAlign="center"
                       />
 
-                      <Button onClick={() => handleIncrease(product.id)} size="sm">
+                      <Button onClick={() => handleIncreaseItem(product.id)} size="sm">
                         <AddIcon fontSize="8px" />
                       </Button>
 
-                      <Button onClick={() => handleRemove(product.id)} size="sm" marginLeft={2}>
+                      {/* <Button onClick={() => handleRemoveItem(product.id)} size="sm" marginLeft={2}> */}
+                      <Button
+                        onClick={() => {
+                          setRemoveProductId(product.id);
+                          onRemoveAlertOpen();
+                        }}
+                        size="sm"
+                        marginLeft={2}
+                      >
                         <CloseIcon fontSize="8px" />
                       </Button>
                     </Flex>
+
+                    {product.stock === 1 ? (
+                      <Badge colorScheme="red" variant="subtle" mt={3}>
+                        Last unit!
+                      </Badge>
+                    ) : product.stock > 1 && product.stock <= 5 ? (
+                      <Badge colorScheme="red" variant="subtle" mt={3}>
+                        Last {product.stock} units!
+                      </Badge>
+                    ) : (
+                      <Badge colorScheme="green" variant="subtle" mt={3}>
+                        {product.stock} units left
+                      </Badge>
+                    )}
+                    {/* <Text fontWeight="normal" fontSize="sm" mt="4">
+                      {product.stock === 1
+                        ? 'Last unit!'
+                        : product.stock > 1 && product.stock <= 5
+                        ? `Last ${product.stock} units!`
+                        : `${product.stock} units left`}
+                    </Text> */}
                   </Flex>
                 </Box>
               ))}
@@ -327,7 +426,14 @@ function Cart() {
                   </Button>
                 </Stack>
 
-                <Button colorScheme="red" variant="ghost" onClick={handleClear} width="30%" mt="6">
+                <Button
+                  colorScheme="red"
+                  variant="ghost"
+                  // onClick={handleClearCart}
+                  onClick={onEmptyCartAlertOpen}
+                  width="30%"
+                  mt="6"
+                >
                   Empty Cart
                 </Button>
               </Flex>
@@ -335,6 +441,70 @@ function Cart() {
           )}
         </Box>
       </Box>
+
+      <AlertDialog
+        isOpen={isRemoveAlertOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onRemoveAlertClose}
+      >
+        <AlertDialogOverlay backgroundColor="transparent">
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Remove Item
+            </AlertDialogHeader>
+
+            <AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onRemoveAlertClose}>
+                Cancel
+              </Button>
+              <Button
+                colorScheme="red"
+                onClick={() => {
+                  handleRemoveItem(removeProductId);
+                  onRemoveAlertClose();
+                }}
+                ml={3}
+              >
+                Confirm
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+
+      <AlertDialog
+        isOpen={isEmptyCartAlertOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onEmptyCartAlertClose}
+      >
+        <AlertDialogOverlay backgroundColor="transparent">
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Empty Cart
+            </AlertDialogHeader>
+
+            <AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onEmptyCartAlertClose}>
+                Cancel
+              </Button>
+              <Button
+                colorScheme="red"
+                onClick={() => {
+                  handleClearCart();
+                  onEmptyCartAlertClose();
+                }}
+                ml={3}
+              >
+                Confirm
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </Box>
   );
 }
