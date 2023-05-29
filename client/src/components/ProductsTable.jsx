@@ -1,4 +1,6 @@
-import { SettingsIcon } from "@chakra-ui/icons";
+import { useRef, useState } from 'react';
+
+import { SettingsIcon } from '@chakra-ui/icons';
 import {
   AlertDialog,
   AlertDialogBody,
@@ -22,17 +24,18 @@ import {
   Thead,
   Tr,
   useDisclosure,
-} from "@chakra-ui/react";
-import { useRef } from "react";
+} from '@chakra-ui/react';
 
-function ProductTable({
-  products,
-  editProduct,
-  deleteProduct,
-  suspendProduct,
-}) {
+function ProductTable({ products, editProduct, deleteProduct, suspendProduct }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
+  const [productId, setProductId] = useState(null);
+
+  const handleDeleteProduct = () => {
+    deleteProduct(productId);
+    onClose();
+  };
+
   return (
     <TableContainer marginTop={5} overflowY="auto">
       <Table variant="simple">
@@ -55,17 +58,14 @@ function ProductTable({
               id,
               name,
               price,
-              Categories,
-              description,
-              gender,
-              Seasons,
+              description, // Categories, Seasons, gender,
               size,
               image,
               discounts,
               stock,
               disable,
             }) => (
-              <Tr key={id} _hover={{ backgroundColor: "whitesmoke" }}>
+              <Tr key={id} _hover={{ backgroundColor: 'whitesmoke' }}>
                 <Td>
                   <Image
                     boxSize="100px"
@@ -82,18 +82,12 @@ function ProductTable({
                 <Td isNumeric>${price.toFixed(2)}</Td>
                 <Td>{discounts * 100}%</Td>
                 <Td>
-                  {!disable ? (
-                    <Switch
-                      onChange={() => suspendProduct({ id: id, disable: true })}
-                      isChecked
-                    />
-                  ) : (
-                    <Switch
-                      onChange={() =>
-                        suspendProduct({ id: id, disable: false })
-                      }
-                    />
-                  )}
+                  <Switch
+                    isChecked={!disable}
+                    onChange={() => {
+                      suspendProduct({ productId: id, updatedProduct: { disable: !disable } });
+                    }}
+                  />
                 </Td>
                 <Td>
                   <Menu>
@@ -102,43 +96,15 @@ function ProductTable({
                     </MenuButton>
                     <MenuList>
                       <MenuItem onClick={() => editProduct(id)}>Edit</MenuItem>
-                      <MenuItem colorScheme="red" onClick={onOpen}>
+                      <MenuItem
+                        colorScheme="red"
+                        onClick={() => {
+                          setProductId(id);
+                          onOpen();
+                        }}
+                      >
                         Delete
                       </MenuItem>
-                      <AlertDialog
-                        isOpen={isOpen}
-                        leastDestructiveRef={cancelRef}
-                        onClose={onClose}
-                      >
-                        <AlertDialogOverlay backgroundColor="transparent">
-                          <AlertDialogContent>
-                            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                              Delete Product
-                            </AlertDialogHeader>
-
-                            <AlertDialogBody>
-                              Are you sure? You can't undo this action
-                              afterwards.
-                            </AlertDialogBody>
-
-                            <AlertDialogFooter>
-                              <Button ref={cancelRef} onClick={onClose}>
-                                Cancel
-                              </Button>
-                              <Button
-                                colorScheme="red"
-                                onClick={() => {
-                                  deleteProduct(id);
-                                  onClose();
-                                }}
-                                ml={3}
-                              >
-                                Delete
-                              </Button>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialogOverlay>
-                      </AlertDialog>
                     </MenuList>
                   </Menu>
                 </Td>
@@ -147,6 +113,27 @@ function ProductTable({
           )}
         </Tbody>
       </Table>
+
+      <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
+        <AlertDialogOverlay backgroundColor="transparent">
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Product
+            </AlertDialogHeader>
+
+            <AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button colorScheme="red" onClick={handleDeleteProduct} ml={3}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </TableContainer>
   );
 }
