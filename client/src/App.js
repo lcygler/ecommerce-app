@@ -9,6 +9,7 @@ import {
   Home,
   Landing,
   Login,
+  Profile,
   PurchaseDetail,
   Purchases,
   Register,
@@ -47,6 +48,7 @@ function App() {
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/purchases/:purchaseId" element={<PurchaseDetail />} />
         <Route path="/purchases" element={<Purchases />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/dashboard" element={<AdminRoute element={Dashboard} />} />
         <Route path="/create" element={<AdminRoute element={CreateProduct} />} />
         <Route path="/edit/:productId" element={<AdminRoute element={EditProduct} />} />
