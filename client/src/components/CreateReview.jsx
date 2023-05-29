@@ -2,16 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createReview } from '../redux/asyncActions';
 
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Icon,
-  Stack,
-  Text,
-  Textarea,
-} from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Icon, Stack, Text, Textarea } from '@chakra-ui/react';
 import { FaStar } from 'react-icons/fa';
 
 function CrearReviews({ productId }) {
