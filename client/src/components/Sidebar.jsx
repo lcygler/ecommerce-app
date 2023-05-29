@@ -15,6 +15,15 @@ function Sidebar({ handleSidebarOption, selectedOption }) {
       </Button>
       <Button
         mb="6"
+        onClick={() => handleSidebarOption('users')}
+        colorScheme="blue"
+        variant="outline"
+        backgroundColor={selectedOption === 'users' ? 'blue.100' : 'gray.150'}
+      >
+        Users
+      </Button>
+      <Button
+        mb="6"
         onClick={() => handleSidebarOption('create-admin')}
         colorScheme="blue"
         variant="outline"

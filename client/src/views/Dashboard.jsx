@@ -7,12 +7,20 @@ import {
   Button,
   Flex,
   Spinner,
-} from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+} from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-import { Charts, Filters, Navbar, Pagination, ProductsTable, Sidebar } from '../components/index';
+import {
+  Charts,
+  Filters,
+  Navbar,
+  Pagination,
+  ProductsTable,
+  Sidebar,
+  UsersTable,
+} from "../components/index";
 import {
   deleteProductById,
   getAdminProducts,
@@ -20,21 +28,25 @@ import {
   getChartData,
   getGenders,
   getSeasons,
+  getUsers,
   updateProductById,
-} from '../redux/asyncActions';
-import { actions } from '../redux/slice';
+} from "../redux/asyncActions";
+import { actions } from "../redux/slice";
 
 function Dashboard() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const adminProducts = useSelector((state) => state.adminProducts);
-  const filteredAdminProducts = useSelector((state) => state.filteredAdminProducts);
+  const filteredAdminProducts = useSelector(
+    (state) => state.filteredAdminProducts
+  );
   const currentPage = useSelector((state) => state.currentPage);
+  const allUsers = useSelector((state) => state.allUsers)
 
   const [itemsPerPage] = useState(10);
   const [loading, setLoading] = useState(true);
-  const [selectedOption, setSelectedOption] = useState('products');
+  const [selectedOption, setSelectedOption] = useState("products");
   const chartData = useSelector((state) => state.chartData);
 
   useEffect(() => {
@@ -46,11 +58,15 @@ function Dashboard() {
       dispatch(getGenders());
       setLoading(false);
     };
+    const fetchUsers = async () => {
+      await dispatch(getUsers());
+    }
     fetchProducts();
+    fetchUsers();
   }, [dispatch]);
 
   useEffect(() => {
-    if (selectedOption === 'charts' && !chartData) {
+    if (selectedOption === "charts" && !chartData) {
       dispatch(getChartData());
     }
   }, [dispatch, selectedOption, chartData]);
@@ -90,14 +106,21 @@ function Dashboard() {
     await dispatch(actions.filterAdminProducts());
   };
 
+  const handleDeleteUser = async (userId) => {}
+
+  const handleSuspendUser = async ({ userId, updatedUser }) => {}
+
   return (
     <Box display="flex" flexDirection="column" minHeight="100vh">
       <Navbar />
       <Flex flex="1">
-        <Sidebar handleSidebarOption={handleSidebarOption} selectedOption={selectedOption} />
+        <Sidebar
+          handleSidebarOption={handleSidebarOption}
+          selectedOption={selectedOption}
+        />
         <Box flex="1" overflow="auto">
           <Box padding="4">
-            {selectedOption === 'products' && (
+            {selectedOption === "products" && (
               <Filters changePage={changePage} allProducts={adminProducts} />
             )}
           </Box>
@@ -135,15 +158,24 @@ function Dashboard() {
                   </AlertDescription>
                 </Flex>
               </Alert>
-              <Box display="flex" alignItems="center" justifyContent="center" mt="4">
-                <Button onClick={handleReset} variant="solid" colorScheme="blue">
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                mt="4"
+              >
+                <Button
+                  onClick={handleReset}
+                  variant="solid"
+                  colorScheme="blue"
+                >
                   Reset Filters
                 </Button>
               </Box>
             </Box>
           ) : (
             <>
-              {selectedOption === 'products' && (
+              {selectedOption === "products" && (
                 <ProductsTable
                   products={currentProducts}
                   editProduct={handleEditProduct}
@@ -152,9 +184,19 @@ function Dashboard() {
                 />
               )}
 
-              {selectedOption === 'charts' && chartData && <Charts dataCharts={chartData} />}
+              {selectedOption === "users" && (
+                <UsersTable
+                  users={allUsers}
+                  deleteUser={handleDeleteUser}
+                  suspendUser={handleSuspendUser}
+                />
+              )}
 
-              {selectedOption === 'products' && (
+              {selectedOption === "charts" && chartData && (
+                <Charts dataCharts={chartData} />
+              )}
+
+              {selectedOption === "products" && (
                 <Box display="flex" justifyContent="center" mt="4">
                   <Pagination
                     totalPages={totalPages}

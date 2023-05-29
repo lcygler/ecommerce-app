@@ -54,6 +54,7 @@ export const getInitialState = () => {
     paymentLink: '',
 
     // Users
+    allUsers: [],
     userId: storedUserId || null,
     selectedUser: storedSelectedUser || {},
     isAuthenticated: storedIsAuthenticated || false,
