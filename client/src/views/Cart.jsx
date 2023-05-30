@@ -202,7 +202,8 @@ function Cart() {
         }
       }
     } else {
-      toast.error('Login required to purchase');
+      navigate('/login');
+      // toast.error('Login required to purchase');
     }
   };
 
