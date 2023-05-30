@@ -1,96 +1,99 @@
-const express = require("express");
 const {
   User,
-  Review,
-  Cart,
-  CartDetail,
-  PurchaseDetail,
-  Product,
-  ShippingAddress,
-} = require("../db.js");
+  // Review,
+  // Cart,
+  // CartDetail,
+  // PurchaseDetail,
+  // Product,
+  // ShippingAddress,
+} = require('../db.js');
+const { encrypt } = require('../utils/HashPassword.js');
+const jwt = require('jsonwebtoken');
 
-/**
- *
- * @param {express.Request} req
- * @param {express.Response} res
- */
-const getUsers = async (req, res, next) => {
+const generateToken = (user) => {
+  const payload = {
+    id: user.id,
+    email: user.email,
+    isAdmin: user.isAdmin,
+  };
+  const options = { expiresIn: '1h' }; // el token expirará en 1 hora
+  const secret = process.env.JWT_SECRET; // una cadena secreta para firmar el token
+  return jwt.sign(payload, secret, options);
+};
+
+const getUsers = async (req, res) => {
   try {
     const users = await User.findAll();
-    res.json(users);
-  } catch (err) {
-    next(err);
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ error: 'Error retrieving users' });
   }
 };
 
-/**
- *
- * @param {express.Request} req
- * @param {express.Response} res
- */
-const updateUser = async (req, res, next) => {
+const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
-    let user = req.body;
 
-    const userUpdated = await User.update(user, {
+    const user = await User.findOne({
+      where: { id },
+      // include: [Review, Cart, Product, ShippingAddress],
+    });
+
+    const token = generateToken(user);
+    res.status(200).json({ user, token });
+  } catch (error) {
+    res.status(500).json({ error: 'Error retrieving user' });
+  }
+};
+
+const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const updateFields = {
+      ...req.body,
+    };
+
+    if (updateFields.password) {
+      updateFields.password = await encrypt(updateFields.password);
+    }
+
+    const [numAffectedRows] = await User.update(updateFields, {
       where: { id },
     });
 
-    res.json(userUpdated);
-  } catch (err) {
-    next(err);
-  }
-};
+    if (numAffectedRows === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
 
-/**
- *
- * @param {express.Request} req
- * @param {express.Response} res
- */
-const getUserById = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-
-    const user = await User.findOne(
-      { where: id },
-      {
-        include: [
-          { model: Review },
-          { model: Cart },
-          { model: CartDetail },
-          { model: PurchaseDetail },
-          { model: Product },
-          { model: ShippingAddress },
-        ],
-      }
-    );
-    res.json(user);
-  } catch (err) {
-    next(err);
-  }
-};
-
-/**
- *
- * @param {express.Request} req
- * @param {express.Response} res
- */
-const deleteUser = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const userDeleted = await User.destroy({
+    const updatedUser = await User.findOne({
       where: { id },
     });
-    res.json(userDeleted);
-  } catch (err) {
-    next(err);
+
+    const token = generateToken(updatedUser);
+    res.status(200).json({ user: updatedUser, token });
+  } catch (error) {
+    res.status(500).json({ error: 'Error updating user' });
+  }
+};
+
+const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deletedUser = await User.destroy({
+      where: { id },
+    });
+
+    res.status(200).json(deletedUser);
+  } catch (error) {
+    res.status(500).json({ error: 'Error deleting user' });
   }
 };
 
 module.exports = {
   getUsers,
-  updateUser,
   getUserById,
+  updateUser,
   deleteUser,
 };

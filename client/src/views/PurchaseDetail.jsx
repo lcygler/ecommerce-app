@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { Box, Button, Flex, Heading, Image, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Image, Stack, Text } from '@chakra-ui/react';
 import { Navbar } from '../components/index';
 
 import backgroundImage from '../assets/images/background.jpg';
@@ -10,6 +10,7 @@ import backgroundImage from '../assets/images/background.jpg';
 function PurchaseDetail() {
   const navigate = useNavigate();
   const { purchaseId } = useParams();
+
   const purchases = useSelector((state) => state.purchases);
   const purchase = purchases?.find((purchase) => purchase.id === parseInt(purchaseId));
 
@@ -62,7 +63,7 @@ function PurchaseDetail() {
                   mb={2}
                 >
                   <Text flex="1" pr={4}>
-                    Purchase
+                    Purchase ID
                   </Text>
                   <Text flex="1" pr={4}>
                     Date
@@ -80,7 +81,7 @@ function PurchaseDetail() {
                   display="flex"
                   alignItems="center"
                   justifyContent="space-between"
-                  flexDirection={{ base: 'column', md: 'row' }}
+                  // flexDirection={{ base: 'column', md: 'row' }}
                   marginY={2}
                   paddingY={2}
                 >
@@ -108,7 +109,7 @@ function PurchaseDetail() {
                 {purchase?.products
                   .slice()
                   .sort((a, b) => a.id - b.id)
-                  .map((product) => (
+                  .map((product, index) => (
                     <Box
                       key={product.id}
                       borderBottom="1px solid gray"
@@ -120,7 +121,8 @@ function PurchaseDetail() {
                     >
                       <Flex alignItems="center" marginBottom={2}>
                         <Text fontWeight="bold" fontSize="xl" marginRight={4}>
-                          {product.id}
+                          {index + 1}
+                          {/* {product.id} */}
                         </Text>
                         <Image
                           src={product.image}
@@ -187,16 +189,22 @@ function PurchaseDetail() {
                   ))}
               </Box>
 
-              <Button
-                colorScheme="gray"
-                width="30%"
-                mb={4}
-                onClick={() => {
-                  navigate('/purchases');
-                }}
-              >
-                Go Back
-              </Button>
+              <Stack direction="row" spacing={4} justifyContent="center" width="100%">
+                <Button
+                  colorScheme="gray"
+                  width="30%"
+                  mb={4}
+                  onClick={() => {
+                    navigate('/purchases');
+                  }}
+                >
+                  Go Back
+                </Button>
+
+                <Button colorScheme="blue" width="30%" mb={4} onClick={() => window.print()}>
+                  Print Purchase
+                </Button>
+              </Stack>
             </Flex>
           ) : (
             <Text fontSize="lg" fontWeight="bold" textAlign="center">

@@ -2,7 +2,12 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { deleteUserCart, getUserPurchases, updateProductsStock } from '../redux/asyncActions';
+import {
+  deleteUserCart,
+  getUserPurchases,
+  sendPurchaseSuccess,
+  updateProductsStock,
+} from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
 import { Box, Button, Fade, Flex, Heading, Image, Stack, Text } from '@chakra-ui/react';
@@ -19,6 +24,7 @@ function Purchases() {
   const navigate = useNavigate();
 
   const userId = useSelector((state) => state.userId);
+  const selectedUser = useSelector((state) => state.selectedUser);
   const cartProducts = useSelector((state) => state.cartProducts);
   const purchases = useSelector((state) => state.purchases);
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
@@ -40,12 +46,13 @@ function Purchases() {
       dispatch(updateProductsStock(cartProducts)); // Update products stock in DB
       dispatch(deleteUserCart(userId)); // Clear user cart in DB
       dispatch(actions.clearCart()); // Clear user cart in state
+      dispatch(sendPurchaseSuccess({ email: selectedUser.user.email })); // Send purchase success email
 
       localStorage.setItem('mpSuccessURL', currentURL);
 
       toast.success('Your purchase was successful!');
     }
-  }, [dispatch, cartProducts, userId]);
+  }, [dispatch, cartProducts, userId, selectedUser]);
 
   const handlePurchaseDetail = (id) => {
     navigate(`/purchases/${id}`);
@@ -131,7 +138,7 @@ function Purchases() {
                   mb={2}
                 >
                   <Text flex="1" pr={4}>
-                    Purchase
+                    Purchase ID
                   </Text>
                   <Text flex="1" pr={4}>
                     Date
@@ -192,7 +199,7 @@ function Purchases() {
 
               <Flex flexDirection="column" alignItems="center" mt="10">
                 <Stack direction="row" spacing={4} justifyContent="center" width="100%">
-                  <Button width="30%" onClick={() => navigate('/home')}>
+                  <Button width="30%" onClick={() => window.history.back()}>
                     Go Back
                   </Button>
                 </Stack>

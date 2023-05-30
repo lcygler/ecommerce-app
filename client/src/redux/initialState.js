@@ -54,6 +54,7 @@ export const getInitialState = () => {
     paymentLink: '',
 
     // Users
+    allUsers: [],
     userId: storedUserId || null,
     selectedUser: storedSelectedUser || {},
     isAuthenticated: storedIsAuthenticated || false,
@@ -105,8 +106,11 @@ export const getInitialState = () => {
     createPurchaseStatus: 'idle',
     updatePurchaseByIdStatus: 'idle',
     deletePurchaseByIdStatus: 'idle',
+    sendPurchaseSuccessStatus: 'idle',
+    sendPurchaseFailureStatus: 'idle',
 
     // Users
+    getUsersStatus: 'idle',
     getUserByIdStatus: 'idle',
     createUserStatus: 'idle',
     updateUserByIdStatus: 'idle',
@@ -163,8 +167,11 @@ export const getInitialState = () => {
     createPurchaseError: null,
     updatePurchaseByIdError: null,
     deletePurchaseByIdError: null,
+    sendPurchaseSuccessError: null,
+    sendPurchaseFailureError: null,
 
     // Users
+    getUsersError: null,
     getUserByIdError: null,
     createUserError: null,
     updateUserByIdError: null,

@@ -77,7 +77,7 @@ User.belongsToMany(Product, { through: 'Favorites' });
 Product.belongsToMany(User, { through: 'Favorites' });
 
 //* USER - SHIPPING ADDRESS (Relación 1-N)
-User.hasMany(ShippingAddress);
+User.hasOne(ShippingAddress);
 ShippingAddress.belongsTo(User);
 
 //* USER - REVIEW (Relación 1-N)

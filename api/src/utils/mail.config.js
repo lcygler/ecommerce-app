@@ -215,7 +215,7 @@ const sendPurchaseSuccess = async (email, subject, products, html) => {
   }
 };
 
-const sendPurchaseFailure = async (user, Products, sender, error) => {
+const sendPurchaseFailure = async (email, user, Products, sender, error) => {
   try {
     await transporter.sendMail({
       from: `${mail.user}`,
