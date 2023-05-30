@@ -65,7 +65,7 @@ export const getInitialState = () => {
     selectedReview: {},
 
     // Chart
-    getChartData: [],
+    chartData: [],
 
     //* Async Status
     // Products
