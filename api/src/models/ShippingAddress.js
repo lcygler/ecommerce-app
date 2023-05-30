@@ -13,7 +13,7 @@ module.exports = (sequelize) => {
     number: {
       type: DataTypes.INTEGER,
     },
-    postCode: {
+    postalCode: {
       type: DataTypes.STRING,
     },
     apartament: {

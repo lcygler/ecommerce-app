@@ -92,7 +92,7 @@ export function validateRegister(formData, errors, setErrors) {
 
   //* Postal code
   if (!postalCode) newErrors.postalCode = 'Postal code cannot be empty';
-  else if (typeof postalCode !== 'string') newErrors.postalCode = 'Address must be a string';
+  else if (typeof postalCode !== 'string') newErrors.postalCode = 'Postal code must be a string';
   else newErrors.postalCode = '';
 
   //* State
@@ -108,6 +108,112 @@ export function validateRegister(formData, errors, setErrors) {
   else newErrors.country = '';
 
   setErrors(newErrors);
+}
+
+export function validateEditProfile(formData, errors, setErrors) {
+  let newErrors = { ...errors };
+  // let newErrors = {};
+
+  const {
+    name,
+    lastname,
+    username,
+    email,
+    password,
+    passwordCheck,
+    birthdate,
+    phoneNumber,
+    address,
+    postalCode,
+    state,
+    country,
+  } = formData;
+
+  //* First name
+  if (name) {
+    if (typeof name !== 'string') newErrors.name = 'First name must be string';
+    else if (!lettersRegex.test(name)) newErrors.name = 'First name must only contain letters';
+    else newErrors.name = '';
+  } else newErrors.name = '';
+
+  //* Last name
+  if (lastname) {
+    if (typeof lastname !== 'string') newErrors.lastname = 'Last name must be string';
+    else if (!lettersRegex.test(lastname))
+      newErrors.lastname = 'Last name must only contain letters';
+    else newErrors.lastname = '';
+  } else newErrors.lastname = '';
+
+  //* Username
+  if (username) {
+    if (typeof username !== 'string') newErrors.username = 'Username must be string';
+    else newErrors.username = '';
+  } else newErrors.username = '';
+
+  //* Email address
+  if (email) {
+    if (typeof email !== 'string') newErrors.email = 'Email must be string';
+    else if (!emailRegex.test(email)) newErrors.email = 'Email must be a valid address';
+    else newErrors.email = '';
+  } else newErrors.email = '';
+
+  //* Password
+  if (password) {
+    if (typeof password !== 'string') newErrors.password = 'Password must be string';
+    if (password.length < 6) newErrors.password = 'Password is too short';
+    else if (password.length > 20) newErrors.password = 'Password is too long';
+    else newErrors.password = '';
+  } else newErrors.password = '';
+
+  //* Confirm password
+  if (password || (!password && passwordCheck)) {
+    if (typeof passwordCheck !== 'string') newErrors.passwordCheck = 'Password must be string';
+    if (passwordCheck.length < 6) newErrors.passwordCheck = 'Password is too short';
+    else if (passwordCheck.length > 20) newErrors.passwordCheck = 'Password is too long';
+    else if (passwordCheck !== password && passwordCheck)
+      newErrors.passwordCheck = 'Passwords must match';
+    else newErrors.passwordCheck = '';
+  } else newErrors.passwordCheck = '';
+
+  //* Birthdate
+  if (birthdate) {
+    newErrors.birthdate = '';
+  } else newErrors.birthdate = '';
+
+  //* Phone number
+  if (phoneNumber) {
+    if (!Number.isInteger(Number(phoneNumber))) newErrors.phoneNumber = 'Phone must be an integer';
+    else newErrors.phoneNumber = '';
+  } else newErrors.phoneNumber = '';
+
+  //* Address
+  if (address) {
+    if (typeof address !== 'string') newErrors.address = 'Address must be a string';
+    else newErrors.address = '';
+  } else newErrors.address = '';
+
+  //* Postal code
+  if (postalCode) {
+    if (typeof postalCode !== 'string') newErrors.postalCode = 'Postal code must be a string';
+    else newErrors.postalCode = '';
+  } else newErrors.postalCode = '';
+
+  //* State
+  if (state) {
+    if (typeof state !== 'string') newErrors.state = 'State must be a string';
+    else if (!lettersRegex.test(state)) newErrors.state = 'State must only contain letters';
+    else newErrors.state = '';
+  } else newErrors.state = '';
+
+  //* Country
+  if (country) {
+    if (typeof country !== 'string') newErrors.country = 'Country must be a string';
+    else if (!lettersRegex.test(country)) newErrors.country = 'Country must only contain letters';
+    else newErrors.country = '';
+  } else newErrors.country = '';
+
+  setErrors(newErrors);
+  // return newErrors;
 }
 
 export function validateProduct(formData, errors, setErrors) {

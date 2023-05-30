@@ -230,14 +230,14 @@ export const updateCartStock = (state, action) => {
     const matchedProduct = state.allProducts.find((p) => p.id === product.id);
 
     if (matchedProduct) {
-      // const updatedQuantity = Math.min(product.quantity, matchedProduct.stock);
-      // if (updatedQuantity > 0) {
-      updatedCartProducts.push({
-        ...product,
-        stock: matchedProduct.stock,
-        // quantity: updatedQuantity,
-      });
-      // }
+      const updatedQuantity = Math.min(product.quantity, matchedProduct.stock);
+      if (updatedQuantity > 0) {
+        updatedCartProducts.push({
+          ...product,
+          stock: matchedProduct.stock,
+          quantity: updatedQuantity,
+        });
+      }
     }
   }
 
