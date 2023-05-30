@@ -464,6 +464,7 @@ function EditProduct() {
                 onClick={() => {
                   navigate('/dashboard');
                 }}
+                isDisabled={isLoading}
               >
                 Go back
               </Button>

@@ -15,6 +15,7 @@ import {
   getAllProducts,
   getCartById,
   getCategories,
+  getChartData,
   getGenders,
   getProductById,
   getProductByName,
@@ -26,10 +27,13 @@ import {
   getUserFavorites,
   getUserPurchases,
   getUserReviews,
+  getUsers,
   loginGoogle,
   loginUser,
   removeFavorite,
   removeUserFavorites,
+  sendPurchaseFailure,
+  sendPurchaseSuccess,
   updateCartById,
   updateProductById,
   updateProductsStock,
@@ -37,7 +41,6 @@ import {
   updateReviewById,
   updateUserById,
   updateUserCart,
-  getChartData,
 } from './asyncActions';
 
 export const extraReducers = (builder) => {
@@ -384,7 +387,42 @@ export const extraReducers = (builder) => {
       state.deletePurchaseByIdError = action.error.message;
     })
 
+    //* EMAILS
+    .addCase(sendPurchaseSuccess.pending, (state) => {
+      state.sendPurchaseSuccessStatus = 'loading';
+    })
+    .addCase(sendPurchaseSuccess.fulfilled, (state, action) => {
+      state.sendPurchaseSuccessStatus = 'succeeded';
+    })
+    .addCase(sendPurchaseSuccess.rejected, (state, action) => {
+      state.sendPurchaseSuccessStatus = 'failed';
+      state.sendPurchaseSuccessError = action.error.message;
+    })
+
+    .addCase(sendPurchaseFailure.pending, (state) => {
+      state.sendPurchaseFailureStatus = 'loading';
+    })
+    .addCase(sendPurchaseFailure.fulfilled, (state, action) => {
+      state.sendPurchaseFailureStatus = 'succeeded';
+    })
+    .addCase(sendPurchaseFailure.rejected, (state, action) => {
+      state.sendPurchaseFailureStatus = 'failed';
+      state.sendPurchaseFailureError = action.error.message;
+    })
+
     //* USERS
+    .addCase(getUsers.pending, (state) => {
+      state.getUsersStatus = 'loading';
+    })
+    .addCase(getUsers.fulfilled, (state, action) => {
+      state.getUsersStatus = 'succeeded';
+      state.allUsers = action.payload;
+    })
+    .addCase(getUsers.rejected, (state, action) => {
+      state.getUsersStatus = 'failed';
+      state.getUsersError = action.error.message;
+    })
+
     .addCase(getUserById.pending, (state) => {
       state.getUserByIdStatus = 'loading';
     })

@@ -3,7 +3,7 @@ const { User, ShippingAddress } = require('../db.js');
 const { encrypt } = require('../utils/HashPassword.js');
 const { sendWelcomeEmail } = require('../utils/mail.config.js');
 
-const registerCtrl = async (
+const registerCtrl = async ({
   name,
   lastname,
   username,
@@ -11,11 +11,12 @@ const registerCtrl = async (
   password,
   birthdate,
   phoneNumber,
-  isAdmin,
-  country,
   address,
-  postalcode
-) => {
+  postalCode,
+  state,
+  country,
+  isAdmin,
+}) => {
   if (!name) throw new Error('El nombre es requerido');
   if (!lastname) throw new Error('El apellido es requerido');
   if (!username) throw new Error('El nombre de usuario es requerido');
@@ -33,13 +34,18 @@ const registerCtrl = async (
     password: passwordHash,
     birthdate,
     phoneNumber,
+    address,
+    postalCode,
+    state,
+    country,
     isAdmin,
   });
 
   const Shipping = await ShippingAddress.create({
-    country,
     address,
-    postalcode,
+    postalCode,
+    state,
+    country,
     UserId: createUser.id, // Establecer la relación con el usuario creado
   });
 
@@ -51,7 +57,9 @@ const registerCtrl = async (
 
   // Generar JWT token
   const token = jwt.sign({ id: createUser.id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+
   sendWelcomeEmail(email);
+
   return { user: userWithShipping, token };
 };
 
