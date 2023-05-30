@@ -70,7 +70,8 @@ function EditProfile() {
         postalCode,
         state,
         country,
-      } = selectedUser.user || selectedUser;
+      } = selectedUser.user;
+      // } = selectedUser.user || selectedUser;
 
       let formattedBirthdate = '';
 
@@ -140,54 +141,54 @@ function EditProfile() {
     ) {
       const updatedUser = {};
 
-      if (formData.name.trim() !== '') {
+      if (formData.name && formData.name.trim() !== '') {
         updatedUser.name =
           formData.name
             .trim()
             .charAt(0)
             .toUpperCase() + formData.name.trim().slice(1);
       }
-      if (formData.lastname.trim() !== '') {
+      if (formData.lastname && formData.lastname.trim() !== '') {
         updatedUser.lastname =
           formData.lastname
             .trim()
             .charAt(0)
             .toUpperCase() + formData.lastname.trim().slice(1);
       }
-      if (formData.username.trim() !== '') {
+      if (formData.username && formData.username.trim() !== '') {
         updatedUser.username = formData.username.trim();
       }
-      if (formData.email.trim() !== '') {
+      if (formData.email && formData.email.trim() !== '') {
         updatedUser.email = formData.email.trim();
       }
-      if (formData.password.trim() !== '') {
+      if (formData.password && formData.password.trim() !== '') {
         updatedUser.password = formData.password.trim();
       }
       if (formData.birthdate !== '') {
         updatedUser.birthdate = formData.birthdate;
       }
-      if (formData.phoneNumber !== '') {
+      if (formData.phoneNumber && formData.phoneNumber.trim() !== '') {
         updatedUser.phoneNumber = formData.phoneNumber.trim();
       }
-      if (formData.address !== '') {
+      if (formData.address && formData.address.trim() !== '') {
         updatedUser.address = formData.address.trim();
       }
-      if (formData.postalCode !== '') {
+      if (formData.postalCode && formData.postalCode.trim() !== '') {
         updatedUser.postalCode = formData.postalCode.trim();
       }
-      if (formData.state !== '') {
+      if (formData.state && formData.state.trim() !== '') {
         updatedUser.state =
           formData.state
             .trim()
             .charAt(0)
-            .toUpperCase() + formData.lastname.trim().slice(1);
+            .toUpperCase() + formData.state.trim().slice(1);
       }
-      if (formData.country !== '') {
+      if (formData.country && formData.country.trim() !== '') {
         updatedUser.country =
           formData.country
             .trim()
             .charAt(0)
-            .toUpperCase() + formData.lastname.trim().slice(1);
+            .toUpperCase() + formData.country.trim().slice(1);
       }
 
       const response = await dispatch(updateUserById({ userId, updatedUser }));
@@ -282,7 +283,7 @@ function EditProfile() {
                   name="name"
                   type="text"
                   placeholder="Enter your first name"
-                  value={formData.name}
+                  value={formData.name || ''}
                   onChange={handleChange}
                   _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
                   _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
@@ -297,7 +298,7 @@ function EditProfile() {
                   name="lastname"
                   type="text"
                   placeholder="Enter your last name"
-                  value={formData.lastname}
+                  value={formData.lastname || ''}
                   onChange={handleChange}
                   _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
                   _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
@@ -314,7 +315,7 @@ function EditProfile() {
                   name="username"
                   type="text"
                   placeholder="Enter your username"
-                  value={formData.username}
+                  value={formData.username || ''}
                   onChange={handleChange}
                   _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
                   _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
@@ -329,7 +330,7 @@ function EditProfile() {
                   name="email"
                   type="email"
                   placeholder="Enter your email"
-                  value={formData.email}
+                  value={formData.email || ''}
                   onChange={handleChange}
                   _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
                   _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
@@ -346,7 +347,7 @@ function EditProfile() {
                   name="password"
                   type="password"
                   placeholder="Enter your password"
-                  value={formData.password}
+                  value={formData.password || ''}
                   onChange={handleChange}
                   autoComplete="off"
                   _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
@@ -362,7 +363,7 @@ function EditProfile() {
                   name="passwordCheck"
                   type="password"
                   placeholder="Confirm your password"
-                  value={formData.passwordCheck}
+                  value={formData.passwordCheck || ''}
                   onChange={handleChange}
                   autoComplete="off"
                   _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
@@ -380,7 +381,7 @@ function EditProfile() {
                   name="birthdate"
                   type="date"
                   placeholder="Enter your birthdate"
-                  value={formData.birthdate}
+                  value={formData.birthdate || ''}
                   onChange={handleChange}
                   _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
                   _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
@@ -395,7 +396,7 @@ function EditProfile() {
                   name="phoneNumber"
                   type="tel"
                   placeholder="Enter your phone number"
-                  value={formData.phoneNumber}
+                  value={formData.phoneNumber || ''}
                   onChange={handleChange}
                   _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
                   _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
@@ -412,7 +413,7 @@ function EditProfile() {
                   name="address"
                   type="text"
                   placeholder="Enter your address"
-                  value={formData.address}
+                  value={formData.address || ''}
                   onChange={handleChange}
                   _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
                   _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
@@ -427,7 +428,7 @@ function EditProfile() {
                   name="postalCode"
                   type="text"
                   placeholder="Enter your postal code"
-                  value={formData.postalCode}
+                  value={formData.postalCode || ''}
                   onChange={handleChange}
                   _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
                   _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
@@ -444,7 +445,7 @@ function EditProfile() {
                   name="state"
                   type="text"
                   placeholder="Enter your state"
-                  value={formData.state}
+                  value={formData.state || ''}
                   onChange={handleChange}
                   _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
                   _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
@@ -459,7 +460,7 @@ function EditProfile() {
                   name="country"
                   type="text"
                   placeholder="Enter your country"
-                  value={formData.country}
+                  value={formData.country || ''}
                   onChange={handleChange}
                   _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
                   _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}

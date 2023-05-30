@@ -96,7 +96,7 @@ function Cart() {
       toast.error('Purchase unsuccessful');
       localStorage.setItem('mpErrorURL', currentURL);
     }
-  }, [dispatch, selectedPurchase]);
+  }, [dispatch, selectedPurchase, selectedUser]);
 
   const handleIncreaseItem = (productId) => {
     const product = cartProducts?.find((product) => product.id === productId);
