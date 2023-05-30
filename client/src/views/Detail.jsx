@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -30,11 +30,15 @@ import { CreateReview, StarRating } from '../components/index';
 function Detail() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const { productId } = useParams();
+  const [isInCart, setIsInCart] = useState(false);
+
   const userId = useSelector((state) => state.userId);
   const cartProducts = useSelector((state) => state.cartProducts);
   const filteredProducts = useSelector((state) => state.filteredProducts);
   const selectedProduct = useSelector((state) => state.selectedProduct);
+
   const {
     name,
     image,
@@ -55,6 +59,11 @@ function Detail() {
       dispatch(actions.clearSelectedProduct());
     };
   }, [dispatch, productId]);
+
+  useEffect(() => {
+    const productExists = cartProducts?.find((product) => product.id === parseInt(productId));
+    setIsInCart(!!productExists);
+  }, [cartProducts, productId]);
 
   const handleAddToCart = (e) => {
     const productExists = cartProducts?.find((product) => product.id === parseInt(productId));
@@ -294,7 +303,7 @@ function Detail() {
                     <Stack direction="row" spacing={4} mt="8">
                       <Button
                         onClick={() => {
-                          navigate('/home');
+                          window.history.back();
                         }}
                         colorScheme="gray"
                         width="150px"
@@ -302,8 +311,13 @@ function Detail() {
                         Go Back
                       </Button>
 
-                      <Button colorScheme="blue" width="150px" onClick={handleAddToCart}>
-                        Add to Cart
+                      <Button
+                        colorScheme="blue"
+                        width="150px"
+                        onClick={handleAddToCart}
+                        isDisabled={isInCart}
+                      >
+                        {isInCart ? 'In Cart' : 'Add to Cart'}
                       </Button>
                     </Stack>
                   </Flex>
