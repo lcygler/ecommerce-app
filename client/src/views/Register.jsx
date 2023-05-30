@@ -389,7 +389,7 @@ function Register() {
               <Button
                 width="100%"
                 onClick={() => {
-                  navigate('/home');
+                  window.history.back();
                 }}
               >
                 Go Back

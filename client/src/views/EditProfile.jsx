@@ -472,7 +472,7 @@ function EditProfile() {
               <Button
                 width="100%"
                 onClick={() => {
-                  navigate('/home');
+                  navigate('/profile');
                 }}
               >
                 Go Back

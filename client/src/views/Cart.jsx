@@ -409,7 +409,7 @@ function Cart() {
                   <Button
                     width="30%"
                     onClick={() => {
-                      navigate('/home');
+                      window.history.back();
                     }}
                   >
                     Go Back
