@@ -7,6 +7,7 @@ import {
   deletePurchaseById,
   deleteUserCart,
   getAllProducts,
+  sendPurchaseFailure,
   updateUserCart,
 } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
@@ -60,6 +61,7 @@ function Cart() {
 
   const userId = useSelector((state) => state.userId);
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
+  const selectedUser = useSelector((state) => state.selectedUser);
   const selectedPurchase = useSelector((state) => state.selectedPurchase);
   const cartProducts = useSelector((state) => state.cartProducts);
   const cartTotal = useSelector((state) => state.cartTotal);
@@ -89,11 +91,12 @@ function Cart() {
 
     if (payment_id && payment_id === 'null' && storedURL !== currentURL) {
       dispatch(deletePurchaseById(selectedPurchase?.id));
+      dispatch(sendPurchaseFailure({ email: selectedUser.user.email })); // Send purchase failure email
       // dispatch(actions.deletePurchase());
       toast.error('Purchase unsuccessful');
       localStorage.setItem('mpErrorURL', currentURL);
     }
-  }, [dispatch, selectedPurchase]);
+  }, [dispatch, selectedPurchase, selectedUser]);
 
   const handleIncreaseItem = (productId) => {
     const product = cartProducts?.find((product) => product.id === productId);
@@ -108,6 +111,11 @@ function Cart() {
     } else {
       toast.error('Quantity exceeds available stock');
     }
+  };
+
+  const isIncreaseDisabled = (productId) => {
+    const product = cartProducts.find((product) => product.id === productId);
+    return product.quantity === product.stock;
   };
 
   const handleDecreaseItem = (productId) => {
@@ -202,7 +210,8 @@ function Cart() {
         }
       }
     } else {
-      toast.error('Login required to purchase');
+      navigate('/login');
+      // toast.error('Login required to purchase');
     }
   };
 
@@ -357,7 +366,11 @@ function Cart() {
                         textAlign="center"
                       />
 
-                      <Button onClick={() => handleIncreaseItem(product.id)} size="sm">
+                      <Button
+                        onClick={() => handleIncreaseItem(product.id)}
+                        size="sm"
+                        isDisabled={isIncreaseDisabled(product.id)}
+                      >
                         <AddIcon fontSize="8px" />
                       </Button>
 
@@ -409,8 +422,9 @@ function Cart() {
                   <Button
                     width="30%"
                     onClick={() => {
-                      navigate('/home');
+                      window.history.back();
                     }}
+                    isDisabled={isLoading}
                   >
                     Go Back
                   </Button>

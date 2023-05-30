@@ -33,6 +33,7 @@ function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const isAdmin = useSelector((state) => state.isAdmin);
+  const cartProducts = useSelector((state) => state.cartProducts);
 
   const handleLogout = () => {
     dispatch(actions.logoutUser());
@@ -76,7 +77,7 @@ function Navbar() {
               variant="ghost"
               backgroundColor={location.pathname === '/cart' ? 'blue.50' : 'white'}
             >
-              Cart
+              Cart {cartProducts?.length ? `(${cartProducts.length})` : ''}
             </Button>
           </Link>
 
@@ -201,7 +202,7 @@ function Navbar() {
                   variant="ghost"
                   backgroundColor={location.pathname === '/cart' ? 'blue.50' : 'white'}
                 >
-                  Cart
+                  Cart {cartProducts?.length ? `(${cartProducts.length})` : ''}
                 </Button>
               </Link>
 

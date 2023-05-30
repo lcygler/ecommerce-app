@@ -245,8 +245,9 @@ function Login() {
               <Button
                 width="100%"
                 onClick={() => {
-                  navigate('/home');
+                  window.history.back();
                 }}
+                isDisabled={isLoading}
               >
                 Go Back
               </Button>
