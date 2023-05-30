@@ -131,7 +131,7 @@ function Purchases() {
                   mb={2}
                 >
                   <Text flex="1" pr={4}>
-                    Purchase
+                    Purchase ID
                   </Text>
                   <Text flex="1" pr={4}>
                     Date

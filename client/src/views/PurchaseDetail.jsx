@@ -62,7 +62,7 @@ function PurchaseDetail() {
                   mb={2}
                 >
                   <Text flex="1" pr={4}>
-                    Purchase
+                    Purchase ID
                   </Text>
                   <Text flex="1" pr={4}>
                     Date
@@ -108,7 +108,7 @@ function PurchaseDetail() {
                 {purchase?.products
                   .slice()
                   .sort((a, b) => a.id - b.id)
-                  .map((product) => (
+                  .map((product, index) => (
                     <Box
                       key={product.id}
                       borderBottom="1px solid gray"
@@ -120,7 +120,8 @@ function PurchaseDetail() {
                     >
                       <Flex alignItems="center" marginBottom={2}>
                         <Text fontWeight="bold" fontSize="xl" marginRight={4}>
-                          {product.id}
+                          {index + 1}
+                          {/* {product.id} */}
                         </Text>
                         <Image
                           src={product.image}
