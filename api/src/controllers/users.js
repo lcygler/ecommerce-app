@@ -1,4 +1,3 @@
-const express = require('express');
 const {
   User,
   // Review,
@@ -10,26 +9,16 @@ const {
 } = require('../db.js');
 const { encrypt } = require('../utils/HashPassword.js');
 
-/**
- *
- * @param {express.Request} req
- * @param {express.Response} res
- */
-const getUsers = async (req, res, next) => {
+const getUsers = async (req, res) => {
   try {
     const users = await User.findAll();
-    res.json(users);
-  } catch (err) {
-    next(err);
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ error: 'Error retrieving users' });
   }
 };
 
-/**
- *
- * @param {express.Request} req
- * @param {express.Response} res
- */
-const updateUser = async (req, res, next) => {
+const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -41,22 +30,17 @@ const updateUser = async (req, res, next) => {
       updateFields.password = await encrypt(updateFields.password);
     }
 
-    const userUpdated = await User.update(updateFields, {
+    const updatedUser = await User.update(updateFields, {
       where: { id },
     });
 
-    res.json(userUpdated);
-  } catch (err) {
-    next(err);
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ error: 'Error updating user' });
   }
 };
 
-/**
- *
- * @param {express.Request} req
- * @param {express.Response} res
- */
-const getUserById = async (req, res, next) => {
+const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -65,32 +49,29 @@ const getUserById = async (req, res, next) => {
       // include: [Review, Cart, Product, ShippingAddress],
     });
 
-    res.json(user);
-  } catch (err) {
-    next(err);
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error: 'Error retrieving user' });
   }
 };
 
-/**
- *
- * @param {express.Request} req
- * @param {express.Response} res
- */
-const deleteUser = async (req, res, next) => {
+const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const userDeleted = await User.destroy({
+
+    const deletedUser = await User.destroy({
       where: { id },
     });
-    res.json(userDeleted);
-  } catch (err) {
-    next(err);
+
+    res.status(200).json(deletedUser);
+  } catch (error) {
+    res.status(500).json({ error: 'Error deleting user' });
   }
 };
 
 module.exports = {
   getUsers,
-  updateUser,
   getUserById,
+  updateUser,
   deleteUser,
 };
