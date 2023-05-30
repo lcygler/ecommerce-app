@@ -106,6 +106,8 @@ export const getInitialState = () => {
     createPurchaseStatus: 'idle',
     updatePurchaseByIdStatus: 'idle',
     deletePurchaseByIdStatus: 'idle',
+    sendPurchaseSuccessStatus: 'idle',
+    sendPurchaseFailureStatus: 'idle',
 
     // Users
     getUsersStatus: 'idle',
@@ -165,6 +167,8 @@ export const getInitialState = () => {
     createPurchaseError: null,
     updatePurchaseByIdError: null,
     deletePurchaseByIdError: null,
+    sendPurchaseSuccessError: null,
+    sendPurchaseFailureError: null,
 
     // Users
     getUsersError: null,

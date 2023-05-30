@@ -234,6 +234,16 @@ export const deletePurchaseById = createAsyncThunk(
   }
 );
 
+export const sendPurchaseSuccess = createAsyncThunk('slice/sendPurchaseSuccess', async (email) => {
+  const response = await axios.post(`/purchases/success`, email);
+  return response.data;
+});
+
+export const sendPurchaseFailure = createAsyncThunk('slice/sendPurchaseFailure', async (email) => {
+  const response = await axios.post(`/purchases/failure`, email);
+  return response.data;
+});
+
 //* USERS
 export const getUsers = createAsyncThunk('slice/getUsers', async () => {
   const response = await axios.get(`/users`);

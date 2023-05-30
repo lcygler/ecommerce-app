@@ -7,6 +7,7 @@ import {
   deletePurchaseById,
   deleteUserCart,
   getAllProducts,
+  sendPurchaseFailure,
   updateUserCart,
 } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
@@ -60,6 +61,7 @@ function Cart() {
 
   const userId = useSelector((state) => state.userId);
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
+  const selectedUser = useSelector((state) => state.selectedUser);
   const selectedPurchase = useSelector((state) => state.selectedPurchase);
   const cartProducts = useSelector((state) => state.cartProducts);
   const cartTotal = useSelector((state) => state.cartTotal);
@@ -89,6 +91,7 @@ function Cart() {
 
     if (payment_id && payment_id === 'null' && storedURL !== currentURL) {
       dispatch(deletePurchaseById(selectedPurchase?.id));
+      dispatch(sendPurchaseFailure({ email: selectedUser.user.email })); // Send purchase failure email
       // dispatch(actions.deletePurchase());
       toast.error('Purchase unsuccessful');
       localStorage.setItem('mpErrorURL', currentURL);

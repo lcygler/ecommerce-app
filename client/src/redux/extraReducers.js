@@ -15,22 +15,25 @@ import {
   getAllProducts,
   getCartById,
   getCategories,
+  getChartData,
   getGenders,
   getProductById,
   getProductByName,
   getPurchaseById,
   getReviewById,
   getSeasons,
-  getUsers,
   getUserById,
   getUserCart,
   getUserFavorites,
   getUserPurchases,
   getUserReviews,
+  getUsers,
   loginGoogle,
   loginUser,
   removeFavorite,
   removeUserFavorites,
+  sendPurchaseFailure,
+  sendPurchaseSuccess,
   updateCartById,
   updateProductById,
   updateProductsStock,
@@ -38,7 +41,6 @@ import {
   updateReviewById,
   updateUserById,
   updateUserCart,
-  getChartData,
 } from './asyncActions';
 
 export const extraReducers = (builder) => {
@@ -383,6 +385,29 @@ export const extraReducers = (builder) => {
     .addCase(deletePurchaseById.rejected, (state, action) => {
       state.deletePurchaseByIdStatus = 'failed';
       state.deletePurchaseByIdError = action.error.message;
+    })
+
+    //* EMAILS
+    .addCase(sendPurchaseSuccess.pending, (state) => {
+      state.sendPurchaseSuccessStatus = 'loading';
+    })
+    .addCase(sendPurchaseSuccess.fulfilled, (state, action) => {
+      state.sendPurchaseSuccessStatus = 'succeeded';
+    })
+    .addCase(sendPurchaseSuccess.rejected, (state, action) => {
+      state.sendPurchaseSuccessStatus = 'failed';
+      state.sendPurchaseSuccessError = action.error.message;
+    })
+
+    .addCase(sendPurchaseFailure.pending, (state) => {
+      state.sendPurchaseFailureStatus = 'loading';
+    })
+    .addCase(sendPurchaseFailure.fulfilled, (state, action) => {
+      state.sendPurchaseFailureStatus = 'succeeded';
+    })
+    .addCase(sendPurchaseFailure.rejected, (state, action) => {
+      state.sendPurchaseFailureStatus = 'failed';
+      state.sendPurchaseFailureError = action.error.message;
     })
 
     //* USERS
