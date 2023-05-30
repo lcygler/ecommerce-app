@@ -26,6 +26,17 @@ export const filterProducts = (state, action) => {
     filteredSorted = sortProducts(filteredSorted, state.order);
   }
 
+  // Filter by search term
+  if (action.payload) {
+    const searchTerm = action.payload.toLowerCase().trim();
+    const searchWords = searchTerm.split(' ');
+
+    filteredSorted = filteredSorted.filter((product) => {
+      const productName = product.name.toLowerCase();
+      return searchWords.every((word) => productName.includes(word));
+    });
+  }
+
   state.filteredProducts = filteredSorted;
 };
 
@@ -48,6 +59,17 @@ export const filterAdminProducts = (state, action) => {
     filteredSorted = sortProducts(filteredSorted, state.order);
   }
 
+  // Filter by search term
+  if (action.payload) {
+    const searchTerm = action.payload.toLowerCase().trim();
+    const searchWords = searchTerm.split(' ');
+
+    filteredSorted = filteredSorted.filter((product) => {
+      const productName = product.name.toLowerCase();
+      return searchWords.every((word) => productName.includes(word));
+    });
+  }
+
   state.filteredAdminProducts = filteredSorted;
 };
 
@@ -68,6 +90,17 @@ export const filterFavorites = (state, action) => {
   }
   if (state.order !== 'Default') {
     filteredSorted = sortProducts(filteredSorted, state.order);
+  }
+
+  // Filter by search term
+  if (action.payload) {
+    const searchTerm = action.payload.toLowerCase().trim();
+    const searchWords = searchTerm.split(' ');
+
+    filteredSorted = filteredSorted.filter((product) => {
+      const productName = product.name.toLowerCase();
+      return searchWords.every((word) => productName.includes(word));
+    });
   }
 
   state.filteredFavorites = filteredSorted;
