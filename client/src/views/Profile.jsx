@@ -1,7 +1,18 @@
-import { Box } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
+
+import { Box, Button } from '@chakra-ui/react';
 
 function Profile() {
-  return <Box>Profile Page</Box>;
+  const navigate = useNavigate();
+
+  return (
+    <Box>
+      <Box>Profile Page</Box>
+      <Button colorScheme="blue" onClick={() => navigate('/profile/edit')}>
+        Edit Profile
+      </Button>
+    </Box>
+  );
 }
 
 export default Profile;

@@ -4,52 +4,56 @@ import axios from 'axios';
 
 /* 
 //* PRODUCTS
-getAllProducts (Front OK - Back OK) 
-getProductById (Front OK - Back OK) 
-getProductByName (Front OK - Back NOK) 
-createProduct (Front OK - Back OK) 
-updateProductById (Front OK - Back OK) 
-deleteProductById (Front OK - Back NOK) 
+getAllProducts
+getProductById
+getProductByName
+createProduct
+updateProductById
+deleteProductById
 
 //* DETAIL
-getCategories (Front OK - Back NOK) 
-getSeasons (Front OK - Back OK) 
-getGenders (Front OK - Back OK) 
-getSize (Front NOK - Back NOK) 
-getColor (Front NOK - Back NOK) 
+getCategories
+getSeasons
+getGenders 
+getSize
+getColor
 
 //* FAVORITES
-getUserFavorites (Front OK - Back NOK)
-addFavorite (Front OK - Back NOK)
-removeFavorite (Front OK - Back NOK)
+getUserFavorites
+addFavorite
+removeFavorite
 
 //* CART
-getUserCart (Front OK - Back NOK)
-getCartById (Front OK - Back NOK)
-createCart (Front OK - Back NOK)
-updateCartById (Front OK - Back NOK)
-deleteCartById (Front OK - Back NOK)
+getUserCart
+getCartById
+createCart
+updateCartById
+deleteCartById
 
 //* PURCHASES
-getUserPurchases (Front OK - Back NOK)
-getPurchaseById (Front OK - Back NOK)
-createPurchase (Front OK - Back NOK)
-updatePurchaseById (Front OK - Back NOK)
-deletePurchaseById  (Front OK - Back NOK)
+getUserPurchases
+getPurchaseById
+createPurchase
+updatePurchaseById
+deletePurchaseById
 
 //* USERS
-getUserById (Front OK - Back NOK)
-updateUserById (Front OK - Back NOK)
-createUser (Front OK - Back OK)
-deleteUserById (Front OK - Back NOK)
-loginUser (Front OK - Back OK)
+getUserById
+updateUserById
+createUser
+deleteUserById
+loginUser
+loginGoogle
 
 //* REVIEWS
-getUserReviews (Front OK - Back NOK)
-getReviewById (Front OK - Back NOK)
-createReview (Front OK - Back NOK)
-updateReviewById (Front OK - Back NOK)
-deleteReviewById (Front OK - Back NOK)
+getUserReviews
+getReviewById
+createReview
+updateReviewById 
+deleteReviewById
+
+//* CHARTS
+getChartData
 */
 
 //* PRODUCTS
@@ -241,10 +245,13 @@ export const getUserById = createAsyncThunk('slice/getUserById', async (userId) 
   return response.data;
 });
 
-export const updateUserById = createAsyncThunk('slice/updateUserById', async (userId, userData) => {
-  const response = await axios.patch(`/users/${userId}`, userData);
-  return response.data;
-});
+export const updateUserById = createAsyncThunk(
+  'slice/updateUserById',
+  async ({ userId, updatedUser }) => {
+    const response = await axios.patch(`/users/${userId}`, updatedUser);
+    return response.data;
+  }
+);
 
 export const createUser = createAsyncThunk('slice/createUser', async (userData) => {
   const response = await axios.post(`/users/register`, userData);

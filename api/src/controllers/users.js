@@ -1,13 +1,14 @@
-const express = require("express");
+const express = require('express');
 const {
   User,
-  Review,
-  Cart,
-  CartDetail,
-  PurchaseDetail,
-  Product,
-  ShippingAddress,
-} = require("../db.js");
+  // Review,
+  // Cart,
+  // CartDetail,
+  // PurchaseDetail,
+  // Product,
+  // ShippingAddress,
+} = require('../db.js');
+const { encrypt } = require('../utils/HashPassword.js');
 
 /**
  *
@@ -31,9 +32,16 @@ const getUsers = async (req, res, next) => {
 const updateUser = async (req, res, next) => {
   try {
     const { id } = req.params;
-    let user = req.body;
 
-    const userUpdated = await User.update(user, {
+    const updateFields = {
+      ...req.body,
+    };
+
+    if (updateFields.password) {
+      updateFields.password = await encrypt(updateFields.password);
+    }
+
+    const userUpdated = await User.update(updateFields, {
       where: { id },
     });
 
@@ -52,19 +60,11 @@ const getUserById = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const user = await User.findOne(
-      { where: id },
-      {
-        include: [
-          { model: Review },
-          { model: Cart },
-          { model: CartDetail },
-          { model: PurchaseDetail },
-          { model: Product },
-          { model: ShippingAddress },
-        ],
-      }
-    );
+    const user = await User.findOne({
+      where: { id },
+      // include: [Review, Cart, Product, ShippingAddress],
+    });
+
     res.json(user);
   } catch (err) {
     next(err);
