@@ -46,6 +46,7 @@ function Product({
   const favorites = useSelector((state) => state.favorites);
   const [isFav, setIsFav] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isInCart, setIsInCart] = useState(false);
 
   useEffect(() => {
     setLoading(false);
@@ -54,6 +55,11 @@ function Product({
   useEffect(() => {
     setIsFav(favorites?.some((fav) => fav.id === id));
   }, [favorites, id]);
+
+  useEffect(() => {
+    const productExists = cartProducts?.find((product) => product.id === id);
+    setIsInCart(!!productExists);
+  }, [cartProducts, id]);
 
   const handleFavorite = async (e) => {
     e.preventDefault();
@@ -209,8 +215,14 @@ function Product({
           </Box>
 
           <Box position="absolute" bottom="20px" left="0" right="0" textAlign="center">
-            <Button colorScheme="blue" mt="4" onClick={handleAddToCart}>
-              Add to Cart
+            <Button
+              colorScheme="blue"
+              mt="4"
+              onClick={handleAddToCart}
+              isDisabled={isInCart}
+              width="130px"
+            >
+              {isInCart ? 'In Cart' : 'Add to Cart'}
             </Button>
           </Box>
         </Box>

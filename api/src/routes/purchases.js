@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const { Product, Purchase, PurchaseDetail, User } = require('../db.js');
+const { sendPurchaseSuccess, sendPurchaseFailure } = require('../utils/mail.config.js');
 
 const router = Router();
 
@@ -140,6 +141,28 @@ router.delete('/:purchaseId', async (req, res) => {
     res.status(200).json({ message: 'Purchase deleted successfully' });
   } catch (error) {
     res.status(500).json({ error: error.message || 'Error deleting purchase' });
+  }
+});
+
+//* PURCHASE SUCCESS
+router.post('/success', async (req, res) => {
+  try {
+    const { email } = req.body;
+    sendPurchaseSuccess(email);
+    res.status(200).json({ message: 'Purchase success email sent' });
+  } catch (error) {
+    res.status(500).json({ error: 'Error sending success email' });
+  }
+});
+
+//* PURCHASE FAILURE
+router.post('/failure', async (req, res) => {
+  try {
+    const { email } = req.body;
+    sendPurchaseFailure(email);
+    res.status(200).json({ message: 'Purchase failure email sent' });
+  } catch (error) {
+    res.status(500).json({ error: 'Error sending failure email' });
   }
 });
 
