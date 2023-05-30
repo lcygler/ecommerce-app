@@ -110,6 +110,11 @@ function Cart() {
     }
   };
 
+  const isIncreaseDisabled = (productId) => {
+    const product = cartProducts.find((product) => product.id === productId);
+    return product.quantity === product.stock;
+  };
+
   const handleDecreaseItem = (productId) => {
     const prod = cartProducts?.find((product) => product.id === productId);
 
@@ -358,7 +363,11 @@ function Cart() {
                         textAlign="center"
                       />
 
-                      <Button onClick={() => handleIncreaseItem(product.id)} size="sm">
+                      <Button
+                        onClick={() => handleIncreaseItem(product.id)}
+                        size="sm"
+                        isDisabled={isIncreaseDisabled(product.id)}
+                      >
                         <AddIcon fontSize="8px" />
                       </Button>
 
