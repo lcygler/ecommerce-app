@@ -391,6 +391,7 @@ function Register() {
                 onClick={() => {
                   window.history.back();
                 }}
+                isDisabled={isLoading}
               >
                 Go Back
               </Button>

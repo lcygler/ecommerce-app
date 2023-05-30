@@ -247,6 +247,7 @@ function Login() {
                 onClick={() => {
                   window.history.back();
                 }}
+                isDisabled={isLoading}
               >
                 Go Back
               </Button>

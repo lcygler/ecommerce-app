@@ -474,6 +474,7 @@ function EditProfile() {
                 onClick={() => {
                   navigate('/profile');
                 }}
+                isDisabled={isLoading}
               >
                 Go Back
               </Button>

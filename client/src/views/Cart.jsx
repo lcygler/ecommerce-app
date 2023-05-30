@@ -421,6 +421,7 @@ function Cart() {
                     onClick={() => {
                       window.history.back();
                     }}
+                    isDisabled={isLoading}
                   >
                     Go Back
                   </Button>
