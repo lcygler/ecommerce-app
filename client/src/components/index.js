@@ -10,12 +10,12 @@ import Pagination from './Pagination';
 import Product from './Product';
 import Products from './Products';
 import ProductsTable from './ProductsTable';
+import ReviewCard from './ReviewCard';
 import SearchBar from './SearchBar';
 import Sidebar from './Sidebar';
 import StarRating from './StarRating';
 import UserRoute from './UserRoute';
 import UsersTable from './UsersTable';
-import ReviewCard from '../views/ReviewCard';
 
 export {
   CreateProduct,
