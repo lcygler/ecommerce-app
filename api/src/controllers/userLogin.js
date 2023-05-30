@@ -54,7 +54,7 @@ const loginGoogle = async (userData) => {
     sendWelcomeEmail(email);
     return { user: newUser, token };
   } catch (error) {
-    throw new Error('Error in google login');
+    throw new Error('Error login with google');
   }
 };
 
