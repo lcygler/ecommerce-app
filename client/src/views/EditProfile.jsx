@@ -348,6 +348,7 @@ function EditProfile() {
                   placeholder="Enter your password"
                   value={formData.password}
                   onChange={handleChange}
+                  autoComplete="off"
                   _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
                   _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
                 />
@@ -363,6 +364,7 @@ function EditProfile() {
                   placeholder="Confirm your password"
                   value={formData.passwordCheck}
                   onChange={handleChange}
+                  autoComplete="off"
                   _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
                   _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
                 />
