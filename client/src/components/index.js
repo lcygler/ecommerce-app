@@ -36,5 +36,5 @@ export {
   Charts,
   EditProduct,
   UsersTable,
-  ReviewCard
+  ReviewCard,
 };
