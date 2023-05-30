@@ -4,6 +4,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { removeUserFavorites } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
+import { SearchBar } from '../components/index';
+
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -118,102 +120,117 @@ function Filters({ changePage, allProducts }) {
       top="70px"
       zIndex={1}
     >
-      <Box display="flex" alignItems="center" justifyContent="center">
-        <Select
-          defaultValue="All"
-          name="categorySelect"
-          ref={categorySelect}
-          onChange={handleFilters}
-        >
-          <option value="All">All Categories</option>
-          {categories.map((category) => (
-            <option key={category.id} value={category.name}>
-              {category.name}
-            </option>
-          ))}
-        </Select>
-      </Box>
+      <Flex flexDirection="row" alignItems="center">
+        <SearchBar />
+        <Flex>
+          <Box display="flex" alignItems="center" ml="4">
+            <Select
+              defaultValue="All"
+              name="categorySelect"
+              ref={categorySelect}
+              onChange={handleFilters}
+            >
+              <option value="All">All Categories</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.name}>
+                  {category.name}
+                </option>
+              ))}
+            </Select>
+          </Box>
 
-      <Box display="flex" alignItems="center" justifyContent="center" ml="4">
-        <Select defaultValue="All" name="genderSelect" ref={genderSelect} onChange={handleFilters}>
-          <option value="All">All Genders</option>
-          {genders.map((gender) => (
-            <option key={gender.id} value={gender.name}>
-              {gender.name}
-            </option>
-          ))}
-        </Select>
-      </Box>
+          <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+            <Select
+              defaultValue="All"
+              name="genderSelect"
+              ref={genderSelect}
+              onChange={handleFilters}
+            >
+              <option value="All">All Genders</option>
+              {genders.map((gender) => (
+                <option key={gender.id} value={gender.name}>
+                  {gender.name}
+                </option>
+              ))}
+            </Select>
+          </Box>
 
-      <Box display="flex" alignItems="center" justifyContent="center" ml="4">
-        <Select defaultValue="All" name="seasonSelect" ref={seasonSelect} onChange={handleFilters}>
-          <option value="All">All Seasons</option>
-          {seasons.map((season) => (
-            <option key={season.id} value={season.name}>
-              {season.name}
-            </option>
-          ))}
-        </Select>
-      </Box>
+          <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+            <Select
+              defaultValue="All"
+              name="seasonSelect"
+              ref={seasonSelect}
+              onChange={handleFilters}
+            >
+              <option value="All">All Seasons</option>
+              {seasons.map((season) => (
+                <option key={season.id} value={season.name}>
+                  {season.name}
+                </option>
+              ))}
+            </Select>
+          </Box>
 
-      <Box display="flex" alignItems="center" justifyContent="center" ml="4">
-        <Select
-          defaultValue="All"
-          name="discountSelect"
-          ref={discountSelect}
-          onChange={handleFilters}
-        >
-          <option value="All">All Offers</option>
-          <option value="Discounts">Discounts</option>
-          {discounts.map((discount) => (
-            <option key={discount} value={discount}>
-              {`${discount * 100}% OFF`}
-            </option>
-          ))}
-        </Select>
-      </Box>
+          <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+            <Select
+              defaultValue="All"
+              name="discountSelect"
+              ref={discountSelect}
+              onChange={handleFilters}
+            >
+              <option value="All">All Offers</option>
+              <option value="Discounts">Discounts</option>
+              {discounts.map((discount) => (
+                <option key={discount} value={discount}>
+                  {`${discount * 100}% OFF`}
+                </option>
+              ))}
+            </Select>
+          </Box>
 
-      <Box display="flex" alignItems="center" justifyContent="center" ml="4">
-        <Select
-          defaultValue="Default"
-          name="orderSelect"
-          ref={orderSelect}
-          onChange={handleFilters}
-        >
-          <option value="Default">Sort By</option>
-          <option value="Price (Asc)">Price (Asc)</option>
-          <option value="Price (Desc)">Price (Desc)</option>
-        </Select>
-      </Box>
+          <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+            <Select
+              defaultValue="Default"
+              name="orderSelect"
+              ref={orderSelect}
+              onChange={handleFilters}
+            >
+              <option value="Default">Sort By</option>
+              <option value="Price (Asc)">Price (Asc)</option>
+              <option value="Price (Desc)">Price (Desc)</option>
+            </Select>
+          </Box>
 
-      <Box display="flex" alignItems="center" justifyContent="center" ml="4">
-        <Button onClick={handleReset} variant="outline">
-          Reset Filters
-        </Button>
-      </Box>
+          <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+            <Button onClick={handleReset} variant="outline">
+              Reset Filters
+            </Button>
+          </Box>
 
-      {location.pathname === '/favorites' && allProducts.length !== 0 && (
-        <Box display="flex" alignItems="center" justifyContent="center" ml="4">
-          {/* <Button colorScheme="red" variant="ghost" onClick={handleClearFavorites}> */}
-          <Button colorScheme="red" variant="ghost" onClick={onOpen}>
-            Clear Favorites
-          </Button>
-        </Box>
-      )}
+          {location.pathname === '/favorites' && allProducts.length !== 0 && (
+            <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+              {/* <Button colorScheme="red" variant="ghost" onClick={handleClearFavorites}> */}
+              <Button colorScheme="red" variant="ghost" onClick={onOpen}>
+                Clear Favorites
+              </Button>
+            </Box>
+          )}
 
-      {location.pathname === '/dashboard' && (
-        <Box display="flex" alignItems="center" justifyContent="center" ml="4">
-          <Button
-            leftIcon={<AddIcon />}
-            colorScheme="blue"
-            position="absolute"
-            right="100px"
-            onClick={() => navigate('/dashboard/create')}
-          >
-            Create Product
-          </Button>
-        </Box>
-      )}
+          {location.pathname === '/dashboard' && (
+            <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+              <Button
+                leftIcon={<AddIcon />}
+                colorScheme="blue"
+                position="absolute"
+                right="100px"
+                onClick={() => navigate('/dashboard/create')}
+              >
+                Create Product
+              </Button>
+            </Box>
+          )}
+        </Flex>
+      </Flex>
 
       <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
         <AlertDialogOverlay backgroundColor="transparent">

@@ -10,6 +10,7 @@ import Pagination from './Pagination';
 import Product from './Product';
 import Products from './Products';
 import ProductsTable from './ProductsTable';
+import ReviewCard from './ReviewCard';
 import SearchBar from './SearchBar';
 import Sidebar from './Sidebar';
 import StarRating from './StarRating';
@@ -35,5 +36,5 @@ export {
   Charts,
   EditProduct,
   UsersTable,
-  ReviewCard
+  ReviewCard,
 };
