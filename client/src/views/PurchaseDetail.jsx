@@ -2,14 +2,7 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { 
-  Box, 
-  Button, 
-  Flex, 
-  Heading, 
-  Image, 
-  Text,
-} from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Image, Text } from '@chakra-ui/react';
 import { Navbar } from '../components/index';
 
 import backgroundImage from '../assets/images/background.jpg';
