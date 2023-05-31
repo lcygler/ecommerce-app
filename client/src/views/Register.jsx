@@ -12,12 +12,13 @@ import {
   FormControl,
   FormLabel,
   Heading,
+  Icon,
   Input,
   Link,
   Stack,
   Text,
 } from '@chakra-ui/react';
-
+import { FaChevronLeft } from 'react-icons/fa';
 import backgroundImage from '../assets/images/background.jpg';
 
 let timeoutId = null;
@@ -164,6 +165,7 @@ function Register() {
       backgroundImage={`url(${backgroundImage})`}
       backgroundSize="cover"
       backgroundPosition="center"
+      position="relative"
     >
       <Box
         bg="white"
@@ -384,9 +386,9 @@ function Register() {
             </Stack>
           </Stack>
 
-          <Stack direction="column" spacing={4} mt="20px">
-            <Stack direction="row" spacing={4}>
-              <Button
+          <Stack direction="column" spacing={4} mt="25px">
+            <Stack direction="row" spacing={4} justifyContent="center">
+              {/* <Button
                 width="100%"
                 onClick={() => {
                   navigate(-1);
@@ -395,21 +397,21 @@ function Register() {
                 isDisabled={isLoading}
               >
                 Go Back
-              </Button>
+              </Button> */}
 
               <Button
                 type="submit"
                 colorScheme="blue"
                 isLoading={isLoading}
                 loadingText="Registering..."
-                width="100%"
+                width="40%"
               >
                 Register
               </Button>
             </Stack>
 
-            <Box textAlign="center" marginTop={4} fontSize="sm">
-              <Text>
+            <Box textAlign="center" mt={4} fontSize="sm">
+              <Text mb="0">
                 Have an account?{' '}
                 <Link as={RouterLink} to="/login" color="blue.500" textDecoration="underline">
                   Login here
@@ -419,6 +421,20 @@ function Register() {
           </Stack>
         </form>
       </Box>
+
+      <Button
+        colorScheme="blue"
+        variant="ghost"
+        size="md"
+        rounded="full"
+        onClick={() => navigate(-1)}
+        position="absolute"
+        top="20px"
+        left="20px"
+        isDisabled={isLoading}
+      >
+        <Icon as={FaChevronLeft} mr="2" /> Go Back
+      </Button>
     </Box>
   );
 }

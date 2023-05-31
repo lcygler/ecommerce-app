@@ -24,12 +24,13 @@ import {
   FormControl,
   FormLabel,
   Heading,
+  Icon,
   Input,
   Link,
   Stack,
   Text,
 } from '@chakra-ui/react';
-
+import { FaChevronLeft } from 'react-icons/fa';
 import backgroundImage from '../assets/images/background.jpg';
 
 const clientId = process.env.REACT_APP_CLIENT_ID;
@@ -180,12 +181,13 @@ function Login() {
       backgroundImage={`url(${backgroundImage})`}
       backgroundSize="cover"
       backgroundPosition="center"
+      position="relative"
     >
       <Box
         bg="white"
         boxShadow="lg"
         borderRadius="md"
-        width="sm"
+        width="md"
         mx="auto"
         p={8}
         boxSizing="border-box"
@@ -241,8 +243,8 @@ function Login() {
               {/* <FormErrorMessage>{errors.password}</FormErrorMessage> */}
             </FormControl>
 
-            <Stack direction="row" spacing={4}>
-              <Button
+            <Stack direction="row" spacing={4} alignItems="center">
+              {/* <Button
                 width="100%"
                 onClick={() => {
                   navigate(-1);
@@ -251,30 +253,30 @@ function Login() {
                 isDisabled={isLoading}
               >
                 Go Back
-              </Button>
+              </Button> */}
+
+              <Flex justifyContent="center" width="50%">
+                <GoogleLogin
+                  clientId={clientId}
+                  onSuccess={onSuccess}
+                  onFailure={onFailure}
+                  cookiePolicy={'single_host_origin'}
+                />
+              </Flex>
 
               <Button
                 type="submit"
                 colorScheme="blue"
                 isLoading={isLoading}
                 loadingText="Logging in..."
-                width="100%"
+                width="50%"
               >
                 Login
               </Button>
             </Stack>
 
-            <Flex justifyContent="center">
-              <GoogleLogin
-                clientId={clientId}
-                onSuccess={onSuccess}
-                onFailure={onFailure}
-                cookiePolicy={'single_host_origin'}
-              />
-            </Flex>
-
             <Box textAlign="center" marginTop={4} fontSize="sm">
-              <Text>
+              <Text mb="0">
                 Don't have an account?{' '}
                 <Link as={RouterLink} to="/register" color="blue.500" textDecoration="underline">
                   Register now
@@ -284,6 +286,20 @@ function Login() {
           </Stack>
         </form>
       </Box>
+
+      <Button
+        colorScheme="blue"
+        variant="ghost"
+        size="md"
+        rounded="full"
+        onClick={() => navigate(-1)}
+        position="absolute"
+        top="20px"
+        left="20px"
+        isDisabled={isLoading}
+      >
+        <Icon as={FaChevronLeft} mr="2" /> Go Back
+      </Button>
     </Box>
   );
 }
