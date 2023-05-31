@@ -168,7 +168,7 @@ function Cart() {
     dispatch(actions.removeProduct(productId));
     const updatedCartProducts = cartProducts.filter((p) => p.id !== productId);
     dispatch(updateUserCart({ userId, products: updatedCartProducts }));
-    toast.success('Product removed from cart!');
+    toast.error('Product removed from cart!');
     // }
   };
 

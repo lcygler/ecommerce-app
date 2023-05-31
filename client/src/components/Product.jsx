@@ -71,7 +71,7 @@ function Product({
       await dispatch(getUserFavorites(userId));
       dispatch(actions.filterFavorites());
 
-      toast.success('Product removed from favorites!');
+      toast.error('Product removed from favorites!');
     } else {
       setIsFav(true);
 
