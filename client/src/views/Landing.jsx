@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import { getAllProducts } from '../redux/asyncActions';
-
+import axios from 'axios';
+import { StarRating } from '../components/index';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import ropa from '../assets/images/gestionropa.png';
 
 import {
   Badge,
@@ -22,14 +24,48 @@ import logoImage from '../assets/icons/logo_modern_2.jpg';
 import backgroundImage from '../assets/images/background.jpg';
 
 function Landing() {
+  const [users, setUsers] = useState({
+    name: '',
+    image: '',
+    comment: '',
+  });
   const dispatch = useDispatch();
   const allProducts = useSelector((state) => state.allProducts);
   const saleProducts = allProducts?.filter((product) => product.discounts > 0);
   const [isLogoLoaded, setIsLogoLoaded] = useState(false);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const commentResponse = (await axios.get('https://dummyjson.com/comments')).data;
+        const response = (await axios.get('https://randomuser.me/api/?results=2')).data;
+        // console.log(response.results);
+        // console.log(response.results.map((e)=> e.name.first));
+        // console.log(response.results.map((e)=> e.picture.large));
+        const comments = commentResponse.comments.map((e) => e.body);
+        console.log(comments);
+        setUsers({
+          name: response.results.map((e) => e.name.first),
+          image: response.results.map((e) => e.picture.large),
+          comment: comments,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  // console.log(users.name[0]);
+  // console.log(users.image[0]);
+
+  useEffect(() => {
     dispatch(getAllProducts());
   }, [dispatch]);
+
+  const handleScrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <Box
@@ -56,10 +92,11 @@ function Landing() {
           borderRadius="md"
           boxShadow="md"
           padding={8}
-          // maxWidth="2xl"
-          width="80%"
+          width="100%"
           textAlign="center"
-          marginTop={8}
+          // marginTop={8}
+          position="relative"
+          p="100"
         >
           <Fade in={isLogoLoaded}>
             <Box my={4} height="120px">
@@ -73,9 +110,20 @@ function Landing() {
               />
             </Box>
           </Fade>
-
+          <Button
+            as={RouterLink}
+            to="/home"
+            colorScheme="blue"
+            variant="solid"
+            size="lg"
+            marginTop={8}
+            position="absolute"
+            top="0"
+            right="3%"
+          >
+            Shop Now
+          </Button>
           <Carousel
-            bg="white"
             showArrows={false}
             showStatus={false}
             showIndicators={false}
@@ -88,7 +136,6 @@ function Landing() {
             emulateTouch={false}
             centerMode={true}
             centerSlidePercentage={20}
-            // width="80%"
           >
             {saleProducts?.map((product) => (
               <Link
@@ -171,11 +218,202 @@ function Landing() {
             ))}
           </Carousel>
 
-          <Link as={RouterLink} to="/home">
-            <Button colorScheme="blue" size="lg" mb={4}>
-              Shop Now
-            </Button>
-          </Link>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+            h={400}
+            mt={8}
+            position="relative"
+          >
+            <Box
+              flex="1"
+              ml={4}
+              maxWidth="50%"
+              padding="32px"
+              fontSize="20px"
+              borderRadius="16px"
+              background="purple.500"
+              boxShadow="10px 10px 47px -17px"
+            >
+              <Text textAlign="left" color="white">
+                Bienvenido a Modern Fashion, el destino definitivo para los amantes de la moda.
+                Nuestra tienda online te ofrece una experiencia de compra única, donde podrás
+                descubrir y vivir las últimas tendencias en ropa y accesorios. Desde prendas de
+                vestir elegantes hasta accesorios modernos, nuestra colección cuidadosamente
+                seleccionada te hará lucir increíble en cualquier ocasión. Con un diseño visual
+                impactante y una amplia gama de estilos, estamos aquí para satisfacer tus
+                necesidades de moda y llevar tu estilo al siguiente nivel
+              </Text>
+            </Box>
+            <Box flex="1" ml={4} position="absolute" right={'10%'}>
+              <Image
+                src={ropa}
+                alt="Random Image"
+                borderRadius="full"
+                boxShadow="10px 10px 15px -7px"
+                bg={'red'}
+                boxSize="390px"
+                objectFit="contain"
+                w={400}
+                h={400}
+              />
+            </Box>
+          </Box>
+
+          <Box display="flex" alignItems="center" justifyContent="space-evenly" h="400px" mt={8}>
+            <Box flex="1" ml={4}>
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d5523.05660636086!2d-58.3849768743303!3d-34.60342720755168!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sar!4v1685502793381!5m2!1sen!2sar"
+                width="75%"
+                height="400px"
+                frameBorder="0"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                aria-hidden="false"
+                tabIndex="0"
+              ></iframe>
+            </Box>
+            <Box
+              flex="1"
+              ml={4}
+              maxWidth="50%"
+              padding="32px"
+              fontSize="20px"
+              borderRadius="16px"
+              background="purple.500"
+              boxShadow="10px 10px 47px  -17px"
+            >
+              <Text textAlign="right" color="white">
+                En Modern Fashion, creemos en la importancia de la calidad y el estilo. Cada prenda
+                que encontrarás en nuestra tienda ha sido seleccionada cuidadosamente para
+                garantizar la máxima calidad y satisfacción. Nuestro compromiso con la excelencia se
+                refleja en cada costura y detalle de nuestras prendas. Desde los materiales de alta
+                calidad hasta los diseños vanguardistas, cada artículo ha sido elegido pensando en
+                ofrecerte lo mejor de la moda actual. Estamos orgullosos de brindarte una
+                experiencia de compra excepcional y productos que te harán sentir confianza y
+                elegancia.
+              </Text>
+            </Box>
+          </Box>
+
+          <Box display="flex" alignItems="center" justifyContent="space-between" mt={8} h={400}>
+            <Box
+              flex="1"
+              ml={4}
+              maxWidth="50%"
+              padding="32px"
+              fontSize="20px"
+              borderRadius="16px"
+              background="purple.500"
+              boxShadow="10px 10px 47px -17px"
+            >
+              <Text textAlign="left" color="white">
+                Explora nuestra colección de moda y déjate cautivar por nuestra amplia variedad de
+                estilos. Ya sea que busques un atuendo casual y relajado, una elegante noche de gala
+                o prendas cómodas para el día a día, tenemos todo lo que necesitas. Nuestros
+                productos van desde vestidos y blusas hasta pantalones, faldas y accesorios de moda.
+                Cada artículo ha sido cuidadosamente seleccionado para ofrecerte las últimas
+                tendencias y los diseños más atractivos. En Modern Fashion, la moda es más que ropa,
+                es una expresión de tu personalidad y estilo único.
+              </Text>
+            </Box>
+            <Box flex="1" ml={4} display="flex">
+              <Box flex="1" mr={2}>
+                <Box
+                  bg="white"
+                  borderRadius="md"
+                  boxShadow="md"
+                  padding={4}
+                  textAlign="center"
+                  position="relative"
+                  left="30%"
+                  w="300px"
+                  h="200px"
+                >
+                  <Box display={'flex'} justifyContent="space-evenly">
+                    <Image
+                      src={users.image[0]}
+                      alt="User Image"
+                      borderRadius="full"
+                      w="40px"
+                      h="40px"
+                      objectFit="cover"
+                      position="absolute"
+                      top={4}
+                      left={2}
+                    />
+                    <Text>{users.name[0]}</Text>
+                    <Box
+                      display="flex"
+                      justifyContent="flex-end"
+                      position="absolute"
+                      right="0.90%"
+                      color="blue.500"
+                    >
+                      <StarRating value={5} />
+                    </Box>
+                  </Box>
+                  <Box display="flex" justifyContent="flex-end">
+                    <Box>
+                      <Box mt={7}>
+                        <Text>{users.comment[0]}</Text>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+              </Box>
+              <Box flex="1" ml={2}>
+                <Box
+                  bg="white"
+                  borderRadius="md"
+                  boxShadow="md"
+                  padding={4}
+                  textAlign="center"
+                  position="relative"
+                  right="-20%"
+                  w="300px"
+                  h="200px"
+                >
+                  <Box display={'flex'} justifyContent="space-evenly">
+                    <Image
+                      src={users.image[1]}
+                      alt="User Image"
+                      borderRadius="full"
+                      w="40px"
+                      h="40px"
+                      objectFit="cover"
+                      justifyContent={'center'}
+                      position="absolute"
+                      top={4}
+                      left={2}
+                    />
+                    <Text>{users.name[1]}</Text>
+                    <Box
+                      display="flex"
+                      justifyContent="flex-end"
+                      position="absolute"
+                      right="0.90%"
+                      color="blue.500"
+                    >
+                      <StarRating value={5} />
+                    </Box>
+                  </Box>
+                  <Box display="flex" justifyContent="flex-end">
+                    <Box>
+                      <Box mt={7}>
+                        <Text>{users.comment[1]}</Text>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
+          </Box>
+
+          <Button onClick={handleScrollToTop} variant="solid" colorScheme="blue">
+            Go to Top
+          </Button>
         </Box>
       )}
     </Box>
