@@ -11,13 +11,19 @@ function SearchBar({ searchTerm, setSearchTerm }) {
   // const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    if (location.pathname === '/home') {
-      dispatch(actions.filterProducts(searchTerm));
-    } else if (location.pathname === '/favorites') {
-      dispatch(actions.filterFavorites(searchTerm));
-    } else if (location.pathname === '/dashboard') {
-      dispatch(actions.filterAdminProducts(searchTerm));
-    }
+    const filterProducts = async () => {
+      if (location.pathname === '/home') {
+        await dispatch(actions.updateSearchTerm(searchTerm));
+        dispatch(actions.filterProducts(searchTerm));
+      } else if (location.pathname === '/favorites') {
+        await dispatch(actions.updateSearchTerm(searchTerm));
+        dispatch(actions.filterFavorites(searchTerm));
+      } else if (location.pathname === '/dashboard') {
+        await dispatch(actions.updateSearchTerm(searchTerm));
+        dispatch(actions.filterAdminProducts(searchTerm));
+      }
+    };
+    filterProducts();
   }, [dispatch, searchTerm, location]);
 
   // const handleSearch = () => {

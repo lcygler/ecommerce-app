@@ -45,6 +45,7 @@ export const getInitialState = () => {
     phoneNumber: '',
     state: '',
     admin: '',
+    searchTerm: '',
     currentPage: 1,
 
     // Favorites
