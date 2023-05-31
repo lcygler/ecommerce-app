@@ -7,8 +7,8 @@ import {
 } from './helpers';
 
 //* FILTERS
-export const filterProducts = (state, action) => {
-  let filteredSorted = [...state.allProducts];
+const applyFilters = (products, state) => {
+  let filteredSorted = [...products];
 
   if (state.category !== 'All') {
     filteredSorted = filterByCategory(filteredSorted, state.category);
@@ -26,81 +26,50 @@ export const filterProducts = (state, action) => {
     filteredSorted = sortProducts(filteredSorted, state.order);
   }
 
-  // Filter by search term
-  if (action.payload) {
-    const searchTerm = action.payload.toLowerCase().trim();
-    const searchWords = searchTerm.split(' ');
+  return filteredSorted;
+};
 
-    filteredSorted = filteredSorted.filter((product) => {
-      const productName = product.name.toLowerCase();
-      return searchWords.every((word) => productName.includes(word));
-    });
+const applySearchFilter = (filteredSorted, searchTerm) => {
+  // prettier-ignore
+  const searchWords = searchTerm.toLowerCase().trim().split(' ');
+
+  const removeDiacritics = (str) => {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  };
+
+  const normalizedSearchWords = searchWords.map((word) => removeDiacritics(word));
+
+  return filteredSorted.filter((product) => {
+    const productName = removeDiacritics(product.name.toLowerCase());
+    return normalizedSearchWords.every((word) => productName.includes(word));
+  });
+};
+
+export const filterProducts = (state, action) => {
+  let filteredSorted = applyFilters(state.allProducts, state);
+
+  if (action.payload) {
+    filteredSorted = applySearchFilter(filteredSorted, action.payload);
   }
 
   state.filteredProducts = filteredSorted;
 };
 
 export const filterAdminProducts = (state, action) => {
-  let filteredSorted = [...state.adminProducts];
+  let filteredSorted = applyFilters(state.adminProducts, state);
 
-  if (state.category !== 'All') {
-    filteredSorted = filterByCategory(filteredSorted, state.category);
-  }
-  if (state.gender !== 'All') {
-    filteredSorted = filterByGender(filteredSorted, state.gender);
-  }
-  if (state.season !== 'All') {
-    filteredSorted = filterBySeason(filteredSorted, state.season);
-  }
-  if (state.discount !== 'All') {
-    filteredSorted = filterByDiscount(filteredSorted, state.discount);
-  }
-  if (state.order !== 'Default') {
-    filteredSorted = sortProducts(filteredSorted, state.order);
-  }
-
-  // Filter by search term
   if (action.payload) {
-    const searchTerm = action.payload.toLowerCase().trim();
-    const searchWords = searchTerm.split(' ');
-
-    filteredSorted = filteredSorted.filter((product) => {
-      const productName = product.name.toLowerCase();
-      return searchWords.every((word) => productName.includes(word));
-    });
+    filteredSorted = applySearchFilter(filteredSorted, action.payload);
   }
 
   state.filteredAdminProducts = filteredSorted;
 };
 
 export const filterFavorites = (state, action) => {
-  let filteredSorted = [...state.favorites];
+  let filteredSorted = applyFilters(state.favorites, state);
 
-  if (state.category !== 'All') {
-    filteredSorted = filterByCategory(filteredSorted, state.category);
-  }
-  if (state.gender !== 'All') {
-    filteredSorted = filterByGender(filteredSorted, state.gender);
-  }
-  if (state.season !== 'All') {
-    filteredSorted = filterBySeason(filteredSorted, state.season);
-  }
-  if (state.discount !== 'All') {
-    filteredSorted = filterByDiscount(filteredSorted, state.discount);
-  }
-  if (state.order !== 'Default') {
-    filteredSorted = sortProducts(filteredSorted, state.order);
-  }
-
-  // Filter by search term
   if (action.payload) {
-    const searchTerm = action.payload.toLowerCase().trim();
-    const searchWords = searchTerm.split(' ');
-
-    filteredSorted = filteredSorted.filter((product) => {
-      const productName = product.name.toLowerCase();
-      return searchWords.every((word) => productName.includes(word));
-    });
+    filteredSorted = applySearchFilter(filteredSorted, action.payload);
   }
 
   state.filteredFavorites = filteredSorted;
