@@ -7,10 +7,10 @@ import {
   Button,
   Flex,
   Spinner,
-} from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+} from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import {
   Charts,
@@ -20,9 +20,10 @@ import {
   ProductsTable,
   Sidebar,
   UsersTable,
-} from '../components/index';
+} from "../components/index";
 import {
   deleteProductById,
+  deleteUserById,
   getAdminProducts,
   getCategories,
   getChartData,
@@ -30,22 +31,26 @@ import {
   getSeasons,
   getUsers,
   updateProductById,
-} from '../redux/asyncActions';
-import { actions } from '../redux/slice';
+  updateUserById,
+} from "../redux/asyncActions";
+import { actions } from "../redux/slice";
 
 function Dashboard() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const adminProducts = useSelector((state) => state.adminProducts);
-  const filteredAdminProducts = useSelector((state) => state.filteredAdminProducts);
+  const filteredAdminProducts = useSelector(
+    (state) => state.filteredAdminProducts
+  );
   const currentPage = useSelector((state) => state.currentPage);
   const allUsers = useSelector((state) => state.allUsers);
+  const filteredUsers = useSelector((state) => state.filteredUsers);
   const chartData = useSelector((state) => state.chartData);
 
   const [itemsPerPage] = useState(10);
   const [loading, setLoading] = useState(true);
-  const [selectedOption, setSelectedOption] = useState('products');
+  const [selectedOption, setSelectedOption] = useState("products");
   const [clearSearch, setClearSearch] = useState(false);
 
   useEffect(() => {
@@ -59,13 +64,14 @@ function Dashboard() {
     };
     const fetchUsers = async () => {
       await dispatch(getUsers());
+      await dispatch(actions.filterUsers());
     };
     fetchProducts();
     fetchUsers();
   }, [dispatch]);
 
   useEffect(() => {
-    if (selectedOption === 'charts' && !chartData) {
+    if (selectedOption === "charts" && !chartData) {
       dispatch(getChartData());
     }
   }, [dispatch, selectedOption, chartData]);
@@ -106,18 +112,27 @@ function Dashboard() {
     await dispatch(actions.filterAdminProducts());
   };
 
-  const handleDeleteUser = async (userId) => {};
+  const handleDeleteUser = async (userId) => {
+    await dispatch(deleteUserById(userId));
+    await dispatch(getUsers());
+  };
 
-  const handleSuspendUser = async ({ userId, updatedUser }) => {};
+  const handleSuspendUser = async ({ userId, updatedUser }) => {
+    await dispatch(updateUserById({ userId, updatedUser }));
+    await dispatch(getUsers());
+  };
 
   return (
     <Box display="flex" flexDirection="column" minHeight="100vh">
       <Navbar />
       <Flex flex="1">
-        <Sidebar handleSidebarOption={handleSidebarOption} selectedOption={selectedOption} />
+        <Sidebar
+          handleSidebarOption={handleSidebarOption}
+          selectedOption={selectedOption}
+        />
         <Box flex="1" overflow="auto">
           <Box padding="4">
-            {selectedOption === 'products' && (
+            {selectedOption === "products" && (
               <Filters
                 changePage={changePage}
                 allProducts={adminProducts}
@@ -160,15 +175,24 @@ function Dashboard() {
                   </AlertDescription>
                 </Flex>
               </Alert>
-              <Box display="flex" alignItems="center" justifyContent="center" mt="4">
-                <Button onClick={handleReset} variant="solid" colorScheme="blue">
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                mt="4"
+              >
+                <Button
+                  onClick={handleReset}
+                  variant="solid"
+                  colorScheme="blue"
+                >
                   Reset Filters
                 </Button>
               </Box>
             </Box>
           ) : (
             <>
-              {selectedOption === 'products' && (
+              {selectedOption === "products" && (
                 <ProductsTable
                   products={currentProducts}
                   editProduct={handleEditProduct}
@@ -177,17 +201,20 @@ function Dashboard() {
                 />
               )}
 
-              {selectedOption === 'users' && (
+              {selectedOption === "users" && (
                 <UsersTable
                   users={allUsers}
+                  filteredUsers={filteredUsers}
                   deleteUser={handleDeleteUser}
                   suspendUser={handleSuspendUser}
                 />
               )}
 
-              {selectedOption === 'charts' && chartData && <Charts dataCharts={chartData} />}
+              {selectedOption === "charts" && chartData && (
+                <Charts dataCharts={chartData} />
+              )}
 
-              {selectedOption === 'products' && (
+              {selectedOption === "products" && (
                 <Box display="flex" justifyContent="center" mt="4">
                   <Pagination
                     totalPages={totalPages}
