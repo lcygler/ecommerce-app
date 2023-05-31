@@ -57,6 +57,7 @@ export const getInitialState = () => {
     cartTotal: storedCartTotal || 0,
 
     // Purchases
+    allPurchases: [],
     purchases: storedPurchases || [],
     selectedPurchase: storedSelectedPurchase || {},
     paymentLink: '',
@@ -110,6 +111,7 @@ export const getInitialState = () => {
     updateProductsStockStatus: 'idle',
 
     // Purchases
+    getAllPurchasesStatus: 'idle',
     getUserPurchasesStatus: 'idle',
     getPurchaseByIdStatus: 'idle',
     createPurchaseStatus: 'idle',
@@ -171,6 +173,7 @@ export const getInitialState = () => {
     updateProductsStockError: null,
 
     // Purchases
+    getAllPurchasesError: null,
     getUserPurchasesError: null,
     getPurchaseByIdError: null,
     createPurchaseError: null,

@@ -200,6 +200,11 @@ export const updateProductsStock = createAsyncThunk(
 );
 
 //* PURCHASES
+export const getAllPurchases = createAsyncThunk('slice/getAllPurchases', async () => {
+  const response = await axios.get(`/purchases`);
+  return response.data;
+});
+
 export const getUserPurchases = createAsyncThunk('slice/getUserPurchases', async (userId) => {
   const response = await axios.get(`/purchases/users/${userId}`);
   return response.data;

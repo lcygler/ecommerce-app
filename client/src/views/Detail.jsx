@@ -305,7 +305,8 @@ function Detail() {
                       <CreateReview productId={productId} />
                       <Button
                         onClick={() => {
-                          window.history.back();
+                          navigate(-1);
+                          // window.history.back();
                         }}
                         colorScheme="gray"
                         width="150px"

@@ -101,7 +101,7 @@
       "Category": [
         {
           "id": 2,
-          "name": "Pantalones"
+          "name": "Shorts"
         },
         {
           "id": 3,
@@ -144,7 +144,7 @@
       "Category": [
         {
           "id": 1,
-          "name": "Camisas"
+          "name": "Buzos"
         }
       ],
       "reviews": [
@@ -183,7 +183,7 @@
       "Category": [
         {
           "id": 1,
-          "name": "Camisas"
+          "name": "Buzos"
         }
       ],
       "reviews": [
@@ -222,7 +222,7 @@
       "Category": [
         {
           "id": 1,
-          "name": "Camisas"
+          "name": "Remeras"
         }
       ],
       "reviews": [
@@ -261,7 +261,7 @@
       "Category": [
         {
           "id": 1,
-          "name": "Camisas"
+          "name": "Camperas"
         }
       ],
       "reviews": [
@@ -300,7 +300,7 @@
       "Category": [
         {
           "id": 1,
-          "name": "Camisas"
+          "name": "Remeras"
         }
       ],
       "reviews": [
@@ -339,7 +339,7 @@
       "Category": [
         {
           "id": 1,
-          "name": "Camisas"
+          "name": "Pantalones"
         }
       ],
       "reviews": [
@@ -378,7 +378,7 @@
       "Category": [
         {
           "id": 1,
-          "name": "Camisas"
+          "name": "Pantalones"
         }
       ],
       "reviews": [
@@ -417,7 +417,7 @@
       "Category": [
         {
           "id": 1,
-          "name": "Camisas"
+          "name": "Pantalones"
         }
       ],
       "reviews": [
@@ -456,7 +456,7 @@
       "Category": [
         {
           "id": 1,
-          "name": "Camisas"
+          "name": "Pantalones"
         }
       ],
       "reviews": [
@@ -495,7 +495,7 @@
       "Category": [
         {
           "id": 1,
-          "name": "Camisas"
+          "name": "Buzos"
         }
       ],
       "reviews": [
@@ -534,7 +534,7 @@
       "Category": [
         {
           "id": 1,
-          "name": "Camisas"
+          "name": "Remeras"
         }
       ],
       "reviews": [
@@ -573,7 +573,7 @@
       "Category": [
         {
           "id": 1,
-          "name": "Camisas"
+          "name": "Buzos"
         }
       ],
       "reviews": [

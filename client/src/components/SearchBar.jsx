@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { actions } from '../redux/slice';
 
 import { Flex, Input /* Button */ } from '@chakra-ui/react';
 
-function SearchBar() {
+function SearchBar({ searchTerm, setSearchTerm }) {
   const dispatch = useDispatch();
   const location = useLocation();
-  const [searchTerm, setSearchTerm] = useState('');
+  // const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     if (location.pathname === '/home') {
@@ -21,7 +21,13 @@ function SearchBar() {
   }, [dispatch, searchTerm, location]);
 
   // const handleSearch = () => {
+  // if (location.pathname === '/home') {
   //   dispatch(actions.filterProducts(searchTerm));
+  // } else if (location.pathname === '/favorites') {
+  //   dispatch(actions.filterFavorites(searchTerm));
+  // } else if (location.pathname === '/dashboard') {
+  //   dispatch(actions.filterAdminProducts(searchTerm));
+  // }
   // };
 
   // const handleKeyPress = (event) => {
