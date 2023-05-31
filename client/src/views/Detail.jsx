@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getProductById, updateUserCart } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
-import { Navbar, StarRating } from '../components/index';
+import { CreateReview, Navbar, StarRating } from '../components/index';
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,7 +18,6 @@ import {
   Heading,
   Icon,
   Image,
-  LinkBox,
   Spinner,
   Stack,
   Text,
@@ -26,7 +25,6 @@ import {
 import { motion } from 'framer-motion';
 import { FaChevronDown, FaChevronLeft, FaChevronRight, FaChevronUp } from 'react-icons/fa';
 import backgroundImage from '../assets/images/background.jpg';
-import { CreateReview, ReviewCard /* StarRating */ } from '../components/index';
 
 function Detail() {
   const dispatch = useDispatch();
