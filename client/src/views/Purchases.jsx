@@ -199,7 +199,13 @@ function Purchases() {
 
               <Flex flexDirection="column" alignItems="center" mt="10">
                 <Stack direction="row" spacing={4} justifyContent="center" width="100%">
-                  <Button width="30%" onClick={() => window.history.back()}>
+                  <Button
+                    width="30%"
+                    onClick={() => {
+                      navigate(-1);
+                      // window.history.back();
+                    }}
+                  >
                     Go Back
                   </Button>
                 </Stack>

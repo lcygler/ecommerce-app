@@ -422,7 +422,8 @@ function Cart() {
                   <Button
                     width="30%"
                     onClick={() => {
-                      window.history.back();
+                      navigate(-1);
+                      // window.history.back();
                     }}
                     isDisabled={isLoading}
                   >
