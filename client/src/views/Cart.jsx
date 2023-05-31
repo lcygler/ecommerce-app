@@ -141,20 +141,25 @@ function Cart() {
     }
   };
 
+  const isDecreaseDisabled = (productId) => {
+    const product = cartProducts.find((product) => product.id === productId);
+    return product.quantity === 1;
+  };
+
   const handleUpdateItem = (productId, quantity) => {
     const product = cartProducts?.find((product) => product.id === productId);
     const newQuantity = parseInt(quantity);
 
     if (newQuantity > product.stock) {
-      toast.error('Quantity exceeds available stock');
-    } else {
-      dispatch(actions.updateProduct({ productId, quantity }));
-
-      const updatedCartProducts = cartProducts.map((p) =>
-        p.id === productId ? { ...p, quantity: newQuantity } : p
-      );
-      dispatch(updateUserCart({ userId, products: updatedCartProducts }));
+      // toast.error('Quantity exceeds available stock');
+      return;
     }
+
+    dispatch(actions.updateProduct({ productId, quantity }));
+    const updatedCartProducts = cartProducts.map((p) =>
+      p.id === productId ? { ...p, quantity: newQuantity } : p
+    );
+    dispatch(updateUserCart({ userId, products: updatedCartProducts }));
   };
 
   const handleRemoveItem = (productId) => {
@@ -345,6 +350,7 @@ function Cart() {
                         onClick={() => handleDecreaseItem(product.id)}
                         size="sm"
                         marginLeft={2}
+                        isDisabled={isDecreaseDisabled(product.id)}
                       >
                         <MinusIcon fontSize="8px" />
                       </Button>
