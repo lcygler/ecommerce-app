@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { removeUserFavorites } from '../redux/asyncActions';
@@ -24,10 +24,12 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
-function Filters({ changePage, allProducts }) {
+function Filters({ changePage, allProducts, clearSearch, setClearSearch }) {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [searchTerm, setSearchTerm] = useState('');
 
   const cancelRef = useRef();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -66,6 +68,13 @@ function Filters({ changePage, allProducts }) {
     orderSelect.current.value = order;
   }, [category, discount, season, gender, order]);
 
+  useEffect(() => {
+    if (clearSearch) {
+      setSearchTerm('');
+      setClearSearch(false);
+    }
+  }, [clearSearch]);
+
   const handleFilters = (e) => {
     const { name: selectName, value: selectValue } = e.target;
     if (selectName === 'categorySelect') {
@@ -88,6 +97,7 @@ function Filters({ changePage, allProducts }) {
     dispatch(actions.resetFilters());
     dispatch(actions.filterProducts());
     dispatch(actions.filterFavorites());
+    setSearchTerm('');
     changePage(1);
   };
 
@@ -121,7 +131,7 @@ function Filters({ changePage, allProducts }) {
       zIndex={1}
     >
       <Flex flexDirection="row" alignItems="center">
-        <SearchBar />
+        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         <Flex>
           <Box display="flex" alignItems="center" ml="4">
             <Select
