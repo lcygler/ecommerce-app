@@ -55,31 +55,22 @@ const applySearchFilter = (filteredSorted, searchTerm) => {
 
 export const filterProducts = (state, action) => {
   let filteredSorted = applyFilters(state.allProducts, state);
-
-  if (action.payload) {
-    filteredSorted = applySearchFilter(filteredSorted, action.payload);
-  }
-
+  filteredSorted = applySearchFilter(filteredSorted, state.searchTerm);
+  // if (action.payload) {
+  //   filteredSorted = applySearchFilter(filteredSorted, action.payload);
+  // }
   state.filteredProducts = filteredSorted;
 };
 
 export const filterAdminProducts = (state, action) => {
   let filteredSorted = applyFilters(state.adminProducts, state);
-
-  if (action.payload) {
-    filteredSorted = applySearchFilter(filteredSorted, action.payload);
-  }
-
+  filteredSorted = applySearchFilter(filteredSorted, state.searchTerm);
   state.filteredAdminProducts = filteredSorted;
 };
 
 export const filterFavorites = (state, action) => {
   let filteredSorted = applyFilters(state.favorites, state);
-
-  if (action.payload) {
-    filteredSorted = applySearchFilter(filteredSorted, action.payload);
-  }
-
+  filteredSorted = applySearchFilter(filteredSorted, state.searchTerm);
   state.filteredFavorites = filteredSorted;
 };
 
@@ -103,6 +94,10 @@ export const updateOrder = (state, action) => {
   state.order = action.payload;
 };
 
+export const updateSearchTerm = (state, action) => {
+  state.searchTerm = action.payload;
+};
+
 export const resetFilters = (state, action) => {
   state.category = 'All';
   state.discount = 'All';
@@ -123,6 +118,7 @@ export const clearSelectedPurchase = (state, action) => {
   state.selectedPurchase = action.payload;
 };
 
+//* USER FILTERS
 export const filterUsers = (state, action) => {
   let filteredSorted = [...state.allUsers];
 
@@ -151,7 +147,7 @@ export const filterUsers = (state, action) => {
     filteredSorted = filterByAdmin(filteredSorted, state.admin);
   }
 
-  state.filteredUsers = filteredSorted
+  state.filteredUsers = filteredSorted;
 };
 
 export const resetUsersFilters = (state, action) => {
@@ -196,7 +192,6 @@ export const updateStateFilter = (state, action) => {
 export const updateAdminFilter = (state, action) => {
   state.admin = action.payload;
 };
-
 
 //* FAVORITES
 export const addFavorite = (state, action) => {

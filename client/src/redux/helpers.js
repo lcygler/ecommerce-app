@@ -65,7 +65,7 @@ export const sortProducts = (products, order) => {
   }
 };
 
-/* User filters */
+//* USER FILTERS
 export const filterByName = (users, name) => {
   if (name !== '') {
     return (users = users.filter((user) =>

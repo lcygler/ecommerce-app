@@ -90,6 +90,7 @@ function Filters({ changePage, allProducts, clearSearch, setClearSearch }) {
     }
     dispatch(actions.filterProducts());
     dispatch(actions.filterFavorites());
+    dispatch(actions.filterAdminProducts());
     changePage(1);
   };
 
@@ -97,6 +98,7 @@ function Filters({ changePage, allProducts, clearSearch, setClearSearch }) {
     dispatch(actions.resetFilters());
     dispatch(actions.filterProducts());
     dispatch(actions.filterFavorites());
+    dispatch(actions.filterAdminProducts());
     setSearchTerm('');
     changePage(1);
   };
