@@ -318,11 +318,13 @@ const UserFilters = ({ users, changePage }) => {
       <Box display="flex" alignItems="center" justifyContent="center" ml="4">
         <Select ref={stateSelect} name="state" onChange={handleFilters}>
           <option value="">Filter by state</option>
-          {statesInUsers.map((item, id) => (
-            <option key={id} value={item}>
-              {item ? "Not active" : "Active"}
-            </option>
-          ))}
+          {statesInUsers.map((item, id) => {
+            if(item) {
+              return (<option key={id} value={item}>Active</option>)
+            } else {
+              return (<option key={id} value={item}>Not active</option>)
+            }
+          })}
         </Select>
       </Box>
       <Box display="flex" alignItems="center" justifyContent="center" ml="4">
