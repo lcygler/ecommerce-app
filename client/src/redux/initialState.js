@@ -37,6 +37,15 @@ export const getInitialState = () => {
     size: 'All',
     discount: 'All',
     order: 'Default',
+    name: '',
+    lastname: '',
+    username: '',
+    email: '',
+    birthdate: '',
+    phoneNumber: '',
+    state: '',
+    admin: '',
+    searchTerm: '',
     currentPage: 1,
 
     // Favorites
@@ -49,12 +58,14 @@ export const getInitialState = () => {
     cartTotal: storedCartTotal || 0,
 
     // Purchases
+    allPurchases: [],
     purchases: storedPurchases || [],
     selectedPurchase: storedSelectedPurchase || {},
     paymentLink: '',
 
     // Users
     allUsers: [],
+    filteredUsers: [],
     userId: storedUserId || null,
     selectedUser: storedSelectedUser || {},
     isAuthenticated: storedIsAuthenticated || false,
@@ -65,7 +76,7 @@ export const getInitialState = () => {
     selectedReview: {},
 
     // Chart
-    getChartData: [],
+    chartData: [],
 
     //* Async Status
     // Products
@@ -101,6 +112,7 @@ export const getInitialState = () => {
     updateProductsStockStatus: 'idle',
 
     // Purchases
+    getAllPurchasesStatus: 'idle',
     getUserPurchasesStatus: 'idle',
     getPurchaseByIdStatus: 'idle',
     createPurchaseStatus: 'idle',
@@ -162,6 +174,7 @@ export const getInitialState = () => {
     updateProductsStockError: null,
 
     // Purchases
+    getAllPurchasesError: null,
     getUserPurchasesError: null,
     getPurchaseByIdError: null,
     createPurchaseError: null,
@@ -190,3 +203,4 @@ export const getInitialState = () => {
     getChartDataError: null,
   };
 };
+

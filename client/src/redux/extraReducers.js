@@ -13,6 +13,7 @@ import {
   deleteUserCart,
   getAdminProducts,
   getAllProducts,
+  getAllPurchases,
   getCartById,
   getCategories,
   getChartData,
@@ -322,6 +323,18 @@ export const extraReducers = (builder) => {
     })
 
     //* PURCHASES
+    .addCase(getAllPurchases.pending, (state) => {
+      state.getAllPurchasesStatus = 'loading';
+    })
+    .addCase(getAllPurchases.fulfilled, (state, action) => {
+      state.getAllPurchasesStatus = 'succeeded';
+      state.allPurchases = action.payload;
+    })
+    .addCase(getAllPurchases.rejected, (state, action) => {
+      state.getAllPurchasesStatus = 'failed';
+      state.getAllPurchasesError = action.error.message;
+    })
+
     .addCase(getUserPurchases.pending, (state) => {
       state.getUserPurchasesStatus = 'loading';
     })

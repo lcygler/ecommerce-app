@@ -4,6 +4,24 @@ const { sendPurchaseSuccess, sendPurchaseFailure } = require('../utils/mail.conf
 
 const router = Router();
 
+//* GET ALL PURCHASES
+router.get('/', async (req, res) => {
+  try {
+    const allPurchases = await Purchase.findAll({
+      include: {
+        model: PurchaseDetail,
+        include: {
+          model: Product,
+        },
+      },
+    });
+
+    res.status(200).json(allPurchases);
+  } catch (error) {
+    res.status(500).json({ error: 'Error retrieving purchases' });
+  }
+});
+
 //* GET USER PURCHASES
 router.get('/users/:userId', async (req, res) => {
   try {

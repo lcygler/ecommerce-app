@@ -24,4 +24,5 @@ export {
   Purchases,
   PurchaseDetail,
   Register,
+
 };
