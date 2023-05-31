@@ -14,7 +14,9 @@ const StarRating = ({ value }) => {
   }
   return (
     <Flex alignItems="center">
-      <Text mr="2">{value}</Text>
+      <Text mb="0" mr="2">
+        {value}
+      </Text>
       <Flex>{stars}</Flex>
     </Flex>
   );
