@@ -212,7 +212,7 @@ function Detail() {
                                   mr="2"
                                   mt="2"
                                 >
-                                  Sin stock
+                                  No stock
                                 </Badge>
                               ) : stock <= 5 ? (
                                 <>
@@ -223,7 +223,7 @@ function Detail() {
                                     mr="2"
                                     mt="2"
                                   >
-                                    ¡Últimas unidades!
+                                    Last units!
                                   </Badge>
                                 </>
                               ) : (
