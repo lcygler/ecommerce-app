@@ -1,8 +1,16 @@
 import {
+  filterByAdmin,
+  filterByBirthdate,
   filterByCategory,
   filterByDiscount,
+  filterByEmail,
   filterByGender,
+  filterByLastname,
+  filterByName,
+  filterByPhoneNumber,
   filterBySeason,
+  filterByState,
+  filterByUsername,
   sortProducts,
 } from './helpers';
 
@@ -145,6 +153,81 @@ export const clearSelectedProduct = (state, action) => {
 export const clearSelectedPurchase = (state, action) => {
   state.selectedPurchase = action.payload;
 };
+
+export const filterUsers = (state, action) => {
+  let filteredSorted = [...state.allUsers];
+
+  if (state.name !== '') {
+    filteredSorted = filterByName(filteredSorted, state.name);
+  }
+  if (state.lastname !== '') {
+    filteredSorted = filterByLastname(filteredSorted, state.lastname);
+  }
+  if (state.username !== '') {
+    filteredSorted = filterByUsername(filteredSorted, state.username);
+  }
+  if (state.email !== '') {
+    filteredSorted = filterByEmail(filteredSorted, state.email);
+  }
+  if (state.birthdate !== '') {
+    filteredSorted = filterByBirthdate(filteredSorted, state.birthdate);
+  }
+  if (state.phoneNumber !== '') {
+    filteredSorted = filterByPhoneNumber(filteredSorted, state.phoneNumber);
+  }
+  if (state.state !== '') {
+    filteredSorted = filterByState(filteredSorted, state.state);
+  }
+  if (state.filterAdmin !== '') {
+    filteredSorted = filterByAdmin(filteredSorted, state.admin);
+  }
+
+  state.filteredUsers = filteredSorted
+};
+
+export const resetUsersFilters = (state, action) => {
+  state.name = '';
+  state.lastname = '';
+  state.username = '';
+  state.email = '';
+  state.birthdate = '';
+  state.phoneNumber = '';
+  state.state = '';
+  state.admin = '';
+};
+
+export const updateNameFilter = (state, action) => {
+  state.name = action.payload;
+};
+
+export const updateLastnameFilter = (state, action) => {
+  state.lastname = action.payload;
+};
+
+export const updateUsernameFilter = (state, action) => {
+  state.username = action.payload;
+};
+
+export const updateEmailFilter = (state, action) => {
+  state.email = action.payload;
+};
+
+export const updateBirthdateFilter = (state, action) => {
+  state.birthdate = action.payload;
+};
+
+export const updatePhoneNumberFilter = (state, action) => {
+  state.phoneNumber = action.payload;
+};
+
+export const updateStateFilter = (state, action) => {
+  state.state = action.payload;
+};
+
+export const updateAdminFilter = (state, action) => {
+  state.admin = action.payload;
+};
+
 
 //* FAVORITES
 export const addFavorite = (state, action) => {

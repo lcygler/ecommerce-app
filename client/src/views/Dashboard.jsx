@@ -23,6 +23,7 @@ import {
 } from "../components/index";
 import {
   deleteProductById,
+  deleteUserById,
   getAdminProducts,
   getCategories,
   getChartData,
@@ -30,6 +31,7 @@ import {
   getSeasons,
   getUsers,
   updateProductById,
+  updateUserById,
 } from "../redux/asyncActions";
 import { actions } from "../redux/slice";
 
@@ -43,6 +45,7 @@ function Dashboard() {
   );
   const currentPage = useSelector((state) => state.currentPage);
   const allUsers = useSelector((state) => state.allUsers)
+  const filteredUsers = useSelector((state) => state.filteredUsers)
 
   const [itemsPerPage] = useState(10);
   const [loading, setLoading] = useState(true);
@@ -60,6 +63,7 @@ function Dashboard() {
     };
     const fetchUsers = async () => {
       await dispatch(getUsers());
+      await dispatch(actions.filterUsers())
     }
     fetchProducts();
     fetchUsers();
@@ -106,9 +110,16 @@ function Dashboard() {
     await dispatch(actions.filterAdminProducts());
   };
 
-  const handleDeleteUser = async (userId) => {}
+  const handleDeleteUser = async (userId) => {
+    await dispatch(deleteUserById(userId));
+    await dispatch(getUsers());
+  }
 
-  const handleSuspendUser = async ({ userId, updatedUser }) => {}
+  const handleSuspendUser = async ({ userId, updatedUser }) => {
+    await dispatch(updateUserById({ userId, updatedUser }));
+    await dispatch(getUsers());
+
+  }
 
   return (
     <Box display="flex" flexDirection="column" minHeight="100vh">
@@ -187,6 +198,7 @@ function Dashboard() {
               {selectedOption === "users" && (
                 <UsersTable
                   users={allUsers}
+                  filteredUsers={filteredUsers}
                   deleteUser={handleDeleteUser}
                   suspendUser={handleSuspendUser}
                 />

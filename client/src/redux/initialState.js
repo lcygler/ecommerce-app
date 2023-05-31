@@ -37,6 +37,14 @@ export const getInitialState = () => {
     size: 'All',
     discount: 'All',
     order: 'Default',
+    name: '',
+    lastname: '',
+    username: '',
+    email: '',
+    birthdate: '',
+    phoneNumber: '',
+    state: '',
+    admin: '',
     currentPage: 1,
 
     // Favorites
@@ -55,6 +63,7 @@ export const getInitialState = () => {
 
     // Users
     allUsers: [],
+    filteredUsers: [],
     userId: storedUserId || null,
     selectedUser: storedSelectedUser || {},
     isAuthenticated: storedIsAuthenticated || false,
