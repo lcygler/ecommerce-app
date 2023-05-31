@@ -21,7 +21,13 @@ function SearchBar() {
   }, [dispatch, searchTerm, location]);
 
   // const handleSearch = () => {
+  // if (location.pathname === '/home') {
   //   dispatch(actions.filterProducts(searchTerm));
+  // } else if (location.pathname === '/favorites') {
+  //   dispatch(actions.filterFavorites(searchTerm));
+  // } else if (location.pathname === '/dashboard') {
+  //   dispatch(actions.filterAdminProducts(searchTerm));
+  // }
   // };
 
   // const handleKeyPress = (event) => {
