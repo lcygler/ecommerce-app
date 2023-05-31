@@ -76,7 +76,7 @@ export const getInitialState = () => {
     selectedReview: {},
 
     // Chart
-    // chartData: [],
+    chartData: [],
 
     //* Async Status
     // Products
@@ -118,8 +118,11 @@ export const getInitialState = () => {
     createPurchaseStatus: 'idle',
     updatePurchaseByIdStatus: 'idle',
     deletePurchaseByIdStatus: 'idle',
+    sendPurchaseSuccessStatus: 'idle',
+    sendPurchaseFailureStatus: 'idle',
 
     // Users
+    getUsersStatus: 'idle',
     getUserByIdStatus: 'idle',
     createUserStatus: 'idle',
     updateUserByIdStatus: 'idle',
@@ -134,8 +137,8 @@ export const getInitialState = () => {
     updateReviewByIdStatus: 'idle',
     deleteReviewByIdStatus: 'idle',
 
-    // Chart
-    getChartData: [],
+    //Chart
+    getChartDataStatus: 'idle',
 
     //* Async Error
     // Products
@@ -177,8 +180,11 @@ export const getInitialState = () => {
     createPurchaseError: null,
     updatePurchaseByIdError: null,
     deletePurchaseByIdError: null,
+    sendPurchaseSuccessError: null,
+    sendPurchaseFailureError: null,
 
     // Users
+    getUsersError: null,
     getUserByIdError: null,
     createUserError: null,
     updateUserByIdError: null,
@@ -192,5 +198,9 @@ export const getInitialState = () => {
     createReviewError: null,
     updateReviewByIdError: null,
     deleteReviewByIdError: null,
+
+    //Chart
+    getChartDataError: null,
   };
 };
+
