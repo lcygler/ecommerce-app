@@ -19,12 +19,15 @@ import {
 function Favorites() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const userId = useSelector((state) => state.userId);
   const favorites = useSelector((state) => state.favorites);
   const filteredFavorites = useSelector((state) => state.filteredFavorites);
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const currentPage = useSelector((state) => state.currentPage);
+
   const [itemsPerPage] = useState(10);
+  const [clearSearch, setClearSearch] = useState(false);
 
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -50,13 +53,20 @@ function Favorites() {
     dispatch(actions.resetFilters());
     dispatch(actions.filterProducts());
     dispatch(actions.filterFavorites());
+    dispatch(actions.filterAdminProducts());
+    setClearSearch(true);
     changePage(1);
   };
 
   return (
     <Box flexDirection="column" height="100vh" overflow="auto">
       <Navbar width="100%" />
-      <Filters changePage={changePage} allProducts={favorites} />
+      <Filters
+        changePage={changePage}
+        allProducts={favorites}
+        clearSearch={clearSearch}
+        setClearSearch={setClearSearch}
+      />
       {!isAuthenticated ? (
         <Box
           display="flex"

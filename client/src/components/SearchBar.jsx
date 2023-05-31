@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { actions } from '../redux/slice';
 
 import { Flex, Input /* Button */ } from '@chakra-ui/react';
 
-function SearchBar() {
+function SearchBar({ searchTerm, setSearchTerm }) {
   const dispatch = useDispatch();
   const location = useLocation();
-  const [searchTerm, setSearchTerm] = useState('');
+  // const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     if (location.pathname === '/home') {
