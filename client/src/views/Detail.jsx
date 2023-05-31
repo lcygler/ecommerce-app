@@ -444,7 +444,6 @@ function Detail() {
                 variant="ghost"
                 size="md"
                 rounded="full"
-                mr="4"
                 onClick={handlePrev}
                 position="absolute"
                 top="90px"
@@ -458,7 +457,6 @@ function Detail() {
                 variant="ghost"
                 size="md"
                 rounded="full"
-                mr="4"
                 onClick={handleNext}
                 position="absolute"
                 top="90px"
