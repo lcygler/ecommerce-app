@@ -1,23 +1,25 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+
 import { createReview } from '../redux/asyncActions';
-import { 
-  Box, 
-  Button, 
-  Flex, 
-  Heading, 
-  Icon, 
-  Stack, 
-  Text, 
-  Textarea,
+
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Icon,
   Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
-  useDisclosure
+  ModalContent,
+  // ModalFooter,
+  // ModalHeader,
+  ModalOverlay,
+  Stack,
+  Text,
+  Textarea,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { FaStar } from 'react-icons/fa';
 
@@ -53,60 +55,59 @@ function CreateReview({ productId }) {
 
   return (
     <>
-      <Button onClick={onOpen}>leave comment</Button>
+      <Button onClick={onOpen} width="150px" colorScheme="blue" variant="outline">
+        Write Review
+      </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} size="md" isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-            <Flex justifyContent="center" alignItems="center" minHeight="10vh">
-              <Box maxW="400px" width="100%" bg="white" borderRadius="lg" p="10">
-                <Heading as="h2" size="lg" mb="4" textAlign="center">
-                  Create a Review
+            <Flex justifyContent="center" alignItems="center" /* minHeight="10vh" */>
+              <Box width="100%" bg="white" borderRadius="lg" p="4">
+                <Heading as="h2" size="lg" mb="8" textAlign="center">
+                  Write Review
                 </Heading>
+
                 <Stack spacing="4">
                   <Flex alignItems="center">
-                    <Text h="30px">Rating:</Text>
-                    <Box ml="5">
+                    <Box mr="4">
+                      <Text>Rating:</Text>
+                    </Box>
+
+                    <Box>
                       {[1, 2, 3, 4, 5].map((value) => (
                         <Icon
                           key={value}
                           as={FaStar}
-                          w="20px"
-                          h="20px"
-                          color={
-                            value <= rating
-                              ? value === 1
-                                ? 'red.400'
-                                : value === 2
-                                ? 'orange.500'
-                                : value === 3
-                                ? 'yellow.500'
-                                : value === 4
-                                ? 'green.200'
-                                : 'green.500'
-                              : 'gray.300'
-                          }
+                          boxSize={6}
+                          color={value <= rating ? 'blue.500' : 'gray.300'}
                           cursor="pointer"
                           onClick={() => handleRatingChange(value)}
+                          mr="2px"
                         />
                       ))}
                     </Box>
                   </Flex>
-                  <Textarea
-                    placeholder="Write your comment..."
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                  />
-                  <Button
-                    colorScheme="blue"
-                    onClick={handleSubmit}
-                    width="100%"
-                    isDisabled={isButtonDisabled}
-                  >
-                    Submit Review
-                  </Button>
+
+                  <Flex flexDirection="column" alignItems="center">
+                    <Textarea
+                      value={comment}
+                      placeholder="Write your comment..."
+                      onChange={(e) => setComment(e.target.value)}
+                    />
+
+                    <Button
+                      colorScheme="blue"
+                      onClick={handleSubmit}
+                      width="150px"
+                      isDisabled={isButtonDisabled}
+                      mt="6"
+                    >
+                      Submit Review
+                    </Button>
+                  </Flex>
                 </Stack>
               </Box>
             </Flex>
