@@ -1,6 +1,6 @@
 const axios = require('axios');
 const { registerCtrl } = require('../controllers/userRegister');
-const Users = require('../utils/users.');
+const Users = require('../utils/users');
 
 const addNewUserPeriodically = async () => {
   try {
