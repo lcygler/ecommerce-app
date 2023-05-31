@@ -16,7 +16,7 @@ import Sidebar from './Sidebar';
 import StarRating from './StarRating';
 import UserRoute from './UserRoute';
 import UsersTable from './UsersTable';
-import ReviewCard from './ReviewCard';
+
 
 export {
   CreateProduct,

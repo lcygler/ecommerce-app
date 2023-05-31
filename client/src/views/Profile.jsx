@@ -1,22 +1,20 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Button, Flex, Image, Text, Badge } from '@chakra-ui/react';
+import { Box, Button, Flex, Image, Text, Badge, Heading } from '@chakra-ui/react';
 import { getUserById } from '../redux/asyncActions';
 import { Link } from 'react-router-dom';
 
 import { Navbar } from '../components/index';
 
-import { AddIcon, CloseIcon, MinusIcon } from '@chakra-ui/icons';
-import { Heading } from '@chakra-ui/react';
 import backgroundImage from '../assets/images/background.jpg';
 
 function Profile() {
   const userID = localStorage.getItem('userId');
   const selectedUser = useSelector((state) => state.selectedUser);
   const dispatch = useDispatch();
-  const { name, email, image, address, birthdate, country, lastname, phoneNumber, postalCode } = selectedUser;
-
-  useEffect(() => {
+  const { name, email, image, address, birthdate, country, lastname, phoneNumber, postalCode } = selectedUser.user;
+  
+useEffect(() => {
     if (userID) {
       dispatch(getUserById(userID));
     }
