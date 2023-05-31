@@ -13,6 +13,7 @@ import {
   deleteUserCart,
   getAdminProducts,
   getAllProducts,
+  getAllPurchases,
   getCartById,
   getCategories,
   getChartData,
