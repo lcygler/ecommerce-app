@@ -18,11 +18,14 @@ import {
 
 function Home() {
   const dispatch = useDispatch();
+
   const allProducts = useSelector((state) => state.allProducts);
   const filteredProducts = useSelector((state) => state.filteredProducts);
   const currentPage = useSelector((state) => state.currentPage);
+
   const [itemsPerPage] = useState(10);
   const [loading, setLoading] = useState(true);
+  const [clearSearch, setClearSearch] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -49,13 +52,20 @@ function Home() {
     dispatch(actions.resetFilters());
     dispatch(actions.filterProducts());
     dispatch(actions.filterFavorites());
+    dispatch(actions.filterAdminProducts());
+    setClearSearch(true);
     changePage(1);
   };
 
   return (
     <Box flexDirection="column" height="100vh" overflow="auto">
       <Navbar width="100%" />
-      <Filters changePage={changePage} allProducts={allProducts} />
+      <Filters
+        changePage={changePage}
+        allProducts={allProducts}
+        clearSearch={clearSearch}
+        setClearSearch={setClearSearch}
+      />
       {!allProducts?.length ? (
         <>
           <Box display="grid" placeItems="center" height="60vh">

@@ -64,3 +64,84 @@ export const sortProducts = (products, order) => {
       return products;
   }
 };
+
+//* USER FILTERS
+export const filterByName = (users, name) => {
+  if (name !== '') {
+    return (users = users.filter((user) =>
+       user.name === name
+    ));
+  } else {
+    return users;
+  }
+};
+
+export const filterByLastname = (users, lastname) => {
+  if (lastname !== '') {
+    return (users = users.filter((user) =>
+       user.lastname === lastname
+    ));
+  } else {
+    return users;
+  }
+};
+
+export const filterByUsername = (users, username) => {
+  if (username !== '') {
+    return (users = users.filter((user) =>
+       user.username === username
+    ));
+  } else {
+    return users;
+  }
+};
+
+export const filterByEmail = (users, email) => {
+  if (email !== '') {
+    return (users = users.filter((user) =>
+       user.email === email
+    ));
+  } else {
+    return users;
+  }
+};
+
+export const filterByBirthdate = (users, birthdate) => {
+  if (birthdate !== '') {
+    return (users = users.filter((user) =>
+       user.birthdate === birthdate
+    ));
+  } else {
+    return users;
+  }
+};
+
+export const filterByPhoneNumber = (users, phoneNumber) => {
+  if (phoneNumber !== '') {
+    return (users = users.filter((user) =>
+       user.phoneNumber === phoneNumber
+    ));
+  } else {
+    return users;
+  }
+};
+
+export const filterByState = (users, state) => {
+  if (state !== '') {
+    return (users = users.filter((user) =>
+       user.state === state
+    ));
+  } else {
+    return users;
+  }
+};
+
+export const filterByAdmin = (users, admin) => {
+  if (admin !== '') {
+    return (users = users.filter((user) =>
+       user.isAdmin === admin
+    ));
+  } else {
+    return users;
+  }
+};

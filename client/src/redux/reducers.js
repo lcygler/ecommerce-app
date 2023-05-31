@@ -1,14 +1,22 @@
 import {
+  filterByAdmin,
+  filterByBirthdate,
   filterByCategory,
   filterByDiscount,
+  filterByEmail,
   filterByGender,
+  filterByLastname,
+  filterByName,
+  filterByPhoneNumber,
   filterBySeason,
+  filterByState,
+  filterByUsername,
   sortProducts,
 } from './helpers';
 
 //* FILTERS
-export const filterProducts = (state, action) => {
-  let filteredSorted = [...state.allProducts];
+const applyFilters = (products, state) => {
+  let filteredSorted = [...products];
 
   if (state.category !== 'All') {
     filteredSorted = filterByCategory(filteredSorted, state.category);
@@ -26,50 +34,43 @@ export const filterProducts = (state, action) => {
     filteredSorted = sortProducts(filteredSorted, state.order);
   }
 
+  return filteredSorted;
+};
+
+const applySearchFilter = (filteredSorted, searchTerm) => {
+  // prettier-ignore
+  const searchWords = searchTerm.toLowerCase().trim().split(' ');
+
+  const removeDiacritics = (str) => {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  };
+
+  const normalizedSearchWords = searchWords.map((word) => removeDiacritics(word));
+
+  return filteredSorted.filter((product) => {
+    const productName = removeDiacritics(product.name.toLowerCase());
+    return normalizedSearchWords.every((word) => productName.includes(word));
+  });
+};
+
+export const filterProducts = (state, action) => {
+  let filteredSorted = applyFilters(state.allProducts, state);
+  filteredSorted = applySearchFilter(filteredSorted, state.searchTerm);
+  // if (action.payload) {
+  //   filteredSorted = applySearchFilter(filteredSorted, action.payload);
+  // }
   state.filteredProducts = filteredSorted;
 };
 
 export const filterAdminProducts = (state, action) => {
-  let filteredSorted = [...state.adminProducts];
-
-  if (state.category !== 'All') {
-    filteredSorted = filterByCategory(filteredSorted, state.category);
-  }
-  if (state.gender !== 'All') {
-    filteredSorted = filterByGender(filteredSorted, state.gender);
-  }
-  if (state.season !== 'All') {
-    filteredSorted = filterBySeason(filteredSorted, state.season);
-  }
-  if (state.discount !== 'All') {
-    filteredSorted = filterByDiscount(filteredSorted, state.discount);
-  }
-  if (state.order !== 'Default') {
-    filteredSorted = sortProducts(filteredSorted, state.order);
-  }
-
+  let filteredSorted = applyFilters(state.adminProducts, state);
+  filteredSorted = applySearchFilter(filteredSorted, state.searchTerm);
   state.filteredAdminProducts = filteredSorted;
 };
 
 export const filterFavorites = (state, action) => {
-  let filteredSorted = [...state.favorites];
-
-  if (state.category !== 'All') {
-    filteredSorted = filterByCategory(filteredSorted, state.category);
-  }
-  if (state.gender !== 'All') {
-    filteredSorted = filterByGender(filteredSorted, state.gender);
-  }
-  if (state.season !== 'All') {
-    filteredSorted = filterBySeason(filteredSorted, state.season);
-  }
-  if (state.discount !== 'All') {
-    filteredSorted = filterByDiscount(filteredSorted, state.discount);
-  }
-  if (state.order !== 'Default') {
-    filteredSorted = sortProducts(filteredSorted, state.order);
-  }
-
+  let filteredSorted = applyFilters(state.favorites, state);
+  filteredSorted = applySearchFilter(filteredSorted, state.searchTerm);
   state.filteredFavorites = filteredSorted;
 };
 
@@ -93,6 +94,10 @@ export const updateOrder = (state, action) => {
   state.order = action.payload;
 };
 
+export const updateSearchTerm = (state, action) => {
+  state.searchTerm = action.payload;
+};
+
 export const resetFilters = (state, action) => {
   state.category = 'All';
   state.discount = 'All';
@@ -111,6 +116,81 @@ export const clearSelectedProduct = (state, action) => {
 
 export const clearSelectedPurchase = (state, action) => {
   state.selectedPurchase = action.payload;
+};
+
+//* USER FILTERS
+export const filterUsers = (state, action) => {
+  let filteredSorted = [...state.allUsers];
+
+  if (state.name !== '') {
+    filteredSorted = filterByName(filteredSorted, state.name);
+  }
+  if (state.lastname !== '') {
+    filteredSorted = filterByLastname(filteredSorted, state.lastname);
+  }
+  if (state.username !== '') {
+    filteredSorted = filterByUsername(filteredSorted, state.username);
+  }
+  if (state.email !== '') {
+    filteredSorted = filterByEmail(filteredSorted, state.email);
+  }
+  if (state.birthdate !== '') {
+    filteredSorted = filterByBirthdate(filteredSorted, state.birthdate);
+  }
+  if (state.phoneNumber !== '') {
+    filteredSorted = filterByPhoneNumber(filteredSorted, state.phoneNumber);
+  }
+  if (state.state !== '') {
+    filteredSorted = filterByState(filteredSorted, state.state);
+  }
+  if (state.filterAdmin !== '') {
+    filteredSorted = filterByAdmin(filteredSorted, state.admin);
+  }
+
+  state.filteredUsers = filteredSorted;
+};
+
+export const resetUsersFilters = (state, action) => {
+  state.name = '';
+  state.lastname = '';
+  state.username = '';
+  state.email = '';
+  state.birthdate = '';
+  state.phoneNumber = '';
+  state.state = '';
+  state.admin = '';
+};
+
+export const updateNameFilter = (state, action) => {
+  state.name = action.payload;
+};
+
+export const updateLastnameFilter = (state, action) => {
+  state.lastname = action.payload;
+};
+
+export const updateUsernameFilter = (state, action) => {
+  state.username = action.payload;
+};
+
+export const updateEmailFilter = (state, action) => {
+  state.email = action.payload;
+};
+
+export const updateBirthdateFilter = (state, action) => {
+  state.birthdate = action.payload;
+};
+
+export const updatePhoneNumberFilter = (state, action) => {
+  state.phoneNumber = action.payload;
+};
+
+export const updateStateFilter = (state, action) => {
+  state.state = action.payload;
+};
+
+export const updateAdminFilter = (state, action) => {
+  state.admin = action.payload;
 };
 
 //* FAVORITES

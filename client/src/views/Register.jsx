@@ -389,7 +389,8 @@ function Register() {
               <Button
                 width="100%"
                 onClick={() => {
-                  window.history.back();
+                  navigate(-1);
+                  // window.history.back();
                 }}
                 isDisabled={isLoading}
               >

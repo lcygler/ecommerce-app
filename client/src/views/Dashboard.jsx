@@ -23,6 +23,7 @@ import {
 } from '../components/index';
 import {
   deleteProductById,
+  deleteUserById,
   getAdminProducts,
   getCategories,
   getChartData,
@@ -30,6 +31,7 @@ import {
   getSeasons,
   getUsers,
   updateProductById,
+  updateUserById,
 } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
@@ -41,11 +43,13 @@ function Dashboard() {
   const filteredAdminProducts = useSelector((state) => state.filteredAdminProducts);
   const currentPage = useSelector((state) => state.currentPage);
   const allUsers = useSelector((state) => state.allUsers);
+  const filteredUsers = useSelector((state) => state.filteredUsers);
+  const chartData = useSelector((state) => state.chartData);
 
   const [itemsPerPage] = useState(10);
   const [loading, setLoading] = useState(true);
   const [selectedOption, setSelectedOption] = useState('products');
-  const chartData = useSelector((state) => state.chartData);
+  const [clearSearch, setClearSearch] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -58,6 +62,7 @@ function Dashboard() {
     };
     const fetchUsers = async () => {
       await dispatch(getUsers());
+      await dispatch(actions.filterUsers());
     };
     fetchProducts();
     fetchUsers();
@@ -81,6 +86,7 @@ function Dashboard() {
   const handleReset = async () => {
     await dispatch(actions.resetFilters());
     dispatch(actions.filterAdminProducts());
+    setClearSearch(true);
     changePage(1);
   };
 
@@ -104,9 +110,15 @@ function Dashboard() {
     await dispatch(actions.filterAdminProducts());
   };
 
-  const handleDeleteUser = async (userId) => {};
+  const handleDeleteUser = async (userId) => {
+    await dispatch(deleteUserById(userId));
+    await dispatch(getUsers());
+  };
 
-  const handleSuspendUser = async ({ userId, updatedUser }) => {};
+  const handleSuspendUser = async ({ userId, updatedUser }) => {
+    await dispatch(updateUserById({ userId, updatedUser }));
+    await dispatch(getUsers());
+  };
 
   return (
     <Box display="flex" flexDirection="column" minHeight="100vh">
@@ -116,7 +128,12 @@ function Dashboard() {
         <Box flex="1" overflow="auto">
           <Box padding="4">
             {selectedOption === 'products' && (
-              <Filters changePage={changePage} allProducts={adminProducts} />
+              <Filters
+                changePage={changePage}
+                allProducts={adminProducts}
+                clearSearch={clearSearch}
+                setClearSearch={setClearSearch}
+              />
             )}
           </Box>
 
@@ -173,6 +190,7 @@ function Dashboard() {
               {selectedOption === 'users' && (
                 <UsersTable
                   users={allUsers}
+                  filteredUsers={filteredUsers}
                   deleteUser={handleDeleteUser}
                   suspendUser={handleSuspendUser}
                 />
