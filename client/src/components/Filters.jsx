@@ -73,7 +73,7 @@ function Filters({ changePage, allProducts, clearSearch, setClearSearch }) {
       setSearchTerm('');
       setClearSearch(false);
     }
-  }, [clearSearch]);
+  }, [clearSearch, setClearSearch]);
 
   const handleFilters = (e) => {
     const { name: selectName, value: selectValue } = e.target;
