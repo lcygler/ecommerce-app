@@ -239,6 +239,7 @@ export const deletePurchaseById = createAsyncThunk(
   }
 );
 
+//* PURCHASES - MAILS
 export const sendPurchaseSuccess = createAsyncThunk('slice/sendPurchaseSuccess', async (email) => {
   const response = await axios.post(`/purchases/success`, email);
   return response.data;
@@ -293,6 +294,27 @@ export const loginUser = createAsyncThunk('slice/loginUser', async (userData) =>
 
 export const loginGoogle = createAsyncThunk('slice/loginGoogle', async (userData) => {
   const response = await axios.post(`/users/login/google`, userData);
+  return response.data;
+});
+
+//* USERS - MAILS
+export const sendEnableUser = createAsyncThunk('slice/sendEnableUser', async (email) => {
+  const response = await axios.post(`/users/enable`, email);
+  return response.data;
+});
+
+export const sendDisableUser = createAsyncThunk('slice/sendDisableUser', async (email) => {
+  const response = await axios.post(`/users/disable`, email);
+  return response.data;
+});
+
+export const sendAddAdmin = createAsyncThunk('slice/sendAddAdmin', async (email) => {
+  const response = await axios.post(`/users/admin/enable`, email);
+  return response.data;
+});
+
+export const sendRemoveAdmin = createAsyncThunk('slice/sendRemoveAdmin', async (email) => {
+  const response = await axios.post(`/users/admin/disable`, email);
   return response.data;
 });
 

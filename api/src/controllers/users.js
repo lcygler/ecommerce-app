@@ -9,6 +9,12 @@ const {
 } = require('../db.js');
 const { encrypt } = require('../utils/HashPassword.js');
 const jwt = require('jsonwebtoken');
+const {
+  sendMailBaja,
+  sendMailAlta,
+  sendAdminWelcome,
+  sendAdminRemoval,
+} = require('../utils/mail.config.js');
 
 const generateToken = (user) => {
   const payload = {
@@ -90,6 +96,50 @@ const deleteUser = async (req, res) => {
     res.status(500).json({ error: 'Error deleting user' });
   }
 };
+
+//* USER ENABLED
+router.post('/enable', async (req, res) => {
+  try {
+    const { email } = req.body;
+    sendMailAlta(email);
+    res.status(200).json({ message: 'User enabled email sent' });
+  } catch (error) {
+    res.status(500).json({ error: 'Error sending email' });
+  }
+});
+
+//* USER DISABLED
+router.post('/disable', async (req, res) => {
+  try {
+    const { email } = req.body;
+    sendMailBaja(email);
+    res.status(200).json({ message: 'User disabled email sent' });
+  } catch (error) {
+    res.status(500).json({ error: 'Error sending email' });
+  }
+});
+
+//* ADD ADMIN
+router.post('/admin/enable', async (req, res) => {
+  try {
+    const { email } = req.body;
+    sendAdminWelcome(email);
+    res.status(200).json({ message: 'Add admin email sent' });
+  } catch (error) {
+    res.status(500).json({ error: 'Error sending email' });
+  }
+});
+
+//* REMOVE ADMIN
+router.post('/admin/disable', async (req, res) => {
+  try {
+    const { email } = req.body;
+    sendAdminRemoval(email);
+    res.status(200).json({ message: 'Remove admin email sent' });
+  } catch (error) {
+    res.status(500).json({ error: 'Error sending email' });
+  }
+});
 
 module.exports = {
   getUsers,

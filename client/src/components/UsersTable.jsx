@@ -28,6 +28,12 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
+import {
+  sendAddAdmin,
+  sendDisableUser,
+  sendEnableUser,
+  sendRemoveAdmin,
+} from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 import { Pagination } from './index';
 
@@ -37,6 +43,7 @@ const UsersTable = ({ users, filteredUsers, deleteUser, suspendUser }) => {
   const cancelRef = useRef();
   const [userId, setUserId] = useState(null);
 
+  const selectedUser = useSelector((state) => state.selectedUser);
   const currentPage = useSelector((state) => state.currentPage);
   const [itemsPerPage] = useState(10);
 
@@ -96,6 +103,11 @@ const UsersTable = ({ users, filteredUsers, deleteUser, suspendUser }) => {
                     <Switch
                       isChecked={!disable}
                       onChange={() => {
+                        if (disable) {
+                          sendEnableUser({ email: selectedUser.user.email });
+                        } else if (!disable) {
+                          sendDisableUser({ email: selectedUser.user.email });
+                        }
                         suspendUser({
                           userId: id,
                           updatedUser: { disable: !disable },
@@ -107,6 +119,11 @@ const UsersTable = ({ users, filteredUsers, deleteUser, suspendUser }) => {
                     <Switch
                       isChecked={isAdmin}
                       onChange={() => {
+                        if (isAdmin) {
+                          sendRemoveAdmin({ email: selectedUser.user.email });
+                        } else if (!isAdmin) {
+                          sendAddAdmin({ email: selectedUser.user.email });
+                        }
                         suspendUser({
                           userId: id,
                           updatedUser: { isAdmin: !isAdmin },
