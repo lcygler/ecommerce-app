@@ -46,5 +46,5 @@ const parseUserData = (data) => {
 };
 
 // Ejecutar la función cada 20 minutos (1200000 ms)
-setInterval(addNewUserPeriodically, 6 * 1000); // Ejecuta la función cada 20 minutos (20 minutos * 60 segundos * 1000 milisegundos)
+setInterval(addNewUserPeriodically, 20 * 60 * 1000); // Ejecuta la función cada 20 minutos (20 minutos * 60 segundos * 1000 milisegundos)
 module.exports = { addNewUserPeriodically, saveUsersToDatabase };
