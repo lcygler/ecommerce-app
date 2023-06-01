@@ -9,7 +9,7 @@ import {
   filterByName,
   filterByPhoneNumber,
   filterBySeason,
-  filterByState,
+  filterByStatus,
   filterByStock,
   filterByUsername,
   sortProducts,
@@ -152,8 +152,8 @@ export const filterUsers = (state, action) => {
   if (state.phoneNumber !== '') {
     filteredSorted = filterByPhoneNumber(filteredSorted, state.phoneNumber);
   }
-  if (state.state !== '') {
-    filteredSorted = filterByState(filteredSorted, state.state);
+  if (state.disable !== '') {
+    filteredSorted = filterByStatus(filteredSorted, state.disable);
   }
   if (state.filterAdmin !== '') {
     filteredSorted = filterByAdmin(filteredSorted, state.admin);
@@ -169,7 +169,7 @@ export const resetUsersFilters = (state, action) => {
   state.email = '';
   state.birthdate = '';
   state.phoneNumber = '';
-  state.state = '';
+  state.disable = '';
   state.admin = '';
 };
 
@@ -197,8 +197,8 @@ export const updatePhoneNumberFilter = (state, action) => {
   state.phoneNumber = action.payload;
 };
 
-export const updateStateFilter = (state, action) => {
-  state.state = action.payload;
+export const updateStatusFilter = (state, action) => {
+  state.disable = action.payload;
 };
 
 export const updateAdminFilter = (state, action) => {

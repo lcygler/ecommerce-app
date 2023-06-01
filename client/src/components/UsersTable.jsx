@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { SettingsIcon } from '@chakra-ui/icons';
 import {
@@ -67,13 +67,24 @@ const UsersTable = ({ users, filteredUsers, deleteUser, suspendUser }) => {
               <Th>Email</Th>
               <Th>Birthdate</Th>
               <Th isNumeric>Phone Number</Th>
-              <Th>State</Th>
+              <Th>Status</Th>
               <Th>Admin</Th>
+              <Th>Options</Th>
             </Tr>
           </Thead>
           <Tbody>
             {currentUsers?.map(
-              ({ id, name, lastname, username, email, birthdate, phoneNumber, state, isAdmin }) => (
+              ({
+                id,
+                name,
+                lastname,
+                username,
+                email,
+                birthdate,
+                phoneNumber,
+                disable,
+                isAdmin,
+              }) => (
                 <Tr key={id} _hover={{ backgroundColor: 'whitesmoke' }}>
                   <Td>{name}</Td>
                   <Td>{lastname}</Td>
@@ -83,11 +94,11 @@ const UsersTable = ({ users, filteredUsers, deleteUser, suspendUser }) => {
                   <Td isNumeric>{phoneNumber}</Td>
                   <Td>
                     <Switch
-                      isChecked={state}
+                      isChecked={!disable}
                       onChange={() => {
                         suspendUser({
                           userId: id,
-                          updatedUser: { state: !state },
+                          updatedUser: { disable: !disable },
                         });
                       }}
                     />
@@ -166,8 +177,8 @@ const UserFilters = ({ users, changePage }) => {
   const usernamesInUsers = [...new Set(users.map((user) => user.username))];
   const birthdatesInUsers = [...new Set(users.map((user) => user.birthdate))];
   const phonenumbersInUsers = [...new Set(users.map((user) => user.phoneNumber))];
-  const statesInUsers = [...new Set(users.map((user) => user.state))];
-  const adminsInUsers = [...new Set(users.map((user) => user.isAdmin))];
+  // const statusInUsers = [...new Set(users.map((user) => user.disable))];
+  // const adminsInUsers = [...new Set(users.map((user) => user.isAdmin))];
 
   const name = useSelector((state) => state.name);
   const lastname = useSelector((state) => state.lastname);
@@ -175,7 +186,7 @@ const UserFilters = ({ users, changePage }) => {
   const email = useSelector((state) => state.email);
   const birthdate = useSelector((state) => state.birthdate);
   const phoneNumber = useSelector((state) => state.phoneNumber);
-  const state = useSelector((state) => state.state);
+  const disable = useSelector((state) => state.disable);
   const admin = useSelector((state) => state.admin);
 
   const nameSelect = useRef(null);
@@ -184,7 +195,7 @@ const UserFilters = ({ users, changePage }) => {
   const emailSelect = useRef(null);
   const birthdateSelect = useRef(null);
   const phoneNumberSelect = useRef(null);
-  const stateSelect = useRef(null);
+  const statusSelect = useRef(null);
   const adminSelect = useRef(null);
 
   useEffect(() => {
@@ -194,9 +205,9 @@ const UserFilters = ({ users, changePage }) => {
     emailSelect.current.value = email;
     birthdateSelect.current.value = birthdate;
     phoneNumberSelect.current.value = phoneNumber;
-    stateSelect.current.value = state;
+    statusSelect.current.value = disable;
     adminSelect.current.value = admin;
-  }, [name, lastname, username, email, birthdate, phoneNumber, state, admin]);
+  }, [name, lastname, username, email, birthdate, phoneNumber, disable, admin]);
 
   const handleFilters = (e) => {
     const { name: selectName, value: selectValue } = e.target;
@@ -212,8 +223,8 @@ const UserFilters = ({ users, changePage }) => {
       dispatch(actions.updateBirthdateFilter(selectValue));
     } else if (selectName === 'phoneNumber') {
       dispatch(actions.updatePhoneNumberFilter(selectValue));
-    } else if (selectName === 'state') {
-      dispatch(actions.updateStateFilter(selectValue));
+    } else if (selectName === 'status') {
+      dispatch(actions.updateStatusFilter(selectValue));
     } else if (selectName === 'admin') {
       dispatch(actions.updateAdminFilter(selectValue));
     }
@@ -229,9 +240,9 @@ const UserFilters = ({ users, changePage }) => {
 
   return (
     <Flex justifyContent={'center'}>
-      <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+      <Box display="flex" alignItems="center" justifyContent="center" ml="4" maxW="150px">
         <Select ref={nameSelect} name="name" onChange={handleFilters}>
-          <option value="">Filter by name</option>
+          <option value="">All Names</option>
           {namesInUsers.map((item, id) => (
             <option key={id} value={item}>
               {item}
@@ -239,9 +250,10 @@ const UserFilters = ({ users, changePage }) => {
           ))}
         </Select>
       </Box>
-      <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+
+      <Box display="flex" alignItems="center" justifyContent="center" ml="4" maxW="150px">
         <Select ref={lastnameSelect} name="lastname" onChange={handleFilters}>
-          <option value="">Filter by last name</option>
+          <option value="">All Lastnames</option>
           {lastnamesInUsers.map((item, id) => (
             <option key={id} value={item}>
               {item}
@@ -249,9 +261,10 @@ const UserFilters = ({ users, changePage }) => {
           ))}
         </Select>
       </Box>
-      <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+
+      <Box display="flex" alignItems="center" justifyContent="center" ml="4" maxW="150px">
         <Select ref={usernameSelect} name="username" onChange={handleFilters}>
-          <option value="">Filter by username</option>
+          <option value="">All Usernames</option>
           {usernamesInUsers.map((item, id) => (
             <option key={id} value={item}>
               {item}
@@ -259,9 +272,10 @@ const UserFilters = ({ users, changePage }) => {
           ))}
         </Select>
       </Box>
-      <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+
+      <Box display="flex" alignItems="center" justifyContent="center" ml="4" maxW="150px">
         <Select ref={emailSelect} name="email" onChange={handleFilters}>
-          <option value="">Filter by email</option>
+          <option value="">All emails</option>
           {emailsInusers.map((item, id) => (
             <option key={id} value={item}>
               {item}
@@ -269,19 +283,21 @@ const UserFilters = ({ users, changePage }) => {
           ))}
         </Select>
       </Box>
-      <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+
+      <Box display="flex" alignItems="center" justifyContent="center" ml="4" maxW="150px">
         <Select ref={birthdateSelect} name="birthdate" onChange={handleFilters}>
-          <option value="">Filter by birthdate</option>
+          <option value="">All birthdates</option>
           {birthdatesInUsers.map((item, id) => (
             <option key={id} value={item}>
-              {item}
+              {new Date(item).toLocaleDateString('es-AR')}
             </option>
           ))}
         </Select>
       </Box>
-      <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+
+      <Box display="flex" alignItems="center" justifyContent="center" ml="4" maxW="150px">
         <Select ref={phoneNumberSelect} name="phoneNumber" onChange={handleFilters}>
-          <option value="">Filter by phone number</option>
+          <option value="">All phones</option>
           {phonenumbersInUsers.map((item, id) => (
             <option key={id} value={item}>
               {item}
@@ -289,10 +305,27 @@ const UserFilters = ({ users, changePage }) => {
           ))}
         </Select>
       </Box>
-      <Box display="flex" alignItems="center" justifyContent="center" ml="4">
-        <Select ref={stateSelect} name="state" onChange={handleFilters}>
-          <option value="">Filter by state</option>
-          {statesInUsers.map((item, id) => {
+
+      <Box display="flex" alignItems="center" justifyContent="center" ml="4" maxW="150px">
+        <Select ref={statusSelect} name="status" onChange={handleFilters}>
+          <option value="">All status</option>
+          <option value="Active">Active</option>
+          <option value="Disabled">Disabled</option>
+        </Select>
+      </Box>
+
+      <Box display="flex" alignItems="center" justifyContent="center" ml="4" maxW="150px">
+        <Select ref={adminSelect} name="admin" onChange={handleFilters}>
+          <option value="">All roles</option>
+          <option value="Admin">Admin</option>
+          <option value="User">User</option>
+        </Select>
+      </Box>
+
+      {/* <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+        <Select ref={statusSelect} name="state" onChange={handleFilters}>
+          <option value="">All status</option>
+          {statusInUsers.map((item, id) => {
             if (item) {
               return (
                 <option key={id} value={item}>
@@ -308,17 +341,18 @@ const UserFilters = ({ users, changePage }) => {
             }
           })}
         </Select>
-      </Box>
-      <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+      </Box> */}
+
+      {/* <Box display="flex" alignItems="center" justifyContent="center" ml="4">
         <Select ref={adminSelect} name="admin" onChange={handleFilters}>
-          <option value="">Filter by admin</option>
+          <option value="">All roles</option>
           {adminsInUsers.map((item, id) => (
             <option key={id} value={item}>
-              {item ? 'Is not admin' : 'Is admin'}
+              {item ? 'User' : 'Admin'}
             </option>
           ))}
         </Select>
-      </Box>
+      </Box> */}
 
       <Box display="flex" alignItems="center" justifyContent="center" ml="4">
         <Button onClick={handleReset} variant="outline">
