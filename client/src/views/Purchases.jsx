@@ -153,7 +153,9 @@ function Purchases() {
                     </Button>
                   </Box>
                 </Box>
-              ) : purchases?.length === 0 ? (
+              ) : // ) : purchases?.length === 0 ? (
+              purchases?.length === 0 ||
+                purchases?.every((purchase) => purchase.status === 'Canceled') ? (
                 <Box textAlign="center" fontSize="lg" fontWeight="normal">
                   <Alert
                     status="warning"
@@ -218,47 +220,50 @@ function Purchases() {
                     </Flex>
                   </Box>
 
-                  {purchases?.map((purchase) => (
-                    <Box
-                      key={purchase.id}
-                      borderBottom="1px solid gray"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="space-between"
-                      flexDirection={{ base: 'column', md: 'row' }}
-                      marginY={2}
-                      paddingY={4}
-                    >
-                      <Flex flexDirection="column" justifyContent="flex-start" flex="1">
-                        <Text flex="1" ml="4">
-                          {purchase.id}
-                        </Text>
-                      </Flex>
+                  {/* {purchases?.map((purchase) => ( */}
+                  {purchases
+                    ?.filter((purchase) => purchase.status !== 'Canceled')
+                    .map((purchase) => (
+                      <Box
+                        key={purchase.id}
+                        borderBottom="1px solid gray"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="space-between"
+                        flexDirection={{ base: 'column', md: 'row' }}
+                        marginY={2}
+                        paddingY={4}
+                      >
+                        <Flex flexDirection="column" justifyContent="flex-start" flex="1">
+                          <Text flex="1" ml="4">
+                            {purchase.id}
+                          </Text>
+                        </Flex>
 
-                      <Flex flexDirection="column" justifyContent="flex-start" flex="1">
-                        <Text flex="1">{purchase.date}</Text>
-                      </Flex>
+                        <Flex flexDirection="column" justifyContent="flex-start" flex="1">
+                          <Text flex="1">{purchase.date}</Text>
+                        </Flex>
 
-                      <Flex flexDirection="column" justifyContent="flex-start" flex="1">
-                        <Text flex="1">{purchase.status}</Text>
-                      </Flex>
+                        <Flex flexDirection="column" justifyContent="flex-start" flex="1">
+                          <Text flex="1">{purchase.status}</Text>
+                        </Flex>
 
-                      <Flex flexDirection="column" justifyContent="flex-start" flex="1">
-                        <Text flex="1">${purchase.total.toFixed(2)}</Text>
-                      </Flex>
+                        <Flex flexDirection="column" justifyContent="flex-start" flex="1">
+                          <Text flex="1">${purchase.total.toFixed(2)}</Text>
+                        </Flex>
 
-                      <Flex flexDirection="column" justifyContent="flex-start" flex="1">
-                        <Button
-                          size="sm"
-                          width="100px"
-                          colorScheme="blue"
-                          onClick={() => handlePurchaseDetail(purchase.id)}
-                        >
-                          View Detail
-                        </Button>
-                      </Flex>
-                    </Box>
-                  ))}
+                        <Flex flexDirection="column" justifyContent="flex-start" flex="1">
+                          <Button
+                            size="sm"
+                            width="100px"
+                            colorScheme="blue"
+                            onClick={() => handlePurchaseDetail(purchase.id)}
+                          >
+                            View Detail
+                          </Button>
+                        </Flex>
+                      </Box>
+                    ))}
 
                   <Flex flexDirection="column" alignItems="center" mt="10">
                     <Stack direction="row" spacing={4} justifyContent="center" width="100%">
