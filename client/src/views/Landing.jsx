@@ -1,12 +1,17 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link as RouterLink } from 'react-router-dom';
-import { getAllProducts } from '../redux/asyncActions';
-import axios from 'axios';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+
 import { StarRating } from '../components/index';
+import { getAllProducts } from '../redux/asyncActions';
+
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import ropa from '../assets/images/gestionropa.png';
+
+import { ChevronUpIcon } from '@chakra-ui/icons';
+import bannerRopa from '../assets/images/banner-ropa.jpg';
+// import ropa from '../assets/images/gestionropa.png';
 
 import {
   Badge,
@@ -24,15 +29,18 @@ import logoImage from '../assets/icons/logo_modern_2.jpg';
 import backgroundImage from '../assets/images/background.jpg';
 
 function Landing() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [isLogoLoaded, setIsLogoLoaded] = useState(false);
   const [users, setUsers] = useState({
     name: '',
     image: '',
     comment: '',
   });
-  const dispatch = useDispatch();
+
   const allProducts = useSelector((state) => state.allProducts);
   const saleProducts = allProducts?.filter((product) => product.discounts > 0);
-  const [isLogoLoaded, setIsLogoLoaded] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,14 +51,14 @@ function Landing() {
         // console.log(response.results.map((e)=> e.name.first));
         // console.log(response.results.map((e)=> e.picture.large));
         const comments = commentResponse.comments.map((e) => e.body);
-        console.log(comments);
+        // console.log(comments);
         setUsers({
           name: response.results.map((e) => e.name.first),
           image: response.results.map((e) => e.picture.large),
           comment: comments,
         });
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
     fetchData();
@@ -77,7 +85,7 @@ function Landing() {
       flexDirection="column"
       alignItems="center"
       justifyContent="center"
-      padding={4}
+      padding={8}
       overflowX="hidden"
     >
       {!allProducts?.length ? (
@@ -94,12 +102,24 @@ function Landing() {
           padding={8}
           width="100%"
           textAlign="center"
-          // marginTop={8}
-          position="relative"
           p="100"
         >
+          <Button
+            colorScheme="blue"
+            variant="solid"
+            size="lg"
+            position="fixed"
+            top="16"
+            right="16"
+            zIndex="999"
+            boxShadow="lg"
+            onClick={() => navigate('/home')}
+          >
+            Shop Now
+          </Button>
+
           <Fade in={isLogoLoaded}>
-            <Box my={4} height="120px">
+            <Box mb={12} height="150px">
               <Image
                 src={logoImage}
                 alt="Modern Fashion"
@@ -110,19 +130,7 @@ function Landing() {
               />
             </Box>
           </Fade>
-          <Button
-            as={RouterLink}
-            to="/home"
-            colorScheme="blue"
-            variant="solid"
-            size="lg"
-            marginTop={8}
-            position="absolute"
-            top="0"
-            right="3%"
-          >
-            Shop Now
-          </Button>
+
           <Carousel
             showArrows={false}
             showStatus={false}
@@ -184,6 +192,7 @@ function Landing() {
                       objectFit="contain"
                     />
                   </Box>
+
                   <Flex justifyContent="center" flexDirection="column" alignItems="center" mr="2">
                     <Heading
                       as="h3"
@@ -232,64 +241,81 @@ function Landing() {
               maxWidth="50%"
               padding="32px"
               fontSize="20px"
-              borderRadius="16px"
-              background="purple.500"
-              boxShadow="10px 10px 47px -17px"
+              borderRadius="lg"
+              background="#e5e5e5"
+              boxShadow="lg"
+              // boxShadow="10px 10px 47px -17px"
             >
-              <Text textAlign="left" color="white">
-                Bienvenido a Modern Fashion, el destino definitivo para los amantes de la moda.
-                Nuestra tienda online te ofrece una experiencia de compra única, donde podrás
-                descubrir y vivir las últimas tendencias en ropa y accesorios. Desde prendas de
-                vestir elegantes hasta accesorios modernos, nuestra colección cuidadosamente
-                seleccionada te hará lucir increíble en cualquier ocasión. Con un diseño visual
-                impactante y una amplia gama de estilos, estamos aquí para satisfacer tus
-                necesidades de moda y llevar tu estilo al siguiente nivel
+              <Text textAlign="left" fontFamily="Montserrat, sans-serif">
+                Bienvenido a <strong>Modern Fashion</strong>, el destino definitivo para los{' '}
+                <strong>amantes de la moda</strong>. Nuestra tienda online te ofrece una{' '}
+                <strong>experiencia de compra única</strong>, donde podrás descubrir y vivir las{' '}
+                <strong>últimas tendencias en ropa y accesorios</strong>. Desde prendas de vestir
+                elegantes hasta accesorios modernos, nuestra colección cuidadosamente seleccionada
+                te hará lucir increíble en cualquier ocasión. Con un diseño visual impactante y una{' '}
+                <strong>amplia gama de estilos</strong>, estamos aquí para satisfacer tus
+                necesidades de moda y llevar tu estilo al siguiente nivel.
               </Text>
             </Box>
-            <Box flex="1" ml={4} position="absolute" right={'10%'}>
+
+            <Box flex="1">
               <Image
+                src={bannerRopa}
+                alt="Random Image"
+                // borderRadius="full"
+                // boxSize="325px"
+                h="310px"
+                objectFit="contain"
+                boxShadow="lg"
+                borderRadius="lg"
+                ml="180px"
+              />
+
+              {/* <Image
                 src={ropa}
                 alt="Random Image"
                 borderRadius="full"
-                boxShadow="10px 10px 15px -7px"
-                bg={'red'}
-                boxSize="390px"
+                boxSize="325px"
                 objectFit="contain"
-                w={400}
-                h={400}
-              />
+                boxShadow="lg"
+                // boxShadow="10px 10px 15px -7px"
+              /> */}
             </Box>
           </Box>
 
           <Box display="flex" alignItems="center" justifyContent="space-evenly" h="400px" mt={8}>
-            <Box flex="1" ml={4}>
+            <Box flex="1" ml="120px">
               <iframe
+                title="Google Maps"
                 src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d5523.05660636086!2d-58.3849768743303!3d-34.60342720755168!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sar!4v1685502793381!5m2!1sen!2sar"
-                width="75%"
-                height="400px"
-                frameBorder="0"
+                width="85%"
+                height="310px"
+                // frameBorder="0"
                 style={{ border: 0 }}
                 allowFullScreen=""
                 aria-hidden="false"
                 tabIndex="0"
               ></iframe>
             </Box>
+
             <Box
               flex="1"
               ml={4}
               maxWidth="50%"
               padding="32px"
               fontSize="20px"
-              borderRadius="16px"
-              background="purple.500"
-              boxShadow="10px 10px 47px  -17px"
+              borderRadius="lg"
+              background=" #e5e5e5"
+              boxShadow="lg"
+              // boxShadow="10px 10px 47px  -17px"
             >
-              <Text textAlign="right" color="white">
-                En Modern Fashion, creemos en la importancia de la calidad y el estilo. Cada prenda
-                que encontrarás en nuestra tienda ha sido seleccionada cuidadosamente para
-                garantizar la máxima calidad y satisfacción. Nuestro compromiso con la excelencia se
-                refleja en cada costura y detalle de nuestras prendas. Desde los materiales de alta
-                calidad hasta los diseños vanguardistas, cada artículo ha sido elegido pensando en
+              <Text textAlign="left" fontFamily="Montserrat, sans-serif">
+                En <strong>Modern Fashion</strong>, creemos en la importancia de la calidad y el
+                estilo. Cada prenda que encontrarás en nuestra tienda ha sido seleccionada
+                cuidadosamente para garantizar la <strong>máxima calidad y satisfacción</strong>.
+                Nuestro compromiso con la excelencia se refleja en cada costura y detalle de
+                nuestras prendas. Desde los <strong>materiales de alta calidad</strong> hasta los{' '}
+                <strong>diseños vanguardistas</strong>, cada artículo ha sido elegido pensando en
                 ofrecerte lo mejor de la moda actual. Estamos orgullosos de brindarte una
                 experiencia de compra excepcional y productos que te harán sentir confianza y
                 elegancia.
@@ -304,21 +330,25 @@ function Landing() {
               maxWidth="50%"
               padding="32px"
               fontSize="20px"
-              borderRadius="16px"
-              background="purple.500"
-              boxShadow="10px 10px 47px -17px"
+              borderRadius="lg"
+              background="#e5e5e5"
+              boxShadow="lg"
+              // boxShadow="10px 10px 47px -17px"
             >
-              <Text textAlign="left" color="white">
-                Explora nuestra colección de moda y déjate cautivar por nuestra amplia variedad de
-                estilos. Ya sea que busques un atuendo casual y relajado, una elegante noche de gala
-                o prendas cómodas para el día a día, tenemos todo lo que necesitas. Nuestros
-                productos van desde vestidos y blusas hasta pantalones, faldas y accesorios de moda.
-                Cada artículo ha sido cuidadosamente seleccionado para ofrecerte las últimas
-                tendencias y los diseños más atractivos. En Modern Fashion, la moda es más que ropa,
-                es una expresión de tu personalidad y estilo único.
+              <Text textAlign="left" fontFamily="Montserrat, sans-serif">
+                Explora nuestra colección de moda y déjate cautivar por nuestra{' '}
+                <strong>amplia variedad de estilos</strong>. Ya sea que busques un atuendo casual y
+                relajado, una elegante noche de gala o prendas cómodas para el día a día, tenemos{' '}
+                <strong>todo lo que necesitas</strong>. Nuestros productos van desde vestidos y
+                blusas hasta pantalones, faldas y accesorios de moda. Cada artículo ha sido{' '}
+                <strong>cuidadosamente seleccionado</strong> para ofrecerte las últimas tendencias y
+                los diseños más atractivos. En <strong>Modern Fashion</strong>, la moda es más que
+                ropa, es una expresión de tu personalidad y estilo único.
               </Text>
             </Box>
+
             <Box flex="1" ml={4} display="flex">
+              {/* Review 1 */}
               <Box flex="1" mr={2}>
                 <Box
                   bg="white"
@@ -327,42 +357,51 @@ function Landing() {
                   padding={4}
                   textAlign="center"
                   position="relative"
-                  left="30%"
-                  w="300px"
+                  // left="20%"
+                  ml="6"
+                  w="350px"
                   h="200px"
                 >
-                  <Box display={'flex'} justifyContent="space-evenly">
+                  <Box display="flex" alignItems="center">
                     <Image
                       src={users.image[0]}
                       alt="User Image"
                       borderRadius="full"
-                      w="40px"
-                      h="40px"
+                      w="70px"
+                      h="70px"
                       objectFit="cover"
-                      position="absolute"
-                      top={4}
-                      left={2}
+                      // position="absolute"
+                      // top={4}
+                      // left={4}
                     />
-                    <Text>{users.name[0]}</Text>
+
+                    <Text mb="0" ml="4">
+                      {users.name[0]}
+                    </Text>
+
                     <Box
                       display="flex"
-                      justifyContent="flex-end"
                       position="absolute"
-                      right="0.90%"
+                      right="4"
                       color="blue.500"
+                      fontWeight="bold"
                     >
                       <StarRating value={5} />
                     </Box>
                   </Box>
-                  <Box display="flex" justifyContent="flex-end">
+                  <Box display="flex">
                     <Box>
-                      <Box mt={7}>
-                        <Text>{users.comment[0]}</Text>
+                      <Box mt="6" ml="4">
+                        <Text mb="0" textAlign="left">
+                          {users.comment[0]}
+                        </Text>
                       </Box>
                     </Box>
                   </Box>
                 </Box>
               </Box>
+
+              {/* Review 2 */}
               <Box flex="1" ml={2}>
                 <Box
                   bg="white"
@@ -371,38 +410,44 @@ function Landing() {
                   padding={4}
                   textAlign="center"
                   position="relative"
-                  right="-20%"
-                  w="300px"
+                  ml="4"
+                  // right="-10%"
+                  w="350px"
                   h="200px"
                 >
-                  <Box display={'flex'} justifyContent="space-evenly">
+                  <Box display="flex" alignItems="center">
                     <Image
                       src={users.image[1]}
                       alt="User Image"
                       borderRadius="full"
-                      w="40px"
-                      h="40px"
+                      w="70px"
+                      h="70px"
                       objectFit="cover"
-                      justifyContent={'center'}
-                      position="absolute"
-                      top={4}
-                      left={2}
+                      // position="absolute"
+                      // top={4}
+                      // left={4}
                     />
-                    <Text>{users.name[1]}</Text>
+
+                    <Text mb="0" ml="4">
+                      {users.name[1]}
+                    </Text>
+
                     <Box
                       display="flex"
-                      justifyContent="flex-end"
                       position="absolute"
-                      right="0.90%"
+                      right="4"
                       color="blue.500"
+                      fontWeight="bold"
                     >
                       <StarRating value={5} />
                     </Box>
                   </Box>
-                  <Box display="flex" justifyContent="flex-end">
+                  <Box display="flex">
                     <Box>
-                      <Box mt={7}>
-                        <Text>{users.comment[1]}</Text>
+                      <Box mt="6" ml="4">
+                        <Text mb="0" textAlign="left">
+                          {users.comment[1]}
+                        </Text>
                       </Box>
                     </Box>
                   </Box>
@@ -410,12 +455,24 @@ function Landing() {
               </Box>
             </Box>
           </Box>
-
-          <Button onClick={handleScrollToTop} variant="solid" colorScheme="blue">
-            Go to Top
-          </Button>
         </Box>
       )}
+
+      <Button
+        onClick={handleScrollToTop}
+        variant="solid"
+        colorScheme="blue"
+        borderRadius="full"
+        size="xl"
+        position="fixed"
+        bottom="16"
+        right="16"
+        boxShadow="lg"
+        zIndex="999"
+        p={4}
+      >
+        <ChevronUpIcon boxSize={6} />
+      </Button>
     </Box>
   );
 }

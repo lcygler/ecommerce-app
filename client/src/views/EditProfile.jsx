@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -49,6 +50,7 @@ function EditProfile() {
     lastname: '',
     username: '',
     email: '',
+    image: '',
     password: '',
     passwordCheck: '',
     birthdate: '',
@@ -66,6 +68,7 @@ function EditProfile() {
         lastname,
         username,
         email,
+        image,
         birthdate,
         phoneNumber,
         address,
@@ -86,6 +89,7 @@ function EditProfile() {
         lastname,
         username,
         email,
+        image,
         password: '',
         passwordCheck: '',
         birthdate: formattedBirthdate,
@@ -103,6 +107,7 @@ function EditProfile() {
     lastname: '',
     username: '',
     email: '',
+    image: '',
     password: '',
     passwordCheck: '',
     birthdate: '',
@@ -112,6 +117,23 @@ function EditProfile() {
     state: '',
     country: '',
   });
+
+  const uploadImage = async (e) => {
+    const files = e.target.files;
+    const data = new FormData();
+    data.append('file', files[0]);
+    data.append('upload_preset', 'modernFashion');
+
+    try {
+      const response = await axios.post('https://api.cloudinary.com/v1_1/dmitoclts/upload', data);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        image: response.data.secure_url,
+      }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -162,6 +184,9 @@ function EditProfile() {
       }
       if (formData.email && formData.email.trim() !== '') {
         updatedUser.email = formData.email.trim();
+      }
+      if (formData.image && formData.image.trim() !== '') {
+        updatedUser.image = formData.image.trim();
       }
       if (formData.password && formData.password.trim() !== '') {
         updatedUser.password = formData.password.trim();
@@ -469,6 +494,37 @@ function EditProfile() {
                   _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
                 />
                 {/* <FormErrorMessage>{errors.country}</FormErrorMessage> */}
+              </FormControl>
+            </Stack>
+
+            <Stack direction="row" spacing={4}>
+              <FormControl>
+                <FormLabel htmlFor="currentImage">Profile Picture</FormLabel>
+                <Input
+                  id="currentImage"
+                  name="currentImage"
+                  type="text"
+                  readOnly
+                  placeholder="Upload an image"
+                  value={formData.image || ''}
+                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
+                />
+              </FormControl>
+
+              <FormControl /* isRequired */ isInvalid={errors.image !== ''}>
+                <FormLabel htmlFor="image">New Profile Picture</FormLabel>
+                <Input
+                  id="image"
+                  name="image"
+                  type="file"
+                  placeholder="Upload an image"
+                  onChange={uploadImage}
+                  style={{ padding: '3px', boxSizing: 'border-box' }}
+                  _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
+                  _invalid={{ borderColor: 'red.500', borderWidth: '2px', boxShadow: 'none' }}
+                />
+                {/* <FormErrorMessage>{errors.image}</FormErrorMessage> */}
               </FormControl>
             </Stack>
           </Stack>

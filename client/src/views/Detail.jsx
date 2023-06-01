@@ -321,14 +321,16 @@ function Detail() {
                           {/* Write Review */}
                           {isAuthenticated && <CreateReview productId={productId} />}
 
-                          <Button
-                            colorScheme="blue"
-                            width="150px"
-                            onClick={handleAddToCart}
-                            isDisabled={isInCart}
-                          >
-                            {isInCart ? 'In Cart' : 'Add to Cart'}
-                          </Button>
+                          {isAuthenticated && (
+                            <Button
+                              colorScheme="blue"
+                              width="150px"
+                              onClick={handleAddToCart}
+                              isDisabled={isInCart}
+                            >
+                              {isInCart ? 'In Cart' : 'Add to Cart'}
+                            </Button>
+                          )}
                         </Stack>
                       </Flex>
                     </Box>
@@ -372,6 +374,7 @@ function Detail() {
                       borderRadius="md"
                       p="10"
                       boxShadow="md"
+                      mb="4"
                     >
                       Customer Reviews
                       {/* Check out other client reviews! */}

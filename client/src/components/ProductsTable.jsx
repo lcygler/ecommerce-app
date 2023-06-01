@@ -27,9 +27,9 @@ import {
 } from '@chakra-ui/react';
 
 function ProductTable({ products, editProduct, deleteProduct, suspendProduct }) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
   const [productId, setProductId] = useState(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleDeleteProduct = () => {
     deleteProduct(productId);
@@ -97,7 +97,6 @@ function ProductTable({ products, editProduct, deleteProduct, suspendProduct }) 
                     <MenuList>
                       <MenuItem onClick={() => editProduct(id)}>Edit</MenuItem>
                       <MenuItem
-                        colorScheme="red"
                         onClick={() => {
                           setProductId(id);
                           onOpen();

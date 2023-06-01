@@ -21,12 +21,16 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { AddIcon, CloseIcon, MinusIcon } from '@chakra-ui/icons';
 import {
+  Alert,
+  AlertDescription,
   AlertDialog,
   AlertDialogBody,
   AlertDialogContent,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
+  AlertIcon,
+  AlertTitle,
   Badge,
   Box,
   Button,
@@ -183,41 +187,48 @@ function Cart() {
   };
 
   const handleCheckout = async () => {
-    if (isAuthenticated) {
-      if (cartProducts?.length !== 0) {
-        setIsLoading(true);
-        await dispatch(getAllProducts());
-        const allProducts = store.getState().allProducts;
+    if (!isAuthenticated) {
+      toast.error('Please login to your account to proceed with checkout');
+      navigate('/login');
+      return;
+    }
 
-        const isValidQuantity = cartProducts.every((product) => {
-          const matchedProduct = allProducts.find((p) => p.id === product.id);
-          return matchedProduct && product.quantity <= matchedProduct.stock;
-        });
+    if (!selectedUser?.user?.address || selectedUser?.user?.address === '') {
+      toast.error('Please complete your profile to proceed with checkout');
+      navigate('/profile/edit');
+      return;
+    }
 
-        if (isValidQuantity) {
-          const response = await dispatch(createPaymentLink(cartProducts));
-          if (response.payload) {
-            dispatch(createPurchase({ userId, products: cartProducts }));
-            // dispatch(actions.createPurchase(cartProducts));
+    if (cartProducts?.length !== 0) {
+      setIsLoading(true);
+      await dispatch(getAllProducts());
+      const allProducts = store.getState().allProducts;
 
-            navigateTimeoutId = setTimeout(() => {
-              setIsLoading(false);
-              window.location.href = response.payload;
-            }, 2000);
-          } else {
+      const isValidQuantity = cartProducts.every((product) => {
+        const matchedProduct = allProducts.find((p) => p.id === product.id);
+        return matchedProduct && product.quantity <= matchedProduct.stock;
+      });
+
+      if (isValidQuantity) {
+        const response = await dispatch(createPaymentLink(cartProducts));
+        if (response.payload) {
+          dispatch(createPurchase({ userId, products: cartProducts }));
+          // dispatch(actions.createPurchase(cartProducts));
+
+          navigateTimeoutId = setTimeout(() => {
             setIsLoading(false);
-            toast.error('Checkout process failed');
-            setRenderCart(true);
-          }
+            window.location.href = response.payload;
+          }, 2000);
         } else {
           setIsLoading(false);
-          toast.error('Quantity exceeds available stock');
+          toast.error('Checkout process failed');
           setRenderCart(true);
         }
+      } else {
+        setIsLoading(false);
+        toast.error('Quantity exceeds available stock');
+        setRenderCart(true);
       }
-    } else {
-      navigate('/login');
-      // toast.error('Login required to purchase');
     }
   };
 
@@ -266,9 +277,64 @@ function Cart() {
                 Shopping Cart
               </Heading>
 
-              {cartProducts?.length === 0 ? (
+              {!isAuthenticated ? (
                 <Box textAlign="center" fontSize="lg" fontWeight="normal">
-                  Your cart is empty
+                  <Alert
+                    status="warning"
+                    textAlign="center"
+                    maxWidth="sm"
+                    mx="auto"
+                    display="flex"
+                    justifyContent="center"
+                    fontSize="md"
+                    mt="10"
+                  >
+                    <Flex flexDirection="column" alignItems="center">
+                      <Flex>
+                        <AlertIcon />
+                        <AlertTitle>Oops! Your cart is empty</AlertTitle>
+                      </Flex>
+                      <AlertDescription mt="2">Please login to add some products</AlertDescription>
+                    </Flex>
+                  </Alert>
+                  {/* Login to add products */}
+                  <Fade in={isImageLoaded}>
+                    <Box mt={4} display="flex" justifyContent="center">
+                      <Image
+                        src={emptyCartImage}
+                        alt="Empty Cart"
+                        width="300px"
+                        onLoad={() => setIsImageLoaded(true)}
+                      />
+                    </Box>
+                  </Fade>
+                  <Box mt={4}>
+                    <Button colorScheme="blue" onClick={() => navigate('/login')}>
+                      Login Now
+                    </Button>
+                  </Box>
+                </Box>
+              ) : cartProducts?.length === 0 ? (
+                <Box textAlign="center" fontSize="lg" fontWeight="normal">
+                  <Alert
+                    status="warning"
+                    textAlign="center"
+                    maxWidth="sm"
+                    mx="auto"
+                    display="flex"
+                    justifyContent="center"
+                    fontSize="md"
+                    mt="10"
+                  >
+                    <Flex flexDirection="column" alignItems="center">
+                      <Flex>
+                        <AlertIcon />
+                        <AlertTitle>Oops! Your cart is empty</AlertTitle>
+                      </Flex>
+                      <AlertDescription mt="2">Let's add some products!</AlertDescription>
+                    </Flex>
+                  </Alert>
+                  {/* Your cart is empty */}
                   <Fade in={isImageLoaded}>
                     <Box mt={4} display="flex" justifyContent="center">
                       <Image
@@ -431,7 +497,7 @@ function Cart() {
                   ))}
 
                   <Box my={6} p={2} bg="gray.100" borderRadius="md" textAlign="right">
-                    <Text fontSize="lg" fontWeight="bold" mr="4">
+                    <Text fontSize="lg" fontWeight="bold" mr="4" mb="0" py="1">
                       Total: ${cartTotal.toFixed(2)}
                     </Text>
                   </Box>

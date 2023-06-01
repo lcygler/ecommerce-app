@@ -164,6 +164,15 @@ function Login() {
       navigateTimeoutId = setTimeout(() => {
         navigate('/home');
       }, 2000);
+
+      // Por si quisiéramos redirigir al usuario a completar su perfil
+      // navigateTimeoutId = setTimeout(() => {
+      //   if (res.payload.registered) {
+      //     navigate('/home');
+      //   } else {
+      //     navigate('/profile/edit');
+      //   }
+      // }, 2000);
     } else {
       setSuccess('');
       setError('Google login failed');
