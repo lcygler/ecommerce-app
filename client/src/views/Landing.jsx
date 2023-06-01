@@ -351,7 +351,8 @@ function Landing() {
               {/* Review 1 */}
               <Box flex="1" mr={2}>
                 <Box
-                  bg="white"
+                  // bg="white"
+                  bg="rgba(240, 240, 240, 0.8)"
                   borderRadius="md"
                   boxShadow="md"
                   padding={4}
@@ -404,7 +405,8 @@ function Landing() {
               {/* Review 2 */}
               <Box flex="1" ml={2}>
                 <Box
-                  bg="white"
+                  // bg="white"
+                  bg="rgba(240, 240, 240, 0.8)"
                   borderRadius="md"
                   boxShadow="md"
                   padding={4}
