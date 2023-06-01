@@ -374,6 +374,7 @@ function Detail() {
                       borderRadius="md"
                       p="10"
                       boxShadow="md"
+                      mb="4"
                     >
                       Customer Reviews
                       {/* Check out other client reviews! */}
