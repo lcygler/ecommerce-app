@@ -18,7 +18,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
-import { FaChevronLeft } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import backgroundImage from '../assets/images/background.jpg';
 
 let timeoutId = null;
@@ -386,8 +386,8 @@ function Register() {
             </Stack>
           </Stack>
 
-          <Stack direction="column" spacing={4} mt="25px">
-            <Stack direction="row" spacing={4} justifyContent="center">
+          <Stack direction="column" mt="25px" /* spacing={4} */>
+            <Stack direction="row" justifyContent="center" /* spacing={4} */>
               {/* <Button
                 width="100%"
                 onClick={() => {
@@ -410,7 +410,7 @@ function Register() {
               </Button>
             </Stack>
 
-            <Box textAlign="center" mt={4} fontSize="sm">
+            <Box textAlign="center" mt={2} fontSize="sm">
               <Text mb="0">
                 Have an account?{' '}
                 <Link as={RouterLink} to="/login" color="blue.500" textDecoration="underline">
@@ -434,6 +434,20 @@ function Register() {
         isDisabled={isLoading}
       >
         <Icon as={FaChevronLeft} mr="2" /> Go Back
+      </Button>
+
+      <Button
+        colorScheme="blue"
+        variant="ghost"
+        size="md"
+        rounded="full"
+        onClick={() => navigate('/login')}
+        position="absolute"
+        top="20px"
+        right="20px"
+        isDisabled={isLoading}
+      >
+        Login <Icon as={FaChevronRight} ml="2" />
       </Button>
     </Box>
   );

@@ -30,7 +30,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
-import { FaChevronLeft } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import backgroundImage from '../assets/images/background.jpg';
 
 const clientId = process.env.REACT_APP_CLIENT_ID;
@@ -243,7 +243,7 @@ function Login() {
               {/* <FormErrorMessage>{errors.password}</FormErrorMessage> */}
             </FormControl>
 
-            <Stack direction="row" spacing={4} alignItems="center">
+            <Stack direction="row" alignItems="center" /* spacing={4} */>
               {/* <Button
                 width="100%"
                 onClick={() => {
@@ -275,7 +275,7 @@ function Login() {
               </Button>
             </Stack>
 
-            <Box textAlign="center" marginTop={4} fontSize="sm">
+            <Box textAlign="center" mt="2" fontSize="sm">
               <Text mb="0">
                 Don't have an account?{' '}
                 <Link as={RouterLink} to="/register" color="blue.500" textDecoration="underline">
@@ -299,6 +299,20 @@ function Login() {
         isDisabled={isLoading}
       >
         <Icon as={FaChevronLeft} mr="2" /> Go Back
+      </Button>
+
+      <Button
+        colorScheme="blue"
+        variant="ghost"
+        size="md"
+        rounded="full"
+        onClick={() => navigate('/register')}
+        position="absolute"
+        top="20px"
+        right="20px"
+        isDisabled={isLoading}
+      >
+        Register <Icon as={FaChevronRight} ml="2" />
       </Button>
     </Box>
   );
