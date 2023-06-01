@@ -251,7 +251,7 @@ const UserFilters = ({ users, changePage }) => {
         </Select>
       </Box>
 
-      <Box display="flex" alignItems="center" justifyContent="center" ml="4" maxW="150px">
+      <Box display="flex" alignItems="center" justifyContent="center" ml="4" maxW="160px">
         <Select ref={lastnameSelect} name="lastname" onChange={handleFilters}>
           <option value="">All Last Names</option>
           {lastnamesInUsers.map((item, id) => (
@@ -275,7 +275,7 @@ const UserFilters = ({ users, changePage }) => {
 
       <Box display="flex" alignItems="center" justifyContent="center" ml="4" maxW="150px">
         <Select ref={emailSelect} name="email" onChange={handleFilters}>
-          <option value="">All emails</option>
+          <option value="">All Emails</option>
           {emailsInusers.map((item, id) => (
             <option key={id} value={item}>
               {item}
@@ -286,7 +286,7 @@ const UserFilters = ({ users, changePage }) => {
 
       <Box display="flex" alignItems="center" justifyContent="center" ml="4" maxW="150px">
         <Select ref={birthdateSelect} name="birthdate" onChange={handleFilters}>
-          <option value="">All birthdates</option>
+          <option value="">All Birthdates</option>
           {birthdatesInUsers.map((item, id) => (
             <option key={id} value={item}>
               {new Date(item).toLocaleDateString('es-AR')}
@@ -297,7 +297,7 @@ const UserFilters = ({ users, changePage }) => {
 
       <Box display="flex" alignItems="center" justifyContent="center" ml="4" maxW="150px">
         <Select ref={phoneNumberSelect} name="phoneNumber" onChange={handleFilters}>
-          <option value="">All phones</option>
+          <option value="">All Phones</option>
           {phonenumbersInUsers.map((item, id) => (
             <option key={id} value={item}>
               {item}
@@ -308,7 +308,7 @@ const UserFilters = ({ users, changePage }) => {
 
       <Box display="flex" alignItems="center" justifyContent="center" ml="4" maxW="150px">
         <Select ref={statusSelect} name="status" onChange={handleFilters}>
-          <option value="">All status</option>
+          <option value="">All Status</option>
           <option value="Active">Active</option>
           <option value="Disabled">Disabled</option>
         </Select>
@@ -316,7 +316,7 @@ const UserFilters = ({ users, changePage }) => {
 
       <Box display="flex" alignItems="center" justifyContent="center" ml="4" maxW="150px">
         <Select ref={adminSelect} name="admin" onChange={handleFilters}>
-          <option value="">All roles</option>
+          <option value="">All Roles</option>
           <option value="Admin">Admin</option>
           <option value="User">User</option>
         </Select>
