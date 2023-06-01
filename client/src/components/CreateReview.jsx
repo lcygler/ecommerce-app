@@ -73,7 +73,7 @@ function CreateReview({ productId }) {
                 <Stack spacing="4">
                   <Flex alignItems="center">
                     <Box mr="4">
-                      <Text>Rating:</Text>
+                      <Text mb="0">Rating:</Text>
                     </Box>
 
                     <Box>
