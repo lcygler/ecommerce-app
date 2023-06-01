@@ -33,8 +33,11 @@ function App() {
   const startsWithRoutes = ['/edit'];
 
   const renderChatbot = !(
-    exactMatchRoutes.includes(location.pathname) ||
-    startsWithRoutes.some((route) => location.pathname.startsWith(route))
+    (
+      exactMatchRoutes.includes(location.pathname) ||
+      startsWithRoutes.some((route) => location.pathname.startsWith(route)) ||
+      true
+    ) // Quitar "true" para mostrar chatbot
   );
 
   return (

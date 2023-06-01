@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getProductById, updateUserCart } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
-import { Navbar } from '../components/index';
+import { CreateReview, Navbar, StarRating } from '../components/index';
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -25,7 +25,6 @@ import {
 import { motion } from 'framer-motion';
 import { FaChevronDown, FaChevronLeft, FaChevronRight, FaChevronUp } from 'react-icons/fa';
 import backgroundImage from '../assets/images/background.jpg';
-import { CreateReview, ReviewCard /* StarRating */ } from '../components/index';
 
 function Detail() {
   const dispatch = useDispatch();
@@ -37,6 +36,7 @@ function Detail() {
   const reviewsPerPage = 4;
 
   const userId = useSelector((state) => state.userId);
+  const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const cartProducts = useSelector((state) => state.cartProducts);
   const filteredProducts = useSelector((state) => state.filteredProducts);
   const selectedProduct = useSelector((state) => state.selectedProduct);
@@ -140,142 +140,130 @@ function Detail() {
               backgroundSize="cover"
               backgroundPosition="center"
             >
-              <Flex flexDirection="column" alignItems="center">
-                <Flex alignItems="center">
-                  {/* <Button
-                  colorScheme="blue"
-                  variant="ghost"
-                  size="lg"
-                  rounded="full"
-                  mr="4"
-                  onClick={handlePrev}
-                >
-                  <Icon as={FaChevronLeft} />
-                </Button> */}
-                  <Box maxW="800px" bg="white" borderRadius="lg" p="10">
-                    <Flex flexDirection="column" alignItems="center">
-                      <Flex flexDirection="row">
-                        <Image
-                          src={image}
-                          alt={name}
-                          objectFit="contain"
-                          h="500px"
-                          maxW="350px"
-                          mr="4"
-                          // transition="transform 0.2s ease-in-out"
-                          // _hover={{ transform: 'scale(1.05)' }}
-                        />
+              <Flex>
+                <Flex flexDirection="column" alignItems="center">
+                  <Flex alignItems="center">
+                    <Box maxW="800px" bg="white" borderRadius="lg" boxShadow="md" p="10">
+                      <Flex flexDirection="column" alignItems="center">
+                        <Flex flexDirection="row">
+                          <Image
+                            src={image}
+                            alt={name}
+                            objectFit="contain"
+                            h="500px"
+                            maxW="350px"
+                            mr="4"
+                            // transition="transform 0.2s ease-in-out"
+                            // _hover={{ transform: 'scale(1.05)' }}
+                          />
 
-                        <Flex flexDirection="column" justifyContent="space-between" ml="5">
-                          <Box>
-                            <Box
-                              mt="4"
-                              d="flex"
-                              justifyContent="space-between"
-                              alignItems="baseline"
-                            >
-                              <Heading as="h2" size="lg">
-                                {name}
-                              </Heading>
+                          <Flex flexDirection="column" justifyContent="space-between" ml="5">
+                            <Box>
+                              <Box
+                                mt="4"
+                                d="flex"
+                                justifyContent="space-between"
+                                alignItems="baseline"
+                              >
+                                <Heading as="h2" size="lg">
+                                  {name}
+                                </Heading>
 
-                              <Flex alignItems="baseline">
-                                <Text fontWeight="bold" fontSize="2xl" mt="2" mr="2">
-                                  $
-                                  {discounts === 0
-                                    ? price.toFixed(2)
-                                    : (price * (1 - discounts)).toFixed(2)}
-                                </Text>
+                                <Flex alignItems="baseline">
+                                  <Text fontWeight="bold" fontSize="2xl" mt="2" mr="2">
+                                    $
+                                    {discounts === 0
+                                      ? price.toFixed(2)
+                                      : (price * (1 - discounts)).toFixed(2)}
+                                  </Text>
+
+                                  {discounts > 0 && (
+                                    <Text fontWeight="bold" fontSize="md" color="green.400">
+                                      {discounts * 100}% OFF
+                                    </Text>
+                                  )}
+                                </Flex>
 
                                 {discounts > 0 && (
-                                  <Text fontWeight="bold" fontSize="md" color="green.400">
-                                    {discounts * 100}% OFF
+                                  <Text
+                                    fontWeight="bold"
+                                    fontSize="md"
+                                    color="gray.500"
+                                    textDecoration="line-through"
+                                    mr="2"
+                                  >
+                                    ${(price * (1 + discounts)).toFixed(2)}
                                   </Text>
                                 )}
-                              </Flex>
+                              </Box>
 
-                              {discounts > 0 && (
-                                <Text
-                                  fontWeight="bold"
-                                  fontSize="md"
-                                  color="gray.500"
-                                  textDecoration="line-through"
-                                  mr="2"
-                                >
-                                  ${(price * (1 + discounts)).toFixed(2)}
+                              <Box mt="4" d="flex" alignItems="center">
+                                {/* <Text fontWeight="bold">Description</Text> */}
+                                <Text fontSize="md" mb="2">
+                                  {description}
                                 </Text>
-                              )}
-                            </Box>
+                              </Box>
 
-                            <Box mt="4" d="flex" alignItems="center">
-                              {/* <Text fontWeight="bold">Description</Text> */}
-                              <Text fontSize="md">{description}</Text>
-                            </Box>
-
-                            {stock === 0 ? (
-                              <Badge
-                                fontWeight="normal"
-                                fontSize="md"
-                                colorScheme="red"
-                                mr="2"
-                                mt="4"
-                              >
-                                Sin stock
-                              </Badge>
-                            ) : stock < 6 ? (
-                              <>
-                                <Badge
-                                  fontWeight="normal"
-                                  fontSize="md"
-                                  colorScheme="gray"
-                                  mr="2"
-                                  mt="4"
-                                >
-                                  Stock: {stock}
-                                </Badge>
+                              {stock === 0 ? (
                                 <Badge
                                   fontWeight="normal"
                                   fontSize="md"
                                   colorScheme="red"
                                   mr="2"
-                                  mt="4"
+                                  mt="2"
                                 >
-                                  ¡Últimas unidades!
+                                  No stock
                                 </Badge>
-                              </>
-                            ) : (
-                              <Badge
-                                fontWeight="normal"
-                                fontSize="md"
-                                colorScheme="gray"
-                                mr="2"
-                                mt="4"
-                              >
-                                Stock: {stock}
-                              </Badge>
-                            )}
-
-                            <Box mt="4" d="flex" justifyContent="spa" alignItems="center">
-                              <Box mb="2">
-                                <Text fontWeight="bold">Size</Text>
-                                <Badge fontWeight="normal" fontSize="md" colorScheme="gray" mr="2">
-                                  {size}
+                              ) : stock <= 5 ? (
+                                <>
+                                  <Badge
+                                    fontWeight="normal"
+                                    fontSize="md"
+                                    colorScheme="red"
+                                    mr="2"
+                                    mt="2"
+                                  >
+                                    Last units!
+                                  </Badge>
+                                </>
+                              ) : (
+                                <Badge
+                                  fontWeight="normal"
+                                  fontSize="md"
+                                  colorScheme="gray"
+                                  mr="2"
+                                  mt="2"
+                                >
+                                  Stock: {stock}
                                 </Badge>
-                              </Box>
+                              )}
 
-                              <Box mb="2">
-                                <Text fontWeight="bold">Gender</Text>
-                                <Badge fontWeight="normal" fontSize="md" colorScheme="gray" mr="2">
-                                  {gender}
-                                </Badge>
-                              </Box>
+                              <Box mt="4">
+                                <Box mb="3">
+                                  <Text fontWeight="bold" mb="2">
+                                    Size
+                                  </Text>
+                                  <Badge fontWeight="normal" fontSize="md" colorScheme="gray">
+                                    {size}
+                                  </Badge>
+                                </Box>
 
-                              <Box mb="2">
-                                <Text fontWeight="bold">Category</Text>
-                                {Categories?.map((category, index) => (
-                                  <>
+                                <Box mb="3">
+                                  <Text fontWeight="bold" mb="2">
+                                    Gender
+                                  </Text>
+                                  <Badge fontWeight="normal" fontSize="md" colorScheme="gray">
+                                    {gender}
+                                  </Badge>
+                                </Box>
+
+                                <Box mb="3">
+                                  <Text fontWeight="bold" mb="2">
+                                    Category
+                                  </Text>
+                                  {Categories?.map((category) => (
                                     <Badge
-                                      // key={category.id}
-                                      key={`category-${index}`}
+                                      key={`category-${category.id}`}
                                       fontWeight="normal"
                                       fontSize="md"
                                       colorScheme="gray"
@@ -283,156 +271,197 @@ function Detail() {
                                     >
                                       {category.name}
                                     </Badge>
-                                  </>
-                                ))}
-                              </Box>
+                                  ))}
+                                </Box>
 
-                              <Box>
-                                <Text fontWeight="bold">Season</Text>
-                                {Seasons?.map((season, index) => (
-                                  <Badge
-                                    // key={season.id}
-                                    key={`season-${index}`}
-                                    fontWeight="normal"
-                                    fontSize="md"
-                                    mr="2"
-                                    colorScheme="gray"
-                                    // colorScheme={
-                                    //   season.name.toLowerCase() === 'verano'
-                                    //     ? 'yellow'
-                                    //     : season.name.toLowerCase() === 'invierno'
-                                    //     ? 'blue'
-                                    //     : season.name.toLowerCase() === 'otoño'
-                                    //     ? 'orange'
-                                    //     : 'green'
-                                    // }
-                                  >
-                                    {season.name}
-                                  </Badge>
-                                ))}
+                                <Box>
+                                  <Text fontWeight="bold" mb="2">
+                                    Season
+                                  </Text>
+                                  {Seasons?.map((season) => (
+                                    <Badge
+                                      key={`season-${season.id}`}
+                                      fontWeight="normal"
+                                      fontSize="md"
+                                      mr="2"
+                                      colorScheme="gray"
+                                    >
+                                      {season.name}
+                                    </Badge>
+                                  ))}
+                                </Box>
                               </Box>
                             </Box>
-                          </Box>
+                          </Flex>
                         </Flex>
+
+                        <Stack direction="row" spacing={4} mt="8">
+                          <Button
+                            onClick={() => {
+                              navigate(-1);
+                              // window.history.back();
+                            }}
+                            colorScheme="gray"
+                            width="150px"
+                          >
+                            Go Back
+                          </Button>
+
+                          {/* Write Review */}
+                          {isAuthenticated && <CreateReview productId={productId} />}
+
+                          <Button
+                            colorScheme="blue"
+                            width="150px"
+                            onClick={handleAddToCart}
+                            isDisabled={isInCart}
+                          >
+                            {isInCart ? 'In Cart' : 'Add to Cart'}
+                          </Button>
+                        </Stack>
                       </Flex>
+                    </Box>
+                  </Flex>
 
-                      <Stack direction="row" spacing={4} mt="8">
-                        <Button
-                          onClick={() => {
-                            navigate(-1);
-                            // window.history.back();
-                          }}
-                          colorScheme="gray"
-                          width="150px"
-                        >
-                          Go Back
-                        </Button>
+                  {/* Botones prev y next debajo de card */}
+                  {/* <Flex mt="4">
+                    <Button
+                      colorScheme="blue"
+                      variant="ghost"
+                      size="lg"
+                      rounded="full"
+                      mr="4"
+                      onClick={handlePrev}
+                    >
+                      <Icon as={FaChevronLeft} />
+                    </Button>
 
-                        <CreateReview productId={productId} />
+                    <Button
+                      colorScheme="blue"
+                      variant="ghost"
+                      size="lg"
+                      rounded="full"
+                      ml="4"
+                      onClick={handleNext}
+                    >
+                      <Icon as={FaChevronRight} />
+                    </Button>
+                  </Flex> */}
+                </Flex>
 
-                        <Button
-                          colorScheme="blue"
-                          width="150px"
-                          onClick={handleAddToCart}
-                          isDisabled={isInCart}
-                        >
-                          {isInCart ? 'In Cart' : 'Add to Cart'}
-                        </Button>
-                      </Stack>
-                    </Flex>
-                    {/* <Box>
-                    <Text textAlign="center" fontWeight="bold" mt="30px">
-                      Check out the reviews below!
+                <Flex flexDirection="row" justifyContent="center" alignItems="flex-start" ml="10">
+                  <Flex flexDirection="column" alignItems="center" w="350px">
+                    <Text
+                      textAlign="center"
+                      fontWeight="bold"
+                      fontSize="xl"
+                      w="100%"
+                      bg="white"
+                      borderRadius="md"
+                      p="10"
+                      boxShadow="md"
+                    >
+                      Customer Reviews
+                      {/* Check out other client reviews! */}
                     </Text>
-                  </Box> */}
-                  </Box>
 
-                  {/* <Button
-                  colorScheme="blue"
-                  variant="ghost"
-                  size="lg"
-                  rounded="full"
-                  ml="4"
-                  onClick={handleNext}
-                >
-                  <Icon as={FaChevronRight} />
-                </Button> */}
-                </Flex>
+                    <Box d="flex" flexDirection="column" alignItems="center" width="100%">
+                      {Reviews?.slice(currentReviewIndex, currentReviewIndex + reviewsPerPage).map(
+                        (review) => (
+                          <Box
+                            key={review.id}
+                            bg="white"
+                            borderRadius="md"
+                            p="4"
+                            mb="2"
+                            boxShadow="md"
+                          >
+                            <Box color="blue.500" fontWeight="bold" fontSize="lg" mb="2">
+                              <StarRating value={review.punctuation} />
+                            </Box>
+                            <Text color="gray.600" fontSize="sm">
+                              {review.comment}
+                            </Text>
+                          </Box>
+                        )
+                      )}
+                    </Box>
 
-                <Flex mt="4">
-                  <Button
-                    colorScheme="blue"
-                    variant="ghost"
-                    size="lg"
-                    rounded="full"
-                    mr="4"
-                    onClick={handlePrev}
-                  >
-                    <Icon as={FaChevronLeft} />
-                  </Button>
-
-                  <Button
-                    colorScheme="blue"
-                    variant="ghost"
-                    size="lg"
-                    rounded="full"
-                    ml="4"
-                    onClick={handleNext}
-                  >
-                    <Icon as={FaChevronRight} />
-                  </Button>
-                </Flex>
-              </Flex>
-
-              <Flex flexDirection="row" justifyContent="center" alignItems="center" ml="10">
-                <Flex flexDirection="column" alignItems="center" w="350px">
+                    {/* 
                   {Reviews?.slice(currentReviewIndex, currentReviewIndex + reviewsPerPage).map(
-                    (review, index) => (
-                      <ReviewCard
-                        // key={review.id}
-                        // key={`review-${review.id}`}
-                        key={`review-${index}`}
-                        comment={review.comment}
-                        punctuation={review.punctuation}
-                      />
-                    )
+                    (review) => {
+                      return (
+                        <ReviewCard
+                          key={review.id}
+                          comment={review.comment}
+                          punctuation={review.punctuation}
+                        />
+                      );
+                    }
+                  )} */}
+                  </Flex>
+
+                  {Reviews && Reviews.length > reviewsPerPage && (
+                    <Flex flexDirection="column" alignItems="center" ml="2" mt="4">
+                      <Button
+                        colorScheme="blue"
+                        variant="ghost"
+                        size="md"
+                        rounded="full"
+                        onClick={() =>
+                          setCurrentReviewIndex((prevIndex) =>
+                            Math.max(prevIndex - reviewsPerPage, 0)
+                          )
+                        }
+                        isDisabled={currentReviewIndex === 0}
+                      >
+                        <Icon as={FaChevronUp} />
+                      </Button>
+
+                      <Button
+                        colorScheme="blue"
+                        variant="ghost"
+                        size="md"
+                        rounded="full"
+                        onClick={() =>
+                          setCurrentReviewIndex((prevIndex) =>
+                            Math.min(prevIndex + reviewsPerPage, Reviews.length - reviewsPerPage)
+                          )
+                        }
+                        isDisabled={currentReviewIndex >= Reviews.length - reviewsPerPage}
+                      >
+                        <Icon as={FaChevronDown} />
+                      </Button>
+                    </Flex>
                   )}
                 </Flex>
-
-                {Reviews && Reviews.length > reviewsPerPage && (
-                  <Flex flexDirection="column" alignItems="center" ml="2">
-                    <Button
-                      colorScheme="blue"
-                      variant="ghost"
-                      size="md"
-                      rounded="full"
-                      onClick={() =>
-                        setCurrentReviewIndex((prevIndex) =>
-                          Math.max(prevIndex - reviewsPerPage, 0)
-                        )
-                      }
-                      isDisabled={currentReviewIndex === 0}
-                    >
-                      <Icon as={FaChevronUp} />
-                    </Button>
-
-                    <Button
-                      colorScheme="blue"
-                      variant="ghost"
-                      size="md"
-                      rounded="full"
-                      onClick={() =>
-                        setCurrentReviewIndex((prevIndex) =>
-                          Math.min(prevIndex + reviewsPerPage, Reviews.length - reviewsPerPage)
-                        )
-                      }
-                      isDisabled={currentReviewIndex >= Reviews.length - reviewsPerPage}
-                    >
-                      <Icon as={FaChevronDown} />
-                    </Button>
-                  </Flex>
-                )}
               </Flex>
+
+              <Button
+                colorScheme="blue"
+                variant="ghost"
+                size="md"
+                rounded="full"
+                onClick={handlePrev}
+                position="absolute"
+                top="90px"
+                left="20px"
+              >
+                <Icon as={FaChevronLeft} mr="2" /> Previous Product
+              </Button>
+
+              <Button
+                colorScheme="blue"
+                variant="ghost"
+                size="md"
+                rounded="full"
+                onClick={handleNext}
+                position="absolute"
+                top="90px"
+                right="20px"
+              >
+                Next Product <Icon as={FaChevronRight} ml="2" />
+              </Button>
             </Box>
           </motion.div>
         </>

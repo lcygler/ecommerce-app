@@ -12,11 +12,13 @@ import {
   FormControl,
   FormLabel,
   Heading,
+  Icon,
   Input,
   Spinner,
   Stack,
 } from '@chakra-ui/react';
 
+import { FaChevronLeft } from 'react-icons/fa';
 import backgroundImage from '../assets/images/background.jpg';
 
 let timeoutId = null;
@@ -248,6 +250,7 @@ function EditProfile() {
       backgroundImage={`url(${backgroundImage})`}
       backgroundSize="cover"
       backgroundPosition="center"
+      position="relative"
     >
       <Box
         bg="white"
@@ -470,9 +473,9 @@ function EditProfile() {
             </Stack>
           </Stack>
 
-          <Stack direction="column" spacing={4} mt="20px">
-            <Stack direction="row" spacing={4}>
-              <Button
+          <Stack direction="column" spacing={4} mt="25px">
+            <Stack direction="row" spacing={4} justifyContent="center">
+              {/* <Button
                 width="100%"
                 onClick={() => {
                   navigate('/profile');
@@ -480,14 +483,14 @@ function EditProfile() {
                 isDisabled={isLoading}
               >
                 Go Back
-              </Button>
+              </Button> */}
 
               <Button
                 type="submit"
                 colorScheme="blue"
                 isLoading={isLoading}
                 loadingText="Updating..."
-                width="100%"
+                width="40%"
               >
                 Update
               </Button>
@@ -495,6 +498,20 @@ function EditProfile() {
           </Stack>
         </form>
       </Box>
+
+      <Button
+        colorScheme="blue"
+        variant="ghost"
+        size="md"
+        rounded="full"
+        onClick={() => navigate('/profile')}
+        position="absolute"
+        top="20px"
+        left="20px"
+        isDisabled={isLoading}
+      >
+        <Icon as={FaChevronLeft} mr="2" /> Back to Profile
+      </Button>
     </Box>
   );
 }

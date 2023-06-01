@@ -14,10 +14,12 @@ import {
   FormControl,
   FormLabel,
   Heading,
+  Icon,
   Input,
   Select,
   Stack,
 } from '@chakra-ui/react';
+import { FaChevronLeft } from 'react-icons/fa';
 import backgroundImage from '../assets/images/background.jpg';
 
 let timeoutId = null;
@@ -170,6 +172,7 @@ function CreateProduct() {
       backgroundImage={`url(${backgroundImage})`}
       backgroundSize="cover"
       backgroundPosition="center"
+      position="relative"
     >
       <Box
         bg="white"
@@ -388,23 +391,23 @@ function CreateProduct() {
             </Stack>
           </Stack>
 
-          <Stack direction="column" spacing={4} mt="20px">
-            <Stack direction="row" spacing={4}>
-              <Button
+          <Stack direction="column" spacing={4} mt="25px">
+            <Stack direction="row" spacing={4} justifyContent="center">
+              {/* <Button
                 width="100%"
                 onClick={() => {
                   navigate('/dashboard');
                 }}
               >
                 Go back
-              </Button>
+              </Button> */}
 
               <Button
                 type="submit"
                 colorScheme="blue"
                 isLoading={isLoading}
                 loadingText="Creating..."
-                width="100%"
+                width="40%"
               >
                 Create
               </Button>
@@ -412,6 +415,20 @@ function CreateProduct() {
           </Stack>
         </form>
       </Box>
+
+      <Button
+        colorScheme="blue"
+        variant="ghost"
+        size="md"
+        rounded="full"
+        onClick={() => navigate('/dashboard')}
+        position="absolute"
+        top="20px"
+        left="20px"
+        isDisabled={isLoading}
+      >
+        <Icon as={FaChevronLeft} mr="2" /> Back to Dashboard
+      </Button>
     </Box>
   );
 }

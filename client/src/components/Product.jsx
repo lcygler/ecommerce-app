@@ -40,13 +40,16 @@ function Product({
   stock,
 }) {
   const dispatch = useDispatch();
+
   const userId = useSelector((state) => state.userId);
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const cartProducts = useSelector((state) => state.cartProducts);
   const favorites = useSelector((state) => state.favorites);
+
   const [isFav, setIsFav] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [isInCart, setIsInCart] = useState(false);
+  const [loading, setLoading] = useState(true);
+  // const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   useEffect(() => {
     setLoading(false);
@@ -71,7 +74,7 @@ function Product({
       await dispatch(getUserFavorites(userId));
       dispatch(actions.filterFavorites());
 
-      toast.success('Product removed from favorites!');
+      toast.error('Product removed from favorites!');
     } else {
       setIsFav(true);
 
@@ -177,7 +180,17 @@ function Product({
             </Box>
           )}
 
-          <Image src={image} alt={name} h="100%" w="100%" objectFit="contain" />
+          {/* <Fade in={isImageLoaded}> */}
+          <Image
+            src={image}
+            alt={name}
+            // h="100%"
+            w="100%"
+            h="300px"
+            objectFit="contain"
+            // onLoad={() => setIsImageLoaded(true)}
+          />
+          {/* </Fade> */}
         </Box>
 
         <Box p="6">

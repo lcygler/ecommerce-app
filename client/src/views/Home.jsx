@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllProducts, getCategories, getGenders, getSeasons } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
+import { motion } from 'framer-motion';
 import { Filters, Navbar, Pagination, Products } from '../components/index';
 
 import {
@@ -66,51 +67,64 @@ function Home() {
         clearSearch={clearSearch}
         setClearSearch={setClearSearch}
       />
-      {!allProducts?.length ? (
-        <>
-          <Box display="grid" placeItems="center" height="60vh">
-            <Spinner size="xl" color="blue.500" />
-          </Box>
-        </>
-      ) : !loading && !filteredProducts?.length ? (
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-          width="auto"
-          height="60vh"
-        >
-          <Alert
-            status="warning"
-            textAlign="center"
-            maxWidth="md"
-            mx="auto"
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{
+          duration: 0.5,
+          easing: 'ease-in-out',
+        }}
+      >
+        {!allProducts?.length ? (
+          <>
+            <Box display="grid" placeItems="center" height="60vh">
+              <Spinner size="xl" color="blue.500" />
+            </Box>
+          </>
+        ) : !loading && !filteredProducts?.length ? (
+          <Box
             display="flex"
+            flexDirection="column"
+            alignItems="center"
             justifyContent="center"
+            width="auto"
+            height="60vh"
           >
-            <Flex flexDirection="column" alignItems="center">
-              <Flex>
-                <AlertIcon />
-                <AlertTitle>Oops! No results found</AlertTitle>
+            <Alert
+              status="warning"
+              textAlign="center"
+              maxWidth="md"
+              mx="auto"
+              display="flex"
+              justifyContent="center"
+            >
+              <Flex flexDirection="column" alignItems="center">
+                <Flex>
+                  <AlertIcon />
+                  <AlertTitle>Oops! No results found</AlertTitle>
+                </Flex>
+                <AlertDescription mt="2">Please change your filters and try again</AlertDescription>
               </Flex>
-              <AlertDescription mt="2">Please change your filters and try again</AlertDescription>
-            </Flex>
-          </Alert>
-          <Box display="flex" alignItems="center" justifyContent="center" mt="4">
-            <Button onClick={handleReset} variant="solid" colorScheme="blue">
-              Reset Filters
-            </Button>
+            </Alert>
+            <Box display="flex" alignItems="center" justifyContent="center" mt="4">
+              <Button onClick={handleReset} variant="solid" colorScheme="blue">
+                Reset Filters
+              </Button>
+            </Box>
           </Box>
-        </Box>
-      ) : (
-        <>
-          <Products currentProducts={currentProducts} />
-          <Box display="flex" justifyContent="center">
-            <Pagination totalPages={totalPages} currentPage={currentPage} changePage={changePage} />
-          </Box>
-        </>
-      )}
+        ) : (
+          <>
+            <Products currentProducts={currentProducts} />
+            <Box display="flex" justifyContent="center">
+              <Pagination
+                totalPages={totalPages}
+                currentPage={currentPage}
+                changePage={changePage}
+              />
+            </Box>
+          </>
+        )}
+      </motion.div>
     </Box>
   );
 }
