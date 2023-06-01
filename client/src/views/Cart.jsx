@@ -13,6 +13,7 @@ import {
 import { actions } from '../redux/slice';
 import store from '../redux/store';
 
+import { motion } from 'framer-motion';
 import { Navbar } from '../components/index';
 
 import { toast } from 'react-toastify';
@@ -221,312 +222,330 @@ function Cart() {
   };
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      minHeight="100vh"
-      backgroundImage={`url(${backgroundImage})`}
-      backgroundSize="cover"
-      backgroundPosition="center"
-      backgroundAttachment="fixed"
-      backgroundRepeat="no-repeat"
-    >
+    <>
       <Navbar />
-      <Box
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        my="10"
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{
+          duration: 0.5,
+          easing: 'ease-in-out',
+        }}
       >
         <Box
-          bg="white"
-          boxShadow="lg"
-          borderRadius="md"
-          mx="auto"
-          p={8}
-          w="700px"
-          // width="100%"
-          // maxW="3xl"
-          boxSizing="border-box"
+          display="flex"
+          flexDirection="column"
+          // minHeight="100vh"
+          height={`calc(100vh - 70px)`}
+          backgroundImage={`url(${backgroundImage})`}
+          backgroundSize="cover"
+          backgroundPosition="center"
+          backgroundAttachment="fixed"
+          backgroundRepeat="no-repeat"
         >
-          <Heading size="lg" mb={6} textAlign="center">
-            Shopping Cart
-          </Heading>
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+            my="10"
+          >
+            <Box
+              bg="white"
+              boxShadow="lg"
+              borderRadius="md"
+              mx="auto"
+              p={8}
+              w="700px"
+              // minHeight="550px"
+              // width="100%"
+              // maxW="3xl"
+              boxSizing="border-box"
+            >
+              <Heading size="lg" mb={6} textAlign="center">
+                Shopping Cart
+              </Heading>
 
-          {cartProducts?.length === 0 ? (
-            <Box textAlign="center" fontSize="lg" fontWeight="normal">
-              Your cart is empty
-              <Fade in={isImageLoaded}>
-                <Box mt={4} display="flex" justifyContent="center">
-                  <Image
-                    src={emptyCartImage}
-                    alt="Empty Cart"
-                    width="300px"
-                    onLoad={() => setIsImageLoaded(true)}
-                  />
-                </Box>
-              </Fade>
-              <Box mt={4}>
-                <Button colorScheme="blue" onClick={() => navigate('/home')}>
-                  Browse Products
-                </Button>
-              </Box>
-            </Box>
-          ) : (
-            <>
-              {cartProducts?.map((product, index) => (
-                <Box
-                  key={product.id}
-                  borderBottom={index !== cartProducts.length - 1 && '1px solid gray'}
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="space-between"
-                  flexDirection={{ base: 'column', md: 'row' }}
-                  marginY={2}
-                  paddingY={2}
-                >
-                  <Flex alignItems="center" marginBottom={{ base: 2, md: 0 }}>
-                    <Text fontWeight="bold" fontSize="xl" marginRight={4}>
-                      {index + 1}
-                    </Text>
-
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      boxSize="100px"
-                      objectFit="contain"
-                      marginRight={4}
-                    />
-                  </Flex>
-
-                  <Flex flexDirection="column" justifyContent="flex-start" flex="1">
-                    <Box
-                      style={{
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        width: '240px',
-                        // maxWidth: '200px',
-                        textAlign: 'left',
-                      }}
-                    >
-                      {product.name}
-                    </Box>
-
-                    <Flex alignItems="center" marginTop={2}>
-                      <Text fontWeight="bold" fontSize="lg" marginRight={2}>
-                        $
-                        {product.discounts === 0
-                          ? product.price.toFixed(2)
-                          : (product.price * (1 - product.discounts)).toFixed(2)}
-                      </Text>
-
-                      {product.discounts > 0 && (
-                        <Text
-                          fontWeight="bold"
-                          fontSize="md"
-                          color="gray.500"
-                          textDecoration="line-through"
-                          marginRight={2}
-                        >
-                          ${product.price.toFixed(2)}
-                        </Text>
-                      )}
-
-                      {product.discounts > 0 && (
-                        <Text fontWeight="bold" color="green.400">
-                          {product.discounts * 100}% OFF
-                        </Text>
-                      )}
-                    </Flex>
-                  </Flex>
-
-                  <Flex alignItems="flex-end" flexDirection="column">
-                    <Flex alignItems="center" marginTop={{ base: 2, md: 0 }}>
-                      <Text>Quantity:</Text>
-
-                      <Button
-                        onClick={() => handleDecreaseItem(product.id)}
-                        size="sm"
-                        marginLeft={2}
-                        isDisabled={isDecreaseDisabled(product.id)}
-                      >
-                        <MinusIcon fontSize="8px" />
-                      </Button>
-
-                      <Input
-                        type="number"
-                        value={product.quantity}
-                        min={1}
-                        onChange={(e) => {
-                          const newQuantity = parseInt(e.target.value);
-                          if (newQuantity === 0) {
-                            handleRemoveItem(product.id);
-                          } else if (!isNaN(newQuantity) && newQuantity > 0) {
-                            handleUpdateItem(product.id, newQuantity);
-                          }
-                        }}
-                        size="sm"
-                        width="50px"
-                        textAlign="center"
+              {cartProducts?.length === 0 ? (
+                <Box textAlign="center" fontSize="lg" fontWeight="normal">
+                  Your cart is empty
+                  <Fade in={isImageLoaded}>
+                    <Box mt={4} display="flex" justifyContent="center">
+                      <Image
+                        src={emptyCartImage}
+                        alt="Empty Cart"
+                        width="300px"
+                        height="300px"
+                        onLoad={() => setIsImageLoaded(true)}
                       />
+                    </Box>
+                  </Fade>
+                  <Box mt={4}>
+                    <Button colorScheme="blue" onClick={() => navigate('/home')}>
+                      Browse Products
+                    </Button>
+                  </Box>
+                </Box>
+              ) : (
+                <>
+                  {cartProducts?.map((product, index) => (
+                    <Box
+                      key={product.id}
+                      borderBottom={index !== cartProducts.length - 1 && '1px solid gray'}
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="space-between"
+                      flexDirection={{ base: 'column', md: 'row' }}
+                      marginY={2}
+                      paddingY={2}
+                    >
+                      <Flex alignItems="center" marginBottom={{ base: 2, md: 0 }}>
+                        <Text fontWeight="bold" fontSize="xl" marginRight={4}>
+                          {index + 1}
+                        </Text>
 
-                      <Button
-                        onClick={() => handleIncreaseItem(product.id)}
-                        size="sm"
-                        isDisabled={isIncreaseDisabled(product.id)}
-                      >
-                        <AddIcon fontSize="8px" />
-                      </Button>
+                        <Image
+                          src={product.image}
+                          alt={product.name}
+                          boxSize="100px"
+                          objectFit="contain"
+                          marginRight={4}
+                        />
+                      </Flex>
 
-                      {/* <Button onClick={() => handleRemoveItem(product.id)} size="sm" marginLeft={2}> */}
-                      <Button
-                        onClick={() => {
-                          setRemoveProductId(product.id);
-                          onRemoveAlertOpen();
-                        }}
-                        size="sm"
-                        marginLeft={2}
-                      >
-                        <CloseIcon fontSize="8px" />
-                      </Button>
-                    </Flex>
+                      <Flex flexDirection="column" justifyContent="flex-start" flex="1">
+                        <Box
+                          style={{
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            width: '240px',
+                            // maxWidth: '200px',
+                            textAlign: 'left',
+                          }}
+                        >
+                          {product.name}
+                        </Box>
 
-                    {product.stock === 1 ? (
-                      <Badge colorScheme="red" variant="subtle" mt={3}>
-                        Last unit!
-                      </Badge>
-                    ) : product.stock > 1 && product.stock <= 5 ? (
-                      <Badge colorScheme="red" variant="subtle" mt={3}>
-                        Last {product.stock} units!
-                      </Badge>
-                    ) : (
-                      <Badge colorScheme="green" variant="subtle" mt={3}>
-                        {product.stock} units left
-                      </Badge>
-                    )}
-                    {/* <Text fontWeight="normal" fontSize="sm" mt="4">
+                        <Flex alignItems="center" marginTop={2}>
+                          <Text fontWeight="bold" fontSize="lg" marginRight={2}>
+                            $
+                            {product.discounts === 0
+                              ? product.price.toFixed(2)
+                              : (product.price * (1 - product.discounts)).toFixed(2)}
+                          </Text>
+
+                          {product.discounts > 0 && (
+                            <Text
+                              fontWeight="bold"
+                              fontSize="md"
+                              color="gray.500"
+                              textDecoration="line-through"
+                              marginRight={2}
+                            >
+                              ${product.price.toFixed(2)}
+                            </Text>
+                          )}
+
+                          {product.discounts > 0 && (
+                            <Text fontWeight="bold" color="green.400">
+                              {product.discounts * 100}% OFF
+                            </Text>
+                          )}
+                        </Flex>
+                      </Flex>
+
+                      <Flex alignItems="flex-end" flexDirection="column">
+                        <Flex alignItems="center" marginTop={{ base: 2, md: 0 }}>
+                          <Text>Quantity:</Text>
+
+                          <Button
+                            onClick={() => handleDecreaseItem(product.id)}
+                            size="sm"
+                            marginLeft={2}
+                            isDisabled={isDecreaseDisabled(product.id)}
+                          >
+                            <MinusIcon fontSize="8px" />
+                          </Button>
+
+                          <Input
+                            type="number"
+                            value={product.quantity}
+                            min={1}
+                            onChange={(e) => {
+                              const newQuantity = parseInt(e.target.value);
+                              if (newQuantity === 0) {
+                                handleRemoveItem(product.id);
+                              } else if (!isNaN(newQuantity) && newQuantity > 0) {
+                                handleUpdateItem(product.id, newQuantity);
+                              }
+                            }}
+                            size="sm"
+                            width="50px"
+                            textAlign="center"
+                          />
+
+                          <Button
+                            onClick={() => handleIncreaseItem(product.id)}
+                            size="sm"
+                            isDisabled={isIncreaseDisabled(product.id)}
+                          >
+                            <AddIcon fontSize="8px" />
+                          </Button>
+
+                          {/* <Button onClick={() => handleRemoveItem(product.id)} size="sm" marginLeft={2}> */}
+                          <Button
+                            onClick={() => {
+                              setRemoveProductId(product.id);
+                              onRemoveAlertOpen();
+                            }}
+                            size="sm"
+                            marginLeft={2}
+                          >
+                            <CloseIcon fontSize="8px" />
+                          </Button>
+                        </Flex>
+
+                        {product.stock === 1 ? (
+                          <Badge colorScheme="red" variant="subtle" mt={3}>
+                            Last unit!
+                          </Badge>
+                        ) : product.stock > 1 && product.stock <= 5 ? (
+                          <Badge colorScheme="red" variant="subtle" mt={3}>
+                            Last {product.stock} units!
+                          </Badge>
+                        ) : (
+                          <Badge colorScheme="green" variant="subtle" mt={3}>
+                            {product.stock} units left
+                          </Badge>
+                        )}
+                        {/* <Text fontWeight="normal" fontSize="sm" mt="4">
                       {product.stock === 1
                         ? 'Last unit!'
                         : product.stock > 1 && product.stock <= 5
                         ? `Last ${product.stock} units!`
                         : `${product.stock} units left`}
                     </Text> */}
+                      </Flex>
+                    </Box>
+                  ))}
+
+                  <Box my={6} p={2} bg="gray.100" borderRadius="md" textAlign="right">
+                    <Text fontSize="lg" fontWeight="bold" mr="4">
+                      Total: ${cartTotal.toFixed(2)}
+                    </Text>
+                  </Box>
+
+                  <Flex flexDirection="column" alignItems="center" width="100%">
+                    <Stack direction="row" spacing={4} justifyContent="center" width="100%">
+                      <Button
+                        width="30%"
+                        onClick={() => {
+                          navigate(-1);
+                          // window.history.back();
+                        }}
+                        isDisabled={isLoading}
+                      >
+                        Go Back
+                      </Button>
+
+                      <Button
+                        colorScheme="blue"
+                        isLoading={isLoading}
+                        loadingText="Checking out..."
+                        width="30%"
+                        onClick={handleCheckout}
+                      >
+                        Checkout
+                      </Button>
+                    </Stack>
+
+                    <Button
+                      colorScheme="red"
+                      variant="ghost"
+                      // onClick={handleClearCart}
+                      onClick={onEmptyCartAlertOpen}
+                      width="30%"
+                      mt="6"
+                    >
+                      Empty Cart
+                    </Button>
                   </Flex>
-                </Box>
-              ))}
+                </>
+              )}
+            </Box>
+          </Box>
 
-              <Box my={6} p={2} bg="gray.100" borderRadius="md" textAlign="right">
-                <Text fontSize="lg" fontWeight="bold" mr="4">
-                  Total: ${cartTotal.toFixed(2)}
-                </Text>
-              </Box>
+          <AlertDialog
+            isOpen={isRemoveAlertOpen}
+            leastDestructiveRef={cancelRef}
+            onClose={onRemoveAlertClose}
+          >
+            <AlertDialogOverlay backgroundColor="transparent">
+              <AlertDialogContent>
+                <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                  Remove Item
+                </AlertDialogHeader>
 
-              <Flex flexDirection="column" alignItems="center" width="100%">
-                <Stack direction="row" spacing={4} justifyContent="center" width="100%">
+                <AlertDialogBody>
+                  Are you sure? You can't undo this action afterwards.
+                </AlertDialogBody>
+
+                <AlertDialogFooter>
+                  <Button ref={cancelRef} onClick={onRemoveAlertClose}>
+                    Cancel
+                  </Button>
                   <Button
-                    width="30%"
+                    colorScheme="red"
                     onClick={() => {
-                      navigate(-1);
-                      // window.history.back();
+                      handleRemoveItem(removeProductId);
+                      onRemoveAlertClose();
                     }}
-                    isDisabled={isLoading}
+                    ml={3}
                   >
-                    Go Back
+                    Confirm
                   </Button>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialogOverlay>
+          </AlertDialog>
 
-                  <Button
-                    colorScheme="blue"
-                    isLoading={isLoading}
-                    loadingText="Checking out..."
-                    width="30%"
-                    onClick={handleCheckout}
-                  >
-                    Checkout
-                  </Button>
-                </Stack>
-
-                <Button
-                  colorScheme="red"
-                  variant="ghost"
-                  // onClick={handleClearCart}
-                  onClick={onEmptyCartAlertOpen}
-                  width="30%"
-                  mt="6"
-                >
+          <AlertDialog
+            isOpen={isEmptyCartAlertOpen}
+            leastDestructiveRef={cancelRef}
+            onClose={onEmptyCartAlertClose}
+          >
+            <AlertDialogOverlay backgroundColor="transparent">
+              <AlertDialogContent>
+                <AlertDialogHeader fontSize="lg" fontWeight="bold">
                   Empty Cart
-                </Button>
-              </Flex>
-            </>
-          )}
+                </AlertDialogHeader>
+
+                <AlertDialogBody>
+                  Are you sure? You can't undo this action afterwards.
+                </AlertDialogBody>
+
+                <AlertDialogFooter>
+                  <Button ref={cancelRef} onClick={onEmptyCartAlertClose}>
+                    Cancel
+                  </Button>
+                  <Button
+                    colorScheme="red"
+                    onClick={() => {
+                      handleClearCart();
+                      onEmptyCartAlertClose();
+                    }}
+                    ml={3}
+                  >
+                    Confirm
+                  </Button>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialogOverlay>
+          </AlertDialog>
         </Box>
-      </Box>
-
-      <AlertDialog
-        isOpen={isRemoveAlertOpen}
-        leastDestructiveRef={cancelRef}
-        onClose={onRemoveAlertClose}
-      >
-        <AlertDialogOverlay backgroundColor="transparent">
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Remove Item
-            </AlertDialogHeader>
-
-            <AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
-
-            <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onRemoveAlertClose}>
-                Cancel
-              </Button>
-              <Button
-                colorScheme="red"
-                onClick={() => {
-                  handleRemoveItem(removeProductId);
-                  onRemoveAlertClose();
-                }}
-                ml={3}
-              >
-                Confirm
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
-
-      <AlertDialog
-        isOpen={isEmptyCartAlertOpen}
-        leastDestructiveRef={cancelRef}
-        onClose={onEmptyCartAlertClose}
-      >
-        <AlertDialogOverlay backgroundColor="transparent">
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Empty Cart
-            </AlertDialogHeader>
-
-            <AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
-
-            <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onEmptyCartAlertClose}>
-                Cancel
-              </Button>
-              <Button
-                colorScheme="red"
-                onClick={() => {
-                  handleClearCart();
-                  onEmptyCartAlertClose();
-                }}
-                ml={3}
-              >
-                Confirm
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
-    </Box>
+      </motion.div>
+    </>
   );
 }
 
