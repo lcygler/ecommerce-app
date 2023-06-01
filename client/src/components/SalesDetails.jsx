@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, Text, Image, Button } from '@chakra-ui/react';
+
+import { Box, Button, Image, Text } from '@chakra-ui/react';
 
 const SalesDetails = ({ saleData, onClose }) => {
   console.log('saleData', saleData);
@@ -45,9 +46,9 @@ const SalesDetails = ({ saleData, onClose }) => {
                 }}
               >
                 <Text fontWeight="bold">{Product.name}</Text>
-                <Text>Price: ${Product.price}</Text>
+                <Text>Price: ${Product.price.toFixed(2)}</Text>
                 <Text>Quantity: {quantity}</Text>
-                <Text>Total: ${Product.price * quantity}</Text>
+                <Text>Total: ${(Product.price * quantity).toFixed(2)}</Text>
               </Box>
               <Image
                 src={Product.image}
@@ -59,8 +60,8 @@ const SalesDetails = ({ saleData, onClose }) => {
             </Box>
           ))}
         </Box>
-        <Box display="flex" justifyContent="flex-end" mt={4}>
-          <Button colorScheme="blue" onClick={onClose}>
+        <Box display="flex" justifyContent="center" mt={6}>
+          <Button colorScheme="gray" onClick={onClose} w="150px">
             Go Back
           </Button>
         </Box>

@@ -9,10 +9,10 @@ import { Box, Button, Spacer, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui
 import { FaShoppingBag } from 'react-icons/fa';
 
 function Sales({ salesData }) {
+  const dispatch = useDispatch();
   const [selectedSaleId, setSelectedSaleId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-  const dispatch = useDispatch();
 
   const handleStatusChange = (saleId, newStatus) => {
     dispatch(updatePurchaseById({ purchaseId: saleId, purchaseData: { status: newStatus } }));
@@ -100,6 +100,7 @@ function Sales({ salesData }) {
                         >
                           Preparing
                         </Button>
+
                         <Button
                           size="sm"
                           variant={sale.status === 'On its way' ? 'solid' : 'outline'}
@@ -109,6 +110,7 @@ function Sales({ salesData }) {
                         >
                           On its way
                         </Button>
+
                         <Button
                           size="sm"
                           variant={sale.status === 'Delivered' ? 'solid' : 'outline'}
@@ -117,6 +119,16 @@ function Sales({ salesData }) {
                           mx="1"
                         >
                           Delivered
+                        </Button>
+
+                        <Button
+                          size="sm"
+                          variant={sale.status === 'Canceled' ? 'solid' : 'outline'}
+                          colorScheme={sale.status === 'Canceled' ? 'red' : 'gray'}
+                          onClick={() => handleStatusChange(sale.id, 'Canceled')}
+                          mx="1"
+                        >
+                          Canceled
                         </Button>
                       </Box>
                     </Td>
