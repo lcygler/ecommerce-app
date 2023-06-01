@@ -294,8 +294,350 @@ const sendPurchaseFailure = async (email, user, Products, sender, error) => {
   } catch (error) {}
 };
 
+const sendMailBaja = async (email, user, Products, sender, error) => {
+    try {
+      await transporter.sendMail({
+        from: `${mail.user}`,
+        to: email,
+        subject: 'Error en la compra',
+        text: `
+        Estimado/a cliente,
+  
+        Lamentamos informarle que su compra ha experimentado un inconveniente y no se ha podido completar satisfactoriamente. Entendemos lo importante que es para usted recibir los productos que ha seleccionado, y nos disculpamos por cualquier inconveniente que esto haya causado.
+  
+        Además, queremos informarle que su cuenta ha sido suspendida debido a la infracción de las normas de nuestra página. Le recordamos que es importante cumplir con nuestras políticas para garantizar una experiencia segura y satisfactoria para todos nuestros usuarios.
+  
+        Para obtener información adicional sobre el problema que ha surgido o sobre la suspensión de su cuenta, le recomendamos que se comunique con nuestro equipo de atención al cliente. Puede enviar un correo electrónico a ${mail.user} y uno de nuestros representantes estará encantado de ayudarlo a resolver cualquier duda o inquietud que pueda tener.
+  
+        Nuevamente, le pedimos disculpas por los inconvenientes causados por este incidente y por la suspensión de su cuenta. Valoramos su comprensión y esperamos poder atenderle mejor en el futuro.
+  
+        Atentamente,
+  
+        El equipo de Modern Fashion `,
+        html: `
+        <html>
+        <head>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    background-color: #f9f9f9;
+                    color: #333333;
+                    text-align: center;
+                }
+        
+                .container {
+                    max-width: 500px;
+                    margin: 0 auto;
+                    padding: 30px;
+                    background-color: #ffffff;
+                    border-radius: 5px;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                }
+        
+                h1 {
+                    font-size: 24px;
+                    margin-bottom: 20px;
+                }
+        
+                p {
+                    font-size: 16px;
+                    line-height: 1.5;
+                    margin-bottom: 20px;
+                }
+        
+                .button {
+                    display: inline-block;
+                    padding: 10px 20px;
+                    background-color: #3366cc;
+                    color: #ffffff;
+                    text-decoration: none;
+                    border-radius: 4px;
+                    transition: background-color 0.3s ease;
+                }
+        
+                .button:hover {
+                    background-color: #254b99;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>Estimado/a cliente,</h1>
+                <p>Lamentamos informarle que su compra ha experimentado un inconveniente y no se ha podido completar satisfactoriamente. Entendemos lo importante que es para usted recibir los productos que ha seleccionado, y nos disculpamos por cualquier inconveniente que esto haya causado.</p>
+                <p>Además, queremos informarle que su cuenta ha sido suspendida debido a la infracción de las normas de nuestra página. Le recordamos que es importante cumplir con nuestras políticas para garantizar una experiencia segura y satisfactoria para todos nuestros usuarios.</p>
+                <p>Para obtener información adicional sobre el problema que ha surgido o sobre la suspensión de su cuenta, le recomendamos que se comunique con nuestro equipo de atención al cliente. Puede enviar un correo electrónico a <a href="mailto:${mail.user}">${mail.user}</a> y uno de nuestros representantes estará encantado de ayudarlo a resolver cualquier duda o inquietud que pueda tener.</p>
+                <p>Nuevamente, le pedimos disculpas por los inconvenientes causados por este incidente y por la suspensión de su cuenta. Valoramos su comprensión y esperamos poder atenderle mejor en el futuro.</p>
+                <p>Atentamente,</p>
+                <p>El equipo de Modern Fashion</p>
+            </div>
+        </body>`,
+      });
+      console.log('Email enviado');
+    } catch (error) {}
+  };
+
+  const sendMailAlta = async (email, user) => {
+    try {
+      await transporter.sendMail({
+        from: `${mail.user}`,
+        to: email,
+        subject: 'Reactivación de cuenta',
+        text: `
+        Estimado/a ${user},
+  
+        Nos complace informarle que su cuenta ha sido dada de alta nuevamente. Le damos la bienvenida de vuelta a nuestra plataforma y nos disculpamos por cualquier inconveniente que haya experimentado durante la suspensión.
+  
+        Apreciamos su comprensión y su compromiso con nuestras normas y políticas. Estamos comprometidos en brindarle una experiencia segura y satisfactoria en nuestra página.
+  
+        Si tiene alguna pregunta o necesita asistencia, no dude en ponerse en contacto con nuestro equipo de atención al cliente. Estaremos encantados de ayudarlo en lo que necesite.
+  
+        Gracias por su confianza y esperamos poder brindarle un excelente servicio en el futuro.
+  
+        Atentamente,
+  
+        El equipo de Modern Fashion`,
+        html: `
+        <html>
+        <head>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    background-color: #f9f9f9;
+                    color: #333333;
+                    text-align: center;
+                }
+        
+                .container {
+                    max-width: 500px;
+                    margin: 0 auto;
+                    padding: 30px;
+                    background-color: #ffffff;
+                    border-radius: 5px;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                }
+        
+                h1 {
+                    font-size: 24px;
+                    margin-bottom: 20px;
+                }
+        
+                p {
+                    font-size: 16px;
+                    line-height: 1.5;
+                    margin-bottom: 20px;
+                }
+        
+                .button {
+                    display: inline-block;
+                    padding: 10px 20px;
+                    background-color: #3366cc;
+                    color: #ffffff;
+                    text-decoration: none;
+                    border-radius: 4px;
+                    transition: background-color 0.3s ease;
+                }
+        
+                .button:hover {
+                    background-color: #254b99;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>Estimado/a ${user},</h1>
+                <p>Nos complace informarle que su cuenta ha sido dada de alta nuevamente. Le damos la bienvenida de vuelta a nuestra plataforma y nos disculpamos por cualquier inconveniente que haya experimentado durante la suspensión.</p>
+                <p>Apreciamos su comprensión y su compromiso con nuestras normas y políticas. Estamos comprometidos en brindarle una experiencia segura y satisfactoria en nuestra página.</p>
+                <p>Si tiene alguna pregunta o necesita asistencia, no dude en ponerse en contacto con nuestro equipo de atención al cliente. Estaremos encantados de ayudarlo en lo que necesite.</p>
+                <p>Gracias por su confianza y esperamos poder brindarle un excelente servicio en el futuro.</p>
+                <p>Atentamente,</p>
+                <p>El equipo de Modern Fashion</p>
+            </div>
+        </body>`,
+      });
+      console.log('Email enviado');
+    } catch (error) {}
+  };
+  
+
+  const sendAdminWelcome = async (email, user) => {
+    try {
+      await transporter.sendMail({
+        from: `${mail.user}`,
+        to: email,
+        subject: '¡Felicitaciones! Bienvenida al equipo como administrador',
+        text: `
+        Estimada/o ${user},
+  
+        ¡Enhorabuena! Nos complace informarte que has sido seleccionada/o como administradora/or en nuestro equipo. Queremos darte una cálida bienvenida y expresar nuestro agradecimiento por unirte a nosotros.
+  
+        Como administradora/or, tendrás un papel fundamental en la gestión y toma de decisiones de nuestra plataforma. Confiamos en tus habilidades y experiencia para contribuir al crecimiento y éxito continuo de nuestra empresa.
+  
+        Esperamos que esta nueva posición sea una experiencia gratificante y llena de oportunidades para desarrollarte profesionalmente. Estamos seguros de que harás grandes aportes y te convertirás en un activo valioso para nuestro equipo.
+  
+        Si tienes alguna pregunta o necesitas ayuda, no dudes en comunicarte con nosotros. Estaremos encantados de brindarte todo el apoyo necesario para que te sientas cómoda/o y puedas desempeñar tu rol de manera efectiva.
+  
+        Una vez más, felicitaciones por convertirte en parte de nuestro equipo como administradora/or. Estamos emocionados de trabajar contigo y esperamos un futuro brillante juntos.
+  
+        ¡Bienvenida/o al equipo!
+  
+        Atentamente,
+  
+        El equipo de Modern Fashion`,
+        html: `
+        <html>
+        <head>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    background-color: #f9f9f9;
+                    color: #333333;
+                    text-align: center;
+                }
+        
+                .container {
+                    max-width: 500px;
+                    margin: 0 auto;
+                    padding: 30px;
+                    background-color: #ffffff;
+                    border-radius: 5px;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                }
+        
+                h1 {
+                    font-size: 24px;
+                    margin-bottom: 20px;
+                }
+        
+                p {
+                    font-size: 16px;
+                    line-height: 1.5;
+                    margin-bottom: 20px;
+                }
+        
+                .button {
+                    display: inline-block;
+                    padding: 10px 20px;
+                    background-color: #3366cc;
+                    color: #ffffff;
+                    text-decoration: none;
+                    border-radius: 4px;
+                    transition: background-color 0.3s ease;
+                }
+        
+                .button:hover {
+                    background-color: #254b99;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>Estimada/o ${user},</h1>
+                <p>¡Enhorabuena! Nos complace informarte que has sido seleccionada/o como administradora/or en nuestro equipo. Queremos darte una cálida bienvenida y expresar nuestro agradecimiento por unirte a nosotros.</p>
+                <p>Como administradora/or, tendrás un papel fundamental en la gestión y toma de decisiones de nuestra plataforma. Confiamos en tus habilidades y experiencia para contribuir al crecimiento y éxito continuo de nuestra empresa.</p>
+                <p>Esperamos que esta nueva posición sea una experiencia gratificante y llena de oportunidades para desarrollarte profesionalmente. Estamos seguros de que harás grandes aportes y te convertirás en un activo valioso para nuestro equipo.</p>
+                <p>Si tienes alguna pregunta o necesitas ayuda, no dudes en comunicarte con nosotros. Estaremos encantados de brindarte todo el apoyo necesario para que te sientas cómoda/o y puedas desempeñar tu rol de manera efectiva.</p>
+                <p>Una vez más, felicitaciones por convertirte en parte de nuestro equipo como administradora/or. Estamos emocionados de trabajar contigo y esperamos un futuro brillante juntos.</p>
+                <p>¡Bienvenida/o al equipo!</p>
+                <p>Atentamente,</p>
+                <p>El equipo de Modern Fashion</p>
+            </div>
+        </body>`,
+      });
+      console.log('Email enviado');
+    } catch (error) {}
+  };
+
+  const sendAdminRemoval = async (email, user) => {
+    try {
+      await transporter.sendMail({
+        from: `${mail.user}`,
+        to: email,
+        subject: 'Remoción de posición de administrador',
+        text: `
+        Estimada/o ${user},
+  
+        Lamentamos informarte que se ha tomado la decisión de remover tu posición de administradora/or en nuestro equipo. Queremos agradecerte por tu contribución y dedicación durante tu tiempo como administradora/or.
+  
+        Valoramos tus esfuerzos y el impacto positivo que has tenido en nuestra plataforma. Sin embargo, debido a cambios en nuestra estructura organizativa, hemos decidido hacer ajustes en los roles y responsabilidades del equipo.
+  
+        Apreciamos tu comprensión y te animamos a seguir siendo parte activa de nuestra comunidad. Tu opinión y participación siguen siendo valiosas para nosotros. Si tienes alguna pregunta o necesitas asistencia, no dudes en contactarnos.
+  
+        Agradecemos nuevamente tu compromiso y esperamos contar contigo en otros proyectos y oportunidades en el futuro.
+  
+        Atentamente,
+  
+        El equipo de Modern Fashion`,
+        html: `
+        <html>
+        <head>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    background-color: #f9f9f9;
+                    color: #333333;
+                    text-align: center;
+                }
+        
+                .container {
+                    max-width: 500px;
+                    margin: 0 auto;
+                    padding: 30px;
+                    background-color: #ffffff;
+                    border-radius: 5px;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                }
+        
+                h1 {
+                    font-size: 24px;
+                    margin-bottom: 20px;
+                }
+        
+                p {
+                    font-size: 16px;
+                    line-height: 1.5;
+                    margin-bottom: 20px;
+                }
+        
+                .button {
+                    display: inline-block;
+                    padding: 10px 20px;
+                    background-color: #3366cc;
+                    color: #ffffff;
+                    text-decoration: none;
+                    border-radius: 4px;
+                    transition: background-color 0.3s ease;
+                }
+        
+                .button:hover {
+                    background-color: #254b99;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>Estimada/o ${user},</h1>
+                <p>Lamentamos informarte que se ha tomado la decisión de remover tu posición de administradora/or en nuestro equipo. Queremos agradecerte por tu contribución y dedicación durante tu tiempo como administradora/or.</p>
+                <p>Valoramos tus esfuerzos y el impacto positivo que has tenido en nuestra plataforma. Sin embargo, debido a cambios en nuestra estructura organizativa, hemos decidido hacer ajustes en los roles y responsabilidades del equipo.</p>
+                <p>Apreciamos tu comprensión y te animamos a seguir siendo parte activa de nuestra comunidad. Tu opinión y participación siguen siendo valiosas para nosotros. Si tienes alguna pregunta o necesitas asistencia, no dudes en contactarnos.</p>
+                <p>Agradecemos nuevamente tu compromiso y esperamos contar contigo en otros proyectos y oportunidades en el futuro.</p>
+                <p>Atentamente,</p>
+                <p>El equipo de Modern Fashion</p>
+            </div>
+        </body>`,
+      });
+      console.log('Email enviado');
+    } catch (error) {}
+  };
+  
+  
+  
+
 module.exports = {
   sendWelcomeEmail,
   sendPurchaseSuccess,
   sendPurchaseFailure,
+  sendMailBaja,
+  sendMailAlta,
+  sendAdminWelcome,
+  sendAdminRemoval
 };
