@@ -489,16 +489,19 @@ export const extraReducers = (builder) => {
     })
     .addCase(loginUser.fulfilled, (state, action) => {
       state.loginUserStatus = 'succeeded';
-      state.selectedUser = action.payload;
-      state.isAuthenticated = true;
-      state.isAdmin = action.payload.user.isAdmin;
-      state.userId = action.payload.user.id;
 
-      const userId = action.payload.user.id;
-      localStorage.setItem('userId', userId);
-      localStorage.setItem(`user_${userId}_selectedUser`, JSON.stringify(action.payload));
-      localStorage.setItem(`user_${userId}_isAuthenticated`, 'true');
-      localStorage.setItem(`user_${userId}_isAdmin`, action.payload.user.isAdmin);
+      if (!action.payload.user.disable) {
+        state.selectedUser = action.payload;
+        state.isAuthenticated = true;
+        state.isAdmin = action.payload.user.isAdmin;
+        state.userId = action.payload.user.id;
+
+        const userId = action.payload.user.id;
+        localStorage.setItem('userId', userId);
+        localStorage.setItem(`user_${userId}_selectedUser`, JSON.stringify(action.payload));
+        localStorage.setItem(`user_${userId}_isAuthenticated`, 'true');
+        localStorage.setItem(`user_${userId}_isAdmin`, action.payload.user.isAdmin);
+      }
 
       // state.cartProducts = JSON.parse(localStorage.getItem(`user_${userId}_cartProducts`)) || [];
       // state.cartTotal = JSON.parse(localStorage.getItem(`user_${userId}_cartTotal`)) || 0;
@@ -516,16 +519,19 @@ export const extraReducers = (builder) => {
     })
     .addCase(loginGoogle.fulfilled, (state, action) => {
       state.loginGoogleStatus = 'succeeded';
-      state.selectedUser = action.payload;
-      state.isAuthenticated = true;
-      state.isAdmin = action.payload.user.isAdmin;
-      state.userId = action.payload.user.id;
 
-      const userId = action.payload.user.id;
-      localStorage.setItem('userId', userId);
-      localStorage.setItem(`user_${userId}_selectedUser`, JSON.stringify(action.payload));
-      localStorage.setItem(`user_${userId}_isAuthenticated`, 'true');
-      localStorage.setItem(`user_${userId}_isAdmin`, action.payload.user.isAdmin);
+      if (!action.payload.user.disable) {
+        state.selectedUser = action.payload;
+        state.isAuthenticated = true;
+        state.isAdmin = action.payload.user.isAdmin;
+        state.userId = action.payload.user.id;
+
+        const userId = action.payload.user.id;
+        localStorage.setItem('userId', userId);
+        localStorage.setItem(`user_${userId}_selectedUser`, JSON.stringify(action.payload));
+        localStorage.setItem(`user_${userId}_isAuthenticated`, 'true');
+        localStorage.setItem(`user_${userId}_isAdmin`, action.payload.user.isAdmin);
+      }
 
       // state.cartProducts = JSON.parse(localStorage.getItem(`user_${userId}_cartProducts`)) || [];
       // state.cartTotal = JSON.parse(localStorage.getItem(`user_${userId}_cartTotal`)) || 0;

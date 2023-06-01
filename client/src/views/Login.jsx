@@ -13,6 +13,7 @@ import {
   loginGoogle,
   loginUser,
 } from '../redux/asyncActions';
+import { actions } from '../redux/slice';
 import { validateLogin } from '../utils/validateForm';
 
 import {
@@ -97,6 +98,7 @@ function Login() {
         if (response.payload.user.disable) {
           setSuccess('');
           setError('Your account has been disabled.\nPlease reach out to our support team.');
+          dispatch(actions.logoutUser());
           return;
         }
 
