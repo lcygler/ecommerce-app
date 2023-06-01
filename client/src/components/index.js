@@ -16,7 +16,8 @@ import Sidebar from './Sidebar';
 import StarRating from './StarRating';
 import UserRoute from './UserRoute';
 import UsersTable from './UsersTable';
-
+import Sales from './Sales';
+import SalesDetails from './SalesDetails';
 
 export {
   CreateProduct,
@@ -37,4 +38,6 @@ export {
   EditProduct,
   UsersTable,
   ReviewCard,
+  Sales,
+  SalesDetails,
 };

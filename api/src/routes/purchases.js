@@ -8,12 +8,18 @@ const router = Router();
 router.get('/', async (req, res) => {
   try {
     const allPurchases = await Purchase.findAll({
-      include: {
-        model: PurchaseDetail,
-        include: {
-          model: Product,
+      include: [
+        {
+          model: PurchaseDetail,
+          include: {
+            model: Product,
+          },
         },
-      },
+        {
+          model: User,
+          attributes: ['name', 'lastname', 'email', 'phoneNumber'],
+        },
+      ],
     });
 
     res.status(200).json(allPurchases);
