@@ -98,7 +98,7 @@ const deleteUser = async (req, res) => {
 };
 
 //* USER ENABLED
-router.post('/enable', async (req, res) => {
+const sendEnableUser = async (req, res) => {
   try {
     const { email } = req.body;
     sendMailAlta(email);
@@ -106,10 +106,10 @@ router.post('/enable', async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Error sending email' });
   }
-});
+};
 
 //* USER DISABLED
-router.post('/disable', async (req, res) => {
+const sendDisableUser = async (req, res) => {
   try {
     const { email } = req.body;
     sendMailBaja(email);
@@ -117,10 +117,10 @@ router.post('/disable', async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Error sending email' });
   }
-});
+};
 
 //* ADD ADMIN
-router.post('/admin/enable', async (req, res) => {
+const sendAddAdmin = async (req, res) => {
   try {
     const { email } = req.body;
     sendAdminWelcome(email);
@@ -128,10 +128,10 @@ router.post('/admin/enable', async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Error sending email' });
   }
-});
+};
 
 //* REMOVE ADMIN
-router.post('/admin/disable', async (req, res) => {
+const sendRemoveAdmin = async (req, res) => {
   try {
     const { email } = req.body;
     sendAdminRemoval(email);
@@ -139,11 +139,15 @@ router.post('/admin/disable', async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Error sending email' });
   }
-});
+};
 
 module.exports = {
   getUsers,
   getUserById,
   updateUser,
   deleteUser,
+  sendEnableUser,
+  sendDisableUser,
+  sendAddAdmin,
+  sendRemoveAdmin,
 };
