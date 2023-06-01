@@ -1,3 +1,33 @@
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+import {
+  deleteProductById,
+  deleteUserById,
+  getAdminProducts,
+  getAllPurchases,
+  getCategories,
+  getChartData,
+  getGenders,
+  getSeasons,
+  getUsers,
+  updateProductById,
+  updateUserById,
+} from '../redux/asyncActions';
+import { actions } from '../redux/slice';
+
+import {
+  Charts,
+  Filters,
+  Navbar,
+  Pagination,
+  ProductsTable,
+  Sales,
+  Sidebar,
+  UsersTable,
+} from '../components/index';
+
 import {
   Alert,
   AlertDescription,
@@ -8,34 +38,6 @@ import {
   Flex,
   Spinner,
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-
-import {
-  Charts,
-  Filters,
-  Navbar,
-  Pagination,
-  ProductsTable,
-  Sidebar,
-  UsersTable,
-  Sales,
-} from '../components/index';
-import {
-  deleteProductById,
-  deleteUserById,
-  getAdminProducts,
-  getCategories,
-  getChartData,
-  getGenders,
-  getSeasons,
-  getUsers,
-  updateProductById,
-  updateUserById,
-  getAllPurchases,
-} from '../redux/asyncActions';
-import { actions } from '../redux/slice';
 
 function Dashboard() {
   const dispatch = useDispatch();
