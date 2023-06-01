@@ -183,41 +183,48 @@ function Cart() {
   };
 
   const handleCheckout = async () => {
-    if (isAuthenticated) {
-      if (cartProducts?.length !== 0) {
-        setIsLoading(true);
-        await dispatch(getAllProducts());
-        const allProducts = store.getState().allProducts;
+    if (!isAuthenticated) {
+      toast.error('Please login to your account to proceed with checkout');
+      navigate('/login');
+      return;
+    }
 
-        const isValidQuantity = cartProducts.every((product) => {
-          const matchedProduct = allProducts.find((p) => p.id === product.id);
-          return matchedProduct && product.quantity <= matchedProduct.stock;
-        });
+    if (!selectedUser?.user?.address || selectedUser?.user?.address === '') {
+      toast.error('Please complete your profile to proceed with checkout');
+      navigate('/profile/edit');
+      return;
+    }
 
-        if (isValidQuantity) {
-          const response = await dispatch(createPaymentLink(cartProducts));
-          if (response.payload) {
-            dispatch(createPurchase({ userId, products: cartProducts }));
-            // dispatch(actions.createPurchase(cartProducts));
+    if (cartProducts?.length !== 0) {
+      setIsLoading(true);
+      await dispatch(getAllProducts());
+      const allProducts = store.getState().allProducts;
 
-            navigateTimeoutId = setTimeout(() => {
-              setIsLoading(false);
-              window.location.href = response.payload;
-            }, 2000);
-          } else {
+      const isValidQuantity = cartProducts.every((product) => {
+        const matchedProduct = allProducts.find((p) => p.id === product.id);
+        return matchedProduct && product.quantity <= matchedProduct.stock;
+      });
+
+      if (isValidQuantity) {
+        const response = await dispatch(createPaymentLink(cartProducts));
+        if (response.payload) {
+          dispatch(createPurchase({ userId, products: cartProducts }));
+          // dispatch(actions.createPurchase(cartProducts));
+
+          navigateTimeoutId = setTimeout(() => {
             setIsLoading(false);
-            toast.error('Checkout process failed');
-            setRenderCart(true);
-          }
+            window.location.href = response.payload;
+          }, 2000);
         } else {
           setIsLoading(false);
-          toast.error('Quantity exceeds available stock');
+          toast.error('Checkout process failed');
           setRenderCart(true);
         }
+      } else {
+        setIsLoading(false);
+        toast.error('Quantity exceeds available stock');
+        setRenderCart(true);
       }
-    } else {
-      navigate('/login');
-      // toast.error('Login required to purchase');
     }
   };
 
