@@ -246,8 +246,8 @@ function Cart() {
         <Box
           display="flex"
           flexDirection="column"
-          // minHeight="100vh"
-          height={`calc(100vh - 70px)`}
+          minHeight="100vh"
+          // height={`calc(100vh - 70px)`}
           backgroundImage={`url(${backgroundImage})`}
           backgroundSize="cover"
           backgroundPosition="center"
