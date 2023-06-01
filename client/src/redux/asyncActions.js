@@ -297,6 +297,11 @@ export const loginGoogle = createAsyncThunk('slice/loginGoogle', async (userData
 });
 
 //* REVIEWS
+export const getAllReviews = createAsyncThunk('slice/getAllReviews', async () => {
+  const response = await axios.get(`/reviews`);
+  return response.data;
+});
+
 export const getUserReviews = createAsyncThunk('slice/getUserReviews', async (userId) => {
   const response = await axios.get(`/reviews/users/${userId}`);
   return response.data;

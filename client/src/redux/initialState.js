@@ -78,6 +78,7 @@ export const getInitialState = () => {
     isAdmin: storedIsAdmin || false,
 
     // Reviews
+    allReviews: [],
     reviews: [],
     selectedReview: {},
 
@@ -137,6 +138,7 @@ export const getInitialState = () => {
     loginGoogleStatus: 'idle',
 
     // Reviews
+    getAllReviewsStatus: 'idle',
     getUserReviewsStatus: 'idle',
     getReviewByIdStatus: 'idle',
     createReviewStatus: 'idle',
@@ -199,6 +201,7 @@ export const getInitialState = () => {
     loginGoogleError: null,
 
     // Reviews
+    getAllReviewsError: null,
     getUserReviewsError: null,
     getReviewByIdError: null,
     createReviewError: null,
