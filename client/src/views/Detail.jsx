@@ -58,6 +58,7 @@ function Detail() {
 
   useEffect(() => {
     dispatch(getProductById(productId));
+
     return () => {
       dispatch(actions.clearSelectedProduct());
     };
@@ -67,6 +68,16 @@ function Detail() {
     const productExists = cartProducts?.find((product) => product.id === parseInt(productId));
     setIsInCart(!!productExists);
   }, [cartProducts, productId]);
+
+  const isPrevDisabled = (productId) => {
+    const index = filteredProducts.findIndex((product) => product.id === parseInt(productId));
+    return index < 1;
+  };
+
+  const isNextDisabled = (productId) => {
+    const index = filteredProducts.findIndex((product) => product.id === parseInt(productId));
+    return index === -1 || index >= filteredProducts.length - 1;
+  };
 
   const handleAddToCart = (e) => {
     const productExists = cartProducts?.find((product) => product.id === parseInt(productId));
@@ -356,7 +367,8 @@ function Detail() {
                       fontWeight="bold"
                       fontSize="xl"
                       w="100%"
-                      bg="white"
+                      // bg="white"
+                      bg="#e5e5e5"
                       borderRadius="md"
                       p="10"
                       boxShadow="md"
@@ -446,6 +458,7 @@ function Detail() {
                 position="absolute"
                 top="90px"
                 left="20px"
+                isDisabled={isPrevDisabled(productId)}
               >
                 <Icon as={FaChevronLeft} mr="2" /> Previous Product
               </Button>
@@ -459,6 +472,7 @@ function Detail() {
                 position="absolute"
                 top="90px"
                 right="20px"
+                isDisabled={isNextDisabled(productId)}
               >
                 Next Product <Icon as={FaChevronRight} ml="2" />
               </Button>

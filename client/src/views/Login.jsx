@@ -30,7 +30,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
-import { FaChevronLeft } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import backgroundImage from '../assets/images/background.jpg';
 
 const clientId = process.env.REACT_APP_CLIENT_ID;
@@ -94,6 +94,12 @@ function Login() {
       setIsLoading(false);
 
       if (response.payload) {
+        if (response.payload.user.disable) {
+          setSuccess('');
+          setError('Your account has been disabled.\nPlease reach out to our support team.');
+          return;
+        }
+
         dispatch(getUserCart(response.payload.user.id));
         dispatch(getUserPurchases(response.payload.user.id));
         dispatch(getUserFavorites(response.payload.user.id));
@@ -141,6 +147,12 @@ function Login() {
     //* Login (back)
     const res = await dispatch(loginGoogle(user));
     if (res.payload) {
+      if (res.payload.user.disable) {
+        setSuccess('');
+        setError('Your account has been disabled.\nPlease reach out to our support team.');
+        return;
+      }
+
       const userId = res.payload.user.id;
       dispatch(getUserCart(userId));
       dispatch(getUserPurchases(userId));
@@ -195,19 +207,22 @@ function Login() {
         <Heading size="lg" mb="6" w="100%" textAlign="center">
           Login
         </Heading>
+
         <form onChange={handleForm} onSubmit={handleSubmit}>
           {error && (
             <Alert status="error" marginBottom={4}>
               <AlertIcon />
-              {error}
+              <Box whiteSpace="pre-line">{error}</Box>
             </Alert>
           )}
+
           {success && (
             <Alert status="success" marginBottom={4}>
               <AlertIcon />
               {success}
             </Alert>
           )}
+
           <Stack spacing={4}>
             <FormControl isRequired isInvalid={errors.email !== ''}>
               <FormLabel htmlFor="email">Email Address</FormLabel>
@@ -243,7 +258,7 @@ function Login() {
               {/* <FormErrorMessage>{errors.password}</FormErrorMessage> */}
             </FormControl>
 
-            <Stack direction="row" spacing={4} alignItems="center">
+            <Stack direction="row" alignItems="center" /* spacing={4} */>
               {/* <Button
                 width="100%"
                 onClick={() => {
@@ -275,7 +290,7 @@ function Login() {
               </Button>
             </Stack>
 
-            <Box textAlign="center" marginTop={4} fontSize="sm">
+            <Box textAlign="center" mt="2" fontSize="sm">
               <Text mb="0">
                 Don't have an account?{' '}
                 <Link as={RouterLink} to="/register" color="blue.500" textDecoration="underline">
@@ -299,6 +314,20 @@ function Login() {
         isDisabled={isLoading}
       >
         <Icon as={FaChevronLeft} mr="2" /> Go Back
+      </Button>
+
+      <Button
+        colorScheme="blue"
+        variant="ghost"
+        size="md"
+        rounded="full"
+        onClick={() => navigate('/register')}
+        position="absolute"
+        top="20px"
+        right="20px"
+        isDisabled={isLoading}
+      >
+        Register <Icon as={FaChevronRight} ml="2" />
       </Button>
     </Box>
   );
