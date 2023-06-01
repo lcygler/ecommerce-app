@@ -25,7 +25,10 @@ import {
 } from '@chakra-ui/react';
 
 function Filters({ changePage, allProducts, clearSearch, setClearSearch }) {
-  const stocksInProducts = [...new Set(allProducts.map((product) => product.stock))].sort(function(a, b) {
+  const stocksInProducts = [...new Set(allProducts.map((product) => product.stock))].sort(function(
+    a,
+    b
+  ) {
     return a - b;
   });
 
@@ -72,8 +75,18 @@ function Filters({ changePage, allProducts, clearSearch, setClearSearch }) {
     seasonSelect.current.value = season;
     genderSelect.current.value = gender;
     orderSelect.current.value = order;
-    stockSelect.current.value = stock;
+
+    if (stockSelect.current) {
+      stockSelect.current.value = stock;
+    }
   }, [category, discount, season, gender, order, stock]);
+
+  // Sino probar con este useEffect para el stock
+  // useEffect(() => {
+  //   if (stockSelect.current) {
+  //     stockSelect.current.value = stock;
+  //   }
+  // }, [stock, stockSelect]);
 
   useEffect(() => {
     if (clearSearch) {
@@ -224,15 +237,20 @@ function Filters({ changePage, allProducts, clearSearch, setClearSearch }) {
 
           {location.pathname === '/dashboard' && (
             <Box display="flex" alignItems="center" justifyContent="center" ml="4">
-            <Select defaultValue="All" name="stockSelect" ref={stockSelect} onChange={handleFilters}>
-              <option value="All">Filter By Stock</option>
-              {stocksInProducts.map((item, id) => (
-                <option key={id} value={item}>
-                  {item}
-                </option>
-              ))}
-            </Select>
-          </Box>
+              <Select
+                defaultValue="All"
+                name="stockSelect"
+                ref={stockSelect}
+                onChange={handleFilters}
+              >
+                <option value="All">Filter By Stock</option>
+                {stocksInProducts.map((item, id) => (
+                  <option key={id} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </Select>
+            </Box>
           )}
 
           <Box display="flex" alignItems="center" justifyContent="center" ml="4">
