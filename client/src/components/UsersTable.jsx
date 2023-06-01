@@ -253,7 +253,7 @@ const UserFilters = ({ users, changePage }) => {
 
       <Box display="flex" alignItems="center" justifyContent="center" ml="4" maxW="150px">
         <Select ref={lastnameSelect} name="lastname" onChange={handleFilters}>
-          <option value="">All Lastnames</option>
+          <option value="">All Last Names</option>
           {lastnamesInUsers.map((item, id) => (
             <option key={id} value={item}>
               {item}
