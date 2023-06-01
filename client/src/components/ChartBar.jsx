@@ -48,7 +48,7 @@ const ChartBar = (props) => {
       },
     ],
   };
-  let max = Math.max(...ventas) > 100 ? Math.max(...ventas) : 100;
+  // let max = Math.max(...ventas) > 100 ? Math.max(...ventas) : 100;
   const optionsBars = {
     responsive: true,
     animation: false,
@@ -60,7 +60,7 @@ const ChartBar = (props) => {
     scales: {
       y: {
         min: 0,
-        max: max,
+        max: 100,
       },
       x: {
         ticks: { color: 'blue' },

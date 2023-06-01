@@ -22,21 +22,13 @@ function Sidebar({ handleSidebarOption, selectedOption }) {
       >
         Users
       </Button>
+
       <Button
         mb="6"
-        onClick={() => handleSidebarOption('create-admin')}
+        onClick={() => handleSidebarOption('sales')}
         colorScheme="blue"
         variant="outline"
-        backgroundColor={selectedOption === 'create-admin' ? 'blue.100' : 'gray.150'}
-      >
-        Create Admin
-      </Button>
-      <Button
-        mb="6"
-        onClick={() => handleSidebarOption('ventas')}
-        colorScheme="blue"
-        variant="outline"
-        backgroundColor={selectedOption === 'ventas' ? 'blue.100' : 'gray.150'}
+        backgroundColor={selectedOption === 'sales' ? 'blue.100' : 'gray.150'}
       >
         Sales
       </Button>
@@ -47,7 +39,7 @@ function Sidebar({ handleSidebarOption, selectedOption }) {
         variant="outline"
         backgroundColor={selectedOption === 'charts' ? 'blue.100' : 'gray.150'}
       >
-        Charts
+        Metrics
       </Button>
     </Box>
   );

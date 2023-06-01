@@ -20,6 +20,7 @@ import {
   ProductsTable,
   Sidebar,
   UsersTable,
+  Sales,
 } from '../components/index';
 import {
   deleteProductById,
@@ -32,6 +33,7 @@ import {
   getUsers,
   updateProductById,
   updateUserById,
+  getAllPurchases,
 } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
@@ -45,6 +47,8 @@ function Dashboard() {
   const allUsers = useSelector((state) => state.allUsers);
   const filteredUsers = useSelector((state) => state.filteredUsers);
   const chartData = useSelector((state) => state.chartData);
+  const allPurchases = useSelector((state) => state.allPurchases);
+  const selectedPurchase = useSelector((state) => state.selectedPurchase);
 
   const [itemsPerPage] = useState(10);
   const [loading, setLoading] = useState(true);
@@ -58,6 +62,8 @@ function Dashboard() {
       dispatch(getCategories());
       dispatch(getSeasons());
       dispatch(getGenders());
+      dispatch(getAllPurchases());
+
       setLoading(false);
     };
     const fetchUsers = async () => {
@@ -66,13 +72,13 @@ function Dashboard() {
     };
     fetchProducts();
     fetchUsers();
-  }, [dispatch]);
+  }, [dispatch, selectedPurchase]);
 
   useEffect(() => {
-    if (selectedOption === 'charts' && !chartData) {
+    if (selectedOption === 'charts') {
       dispatch(getChartData());
     }
-  }, [dispatch, selectedOption, chartData]);
+  }, [dispatch, selectedOption]);
 
   const totalPages = Math.ceil(filteredAdminProducts?.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -199,6 +205,7 @@ function Dashboard() {
               )}
 
               {selectedOption === 'charts' && chartData && <Charts dataCharts={chartData} />}
+              {selectedOption === 'sales' && <Sales salesData={allPurchases} />}
 
               {selectedOption === 'products' && (
                 <Box display="flex" justifyContent="center" mt="4">
