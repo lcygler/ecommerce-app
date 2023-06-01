@@ -273,7 +273,26 @@ function Cart() {
                 Shopping Cart
               </Heading>
 
-              {cartProducts?.length === 0 ? (
+              {!isAuthenticated ? (
+                <Box textAlign="center" fontSize="lg" fontWeight="normal">
+                  Login to add products
+                  <Fade in={isImageLoaded}>
+                    <Box mt={4} display="flex" justifyContent="center">
+                      <Image
+                        src={emptyCartImage}
+                        alt="Empty Cart"
+                        width="300px"
+                        onLoad={() => setIsImageLoaded(true)}
+                      />
+                    </Box>
+                  </Fade>
+                  <Box mt={4}>
+                    <Button colorScheme="blue" onClick={() => navigate('/login')}>
+                      Login Now
+                    </Button>
+                  </Box>
+                </Box>
+              ) : cartProducts?.length === 0 ? (
                 <Box textAlign="center" fontSize="lg" fontWeight="normal">
                   Your cart is empty
                   <Fade in={isImageLoaded}>
@@ -438,7 +457,7 @@ function Cart() {
                   ))}
 
                   <Box my={6} p={2} bg="gray.100" borderRadius="md" textAlign="right">
-                    <Text fontSize="lg" fontWeight="bold" mr="4">
+                    <Text fontSize="lg" fontWeight="bold" mr="4" mb="0" py="1">
                       Total: ${cartTotal.toFixed(2)}
                     </Text>
                   </Box>

@@ -321,14 +321,16 @@ function Detail() {
                           {/* Write Review */}
                           {isAuthenticated && <CreateReview productId={productId} />}
 
-                          <Button
-                            colorScheme="blue"
-                            width="150px"
-                            onClick={handleAddToCart}
-                            isDisabled={isInCart}
-                          >
-                            {isInCart ? 'In Cart' : 'Add to Cart'}
-                          </Button>
+                          {isAuthenticated && (
+                            <Button
+                              colorScheme="blue"
+                              width="150px"
+                              onClick={handleAddToCart}
+                              isDisabled={isInCart}
+                            >
+                              {isInCart ? 'In Cart' : 'Add to Cart'}
+                            </Button>
+                          )}
                         </Stack>
                       </Flex>
                     </Box>
