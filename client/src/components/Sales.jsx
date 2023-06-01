@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Box, Button, Table, Tbody, Td, Th, Thead, Tr, Spacer } from '@chakra-ui/react';
-import { FaShoppingBag } from 'react-icons/fa';
-import SalesDetails from './SalesDetails';
-import Pagination from './Pagination';
 import { useDispatch } from 'react-redux';
 import { updatePurchaseById } from '../redux/asyncActions';
+
+import Pagination from './Pagination';
+import SalesDetails from './SalesDetails';
+
+import { Box, Button, Spacer, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { FaShoppingBag } from 'react-icons/fa';
 
 function Sales({ salesData }) {
   const [selectedSaleId, setSelectedSaleId] = useState(null);
@@ -49,7 +51,7 @@ function Sales({ salesData }) {
                   NAME
                 </Th>
                 <Th width="20%" fontSize="sm">
-                  Phone Number
+                  PHONE NUMBER
                 </Th>
                 <Th width="20%" fontSize="sm">
                   EMAIL
@@ -85,7 +87,7 @@ function Sales({ salesData }) {
                     </Td>
                     <Td width="20%">{sale.User.phoneNumber}</Td>
                     <Td width="20%">{sale.User.email}</Td>
-                    <Td width="10%">${sale.total.toFixed(1)}</Td>
+                    <Td width="10%">${sale.total.toFixed(2)}</Td>
                     <Td width="15%">{formattedDate}</Td>
                     <Td width="15%">
                       <Box display="flex" alignItems="center">
@@ -124,9 +126,10 @@ function Sales({ salesData }) {
                           colorScheme="blue"
                           variant="ghost"
                           backgroundColor="white"
-                          leftIcon={<FaShoppingBag />}
                           onClick={() => handlePurchaseDetail(sale.id)}
-                        />
+                        >
+                          <FaShoppingBag />
+                        </Button>
                       </Box>
                     </Td>
                   </Tr>
