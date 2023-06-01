@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation /*useNavigate*/ } from 'react-router-dom';
 import { removeUserFavorites } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
@@ -9,7 +9,7 @@ import { SearchBar } from '../components/index';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { AddIcon } from '@chakra-ui/icons';
+// import { AddIcon } from '@chakra-ui/icons';
 import {
   AlertDialog,
   AlertDialogBody,
@@ -34,7 +34,7 @@ function Filters({ changePage, allProducts, clearSearch, setClearSearch }) {
 
   const dispatch = useDispatch();
   const location = useLocation();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -222,6 +222,24 @@ function Filters({ changePage, allProducts, clearSearch, setClearSearch }) {
             </Select>
           </Box>
 
+          {location.pathname === '/dashboard' && (
+            <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+              <Select
+                defaultValue="All"
+                name="stockSelect"
+                ref={stockSelect}
+                onChange={handleFilters}
+              >
+                <option value="All">All Stocks</option>
+                {stocksInProducts.map((item, id) => (
+                  <option key={id} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </Select>
+            </Box>
+          )}
+
           <Box display="flex" alignItems="center" justifyContent="center" ml="4">
             <Select
               defaultValue="Default"
@@ -234,24 +252,6 @@ function Filters({ changePage, allProducts, clearSearch, setClearSearch }) {
               <option value="Price (Desc)">Price (Desc)</option>
             </Select>
           </Box>
-
-          {location.pathname === '/dashboard' && (
-            <Box display="flex" alignItems="center" justifyContent="center" ml="4">
-              <Select
-                defaultValue="All"
-                name="stockSelect"
-                ref={stockSelect}
-                onChange={handleFilters}
-              >
-                <option value="All">Filter By Stock</option>
-                {stocksInProducts.map((item, id) => (
-                  <option key={id} value={item}>
-                    {item}
-                  </option>
-                ))}
-              </Select>
-            </Box>
-          )}
 
           <Box display="flex" alignItems="center" justifyContent="center" ml="4">
             <Button onClick={handleReset} variant="outline">
@@ -268,7 +268,7 @@ function Filters({ changePage, allProducts, clearSearch, setClearSearch }) {
             </Box>
           )}
 
-          {location.pathname === '/dashboard' && (
+          {/* {location.pathname === '/dashboard' && (
             <Box display="flex" alignItems="center" justifyContent="center" ml="4">
               <Button
                 leftIcon={<AddIcon />}
@@ -280,7 +280,7 @@ function Filters({ changePage, allProducts, clearSearch, setClearSearch }) {
                 Create Product
               </Button>
             </Box>
-          )}
+          )} */}
         </Flex>
       </Flex>
 
