@@ -505,6 +505,7 @@ function EditProfile() {
                   id="currentImage"
                   name="currentImage"
                   type="text"
+                  readOnly
                   placeholder="Upload an image"
                   value={formData.image || ''}
                   _focus={{ borderColor: 'blue.500', borderWidth: '2px', boxShadow: 'none' }}
