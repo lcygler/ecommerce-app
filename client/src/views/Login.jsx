@@ -94,6 +94,12 @@ function Login() {
       setIsLoading(false);
 
       if (response.payload) {
+        if (response.payload.user.disable) {
+          setSuccess('');
+          setError('Your account has been disabled.\nPlease reach out to our support team.');
+          return;
+        }
+
         dispatch(getUserCart(response.payload.user.id));
         dispatch(getUserPurchases(response.payload.user.id));
         dispatch(getUserFavorites(response.payload.user.id));
@@ -141,6 +147,12 @@ function Login() {
     //* Login (back)
     const res = await dispatch(loginGoogle(user));
     if (res.payload) {
+      if (res.payload.user.disable) {
+        setSuccess('');
+        setError('Your account has been disabled.\nPlease reach out to our support team.');
+        return;
+      }
+
       const userId = res.payload.user.id;
       dispatch(getUserCart(userId));
       dispatch(getUserPurchases(userId));
@@ -195,19 +207,22 @@ function Login() {
         <Heading size="lg" mb="6" w="100%" textAlign="center">
           Login
         </Heading>
+
         <form onChange={handleForm} onSubmit={handleSubmit}>
           {error && (
             <Alert status="error" marginBottom={4}>
               <AlertIcon />
-              {error}
+              <Box whiteSpace="pre-line">{error}</Box>
             </Alert>
           )}
+
           {success && (
             <Alert status="success" marginBottom={4}>
               <AlertIcon />
               {success}
             </Alert>
           )}
+
           <Stack spacing={4}>
             <FormControl isRequired isInvalid={errors.email !== ''}>
               <FormLabel htmlFor="email">Email Address</FormLabel>
