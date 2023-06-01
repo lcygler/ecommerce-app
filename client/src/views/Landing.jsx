@@ -11,7 +11,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 import { ChevronUpIcon } from '@chakra-ui/icons';
 import bannerRopa from '../assets/images/banner-ropa.jpg';
-import ropa from '../assets/images/gestionropa.png';
+// import ropa from '../assets/images/gestionropa.png';
 
 import {
   Badge,
