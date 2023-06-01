@@ -10,6 +10,7 @@ import {
   filterByPhoneNumber,
   filterBySeason,
   filterByState,
+  filterByStock,
   filterByUsername,
   sortProducts,
 } from './helpers';
@@ -32,6 +33,9 @@ const applyFilters = (products, state) => {
   }
   if (state.order !== 'Default') {
     filteredSorted = sortProducts(filteredSorted, state.order);
+  }
+  if (state.stock !== 'All') {
+    filteredSorted = filterByStock(filteredSorted, state.stock);
   }
 
   return filteredSorted;
@@ -94,6 +98,10 @@ export const updateOrder = (state, action) => {
   state.order = action.payload;
 };
 
+export const updateStockFilter = (state, action) => {
+  state.stock = action.payload;
+};
+
 export const updateSearchTerm = (state, action) => {
   state.searchTerm = action.payload;
 };
@@ -104,6 +112,7 @@ export const resetFilters = (state, action) => {
   state.gender = 'All';
   state.season = 'All';
   state.order = 'Default';
+  state.stock = 'All';
 };
 
 export const setCurrentPage = (state, action) => {

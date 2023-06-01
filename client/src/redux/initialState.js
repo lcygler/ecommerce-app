@@ -37,6 +37,7 @@ export const getInitialState = () => {
     size: 'All',
     discount: 'All',
     order: 'Default',
+    stock: 'All',
     name: '',
     lastname: '',
     username: '',
