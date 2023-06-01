@@ -381,6 +381,7 @@ function Detail() {
                     </Text>
 
                     <Box d="flex" flexDirection="column" alignItems="center" width="100%">
+                      {/* {Reviews?.filter((review) => review.disable === false) */}
                       {Reviews?.slice(currentReviewIndex, currentReviewIndex + reviewsPerPage).map(
                         (review) => (
                           <Box
