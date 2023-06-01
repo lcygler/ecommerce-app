@@ -17,7 +17,6 @@ import {
   Input,
   Spinner,
   Stack,
-  Text,
 } from '@chakra-ui/react';
 
 import { FaChevronLeft } from 'react-icons/fa';
