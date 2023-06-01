@@ -47,12 +47,14 @@ const loginGoogle = async (userData) => {
     if (user) {
       const token = generateToken(user);
       return { user, token };
+      // return { user, token, registered: true };
     }
 
     const newUser = await User.create({ googleId, email, name, lastname, image });
     const token = generateToken(newUser);
     sendWelcomeEmail(email);
     return { user: newUser, token };
+    // return { user: newUser, token, registered: false };
   } catch (error) {
     throw new Error('Error login with google');
   }
