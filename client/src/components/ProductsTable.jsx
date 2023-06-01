@@ -50,6 +50,7 @@ function ProductTable({ products, editProduct, deleteProduct, suspendProduct }) 
             <Th isNumeric>Price</Th>
             <Th>Discount</Th>
             <Th>Status</Th>
+            <Th>Options</Th>
           </Tr>
         </Thead>
         <Tbody>
