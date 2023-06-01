@@ -445,7 +445,7 @@ function EditProduct() {
               </FormControl>
 
               <FormControl /* isRequired */ isInvalid={errors.image !== ''}>
-                <FormLabel htmlFor="image">Image</FormLabel>
+                <FormLabel htmlFor="image">New Image</FormLabel>
                 <Input
                   id="image"
                   name="image"

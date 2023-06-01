@@ -49,7 +49,7 @@ export const getInitialState = () => {
     email: '',
     birthdate: '',
     phoneNumber: '',
-    state: '',
+    disable: '',
     admin: '',
     searchTerm: '',
     currentPage: 1,

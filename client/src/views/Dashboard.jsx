@@ -28,6 +28,7 @@ import {
   UsersTable,
 } from '../components/index';
 
+import { AddIcon } from '@chakra-ui/icons';
 import {
   Alert,
   AlertDescription,
@@ -133,9 +134,9 @@ function Dashboard() {
   return (
     <Box display="flex" flexDirection="column" minHeight="100vh">
       <Navbar />
-      <Flex flex="1">
+      <Flex /*flex="1"*/>
         <Sidebar handleSidebarOption={handleSidebarOption} selectedOption={selectedOption} />
-        <Box flex="1" overflow="auto">
+        <Box /*flex="1"*/ width="100%" overflow="auto">
           <Box padding="4">
             {selectedOption === 'products' && (
               <Filters
@@ -219,6 +220,26 @@ function Dashboard() {
                 </Box>
               )}
             </>
+          )}
+
+          {selectedOption === 'products' && (
+            <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+              <Button
+                colorScheme="blue"
+                borderRadius="full"
+                position="fixed"
+                size="2xl"
+                boxSize="60px"
+                boxShadow="lg"
+                zIndex="999"
+                p={4}
+                bottom="6"
+                right="6"
+                onClick={() => navigate('/dashboard/create')}
+              >
+                <AddIcon />
+              </Button>
+            </Box>
           )}
         </Box>
       </Flex>

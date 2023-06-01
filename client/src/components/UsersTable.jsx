@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
 
-import { SettingsIcon } from "@chakra-ui/icons";
+import { SettingsIcon } from '@chakra-ui/icons';
 import {
   AlertDialog,
   AlertDialogBody,
@@ -26,10 +26,10 @@ import {
   Thead,
   Tr,
   useDisclosure,
-} from "@chakra-ui/react";
-import { actions } from "../redux/slice";
-import { useDispatch, useSelector } from "react-redux";
-import { Pagination } from "./index";
+} from '@chakra-ui/react';
+import { useDispatch, useSelector } from 'react-redux';
+import { actions } from '../redux/slice';
+import { Pagination } from './index';
 
 const UsersTable = ({ users, filteredUsers, deleteUser, suspendUser }) => {
   const dispatch = useDispatch();
@@ -67,8 +67,9 @@ const UsersTable = ({ users, filteredUsers, deleteUser, suspendUser }) => {
               <Th>Email</Th>
               <Th>Birthdate</Th>
               <Th isNumeric>Phone Number</Th>
-              <Th>State</Th>
+              <Th>Status</Th>
               <Th>Admin</Th>
+              <Th>Options</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -81,23 +82,23 @@ const UsersTable = ({ users, filteredUsers, deleteUser, suspendUser }) => {
                 email,
                 birthdate,
                 phoneNumber,
-                state,
+                disable,
                 isAdmin,
               }) => (
-                <Tr key={id} _hover={{ backgroundColor: "whitesmoke" }}>
+                <Tr key={id} _hover={{ backgroundColor: 'whitesmoke' }}>
                   <Td>{name}</Td>
                   <Td>{lastname}</Td>
                   <Td>{username}</Td>
                   <Td>{email}</Td>
-                  <Td>{new Date(birthdate).toLocaleDateString("es-AR")}</Td>
+                  <Td>{new Date(birthdate).toLocaleDateString('es-AR')}</Td>
                   <Td isNumeric>{phoneNumber}</Td>
                   <Td>
                     <Switch
-                      isChecked={state}
+                      isChecked={!disable}
                       onChange={() => {
                         suspendUser({
                           userId: id,
-                          updatedUser: { state: !state },
+                          updatedUser: { disable: !disable },
                         });
                       }}
                     />
@@ -120,7 +121,6 @@ const UsersTable = ({ users, filteredUsers, deleteUser, suspendUser }) => {
                       </MenuButton>
                       <MenuList>
                         <MenuItem
-                          colorScheme="red"
                           onClick={() => {
                             setUserId(id);
                             onOpen();
@@ -137,11 +137,7 @@ const UsersTable = ({ users, filteredUsers, deleteUser, suspendUser }) => {
           </Tbody>
         </Table>
 
-        <AlertDialog
-          isOpen={isOpen}
-          leastDestructiveRef={cancelRef}
-          onClose={onClose}
-        >
+        <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
           <AlertDialogOverlay backgroundColor="transparent">
             <AlertDialogContent>
               <AlertDialogHeader fontSize="lg" fontWeight="bold">
@@ -164,14 +160,9 @@ const UsersTable = ({ users, filteredUsers, deleteUser, suspendUser }) => {
           </AlertDialogOverlay>
         </AlertDialog>
       </TableContainer>
-      <Flex justifyContent={"center"}>
-        <Pagination
-        totalPages={totalPages}
-        currentPage={currentPage}
-        changePage={changePage}
-      />
+      <Flex justifyContent={'center'}>
+        <Pagination totalPages={totalPages} currentPage={currentPage} changePage={changePage} />
       </Flex>
-      
     </>
   );
 };
@@ -185,11 +176,9 @@ const UserFilters = ({ users, changePage }) => {
   const emailsInusers = [...new Set(users.map((user) => user.email))];
   const usernamesInUsers = [...new Set(users.map((user) => user.username))];
   const birthdatesInUsers = [...new Set(users.map((user) => user.birthdate))];
-  const phonenumbersInUsers = [
-    ...new Set(users.map((user) => user.phoneNumber)),
-  ];
-  const statesInUsers = [...new Set(users.map((user) => user.state))];
-  const adminsInUsers = [...new Set(users.map((user) => user.isAdmin))];
+  const phonenumbersInUsers = [...new Set(users.map((user) => user.phoneNumber))];
+  // const statusInUsers = [...new Set(users.map((user) => user.disable))];
+  // const adminsInUsers = [...new Set(users.map((user) => user.isAdmin))];
 
   const name = useSelector((state) => state.name);
   const lastname = useSelector((state) => state.lastname);
@@ -197,7 +186,7 @@ const UserFilters = ({ users, changePage }) => {
   const email = useSelector((state) => state.email);
   const birthdate = useSelector((state) => state.birthdate);
   const phoneNumber = useSelector((state) => state.phoneNumber);
-  const state = useSelector((state) => state.state);
+  const disable = useSelector((state) => state.disable);
   const admin = useSelector((state) => state.admin);
 
   const nameSelect = useRef(null);
@@ -206,7 +195,7 @@ const UserFilters = ({ users, changePage }) => {
   const emailSelect = useRef(null);
   const birthdateSelect = useRef(null);
   const phoneNumberSelect = useRef(null);
-  const stateSelect = useRef(null);
+  const statusSelect = useRef(null);
   const adminSelect = useRef(null);
 
   useEffect(() => {
@@ -216,27 +205,27 @@ const UserFilters = ({ users, changePage }) => {
     emailSelect.current.value = email;
     birthdateSelect.current.value = birthdate;
     phoneNumberSelect.current.value = phoneNumber;
-    stateSelect.current.value = state;
+    statusSelect.current.value = disable;
     adminSelect.current.value = admin;
-  }, [name, lastname, username, email, birthdate, phoneNumber, state, admin]);
+  }, [name, lastname, username, email, birthdate, phoneNumber, disable, admin]);
 
   const handleFilters = (e) => {
     const { name: selectName, value: selectValue } = e.target;
-    if (selectName === "name") {
+    if (selectName === 'name') {
       dispatch(actions.updateNameFilter(selectValue));
-    } else if (selectName === "lastname") {
+    } else if (selectName === 'lastname') {
       dispatch(actions.updateLastnameFilter(selectValue));
-    } else if (selectName === "username") {
+    } else if (selectName === 'username') {
       dispatch(actions.updateUsernameFilter(selectValue));
-    } else if (selectName === "email") {
+    } else if (selectName === 'email') {
       dispatch(actions.updateEmailFilter(selectValue));
-    } else if (selectName === "birthdate") {
+    } else if (selectName === 'birthdate') {
       dispatch(actions.updateBirthdateFilter(selectValue));
-    } else if (selectName === "phoneNumber") {
+    } else if (selectName === 'phoneNumber') {
       dispatch(actions.updatePhoneNumberFilter(selectValue));
-    } else if (selectName === "state") {
-      dispatch(actions.updateStateFilter(selectValue));
-    } else if (selectName === "admin") {
+    } else if (selectName === 'status') {
+      dispatch(actions.updateStatusFilter(selectValue));
+    } else if (selectName === 'admin') {
       dispatch(actions.updateAdminFilter(selectValue));
     }
     dispatch(actions.filterUsers());
@@ -250,10 +239,10 @@ const UserFilters = ({ users, changePage }) => {
   };
 
   return (
-    <Flex justifyContent={"center"}>
-      <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+    <Flex justifyContent={'center'}>
+      <Box display="flex" alignItems="center" justifyContent="center" ml="4" maxW="150px">
         <Select ref={nameSelect} name="name" onChange={handleFilters}>
-          <option value="">Filter by name</option>
+          <option value="">All Names</option>
           {namesInUsers.map((item, id) => (
             <option key={id} value={item}>
               {item}
@@ -261,9 +250,10 @@ const UserFilters = ({ users, changePage }) => {
           ))}
         </Select>
       </Box>
-      <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+
+      <Box display="flex" alignItems="center" justifyContent="center" ml="4" maxW="160px">
         <Select ref={lastnameSelect} name="lastname" onChange={handleFilters}>
-          <option value="">Filter by last name</option>
+          <option value="">All Last Names</option>
           {lastnamesInUsers.map((item, id) => (
             <option key={id} value={item}>
               {item}
@@ -271,9 +261,10 @@ const UserFilters = ({ users, changePage }) => {
           ))}
         </Select>
       </Box>
-      <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+
+      <Box display="flex" alignItems="center" justifyContent="center" ml="4" maxW="150px">
         <Select ref={usernameSelect} name="username" onChange={handleFilters}>
-          <option value="">Filter by username</option>
+          <option value="">All Usernames</option>
           {usernamesInUsers.map((item, id) => (
             <option key={id} value={item}>
               {item}
@@ -281,9 +272,10 @@ const UserFilters = ({ users, changePage }) => {
           ))}
         </Select>
       </Box>
-      <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+
+      <Box display="flex" alignItems="center" justifyContent="center" ml="4" maxW="150px">
         <Select ref={emailSelect} name="email" onChange={handleFilters}>
-          <option value="">Filter by email</option>
+          <option value="">All Emails</option>
           {emailsInusers.map((item, id) => (
             <option key={id} value={item}>
               {item}
@@ -291,23 +283,21 @@ const UserFilters = ({ users, changePage }) => {
           ))}
         </Select>
       </Box>
-      <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+
+      <Box display="flex" alignItems="center" justifyContent="center" ml="4" maxW="150px">
         <Select ref={birthdateSelect} name="birthdate" onChange={handleFilters}>
-          <option value="">Filter by birthdate</option>
+          <option value="">All Birthdates</option>
           {birthdatesInUsers.map((item, id) => (
             <option key={id} value={item}>
-              {item}
+              {new Date(item).toLocaleDateString('es-AR')}
             </option>
           ))}
         </Select>
       </Box>
-      <Box display="flex" alignItems="center" justifyContent="center" ml="4">
-        <Select
-          ref={phoneNumberSelect}
-          name="phoneNumber"
-          onChange={handleFilters}
-        >
-          <option value="">Filter by phone number</option>
+
+      <Box display="flex" alignItems="center" justifyContent="center" ml="4" maxW="150px">
+        <Select ref={phoneNumberSelect} name="phoneNumber" onChange={handleFilters}>
+          <option value="">All Phones</option>
           {phonenumbersInUsers.map((item, id) => (
             <option key={id} value={item}>
               {item}
@@ -315,28 +305,54 @@ const UserFilters = ({ users, changePage }) => {
           ))}
         </Select>
       </Box>
-      <Box display="flex" alignItems="center" justifyContent="center" ml="4">
-        <Select ref={stateSelect} name="state" onChange={handleFilters}>
-          <option value="">Filter by state</option>
-          {statesInUsers.map((item, id) => {
-            if(item) {
-              return (<option key={id} value={item}>Active</option>)
+
+      <Box display="flex" alignItems="center" justifyContent="center" ml="4" maxW="150px">
+        <Select ref={statusSelect} name="status" onChange={handleFilters}>
+          <option value="">All Status</option>
+          <option value="Active">Active</option>
+          <option value="Disabled">Disabled</option>
+        </Select>
+      </Box>
+
+      <Box display="flex" alignItems="center" justifyContent="center" ml="4" maxW="150px">
+        <Select ref={adminSelect} name="admin" onChange={handleFilters}>
+          <option value="">All Roles</option>
+          <option value="Admin">Admin</option>
+          <option value="User">User</option>
+        </Select>
+      </Box>
+
+      {/* <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+        <Select ref={statusSelect} name="state" onChange={handleFilters}>
+          <option value="">All status</option>
+          {statusInUsers.map((item, id) => {
+            if (item) {
+              return (
+                <option key={id} value={item}>
+                  Active
+                </option>
+              );
             } else {
-              return (<option key={id} value={item}>Not active</option>)
+              return (
+                <option key={id} value={item}>
+                  Not active
+                </option>
+              );
             }
           })}
         </Select>
-      </Box>
-      <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+      </Box> */}
+
+      {/* <Box display="flex" alignItems="center" justifyContent="center" ml="4">
         <Select ref={adminSelect} name="admin" onChange={handleFilters}>
-          <option value="">Filter by admin</option>
+          <option value="">All roles</option>
           {adminsInUsers.map((item, id) => (
             <option key={id} value={item}>
-              {item ? "Is not admin" : "Is admin"}
+              {item ? 'User' : 'Admin'}
             </option>
           ))}
         </Select>
-      </Box>
+      </Box> */}
 
       <Box display="flex" alignItems="center" justifyContent="center" ml="4">
         <Button onClick={handleReset} variant="outline">
