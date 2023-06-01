@@ -113,11 +113,13 @@ function Dashboard() {
   const handleDeleteUser = async (userId) => {
     await dispatch(deleteUserById(userId));
     await dispatch(getUsers());
+    await dispatch(actions.filterUsers());
   };
 
   const handleSuspendUser = async ({ userId, updatedUser }) => {
     await dispatch(updateUserById({ userId, updatedUser }));
     await dispatch(getUsers());
+    await dispatch(actions.filterUsers());
   };
 
   return (

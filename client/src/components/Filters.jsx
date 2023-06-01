@@ -25,6 +25,10 @@ import {
 } from '@chakra-ui/react';
 
 function Filters({ changePage, allProducts, clearSearch, setClearSearch }) {
+  const stocksInProducts = [...new Set(allProducts.map((product) => product.stock))].sort(function(a, b) {
+    return a - b;
+  });
+
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
@@ -44,12 +48,14 @@ function Filters({ changePage, allProducts, clearSearch, setClearSearch }) {
   const season = useSelector((state) => state.season);
   const discount = useSelector((state) => state.discount);
   const order = useSelector((state) => state.order);
+  const stock = useSelector((state) => state.stock);
 
   const categorySelect = useRef(null);
   const discountSelect = useRef(null);
   const seasonSelect = useRef(null);
   const genderSelect = useRef(null);
   const orderSelect = useRef(null);
+  const stockSelect = useRef(null);
 
   const discounts = allProducts
     .reduce((acc, product) => {
@@ -66,7 +72,8 @@ function Filters({ changePage, allProducts, clearSearch, setClearSearch }) {
     seasonSelect.current.value = season;
     genderSelect.current.value = gender;
     orderSelect.current.value = order;
-  }, [category, discount, season, gender, order]);
+    stockSelect.current.value = stock;
+  }, [category, discount, season, gender, order, stock]);
 
   useEffect(() => {
     if (clearSearch) {
@@ -87,6 +94,8 @@ function Filters({ changePage, allProducts, clearSearch, setClearSearch }) {
       dispatch(actions.updateGenderFilter(selectValue));
     } else if (selectName === 'orderSelect') {
       dispatch(actions.updateOrder(selectValue));
+    } else if (selectName === 'stockSelect') {
+      dispatch(actions.updateStockFilter(selectValue));
     }
     dispatch(actions.filterProducts());
     dispatch(actions.filterFavorites());
@@ -212,6 +221,19 @@ function Filters({ changePage, allProducts, clearSearch, setClearSearch }) {
               <option value="Price (Desc)">Price (Desc)</option>
             </Select>
           </Box>
+
+          {location.pathname === '/dashboard' && (
+            <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+            <Select defaultValue="All" name="stockSelect" ref={stockSelect} onChange={handleFilters}>
+              <option value="All">Filter By Stock</option>
+              {stocksInProducts.map((item, id) => (
+                <option key={id} value={item}>
+                  {item}
+                </option>
+              ))}
+            </Select>
+          </Box>
+          )}
 
           <Box display="flex" alignItems="center" justifyContent="center" ml="4">
             <Button onClick={handleReset} variant="outline">

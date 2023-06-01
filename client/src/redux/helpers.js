@@ -65,6 +65,16 @@ export const sortProducts = (products, order) => {
   }
 };
 
+export const filterByStock = (products, stock) => {
+  if (stock !== 'All') {
+    return (products = products.filter((product) =>
+       product.stock === Number(stock)
+    ));
+  } else {
+    return products;
+  }
+};
+
 //* USER FILTERS
 export const filterByName = (users, name) => {
   if (name !== '') {
