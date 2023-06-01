@@ -2,7 +2,7 @@ require('dotenv').config();
 const api = require('./src/utils/Product.json');
 const server = require('./src/app.js');
 const { AddProducts } = require('./src/controllers/ProductController.js');
-const  { addNewUserPeriodically, saveUsersToDatabase } = require('./src/controllers/AutoUser')
+const { addNewUserPeriodically, saveUsersToDatabase } = require('./src/controllers/AutoUser');
 const { conn } = require('./src/db.js');
 const port = process.env.PORT || 3001;
 
