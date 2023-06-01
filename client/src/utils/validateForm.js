@@ -119,6 +119,7 @@ export function validateEditProfile(formData, errors, setErrors) {
     lastname,
     username,
     email,
+    image,
     password,
     passwordCheck,
     birthdate,
@@ -156,6 +157,13 @@ export function validateEditProfile(formData, errors, setErrors) {
     else if (!emailRegex.test(email)) newErrors.email = 'Email must be a valid address';
     else newErrors.email = '';
   } else newErrors.email = '';
+
+  //* Image
+  if (image) {
+    if (typeof image !== 'string') newErrors.image = 'Image must be a string';
+    else if (!imageRegex.test(image)) newErrors.image = 'Invalid image file format';
+    else newErrors.image = '';
+  } else newErrors.image = '';
 
   //* Password
   if (password) {
