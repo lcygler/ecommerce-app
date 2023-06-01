@@ -14,6 +14,7 @@ import {
   getAdminProducts,
   getAllProducts,
   getAllPurchases,
+  getAllReviews,
   getCartById,
   getCategories,
   getChartData,
@@ -537,6 +538,18 @@ export const extraReducers = (builder) => {
     })
 
     //* REVIEWS
+    .addCase(getAllReviews.pending, (state) => {
+      state.getAllReviewsStatus = 'loading';
+    })
+    .addCase(getAllReviews.fulfilled, (state, action) => {
+      state.getAllReviewsStatus = 'succeeded';
+      state.allReviews = action.payload;
+    })
+    .addCase(getAllReviews.rejected, (state, action) => {
+      state.getAllReviewsStatus = 'failed';
+      state.getAllReviewsError = action.error.message;
+    })
+
     .addCase(getUserReviews.pending, (state) => {
       state.getUserReviewsStatus = 'loading';
     })

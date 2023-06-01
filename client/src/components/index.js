@@ -11,12 +11,14 @@ import Product from './Product';
 import Products from './Products';
 import ProductsTable from './ProductsTable';
 import ReviewCard from './ReviewCard';
+import ReviewsTable from './ReviewsTable';
+import Sales from './Sales';
+import SalesDetails from './SalesDetails';
 import SearchBar from './SearchBar';
 import Sidebar from './Sidebar';
 import StarRating from './StarRating';
 import UserRoute from './UserRoute';
 import UsersTable from './UsersTable';
-
 
 export {
   CreateProduct,
@@ -37,4 +39,7 @@ export {
   EditProduct,
   UsersTable,
   ReviewCard,
+  Sales,
+  SalesDetails,
+  ReviewsTable,
 };

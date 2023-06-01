@@ -20,11 +20,13 @@ import {
   FormControl,
   FormLabel,
   Heading,
+  Icon,
   Input,
   Select,
   Spinner,
   Stack,
 } from '@chakra-ui/react';
+import { FaChevronLeft } from 'react-icons/fa';
 import backgroundImage from '../assets/images/background.jpg';
 
 let timeoutId = null;
@@ -264,6 +266,7 @@ function EditProduct() {
       backgroundImage={`url(${backgroundImage})`}
       backgroundSize="cover"
       backgroundPosition="center"
+      position="relative"
     >
       <Box
         bg="white"
@@ -442,7 +445,7 @@ function EditProduct() {
               </FormControl>
 
               <FormControl /* isRequired */ isInvalid={errors.image !== ''}>
-                <FormLabel htmlFor="image">Image</FormLabel>
+                <FormLabel htmlFor="image">New Image</FormLabel>
                 <Input
                   id="image"
                   name="image"
@@ -457,9 +460,9 @@ function EditProduct() {
             </Stack>
           </Stack>
 
-          <Stack direction="column" spacing={4} mt="20px">
-            <Stack direction="row" spacing={4}>
-              <Button
+          <Stack direction="column" spacing={4} mt="25px">
+            <Stack direction="row" spacing={4} justifyContent="center">
+              {/* <Button
                 width="100%"
                 onClick={() => {
                   navigate('/dashboard');
@@ -467,14 +470,14 @@ function EditProduct() {
                 isDisabled={isLoading}
               >
                 Go back
-              </Button>
+              </Button> */}
 
               <Button
                 type="submit"
                 colorScheme="blue"
                 isLoading={isLoading}
                 loadingText="Updating..."
-                width="100%"
+                width="40%"
               >
                 Update
               </Button>
@@ -482,6 +485,20 @@ function EditProduct() {
           </Stack>
         </form>
       </Box>
+
+      <Button
+        colorScheme="blue"
+        variant="ghost"
+        size="md"
+        rounded="full"
+        onClick={() => navigate('/dashboard')}
+        position="absolute"
+        top="20px"
+        left="20px"
+        isDisabled={isLoading}
+      >
+        <Icon as={FaChevronLeft} mr="2" /> Back to Dashboard
+      </Button>
     </Box>
   );
 }

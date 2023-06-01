@@ -6,6 +6,11 @@ export const getInitialState = () => {
     localStorage.getItem(`user_${storedUserId}_isAuthenticated`) === 'true';
   const storedIsAdmin = localStorage.getItem(`user_${storedUserId}_isAdmin`) === 'true';
 
+  //* PRODUCTS
+  const storedFilteredProducts = JSON.parse(
+    localStorage.getItem(`user_${storedUserId}_filteredProducts`)
+  );
+
   //* CART
   const storedCartProducts = JSON.parse(localStorage.getItem(`user_${storedUserId}_cartProducts`));
   const storedCartTotal = JSON.parse(localStorage.getItem(`user_${storedUserId}_cartTotal`));
@@ -24,7 +29,7 @@ export const getInitialState = () => {
     adminProducts: [],
     allProducts: [],
     filteredAdminProducts: [],
-    filteredProducts: [],
+    filteredProducts: storedFilteredProducts || [],
     selectedProduct: {},
     categories: [],
     seasons: [],
@@ -37,13 +42,14 @@ export const getInitialState = () => {
     size: 'All',
     discount: 'All',
     order: 'Default',
+    stock: 'All',
     name: '',
     lastname: '',
     username: '',
     email: '',
     birthdate: '',
     phoneNumber: '',
-    state: '',
+    disable: '',
     admin: '',
     searchTerm: '',
     currentPage: 1,
@@ -72,6 +78,7 @@ export const getInitialState = () => {
     isAdmin: storedIsAdmin || false,
 
     // Reviews
+    allReviews: [],
     reviews: [],
     selectedReview: {},
 
@@ -131,6 +138,7 @@ export const getInitialState = () => {
     loginGoogleStatus: 'idle',
 
     // Reviews
+    getAllReviewsStatus: 'idle',
     getUserReviewsStatus: 'idle',
     getReviewByIdStatus: 'idle',
     createReviewStatus: 'idle',
@@ -193,6 +201,7 @@ export const getInitialState = () => {
     loginGoogleError: null,
 
     // Reviews
+    getAllReviewsError: null,
     getUserReviewsError: null,
     getReviewByIdError: null,
     createReviewError: null,
@@ -203,4 +212,3 @@ export const getInitialState = () => {
     getChartDataError: null,
   };
 };
-

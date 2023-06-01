@@ -10,7 +10,7 @@ review.get('/', async (req, res) => {
     });
     res.json(reviews);
   } catch (error) {
-    console.error(error);
+    console.log(error);
     res.status(200).status(500).json({ message: 'Hubo un error al obtener las reseñas' });
   }
 });
@@ -22,7 +22,6 @@ review.post('/', async (req, res) => {
   try {
     const user = await User.findByPk(userId);
     const product = await Product.findByPk(productId);
-    
 
     if (!user || !product) {
       return res.status(404).json({ message: 'Usuario o producto no encontrado' });
@@ -37,40 +36,57 @@ review.post('/', async (req, res) => {
 
     res.status(201).json(newReview);
   } catch (error) {
-    console.error(error);
+    console.log(error);
     res.status(500).json({ message: 'Hubo un error al crear la reseña' });
   }
 });
 
-
-
-
 // Editar una reseña existente
 review.patch('/:reviewId', async (req, res) => {
-    const { comment, punctuation } = req.body;
-    const { reviewId } = req.params;
-  
-    try {
-      const existingReview = await Review.findByPk(reviewId, {
-        include: [User, Product],
-      });
-  
-      if (!existingReview) {
-        return res.status(404).json({ message: 'Reseña no encontrada' });
-      }
-  
-      // Actualizar los campos de la reseña
-      existingReview.comment = comment || existingReview.comment;
-      existingReview.punctuation = punctuation || existingReview.punctuation;
-  
-      await existingReview.save();
-  
-      res.status(200).json(existingReview);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Hubo un error al editar la reseña' });
+  const { comment, punctuation, disable } = req.body;
+  const { reviewId } = req.params;
+
+  try {
+    const existingReview = await Review.findByPk(reviewId, {
+      include: [User, Product],
+    });
+
+    if (!existingReview) {
+      return res.status(404).json({ message: 'Reseña no encontrada' });
     }
-  });
-  
+
+    // Actualizar los campos de la reseña
+    existingReview.comment = comment || existingReview.comment;
+    existingReview.punctuation = punctuation || existingReview.punctuation;
+    existingReview.disable = disable || existingReview.disable;
+
+    await existingReview.save();
+
+    res.status(200).json(existingReview);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Hubo un error al editar la reseña' });
+  }
+});
+
+// Eliminar una reseña
+review.delete('/:reviewId', async (req, res) => {
+  const { reviewId } = req.params;
+
+  try {
+    const existingReview = await Review.findByPk(reviewId);
+
+    if (!existingReview) {
+      return res.status(404).json({ message: 'Reseña no encontrada' });
+    }
+
+    await existingReview.destroy();
+
+    res.status(200).json({ message: 'Reseña eliminada exitosamente' });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Hubo un error al eliminar la reseña' });
+  }
+});
 
 module.exports = review;

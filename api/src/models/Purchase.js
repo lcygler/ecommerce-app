@@ -10,7 +10,7 @@ module.exports = (sequelize) => {
         autoIncrement: true,
       },
       status: {
-        type: DataTypes.ENUM('Preparing', 'On its way', 'Delivered'),
+        type: DataTypes.ENUM('Preparing', 'On its way', 'Delivered', 'Canceled'),
         defaultValue: 'Preparing',
       },
       total: {

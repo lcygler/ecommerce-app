@@ -65,12 +65,18 @@ export const sortProducts = (products, order) => {
   }
 };
 
+export const filterByStock = (products, stock) => {
+  if (stock !== 'All') {
+    return (products = products.filter((product) => product.stock === Number(stock)));
+  } else {
+    return products;
+  }
+};
+
 //* USER FILTERS
 export const filterByName = (users, name) => {
   if (name !== '') {
-    return (users = users.filter((user) =>
-       user.name === name
-    ));
+    return (users = users.filter((user) => user.name === name));
   } else {
     return users;
   }
@@ -78,9 +84,7 @@ export const filterByName = (users, name) => {
 
 export const filterByLastname = (users, lastname) => {
   if (lastname !== '') {
-    return (users = users.filter((user) =>
-       user.lastname === lastname
-    ));
+    return (users = users.filter((user) => user.lastname === lastname));
   } else {
     return users;
   }
@@ -88,9 +92,7 @@ export const filterByLastname = (users, lastname) => {
 
 export const filterByUsername = (users, username) => {
   if (username !== '') {
-    return (users = users.filter((user) =>
-       user.username === username
-    ));
+    return (users = users.filter((user) => user.username === username));
   } else {
     return users;
   }
@@ -98,9 +100,7 @@ export const filterByUsername = (users, username) => {
 
 export const filterByEmail = (users, email) => {
   if (email !== '') {
-    return (users = users.filter((user) =>
-       user.email === email
-    ));
+    return (users = users.filter((user) => user.email === email));
   } else {
     return users;
   }
@@ -108,9 +108,7 @@ export const filterByEmail = (users, email) => {
 
 export const filterByBirthdate = (users, birthdate) => {
   if (birthdate !== '') {
-    return (users = users.filter((user) =>
-       user.birthdate === birthdate
-    ));
+    return (users = users.filter((user) => user.birthdate === birthdate));
   } else {
     return users;
   }
@@ -118,19 +116,19 @@ export const filterByBirthdate = (users, birthdate) => {
 
 export const filterByPhoneNumber = (users, phoneNumber) => {
   if (phoneNumber !== '') {
-    return (users = users.filter((user) =>
-       user.phoneNumber === phoneNumber
-    ));
+    return (users = users.filter((user) => user.phoneNumber === phoneNumber));
   } else {
     return users;
   }
 };
 
-export const filterByState = (users, state) => {
-  if (state !== '') {
-    return (users = users.filter((user) =>
-       user.state === state
-    ));
+export const filterByStatus = (users, disable) => {
+  if (disable !== '') {
+    if (disable === 'Active') {
+      return (users = users.filter((user) => user.disable === false));
+    } else {
+      return (users = users.filter((user) => user.disable === true));
+    }
   } else {
     return users;
   }
@@ -138,10 +136,28 @@ export const filterByState = (users, state) => {
 
 export const filterByAdmin = (users, admin) => {
   if (admin !== '') {
-    return (users = users.filter((user) =>
-       user.isAdmin === admin
-    ));
+    if (admin === 'Admin') {
+      return (users = users.filter((user) => user.isAdmin === true));
+    } else {
+      return (users = users.filter((user) => user.isAdmin === false));
+    }
   } else {
     return users;
   }
 };
+
+// export const filterByStatus = (users, disable) => {
+//   if (disable !== '') {
+//     return (users = users.filter((user) => user.disable === disable));
+//   } else {
+//     return users;
+//   }
+// };
+
+// export const filterByAdmin = (users, admin) => {
+//   if (admin !== '') {
+//     return (users = users.filter((user) => user.isAdmin === admin));
+//   } else {
+//     return users;
+//   }
+// };

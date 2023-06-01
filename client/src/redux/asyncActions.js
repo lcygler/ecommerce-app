@@ -297,6 +297,11 @@ export const loginGoogle = createAsyncThunk('slice/loginGoogle', async (userData
 });
 
 //* REVIEWS
+export const getAllReviews = createAsyncThunk('slice/getAllReviews', async () => {
+  const response = await axios.get(`/reviews`);
+  return response.data;
+});
+
 export const getUserReviews = createAsyncThunk('slice/getUserReviews', async (userId) => {
   const response = await axios.get(`/reviews/users/${userId}`);
   return response.data;
@@ -314,14 +319,14 @@ export const createReview = createAsyncThunk('slice/createReview', async (review
 
 export const updateReviewById = createAsyncThunk(
   'slice/updateReviewById',
-  async (reviewId, review) => {
-    const response = await axios.patch(`/reviews/${reviewId}`, review);
+  async ({ reviewId, updatedReview }) => {
+    const response = await axios.patch(`/reviews/${reviewId}`, updatedReview);
     return response.data;
   }
 );
 
 export const deleteReviewById = createAsyncThunk('slice/deleteReviewById', async (reviewId) => {
-  const response = await axios.delete(`/users/${reviewId}`);
+  const response = await axios.delete(`/reviews/${reviewId}`);
   return response.data;
 });
 

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation /*useNavigate*/ } from 'react-router-dom';
 import { removeUserFavorites } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
@@ -9,7 +9,7 @@ import { SearchBar } from '../components/index';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { AddIcon } from '@chakra-ui/icons';
+// import { AddIcon } from '@chakra-ui/icons';
 import {
   AlertDialog,
   AlertDialogBody,
@@ -25,9 +25,16 @@ import {
 } from '@chakra-ui/react';
 
 function Filters({ changePage, allProducts, clearSearch, setClearSearch }) {
+  const stocksInProducts = [...new Set(allProducts.map((product) => product.stock))].sort(function(
+    a,
+    b
+  ) {
+    return a - b;
+  });
+
   const dispatch = useDispatch();
   const location = useLocation();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -44,12 +51,14 @@ function Filters({ changePage, allProducts, clearSearch, setClearSearch }) {
   const season = useSelector((state) => state.season);
   const discount = useSelector((state) => state.discount);
   const order = useSelector((state) => state.order);
+  const stock = useSelector((state) => state.stock);
 
   const categorySelect = useRef(null);
   const discountSelect = useRef(null);
   const seasonSelect = useRef(null);
   const genderSelect = useRef(null);
   const orderSelect = useRef(null);
+  const stockSelect = useRef(null);
 
   const discounts = allProducts
     .reduce((acc, product) => {
@@ -66,14 +75,25 @@ function Filters({ changePage, allProducts, clearSearch, setClearSearch }) {
     seasonSelect.current.value = season;
     genderSelect.current.value = gender;
     orderSelect.current.value = order;
-  }, [category, discount, season, gender, order]);
+
+    if (stockSelect.current) {
+      stockSelect.current.value = stock;
+    }
+  }, [category, discount, season, gender, order, stock]);
+
+  // Sino probar con este useEffect para el stock
+  // useEffect(() => {
+  //   if (stockSelect.current) {
+  //     stockSelect.current.value = stock;
+  //   }
+  // }, [stock, stockSelect]);
 
   useEffect(() => {
     if (clearSearch) {
       setSearchTerm('');
       setClearSearch(false);
     }
-  }, [clearSearch]);
+  }, [clearSearch, setClearSearch]);
 
   const handleFilters = (e) => {
     const { name: selectName, value: selectValue } = e.target;
@@ -87,6 +107,8 @@ function Filters({ changePage, allProducts, clearSearch, setClearSearch }) {
       dispatch(actions.updateGenderFilter(selectValue));
     } else if (selectName === 'orderSelect') {
       dispatch(actions.updateOrder(selectValue));
+    } else if (selectName === 'stockSelect') {
+      dispatch(actions.updateStockFilter(selectValue));
     }
     dispatch(actions.filterProducts());
     dispatch(actions.filterFavorites());
@@ -200,6 +222,24 @@ function Filters({ changePage, allProducts, clearSearch, setClearSearch }) {
             </Select>
           </Box>
 
+          {location.pathname === '/dashboard' && (
+            <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+              <Select
+                defaultValue="All"
+                name="stockSelect"
+                ref={stockSelect}
+                onChange={handleFilters}
+              >
+                <option value="All">All Stocks</option>
+                {stocksInProducts.map((item, id) => (
+                  <option key={id} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </Select>
+            </Box>
+          )}
+
           <Box display="flex" alignItems="center" justifyContent="center" ml="4">
             <Select
               defaultValue="Default"
@@ -228,7 +268,7 @@ function Filters({ changePage, allProducts, clearSearch, setClearSearch }) {
             </Box>
           )}
 
-          {location.pathname === '/dashboard' && (
+          {/* {location.pathname === '/dashboard' && (
             <Box display="flex" alignItems="center" justifyContent="center" ml="4">
               <Button
                 leftIcon={<AddIcon />}
@@ -240,7 +280,7 @@ function Filters({ changePage, allProducts, clearSearch, setClearSearch }) {
                 Create Product
               </Button>
             </Box>
-          )}
+          )} */}
         </Flex>
       </Flex>
 

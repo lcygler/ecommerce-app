@@ -66,14 +66,14 @@ function CreateReview({ productId }) {
           <ModalBody>
             <Flex justifyContent="center" alignItems="center" /* minHeight="10vh" */>
               <Box width="100%" bg="white" borderRadius="lg" p="4">
-                <Heading as="h2" size="lg" mb="8" textAlign="center">
+                <Heading as="h2" size="lg" my="4" textAlign="center">
                   Write Review
                 </Heading>
 
                 <Stack spacing="4">
-                  <Flex alignItems="center">
+                  <Flex alignItems="center" my="2">
                     <Box mr="4">
-                      <Text>Rating:</Text>
+                      <Text mb="0">Rating:</Text>
                     </Box>
 
                     <Box>

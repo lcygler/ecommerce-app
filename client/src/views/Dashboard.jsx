@@ -1,3 +1,38 @@
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+import {
+  deleteProductById,
+  deleteReviewById,
+  deleteUserById,
+  getAdminProducts,
+  getAllPurchases,
+  getAllReviews,
+  getCategories,
+  getChartData,
+  getGenders,
+  getSeasons,
+  getUsers,
+  updateProductById,
+  updateReviewById,
+  updateUserById,
+} from '../redux/asyncActions';
+import { actions } from '../redux/slice';
+
+import {
+  Charts,
+  Filters,
+  Navbar,
+  Pagination,
+  ProductsTable,
+  ReviewsTable,
+  Sales,
+  Sidebar,
+  UsersTable,
+} from '../components/index';
+
+import { AddIcon } from '@chakra-ui/icons';
 import {
   Alert,
   AlertDescription,
@@ -8,32 +43,6 @@ import {
   Flex,
   Spinner,
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-
-import {
-  Charts,
-  Filters,
-  Navbar,
-  Pagination,
-  ProductsTable,
-  Sidebar,
-  UsersTable,
-} from '../components/index';
-import {
-  deleteProductById,
-  deleteUserById,
-  getAdminProducts,
-  getCategories,
-  getChartData,
-  getGenders,
-  getSeasons,
-  getUsers,
-  updateProductById,
-  updateUserById,
-} from '../redux/asyncActions';
-import { actions } from '../redux/slice';
 
 function Dashboard() {
   const dispatch = useDispatch();
@@ -45,6 +54,9 @@ function Dashboard() {
   const allUsers = useSelector((state) => state.allUsers);
   const filteredUsers = useSelector((state) => state.filteredUsers);
   const chartData = useSelector((state) => state.chartData);
+  const allPurchases = useSelector((state) => state.allPurchases);
+  const selectedPurchase = useSelector((state) => state.selectedPurchase);
+  const allReviews = useSelector((state) => state.allReviews);
 
   const [itemsPerPage] = useState(10);
   const [loading, setLoading] = useState(true);
@@ -58,6 +70,9 @@ function Dashboard() {
       dispatch(getCategories());
       dispatch(getSeasons());
       dispatch(getGenders());
+      dispatch(getAllPurchases());
+      dispatch(getAllReviews());
+      dispatch(getChartData());
       setLoading(false);
     };
     const fetchUsers = async () => {
@@ -66,13 +81,13 @@ function Dashboard() {
     };
     fetchProducts();
     fetchUsers();
-  }, [dispatch]);
+  }, [dispatch, selectedPurchase]);
 
   useEffect(() => {
-    if (selectedOption === 'charts' && !chartData) {
+    if (selectedOption === 'charts') {
       dispatch(getChartData());
     }
-  }, [dispatch, selectedOption, chartData]);
+  }, [dispatch, selectedOption]);
 
   const totalPages = Math.ceil(filteredAdminProducts?.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -113,19 +128,31 @@ function Dashboard() {
   const handleDeleteUser = async (userId) => {
     await dispatch(deleteUserById(userId));
     await dispatch(getUsers());
+    await dispatch(actions.filterUsers());
   };
 
   const handleSuspendUser = async ({ userId, updatedUser }) => {
     await dispatch(updateUserById({ userId, updatedUser }));
     await dispatch(getUsers());
+    await dispatch(actions.filterUsers());
+  };
+
+  const handleSuspendReview = async ({ reviewId, updatedReview }) => {
+    await dispatch(updateReviewById({ reviewId, updatedReview }));
+    await dispatch(getAllReviews());
+  };
+
+  const handleDeleteReview = async (reviewId) => {
+    await dispatch(deleteReviewById(reviewId));
+    await dispatch(getAllReviews());
   };
 
   return (
     <Box display="flex" flexDirection="column" minHeight="100vh">
       <Navbar />
-      <Flex flex="1">
+      <Flex /*flex="1"*/>
         <Sidebar handleSidebarOption={handleSidebarOption} selectedOption={selectedOption} />
-        <Box flex="1" overflow="auto">
+        <Box /*flex="1"*/ width="100%" overflow="auto">
           <Box padding="4">
             {selectedOption === 'products' && (
               <Filters
@@ -196,7 +223,16 @@ function Dashboard() {
                 />
               )}
 
-              {selectedOption === 'charts' && chartData && <Charts dataCharts={chartData} />}
+              {selectedOption === 'charts' && <Charts dataCharts={chartData} />}
+              {selectedOption === 'sales' && <Sales salesData={allPurchases} />}
+
+              {selectedOption === 'reviews' && (
+                <ReviewsTable
+                  allReviews={allReviews}
+                  suspendReview={handleSuspendReview}
+                  deleteReview={handleDeleteReview}
+                />
+              )}
 
               {selectedOption === 'products' && (
                 <Box display="flex" justifyContent="center" mt="4">
@@ -208,6 +244,26 @@ function Dashboard() {
                 </Box>
               )}
             </>
+          )}
+
+          {selectedOption === 'products' && (
+            <Box display="flex" alignItems="center" justifyContent="center" ml="4">
+              <Button
+                colorScheme="blue"
+                borderRadius="full"
+                position="fixed"
+                size="2xl"
+                boxSize="60px"
+                boxShadow="lg"
+                zIndex="999"
+                p={4}
+                bottom="6"
+                right="6"
+                onClick={() => navigate('/dashboard/create')}
+              >
+                <AddIcon />
+              </Button>
+            </Box>
           )}
         </Box>
       </Flex>

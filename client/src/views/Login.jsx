@@ -24,12 +24,13 @@ import {
   FormControl,
   FormLabel,
   Heading,
+  Icon,
   Input,
   Link,
   Stack,
   Text,
 } from '@chakra-ui/react';
-
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import backgroundImage from '../assets/images/background.jpg';
 
 const clientId = process.env.REACT_APP_CLIENT_ID;
@@ -93,6 +94,12 @@ function Login() {
       setIsLoading(false);
 
       if (response.payload) {
+        if (response.payload.user.disable) {
+          setSuccess('');
+          setError('Your account has been disabled.\nPlease reach out to our support team.');
+          return;
+        }
+
         dispatch(getUserCart(response.payload.user.id));
         dispatch(getUserPurchases(response.payload.user.id));
         dispatch(getUserFavorites(response.payload.user.id));
@@ -140,6 +147,12 @@ function Login() {
     //* Login (back)
     const res = await dispatch(loginGoogle(user));
     if (res.payload) {
+      if (res.payload.user.disable) {
+        setSuccess('');
+        setError('Your account has been disabled.\nPlease reach out to our support team.');
+        return;
+      }
+
       const userId = res.payload.user.id;
       dispatch(getUserCart(userId));
       dispatch(getUserPurchases(userId));
@@ -151,6 +164,15 @@ function Login() {
       navigateTimeoutId = setTimeout(() => {
         navigate('/home');
       }, 2000);
+
+      // Por si quisiéramos redirigir al usuario a completar su perfil
+      // navigateTimeoutId = setTimeout(() => {
+      //   if (res.payload.registered) {
+      //     navigate('/home');
+      //   } else {
+      //     navigate('/profile/edit');
+      //   }
+      // }, 2000);
     } else {
       setSuccess('');
       setError('Google login failed');
@@ -180,12 +202,13 @@ function Login() {
       backgroundImage={`url(${backgroundImage})`}
       backgroundSize="cover"
       backgroundPosition="center"
+      position="relative"
     >
       <Box
         bg="white"
         boxShadow="lg"
         borderRadius="md"
-        width="sm"
+        width="md"
         mx="auto"
         p={8}
         boxSizing="border-box"
@@ -193,19 +216,22 @@ function Login() {
         <Heading size="lg" mb="6" w="100%" textAlign="center">
           Login
         </Heading>
+
         <form onChange={handleForm} onSubmit={handleSubmit}>
           {error && (
             <Alert status="error" marginBottom={4}>
               <AlertIcon />
-              {error}
+              <Box whiteSpace="pre-line">{error}</Box>
             </Alert>
           )}
+
           {success && (
             <Alert status="success" marginBottom={4}>
               <AlertIcon />
               {success}
             </Alert>
           )}
+
           <Stack spacing={4}>
             <FormControl isRequired isInvalid={errors.email !== ''}>
               <FormLabel htmlFor="email">Email Address</FormLabel>
@@ -241,8 +267,8 @@ function Login() {
               {/* <FormErrorMessage>{errors.password}</FormErrorMessage> */}
             </FormControl>
 
-            <Stack direction="row" spacing={4}>
-              <Button
+            <Stack direction="row" alignItems="center" /* spacing={4} */>
+              {/* <Button
                 width="100%"
                 onClick={() => {
                   navigate(-1);
@@ -251,30 +277,30 @@ function Login() {
                 isDisabled={isLoading}
               >
                 Go Back
-              </Button>
+              </Button> */}
+
+              <Flex justifyContent="center" width="50%">
+                <GoogleLogin
+                  clientId={clientId}
+                  onSuccess={onSuccess}
+                  onFailure={onFailure}
+                  cookiePolicy={'single_host_origin'}
+                />
+              </Flex>
 
               <Button
                 type="submit"
                 colorScheme="blue"
                 isLoading={isLoading}
                 loadingText="Logging in..."
-                width="100%"
+                width="50%"
               >
                 Login
               </Button>
             </Stack>
 
-            <Flex justifyContent="center">
-              <GoogleLogin
-                clientId={clientId}
-                onSuccess={onSuccess}
-                onFailure={onFailure}
-                cookiePolicy={'single_host_origin'}
-              />
-            </Flex>
-
-            <Box textAlign="center" marginTop={4} fontSize="sm">
-              <Text>
+            <Box textAlign="center" mt="2" fontSize="sm">
+              <Text mb="0">
                 Don't have an account?{' '}
                 <Link as={RouterLink} to="/register" color="blue.500" textDecoration="underline">
                   Register now
@@ -284,6 +310,34 @@ function Login() {
           </Stack>
         </form>
       </Box>
+
+      <Button
+        colorScheme="blue"
+        variant="ghost"
+        size="md"
+        rounded="full"
+        onClick={() => navigate(-1)}
+        position="absolute"
+        top="20px"
+        left="20px"
+        isDisabled={isLoading}
+      >
+        <Icon as={FaChevronLeft} mr="2" /> Go Back
+      </Button>
+
+      <Button
+        colorScheme="blue"
+        variant="ghost"
+        size="md"
+        rounded="full"
+        onClick={() => navigate('/register')}
+        position="absolute"
+        top="20px"
+        right="20px"
+        isDisabled={isLoading}
+      >
+        Register <Icon as={FaChevronRight} ml="2" />
+      </Button>
     </Box>
   );
 }

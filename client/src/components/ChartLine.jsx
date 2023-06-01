@@ -47,13 +47,13 @@ const ChartLine = (props) => {
     ],
   };
 
-  let max = Math.max(...users) > 100 ? Math.max(...users) : 100;
+  // let max = Math.max(...users) > 100 ? Math.max(...users) : 100;
 
   const optionsLine = {
     scales: {
       y: {
         min: 0,
-        max: max,
+        max: 100,
       },
       x: {
         ticks: { color: 'blue' },

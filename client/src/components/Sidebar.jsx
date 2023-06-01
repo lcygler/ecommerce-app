@@ -1,5 +1,5 @@
-import React from 'react';
 import { Box, Button } from '@chakra-ui/react';
+import React from 'react';
 
 function Sidebar({ handleSidebarOption, selectedOption }) {
   return (
@@ -13,6 +13,7 @@ function Sidebar({ handleSidebarOption, selectedOption }) {
       >
         Products
       </Button>
+
       <Button
         mb="6"
         onClick={() => handleSidebarOption('users')}
@@ -22,24 +23,27 @@ function Sidebar({ handleSidebarOption, selectedOption }) {
       >
         Users
       </Button>
+
       <Button
         mb="6"
-        onClick={() => handleSidebarOption('create-admin')}
+        onClick={() => handleSidebarOption('sales')}
         colorScheme="blue"
         variant="outline"
-        backgroundColor={selectedOption === 'create-admin' ? 'blue.100' : 'gray.150'}
-      >
-        Create Admin
-      </Button>
-      <Button
-        mb="6"
-        onClick={() => handleSidebarOption('ventas')}
-        colorScheme="blue"
-        variant="outline"
-        backgroundColor={selectedOption === 'ventas' ? 'blue.100' : 'gray.150'}
+        backgroundColor={selectedOption === 'sales' ? 'blue.100' : 'gray.150'}
       >
         Sales
       </Button>
+
+      <Button
+        mb="6"
+        onClick={() => handleSidebarOption('reviews')}
+        colorScheme="blue"
+        variant="outline"
+        backgroundColor={selectedOption === 'reviews' ? 'blue.100' : 'gray.150'}
+      >
+        Reviews
+      </Button>
+
       <Button
         mb="6"
         onClick={() => handleSidebarOption('charts')}
@@ -47,7 +51,7 @@ function Sidebar({ handleSidebarOption, selectedOption }) {
         variant="outline"
         backgroundColor={selectedOption === 'charts' ? 'blue.100' : 'gray.150'}
       >
-        Charts
+        Metrics
       </Button>
     </Box>
   );
