@@ -381,8 +381,9 @@ function Detail() {
                     </Text>
 
                     <Box d="flex" flexDirection="column" alignItems="center" width="100%">
-                      {Reviews?.slice(currentReviewIndex, currentReviewIndex + reviewsPerPage).map(
-                        (review) => (
+                      {Reviews?.filter((review) => review.disable === false)
+                        .slice(currentReviewIndex, currentReviewIndex + reviewsPerPage)
+                        .map((review) => (
                           <Box
                             key={review.id}
                             bg="white"
@@ -398,8 +399,7 @@ function Detail() {
                               {review.comment}
                             </Text>
                           </Box>
-                        )
-                      )}
+                        ))}
                     </Box>
 
                     {/* 

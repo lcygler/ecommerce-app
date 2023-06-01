@@ -1,5 +1,5 @@
-import React from 'react';
 import { Box, Button } from '@chakra-ui/react';
+import React from 'react';
 
 function Sidebar({ handleSidebarOption, selectedOption }) {
   return (
@@ -13,6 +13,7 @@ function Sidebar({ handleSidebarOption, selectedOption }) {
       >
         Products
       </Button>
+
       <Button
         mb="6"
         onClick={() => handleSidebarOption('users')}
@@ -32,6 +33,17 @@ function Sidebar({ handleSidebarOption, selectedOption }) {
       >
         Sales
       </Button>
+
+      <Button
+        mb="6"
+        onClick={() => handleSidebarOption('reviews')}
+        colorScheme="blue"
+        variant="outline"
+        backgroundColor={selectedOption === 'reviews' ? 'blue.100' : 'gray.150'}
+      >
+        Reviews
+      </Button>
+
       <Button
         mb="6"
         onClick={() => handleSidebarOption('charts')}

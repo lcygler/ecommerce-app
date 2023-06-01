@@ -4,15 +4,18 @@ import { useNavigate } from 'react-router-dom';
 
 import {
   deleteProductById,
+  deleteReviewById,
   deleteUserById,
   getAdminProducts,
   getAllPurchases,
+  getAllReviews,
   getCategories,
   getChartData,
   getGenders,
   getSeasons,
   getUsers,
   updateProductById,
+  updateReviewById,
   updateUserById,
 } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
@@ -23,6 +26,7 @@ import {
   Navbar,
   Pagination,
   ProductsTable,
+  ReviewsTable,
   Sales,
   Sidebar,
   UsersTable,
@@ -52,6 +56,7 @@ function Dashboard() {
   const chartData = useSelector((state) => state.chartData);
   const allPurchases = useSelector((state) => state.allPurchases);
   const selectedPurchase = useSelector((state) => state.selectedPurchase);
+  const allReviews = useSelector((state) => state.allReviews);
 
   const [itemsPerPage] = useState(10);
   const [loading, setLoading] = useState(true);
@@ -66,7 +71,7 @@ function Dashboard() {
       dispatch(getSeasons());
       dispatch(getGenders());
       dispatch(getAllPurchases());
-
+      dispatch(getAllReviews());
       setLoading(false);
     };
     const fetchUsers = async () => {
@@ -129,6 +134,16 @@ function Dashboard() {
     await dispatch(updateUserById({ userId, updatedUser }));
     await dispatch(getUsers());
     await dispatch(actions.filterUsers());
+  };
+
+  const handleSuspendReview = async ({ reviewId, updatedReview }) => {
+    await dispatch(updateReviewById({ reviewId, updatedReview }));
+    await dispatch(getAllReviews());
+  };
+
+  const handleDeleteReview = async (reviewId) => {
+    await dispatch(deleteReviewById(reviewId));
+    await dispatch(getAllReviews());
   };
 
   return (
@@ -209,6 +224,14 @@ function Dashboard() {
 
               {selectedOption === 'charts' && chartData && <Charts dataCharts={chartData} />}
               {selectedOption === 'sales' && <Sales salesData={allPurchases} />}
+
+              {selectedOption === 'reviews' && (
+                <ReviewsTable
+                  allReviews={allReviews}
+                  suspendReview={handleSuspendReview}
+                  deleteReview={handleDeleteReview}
+                />
+              )}
 
               {selectedOption === 'products' && (
                 <Box display="flex" justifyContent="center" mt="4">

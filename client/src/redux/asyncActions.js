@@ -319,14 +319,14 @@ export const createReview = createAsyncThunk('slice/createReview', async (review
 
 export const updateReviewById = createAsyncThunk(
   'slice/updateReviewById',
-  async (reviewId, review) => {
-    const response = await axios.patch(`/reviews/${reviewId}`, review);
+  async ({ reviewId, updatedReview }) => {
+    const response = await axios.patch(`/reviews/${reviewId}`, updatedReview);
     return response.data;
   }
 );
 
 export const deleteReviewById = createAsyncThunk('slice/deleteReviewById', async (reviewId) => {
-  const response = await axios.delete(`/users/${reviewId}`);
+  const response = await axios.delete(`/reviews/${reviewId}`);
   return response.data;
 });
 
