@@ -10,7 +10,6 @@ import Profile from './Profile';
 import PurchaseDetail from './PurchaseDetail';
 import Purchases from './Purchases';
 import Register from './Register';
-import ReviewsTable from './ReviewsTable';
 
 export {
   Cart,
@@ -25,5 +24,4 @@ export {
   Purchases,
   PurchaseDetail,
   Register,
-  ReviewsTable,
 };
