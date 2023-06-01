@@ -474,7 +474,7 @@ function Detail() {
                 right="20px"
                 isDisabled={isNextDisabled(productId)}
               >
-                Next Product <Icon as={FaChevronRight} mr="2" />
+                Next Product <Icon as={FaChevronRight} ml="2" />
               </Button>
             </Box>
           </motion.div>
