@@ -47,7 +47,7 @@ function ProductTable({ products, editProduct, deleteProduct, suspendProduct }) 
             <Th>Description</Th>
             <Th>Size</Th>
             <Th>Stock</Th>
-            <Th isNumeric>Price</Th>
+            <Th isNumeric>Base Price</Th>
             <Th>Discount</Th>
             <Th>Status</Th>
             <Th>Options</Th>
@@ -79,7 +79,7 @@ function ProductTable({ products, editProduct, deleteProduct, suspendProduct }) 
                 <Td>{name}</Td>
                 <Td>{description}</Td>
                 <Td>{size}</Td>
-                <Td>{stock}</Td>
+                <Td style={{ color: stock <= 5 ? 'red' : 'inherit' }}>{stock}</Td>
                 <Td isNumeric>${price.toFixed(2)}</Td>
                 <Td>{discounts * 100}%</Td>
                 <Td>
