@@ -60,6 +60,9 @@ export const filterProducts = (state, action) => {
   //   filteredSorted = applySearchFilter(filteredSorted, action.payload);
   // }
   state.filteredProducts = filteredSorted;
+
+  const userId = state.userId;
+  localStorage.setItem(`user_${userId}_filteredProducts`, JSON.stringify(state.filteredProducts));
 };
 
 export const filterAdminProducts = (state, action) => {
