@@ -10,7 +10,20 @@ import {
 } from '../redux/asyncActions';
 import { actions } from '../redux/slice';
 
-import { Box, Button, Fade, Flex, Heading, Image, Stack, Text } from '@chakra-ui/react';
+import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+  Box,
+  Button,
+  Fade,
+  Flex,
+  Heading,
+  Image,
+  Stack,
+  Text,
+} from '@chakra-ui/react';
 import { Navbar } from '../components/index';
 
 import { motion } from 'framer-motion';
@@ -103,7 +116,27 @@ function Purchases() {
 
               {!isAuthenticated ? (
                 <Box textAlign="center" fontSize="lg" fontWeight="normal">
-                  Login to view your purchases
+                  <Alert
+                    status="warning"
+                    textAlign="center"
+                    maxWidth="sm"
+                    mx="auto"
+                    display="flex"
+                    justifyContent="center"
+                    fontSize="md"
+                    mt="10"
+                  >
+                    <Flex flexDirection="column" alignItems="center">
+                      <Flex>
+                        <AlertIcon />
+                        <AlertTitle>Oops! Your purchases list is empty</AlertTitle>
+                      </Flex>
+                      <AlertDescription mt="2">
+                        Please login to view your purchases
+                      </AlertDescription>
+                    </Flex>
+                  </Alert>
+                  {/* Login to view your purchases */}
                   <Fade in={isImageLoaded}>
                     <Box mt={4} display="flex" justifyContent="center">
                       <Image
@@ -122,7 +155,25 @@ function Purchases() {
                 </Box>
               ) : purchases?.length === 0 ? (
                 <Box textAlign="center" fontSize="lg" fontWeight="normal">
-                  No purchases found
+                  <Alert
+                    status="warning"
+                    textAlign="center"
+                    maxWidth="sm"
+                    mx="auto"
+                    display="flex"
+                    justifyContent="center"
+                    fontSize="md"
+                    mt="10"
+                  >
+                    <Flex flexDirection="column" alignItems="center">
+                      <Flex>
+                        <AlertIcon />
+                        <AlertTitle>Oops! Your purchases list is empty</AlertTitle>
+                      </Flex>
+                      <AlertDescription mt="2">Time to make some purchases!</AlertDescription>
+                    </Flex>
+                  </Alert>
+                  {/* No purchases found */}
                   <Fade in={isImageLoaded}>
                     <Box mt={4} display="flex" justifyContent="center">
                       <Image

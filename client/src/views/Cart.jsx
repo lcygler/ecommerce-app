@@ -21,12 +21,16 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { AddIcon, CloseIcon, MinusIcon } from '@chakra-ui/icons';
 import {
+  Alert,
+  AlertDescription,
   AlertDialog,
   AlertDialogBody,
   AlertDialogContent,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
+  AlertIcon,
+  AlertTitle,
   Badge,
   Box,
   Button,
@@ -275,7 +279,25 @@ function Cart() {
 
               {!isAuthenticated ? (
                 <Box textAlign="center" fontSize="lg" fontWeight="normal">
-                  Login to add products
+                  <Alert
+                    status="warning"
+                    textAlign="center"
+                    maxWidth="sm"
+                    mx="auto"
+                    display="flex"
+                    justifyContent="center"
+                    fontSize="md"
+                    mt="10"
+                  >
+                    <Flex flexDirection="column" alignItems="center">
+                      <Flex>
+                        <AlertIcon />
+                        <AlertTitle>Oops! Your cart is empty</AlertTitle>
+                      </Flex>
+                      <AlertDescription mt="2">Please login to add some products</AlertDescription>
+                    </Flex>
+                  </Alert>
+                  {/* Login to add products */}
                   <Fade in={isImageLoaded}>
                     <Box mt={4} display="flex" justifyContent="center">
                       <Image
@@ -294,7 +316,25 @@ function Cart() {
                 </Box>
               ) : cartProducts?.length === 0 ? (
                 <Box textAlign="center" fontSize="lg" fontWeight="normal">
-                  Your cart is empty
+                  <Alert
+                    status="warning"
+                    textAlign="center"
+                    maxWidth="sm"
+                    mx="auto"
+                    display="flex"
+                    justifyContent="center"
+                    fontSize="md"
+                    mt="10"
+                  >
+                    <Flex flexDirection="column" alignItems="center">
+                      <Flex>
+                        <AlertIcon />
+                        <AlertTitle>Oops! Your cart is empty</AlertTitle>
+                      </Flex>
+                      <AlertDescription mt="2">Let's add some products!</AlertDescription>
+                    </Flex>
+                  </Alert>
+                  {/* Your cart is empty */}
                   <Fade in={isImageLoaded}>
                     <Box mt={4} display="flex" justifyContent="center">
                       <Image
