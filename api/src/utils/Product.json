@@ -588,6 +588,201 @@
           "rating": 5
         }
       ]
+    },
+    {
+      "name": "Vestidos Mujer Lisos Largo",
+      "size": "5",
+      "gender": "Mujer",
+      "description": "Material principal de Algodón, Tipo de largo a Tobillo",
+      "price": 14.084,
+      "discounts": 0.0,
+      "views": 41,
+      "stock": 11,
+      "image": "https://http2.mlstatic.com/D_NQ_NP_898495-MLA51801802129_102022-O.webp",
+      "seasons": [
+        {
+          "id": 1,
+          "name": "Verano"
+        },
+        {
+          "id": 2,
+          "name": "Primavera"
+        }
+      ],
+      "Category": [
+        {
+          "id": 1,
+          "name": "Vestidos"
+        }
+      ],
+      "reviews": [
+        {
+          "id": 27,
+          "text": "Súper prácticos! me encantaron!",
+          "rating": 4.5
+        },
+        {
+          "id": 28,
+          "text": "Me compraría mil.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "name": "Maxi Falda Pollera Larga",
+      "size": "M",
+      "gender": "Mujer",
+      "description": "Material principal de Modal Con Lycra, Pollera acampanada, Tipo de largo a Tobillo",
+      "price": 5.584,
+      "discounts": 0.0,
+      "views": 41,
+      "stock": 22,
+      "image": "https://http2.mlstatic.com/D_NQ_NP_758010-MLA53468984133_012023-O.webp",
+      "seasons": [
+        {
+          "id": 1,
+          "name": "Verano"
+        },
+        {
+          "id": 2,
+          "name": "Primavera"
+        }
+      ],
+      "Category": [
+        {
+          "id": 1,
+          "name": "Faldas"
+        }
+      ],
+      "reviews": [
+        {
+          "id": 27,
+          "text": "Excelente justo lo que necesitaba.",
+          "rating": 4.5
+        },
+        {
+          "id": 28,
+          "text": "Me quedó perfecta y buena caida.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "name": "Sweater Básico Hombre Cuello Redondo",
+      "size": "XL",
+      "gender": "Hombre",
+      "description": "Material principal de Algodón, Saco Fino Pullover",
+      "price": 7.99,
+      "discounts": 0.0,
+      "views": 41,
+      "stock": 5,
+      "image": "https://http2.mlstatic.com/D_NQ_NP_661844-MLA46286099526_062021-O.webp",
+      "seasons": [
+        {
+          "id": 1,
+          "name": "Verano"
+        },
+        {
+          "id": 2,
+          "name": "Primavera"
+        }
+      ],
+      "Category": [
+        {
+          "id": 1,
+          "name": "Sweaters"
+        }
+      ],
+      "reviews": [
+        {
+          "id": 27,
+          "text": "Muy linda calidad, el color tal cual esperaba. Resultó un poco chico.",
+          "rating": 4.5
+        },
+        {
+          "id": 28,
+          "text": "Excelente. Mido 187 cm pesó casi 100 kg el talle xl me quedó muy bien. Muy cómodo.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "name": "Jean Wrangler Montana",
+      "size": "38",
+      "gender": "Hombre",
+      "description": "Material principal de Algodón, Tiro medio, Bota recta ancha, Corte Clásico",
+      "price": 24.57,
+      "discounts": 0.0,
+      "views": 42,
+      "stock": 15,
+      "image": "https://http2.mlstatic.com/D_NQ_NP_758316-MLA50612489070_072022-O.webp",
+      "seasons": [
+        {
+          "id": 1,
+          "name": "Verano"
+        },
+        {
+          "id": 2,
+          "name": "Primavera"
+        }
+      ],
+      "Category": [
+        {
+          "id": 1,
+          "name": "Jeans"
+        }
+      ],
+      "reviews": [
+        {
+          "id": 27,
+          "text": "Exelente como siempre desde años la marca mantiene su calidad.",
+          "rating": 4.5
+        },
+        {
+          "id": 28,
+          "text": "Muy bueno",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "name": "Traje Hombre Buen Calce",
+      "size": "XL",
+      "gender": "Hombre",
+      "description": "Excelente corte, calidad y confección, Incluye saco y pantalón, Tela tropical",
+      "price": 26.888,
+      "discounts": 0.0,
+      "views": 42,
+      "stock": 15,
+      "image": "https://http2.mlstatic.com/D_NQ_NP_893935-MLA49315853416_032022-O.webp",
+      "seasons": [
+        {
+          "id": 1,
+          "name": "Verano"
+        },
+        {
+          "id": 2,
+          "name": "Primavera"
+        }
+      ],
+      "Category": [
+        {
+          "id": 1,
+          "name": "Trajes"
+        }
+      ],
+      "reviews": [
+        {
+          "id": 27,
+          "text": "Me sorprendió la calidad !!!",
+          "rating": 4.5
+        },
+        {
+          "id": 28,
+          "text": "Excelente, elegante, la tela impecable.",
+          "rating": 5
+        }
+      ]
     }
   ]
 }
