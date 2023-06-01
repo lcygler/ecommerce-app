@@ -72,6 +72,7 @@ function Dashboard() {
       dispatch(getGenders());
       dispatch(getAllPurchases());
       dispatch(getAllReviews());
+      dispatch(getChartData());
       setLoading(false);
     };
     const fetchUsers = async () => {
@@ -222,7 +223,7 @@ function Dashboard() {
                 />
               )}
 
-              {selectedOption === 'charts' && chartData && <Charts dataCharts={chartData} />}
+              {selectedOption === 'charts' && <Charts dataCharts={chartData} />}
               {selectedOption === 'sales' && <Sales salesData={allPurchases} />}
 
               {selectedOption === 'reviews' && (
