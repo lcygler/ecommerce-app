@@ -10,7 +10,7 @@ import App from './App';
 import './index.css';
 import store from './redux/store';
 import reportWebVitals from './reportWebVitals';
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
 
