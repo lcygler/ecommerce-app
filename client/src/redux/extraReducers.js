@@ -34,8 +34,12 @@ import {
   loginUser,
   removeFavorite,
   removeUserFavorites,
+  sendAddAdmin,
+  sendDisableUser,
+  sendEnableUser,
   sendPurchaseFailure,
   sendPurchaseSuccess,
+  sendRemoveAdmin,
   updateCartById,
   updateProductById,
   updateProductsStock,
@@ -401,7 +405,7 @@ export const extraReducers = (builder) => {
       state.deletePurchaseByIdError = action.error.message;
     })
 
-    //* EMAILS
+    //* PURCHASES - EMAILS
     .addCase(sendPurchaseSuccess.pending, (state) => {
       state.sendPurchaseSuccessStatus = 'loading';
     })
@@ -541,6 +545,51 @@ export const extraReducers = (builder) => {
     .addCase(loginGoogle.rejected, (state, action) => {
       state.loginGoogleStatus = 'failed';
       state.loginGoogleError = action.error.message;
+    })
+
+    //* USERS - EMAILS
+    .addCase(sendEnableUser.pending, (state) => {
+      state.sendEnableUserStatus = 'loading';
+    })
+    .addCase(sendEnableUser.fulfilled, (state, action) => {
+      state.sendEnableUserStatus = 'succeeded';
+    })
+    .addCase(sendEnableUser.rejected, (state, action) => {
+      state.sendEnableUserStatus = 'failed';
+      state.sendEnableUserError = action.error.message;
+    })
+
+    .addCase(sendDisableUser.pending, (state) => {
+      state.sendDisableUserStatus = 'loading';
+    })
+    .addCase(sendDisableUser.fulfilled, (state, action) => {
+      state.sendDisableUserStatus = 'succeeded';
+    })
+    .addCase(sendDisableUser.rejected, (state, action) => {
+      state.sendDisableUserStatus = 'failed';
+      state.sendDisableUserError = action.error.message;
+    })
+
+    .addCase(sendAddAdmin.pending, (state) => {
+      state.sendAddAdminStatus = 'loading';
+    })
+    .addCase(sendAddAdmin.fulfilled, (state, action) => {
+      state.sendAddAdminStatus = 'succeeded';
+    })
+    .addCase(sendAddAdmin.rejected, (state, action) => {
+      state.sendAddAdminStatus = 'failed';
+      state.sendAddAdminError = action.error.message;
+    })
+
+    .addCase(sendRemoveAdmin.pending, (state) => {
+      state.sendRemoveAdminStatus = 'loading';
+    })
+    .addCase(sendRemoveAdmin.fulfilled, (state, action) => {
+      state.sendRemoveAdminStatus = 'succeeded';
+    })
+    .addCase(sendRemoveAdmin.rejected, (state, action) => {
+      state.sendRemoveAdminStatus = 'failed';
+      state.sendRemoveAdminError = action.error.message;
     })
 
     //* REVIEWS

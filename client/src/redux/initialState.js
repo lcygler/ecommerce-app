@@ -136,6 +136,10 @@ export const getInitialState = () => {
     deleteUserByIdStatus: 'idle',
     loginUserStatus: 'idle',
     loginGoogleStatus: 'idle',
+    sendEnableUserStatus: 'idle',
+    sendDisableUserStatus: 'idle',
+    sendAddAdminStatus: 'idle',
+    sendRemoveAdminStatus: 'idle',
 
     // Reviews
     getAllReviewsStatus: 'idle',
@@ -199,6 +203,10 @@ export const getInitialState = () => {
     deleteUserByIdError: null,
     loginUserError: null,
     loginGoogleError: null,
+    sendEnableUserError: null,
+    sendDisableUserError: null,
+    sendAddAdminError: null,
+    sendRemoveAdminError: null,
 
     // Reviews
     getAllReviewsError: null,
