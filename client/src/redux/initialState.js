@@ -6,6 +6,11 @@ export const getInitialState = () => {
     localStorage.getItem(`user_${storedUserId}_isAuthenticated`) === 'true';
   const storedIsAdmin = localStorage.getItem(`user_${storedUserId}_isAdmin`) === 'true';
 
+  //* PRODUCTS
+  const storedFilteredProducts = JSON.parse(
+    localStorage.getItem(`user_${storedUserId}_filteredProducts`)
+  );
+
   //* CART
   const storedCartProducts = JSON.parse(localStorage.getItem(`user_${storedUserId}_cartProducts`));
   const storedCartTotal = JSON.parse(localStorage.getItem(`user_${storedUserId}_cartTotal`));
@@ -24,7 +29,7 @@ export const getInitialState = () => {
     adminProducts: [],
     allProducts: [],
     filteredAdminProducts: [],
-    filteredProducts: [],
+    filteredProducts: storedFilteredProducts || [],
     selectedProduct: {},
     categories: [],
     seasons: [],
@@ -203,4 +208,3 @@ export const getInitialState = () => {
     getChartDataError: null,
   };
 };
-
