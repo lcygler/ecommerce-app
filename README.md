@@ -3,4 +3,4 @@
 
 ## Technologies
 - JavaScript, React, Redux Toolkit, Chakra UI, HTML, CSS
-- Node.js, Express, Sequelize, PostgreSQL, Passport, JSON Web Token, Mercado Pago
+- Node.js, Express, Sequelize, PostgreSQL, JSON Web Token, Mercado Pago
