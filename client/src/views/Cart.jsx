@@ -277,8 +277,8 @@ function Cart() {
                 Shopping Cart
               </Heading>
 
-              {!isAuthenticated ? (
-                <Box textAlign="center" fontSize="lg" fontWeight="normal">
+              {/* {!isAuthenticated ? ( 
+              <Box textAlign="center" fontSize="lg" fontWeight="normal">
                   <Alert
                     status="warning"
                     textAlign="center"
@@ -297,7 +297,7 @@ function Cart() {
                       <AlertDescription mt="2">Please login to add some products</AlertDescription>
                     </Flex>
                   </Alert>
-                  {/* Login to add products */}
+                 // Login to add products 
                   <Fade in={isImageLoaded}>
                     <Box mt={4} display="flex" justifyContent="center">
                       <Image
@@ -314,7 +314,8 @@ function Cart() {
                     </Button>
                   </Box>
                 </Box>
-              ) : cartProducts?.length === 0 ? (
+              ) : cartProducts?.length === 0 ? ( */}
+              {cartProducts?.length === 0 ? (
                 <Box textAlign="center" fontSize="lg" fontWeight="normal">
                   <Alert
                     status="warning"
