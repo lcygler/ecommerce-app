@@ -146,8 +146,8 @@ function Product({
         borderRadius="lg"
         overflow="hidden"
         w="350px"
-        // h="500px"
-        h={isAuthenticated ? '500px' : '470px'}
+        h="500px"
+        // h={isAuthenticated ? '500px' : '470px'}
         position="relative"
       >
         <Box h="300px" overflow="hidden" position="relative">
@@ -228,19 +228,19 @@ function Product({
             )}
           </Box>
 
-          {isAuthenticated && (
-            <Box position="absolute" bottom="20px" left="0" right="0" textAlign="center">
-              <Button
-                colorScheme="blue"
-                mt="4"
-                onClick={handleAddToCart}
-                isDisabled={isInCart}
-                width="130px"
-              >
-                {isInCart ? 'In Cart' : 'Add to Cart'}
-              </Button>
-            </Box>
-          )}
+          {/* {isAuthenticated && ( */}
+          <Box position="absolute" bottom="20px" left="0" right="0" textAlign="center">
+            <Button
+              colorScheme="blue"
+              mt="4"
+              onClick={handleAddToCart}
+              isDisabled={isInCart}
+              width="130px"
+            >
+              {isInCart ? 'In Cart' : 'Add to Cart'}
+            </Button>
+          </Box>
+          {/* )} */}
         </Box>
       </Box>
     </Link>
