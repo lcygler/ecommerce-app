@@ -1,8 +1,8 @@
 const { Product, Review, Category, Season } = require('../db.js');
 // const { uploadImage } = require('../utils/cloudinary.js');
 
-const AddProducts = async (api) => {
-  const products = api.products;
+const AddProducts = async (data) => {
+  const products = data.products;
   const existingProductsCount = await Product.count();
 
   if (existingProductsCount < 1) {
