@@ -1,6 +1,6 @@
 # Modern Fashion E-commerce
 ![Modern Fashion](https://i.imgur.com/XMuRr9W.png)
 
-## Technologies
-- JavaScript, React, Redux Toolkit, Chakra UI, HTML, CSS
-- Node.js, Express, Sequelize, PostgreSQL, JSON Web Token, Mercado Pago
+## Built With
+- **Frontend:** JavaScript, React, Redux Toolkit, Chakra UI, HTML, CSS
+- **Backend:** Node.js, Express, Sequelize, PostgreSQL, JSON Web Token
